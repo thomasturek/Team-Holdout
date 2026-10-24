@@ -108,7 +108,8 @@ def test_every_session_is_saved_as_one_json_file_as_the_api_returns_it(sim, tmp_
         assert doc["result"]["ended"] and "score" in doc["result"]
 
 
-def test_a_push_probe_answers_a_final_offer_with_another_offer(sim, tmp_path):
+def test_a_push_probe_answers_a_final_offer_with_another_offer(sim, tmp_path, monkeypatch):
+    monkeypatch.setattr("buyer.runtime.agent.scout_profiles", lambda case: {})  # the probe, not the floor
     client, _, _ = sim
     case = next(c for c in client.cases("sandbox") if c["case_id"] == "case:S01")
     agent = probe_agent("policy", {"concede": 0.02, "accept_gap_pct": 0.0}, {"push_final": True})

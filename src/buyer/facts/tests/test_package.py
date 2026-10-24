@@ -12,7 +12,7 @@ SIM_CASES = pk.REPO_ROOT / "starter-kit" / "arena_kit" / "sim_cases"
 
 @pytest.fixture(scope="module")
 def data():
-    return CaseData()
+    return CaseData(package=load_package(pk.DEFAULT_DATA))  # module scope: before the env fixture
 
 
 def test_known_ids_found_and_citable(data):
