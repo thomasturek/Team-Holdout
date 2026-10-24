@@ -119,6 +119,8 @@ runs/                       logs and harvested data (gitignored, except curated 
 ### Interfaces (contracts between roles)
 
 These are the seams. Change them only with agreement of both sides; update this section when you do.
+They live in [`src/buyer/interfaces.py`](src/buyer/interfaces.py) - import them from there. The fixed
+values of the `Signals` lists are in [`src/buyer/llm/README.md`](src/buyer/llm/README.md).
 
 ```python
 @dataclass

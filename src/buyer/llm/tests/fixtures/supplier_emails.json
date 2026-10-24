@@ -1,0 +1,158 @@
+{
+  "_about": "Supplier e-mails -> expected Signals for the reader's prompt tests. These 20 are WRITTEN BY HAND (no arena logs existed yet): #01 is the real reply from brief/api.md, the rest follow the patterns in data/correspondence (forward-bought energy, cash-short owners, pricing committees, free second shifts, price freezes ...). Replace / extend them with recorded e-mails: `python -m buyer.llm.review fixtures --out src/buyer/llm/tests/fixtures/recorded_emails.json`, then correct each `expected` by hand. Semantics: booleans and tone must match exactly; for lists every expected item must be present; `absent` items must not be.",
+  "emails": [
+    {
+      "id": "01-api-example-brandlhuber",
+      "message": {"from": "sales@70110", "subject": "Re: HN volute casings - your letter of 11 September", "status": "open",
+        "claim_results": [{"index": 0, "result": "verified"}],
+        "body": "Guten Tag,\nYour requested terms change our costs; our Angebot for them follows.\nPreis €139.80 per unit, Zahlungsziel 14 Tage netto, valid from 2027-04-01.\nWe checked the index change data you cited; it holds and we took it into account.\nWe did not know that - a fair point.\nLCI-C rose 2.7 % in twelve months and is 30 % of our cost. That remains.\nPPI-C241 rose 6.5 % in twelve months and is 24 % of our cost. That remains.\nFaster payment helps our cash flow; that is reflected in the price.\nOur costs move with LCI-C, PPI-C241, PPI-D351; the figures stay with us.\nViele Grüße aus der Gießerei\nGießerei Brandlhuber GmbH & Co. KG"},
+      "last_claims": [{"key": "index:PPI-D351", "refs": ["idx:PPI-D351@2025-08", "idx:PPI-D351@2026-08"], "sentence": "Electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08)."}],
+      "expected": {"cash_pressure": true, "capacity_issue": false, "final_offer_language": false, "approval_pending": false,
+        "cost_drivers_claimed": ["LCI-C", "PPI-C241", "PPI-D351"], "accepted_args": ["index:PPI-D351"], "rejected_args": [],
+        "asks": ["faster_payment"], "tone": "neutral"}
+    },
+    {
+      "id": "02-not-our-reality-forward-energy",
+      "message": {"from": "sales@70130", "subject": "Re: Price adjustment", "status": "open",
+        "claim_results": [{"index": 0, "result": "verified"}],
+        "body": "Dear Sir or Madam,\nthank you for your e-mail. We have checked the electricity index you cited. The figure is correct, but it is not our reality: we bought our electricity forward until December 2028 at fixed prices. Our price of EUR 141.20 stands.\nKind regards\nGießerei Pfaffenreuth GmbH"},
+      "last_claims": [{"key": "index:PPI-D351", "refs": ["idx:PPI-D351@2025-08", "idx:PPI-D351@2026-08"], "sentence": "Electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08)."}],
+      "expected": {"cash_pressure": false, "capacity_issue": false, "final_offer_language": false, "approval_pending": false,
+        "cost_drivers_claimed": ["energy"], "accepted_args": [], "rejected_args": ["index:PPI-D351"], "tone": "neutral"}
+    },
+    {
+      "id": "03-final-offer-threat",
+      "message": {"from": "md@70150", "subject": "Re: Your proposal", "status": "final_offer", "claim_results": [],
+        "body": "Dear Sir or Madam,\nwe have reconsidered your proposal carefully. This is our final offer: EUR 136.90 per unit at 30 days net. We cannot go any further. Should you push further, we will have to end the negotiation.\nRegards"},
+      "last_claims": [],
+      "expected": {"final_offer_language": true, "cash_pressure": false, "approval_pending": false, "tone": "irritated"}
+    },
+    {
+      "id": "04-pricing-committee",
+      "message": {"from": "kam@70510", "subject": "Re: Motor IE3 7.5 kW", "status": "open", "claim_results": [],
+        "body": "Thank you for your proposal. A price change of this size exceeds my authority; I have forwarded it to our pricing committee, which meets every two weeks. I will get back to you as soon as I have their decision. In the meantime our offer stands.\nBest regards\nAntriebstechnik Nordmark AG"},
+      "last_claims": [],
+      "expected": {"approval_pending": true, "final_offer_language": false, "cash_pressure": false, "capacity_issue": false, "tone": "neutral"}
+    },
+    {
+      "id": "05-cash-short-jobshop",
+      "message": {"from": "owner@70210", "subject": "Re: Shaft machining", "status": "open", "claim_results": [],
+        "body": "Good afternoon,\nthank you for your request. Frankly, payment timing matters more to us than the last cent of price at the moment. If you could pay within 10 days, we could reconsider the price. Our bank is watching our figures closely.\nZerspanung Dralveck GmbH"},
+      "last_claims": [],
+      "expected": {"cash_pressure": true, "asks": ["faster_payment"], "final_offer_language": false, "approval_pending": false, "tone": "neutral"}
+    },
+    {
+      "id": "06-free-capacity",
+      "message": {"from": "sales@70250", "subject": "Re: Turned parts", "status": "open", "claim_results": [],
+        "body": "Hello,\nwe would be glad to take on more parts from Hollerau. Our second shift has been on hold since spring and we have free machine capacity. With additional volume we could look at the price again.\nDrehteile Fuchsreiter GmbH"},
+      "last_claims": [],
+      "expected": {"capacity_issue": false, "asks": ["volume"], "cash_pressure": false, "tone": "warm"}
+    },
+    {
+      "id": "07-capacity-tight",
+      "message": {"from": "sales@70140", "subject": "Re: Bearing housing", "status": "open", "claim_results": [],
+        "body": "Dear Sir or Madam,\nour order intake is very strong and our foundry is fully booked until the second quarter. We can confirm additional volumes only against a binding 12-month commitment. Lead times have been extended to twelve weeks.\nRegards"},
+      "last_claims": [],
+      "expected": {"capacity_issue": true, "asks": ["longer_contract"], "cash_pressure": false, "final_offer_language": false, "tone": "neutral"}
+    },
+    {
+      "id": "08-warm-owner-breakdown",
+      "message": {"from": "owner@70120", "subject": "Re: Cost breakdown", "status": "open", "claim_results": [],
+        "attachments": [{"name": "cost-breakdown.xlsx", "type": "xlsx", "text": "[Cost breakdown]\nElement | EUR per unit | Share of price\nMaterial | 14.1 | =B2/B6"}],
+        "body": "Dear Hollerau team,\nas promised I attach our cost breakdown. Material is about half of the price, wages and energy the rest. It is always a pleasure to work with you, and I appreciate that you ask before deciding.\nViele Grüße\nEisengießerei Velkenreith GmbH"},
+      "last_claims": [],
+      "expected": {"cost_drivers_claimed": ["labour", "energy"], "tone": "warm", "cash_pressure": false, "approval_pending": false}
+    },
+    {
+      "id": "09-price-freeze-head-office",
+      "message": {"from": "sales@70440", "subject": "Re: Seal kits", "status": "open", "claim_results": [],
+        "body": "Dear Sir or Madam,\nour price list applies to all customers without exception until December 2027. Head office has frozen all price changes this year. We are open to discussing logistics and payment conditions.\nKind regards\nGleitring-Systeme Kaltenbrunn AG"},
+      "last_claims": [],
+      "expected": {"approval_pending": false, "capacity_issue": false, "cash_pressure": false}
+    },
+    {
+      "id": "10-quality-8d-apology",
+      "message": {"from": "quality@70310", "subject": "Re: Escalation: delivery and quality performance", "status": "open", "claim_results": [{"index": 0, "result": "verified"}],
+        "attachments": [{"name": "8d-report.pdf", "type": "pdf", "text": "8D report ... D7 preventive actions"}],
+        "body": "Dear Supplier Quality team,\nwe acknowledge the issues on the base frames. Please find attached our 8D report. We have introduced a full visual inspection before shipment. We regret the inconvenience and appreciate your patience.\nBlechtechnik Aichbauer GmbH"},
+      "last_claims": [{"key": "scorecard:70310", "refs": ["sc:70310@2026Q3"], "sentence": "Your rolling on-time delivery was 63.0% in 2026Q3 (sc:70310@2026Q3)."}],
+      "expected": {"tone": "warm", "final_offer_language": false, "cash_pressure": false, "approval_pending": false}
+    },
+    {
+      "id": "11-irritated-late-payment",
+      "message": {"from": "md@70290", "subject": "Re: Price", "status": "open", "claim_results": [],
+        "body": "We are disappointed. This is the third time you ask for a reduction while you pay our invoices late. We insist on our offer."},
+      "last_claims": [],
+      "expected": {"tone": "irritated", "cash_pressure": true, "final_offer_language": false}
+    },
+    {
+      "id": "12-copper-index-clause",
+      "message": {"from": "sales@70560", "subject": "Re: Motor cable", "status": "open", "claim_results": [],
+        "body": "Copper (CU-NOTATION) has risen sharply over the last twelve months and electronic components remain expensive. We therefore need an index clause on copper for any contract beyond 12 months.\nKabelwerk Rhönsberg GmbH"},
+      "last_claims": [],
+      "expected": {"cost_drivers_claimed": ["CU-NOTATION", "copper", "electronics"], "asks": ["index_clause"], "tone": "neutral", "capacity_issue": false}
+    },
+    {
+      "id": "13-variant-offered",
+      "message": {"from": "engineering@70120", "subject": "Re: Volute casing HN 65-160", "status": "open", "claim_results": [],
+        "body": "Instead of the GJS-400 casting we could supply a GJL-250 variant, which would be noticeably cheaper. Your engineering would have to release the drawing change first.\nEisengießerei Velkenreith GmbH"},
+      "last_claims": [],
+      "expected": {"offered_variants": ["Instead of the GJS-400 casting we could supply a GJL-250 variant, which would be noticeably cheaper."], "cash_pressure": false, "final_offer_language": false},
+      "absent": {"cost_drivers_claimed": ["GJS-400", "GJL-250"]}
+    },
+    {
+      "id": "14-agreed",
+      "message": {"from": "sales@70420", "subject": "Re: Fasteners kit", "status": "agreed", "claim_results": [],
+        "body": "Thank you, we agree to your terms in option B. The order confirmation follows once you accept.\nSchraubenhandel Leitner & Sohn GmbH"},
+      "last_claims": [],
+      "expected": {"final_offer_language": false, "approval_pending": false, "cash_pressure": false, "tone": "neutral"}
+    },
+    {
+      "id": "15-german-last-offer",
+      "message": {"from": "sales@70160", "subject": "AW: Preisanpassung", "status": "open", "claim_results": [],
+        "body": "Guten Tag,\nvielen Dank für Ihre Anfrage. Leider müssen wir Ihnen mitteilen, dass unsere Energiekosten stark gestiegen sind. Unser letztes Angebot: EUR 88,40.\nViele Grüße"},
+      "last_claims": [],
+      "expected": {"final_offer_language": true, "cost_drivers_claimed": ["energy"], "tone": "neutral"}
+    },
+    {
+      "id": "16-walked-away",
+      "message": {"from": "md@70180", "subject": "Re: Your proposal", "status": "walked_away", "claim_results": [],
+        "body": "Under these conditions we see no basis for further talks and withdraw our offer."},
+      "last_claims": [],
+      "expected": {"tone": "irritated", "final_offer_language": false}
+    },
+    {
+      "id": "17-longer-contract-forecast",
+      "message": {"from": "kam@70530", "subject": "Re: Mechanical seals", "status": "open", "claim_results": [],
+        "body": "We could offer a better price if Hollerau commits to a two-year framework agreement and shares a rolling forecast with us.\nBest regards"},
+      "last_claims": [],
+      "expected": {"asks": ["longer_contract", "forecast"], "cash_pressure": false, "approval_pending": false}
+    },
+    {
+      "id": "18-effective-date",
+      "message": {"from": "sales@70230", "subject": "Re: Price adjustment from 01 November 2026", "status": "open", "claim_results": [],
+        "body": "We cannot postpone the increase to April; our costs rise from November. We could however split the increase into two steps."},
+      "last_claims": [],
+      "expected": {"asks": ["earlier_effective_date"], "final_offer_language": false, "tone": "neutral"}
+    },
+    {
+      "id": "19-mixed-accept-reject",
+      "message": {"from": "owner@70110", "subject": "Re: HN volute casings", "status": "open",
+        "claim_results": [{"index": 0, "result": "verified"}, {"index": 1, "result": "verified"}],
+        "body": "Your electricity figure for PPI-D351 holds - a fair point, we did not know that. Your labour figure (LCI-C) is not our reality: our collective agreement raised wages by 5.5 % in May.\nGießerei Brandlhuber"},
+      "last_claims": [
+        {"key": "index:PPI-D351", "refs": ["idx:PPI-D351@2025-08", "idx:PPI-D351@2026-08"], "sentence": "Electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08)."},
+        {"key": "index:LCI-C", "refs": ["idx:LCI-C@2025-06", "idx:LCI-C@2026-06"], "sentence": "Labour costs changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06)."}],
+      "expected": {"accepted_args": ["index:PPI-D351"], "rejected_args": ["index:LCI-C"], "cost_drivers_claimed": ["LCI-C", "labour"]},
+      "absent": {"accepted_args": ["index:LCI-C"], "rejected_args": ["index:PPI-D351"], "cost_drivers_claimed": ["PPI-D351"]}
+    },
+    {
+      "id": "20-ex-works-freight",
+      "message": {"from": "logistics@70620", "subject": "Re: Delivery schedule", "status": "open", "claim_results": [],
+        "attachments": [{"name": "delivery-schedule.xlsx", "type": "xlsx", "text": "[Schedule]\nMonth | Quantity\n2026-11 | 400"}],
+        "body": "Please find attached our delivery schedule for the coming months. We can deliver ex works only; the freight market has become very expensive.\nWälzlager-Zentrum Süd GmbH"},
+      "last_claims": [],
+      "expected": {"asks": ["incoterm"], "cost_drivers_claimed": ["logistics"], "tone": "neutral", "capacity_issue": false}
+    }
+  ]
+}
