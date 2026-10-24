@@ -210,11 +210,35 @@ def driver_changes(part: str, data: CaseData | None = None) -> list[dict]:
             for s, w, _, _, id0, id1, chg in _driver_windows(data, _index(data), [part])]
 
 
+def _recent_fall(idx: _Index, series: str, min_fall: float = -1.0):
+    months = idx.series.get(series) or {}
+    if not months:
+        return None
+    last = max(months)
+    best = None
+    for end in (m for m in months if 0 <= _months_between(m, last) < 3):
+        if _months_between(end, idx.last_month) >= 12:
+            continue
+        for back in range(3, 13):
+            start = _shift(end, -back)
+            if start not in months:
+                continue
+            (id0, v0), (id1, v1) = months[start], months[end]
+            change = (v1 / v0 - 1) * 100
+            if change <= min_fall and (best is None or change < best[4]):
+                best = (start, end, id0, id1, change)
+    return best
+
+
 def index_claims(data: CaseData, idx: _Index) -> list[Claim]:
     """One claim per cost-driver series: the 12-month change ending at the series' latest month."""
     out = []
     asked = _asked_pct(data)
     for series, weight, start, end, id0, id1, change in _driver_windows(data, idx, data.case.get("parts") or []):
+        if change > 0:
+            fall = _recent_fall(idx, series)
+            if fall:
+                start, end, id0, id1, change = fall
         sentence = f"{_series_words(data, series)} changed {change:+.1f}% from {start} to {end} ({id0}, {id1})."
         bar = asked if asked else 5.0  # a change well below what is asked speaks for us
         strength = min(1.0, 2 * weight) * max(0.0, min(1.0, (bar - change) / bar)) if change <= 0 else 0.0

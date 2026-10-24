@@ -1,13 +1,14 @@
+import itertools
 import json
 import math
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from arena_kit.cost import complete_offer, must_haves_ok, total_cost
+from arena_kit.cost import complete_offer, must_haves_ok, supplier_value, total_cost
 
 from buyer.facts.costing import asked as lever_asked
 from buyer.facts.costing import c as relationship_c
-from buyer.facts.costing import clause_wanted, lever_values, relationship_floor
+from buyer.facts.costing import clause_wanted, lever_values, relationship_case, relationship_floor
 
 PARAMS_FILE = Path(__file__).with_name("params.json")
 STRUCTURAL = ("index_clause",)
@@ -61,7 +62,11 @@ DEFAULTS = {
     "lever_trades": 1.0,  # > 0.5 = on
 }
 DEEP_OPEN_TYPES = ("raw_material", "rfq")
-COMMITMENT = ("contract_months", "volume_per_year")
+ARCHETYPE_LEAD_EFFORT = {"near_monopolist": 0.005}
+ARCHETYPE_RATE = {"cash_short_jobshop": 0.18, "group_ladder": 0.07, "near_monopolist": 0.07}
+MENU_SPREAD = 0.003
+MENU_COMBOS = 300
+OWN_PRICE_SLACK = 0.005
 
 
 @dataclass
@@ -292,43 +297,10 @@ class Policy:
             c_theirs = self.c(case, t.standing_terms, t)
             if self.c(case, a, t) > c_theirs:  # never ask for more than they already give us
                 a = self.same_cost(case, a, t.standing_terms, t.standard)
-        sheets = [a]
-        options = case.get("term_options", {}).get("payment_days") or []
-        faster = [d for d in options if d < a.get("payment_days", 0)]
-        rate, pressure = self.cash(t)
-        cash_first = False
-        if faster and self.p["cash_discount_pct"] > 0:
-            days_b = min(faster) if pressure >= 0.5 else max(faster)
-            gap = (a["payment_days"] - days_b) / 360
-            ours = b["interest_rate"] * gap
-            disc = self.p["cash_discount_pct"] / 100
-            if rate > b["interest_rate"]:
-                disc = max(disc, ours + 0.5 * (rate - b["interest_rate"]) * gap)
-            sheet_b = complete_offer(case, {**a, "unit_price": a["unit_price"] * (1 - disc), "payment_days": days_b})
-            if self.c(case, sheet_b, t) < self.c(case, a, t):
-                sheets.append(sheet_b)
-                cash_first = pressure >= 0.5
-        slower = [d for d in options if d > a.get("payment_days", math.inf)]
-        if "payment_days" in case["negotiable"] and slower and pressure < 0.5:
-            days_c = max(slower)
-            theirs_rate = rate if rate > 0 else 0.5 * b["interest_rate"]
-            if theirs_rate < b["interest_rate"]:
-                markup = (theirs_rate + b["interest_rate"]) / 2 * (days_c - a["payment_days"]) / 360
-                sheet_c = complete_offer(
-                    case, {**a, "unit_price": round(a["unit_price"] * (1 + markup), 2), "payment_days": days_c}
-                )
-                if self.c(case, sheet_c, t) < self.c(case, a, t):
-                    sheets.insert(1, sheet_c)
-        std_days = t.standard.get("payment_days") or t.opening_payment_days
-        if "payment_days" in case["negotiable"] and std_days in options and std_days != a.get("payment_days"):
-            sheet_s = self.same_cost(case, complete_offer(case, {**a, "payment_days": std_days}), a, t.standard)
-            if sheet_s not in sheets:
-                if self.p["lead_standard"] > 0.5:
-                    sheets.insert(0, sheet_s)
-                else:
-                    sheets.append(sheet_s)
-        if cash_first:
-            sheets.insert(0, sheets.pop(sheets.index(sheet_b)))
+        c_cap = self.c(case, t.standing_terms, t) if t.standing_terms.get("unit_price") is not None else math.inf
+        sheets = self.menu(case, t, a, c_cap) or [a]
+        if t.last_sheet is not None and sheets[0] == t.last_sheet:
+            t.holding = True
         asks = list((t.signals or {}).get("asks") or [])
         if clause_wanted(case, t.signals) and "index_clause" not in asks:
             asks.append("index_clause")  # it blames the driver a clause would follow: offer the clause
@@ -339,19 +311,126 @@ class Policy:
                 intent = f"{intent}; we can meet you on other terms"
         sheets = sheets[:3]
         questions = []
+        notes = " ".join(str(n) for n in (t.profile or {}).get("notes") or []).lower()
+        if not t.asked_breakdown and not t.our_prices and "calculation" in notes:
+            questions, t.asked_breakdown = ["cost breakdown"], True
         if t.holding:  # same price: lead with another package, ask for its costs once
             k = t.holds % len(sheets)
             sheets = sheets[k:] + sheets[:k]
             intent = "firm on price, open on the other terms"
             if not t.asked_breakdown:
                 questions, t.asked_breakdown = ["cost breakdown"], True
-        t.last_sheet = a
+        t.last_sheet = sheets[0]
         t.our_prices.append(a["unit_price"])
-        t.our_costs.append(self.c(case, a, t))
+        t.our_costs.append(max(self.c(case, s, t) for s in sheets))
         chosen = self.pick_claims(case, t)
         if any(c.key.startswith("rival:") for c in chosen):
             intent = f"{intent}, competition: another offer is on the table"
         return Decision("send", t.supplier_id, term_sheets=sheets, claims=chosen, questions=questions, intent=intent)
+
+    def supplier_model(self, case, t):
+        b = case["buyer"]
+        std = {k: v for k, v in (t.standard or {}).items() if v is not None}
+        std.setdefault("payment_days", t.opening_payment_days or b["reference_payment_days"])
+        freight = b.get("freight_eur_per_unit") or {}
+        if std.get("incoterm") not in freight:
+            std["incoterm"] = (case.get("fixed_terms") or {}).get("incoterm") or next(iter(freight), "EXW")
+        rate, pressure = self.cash(t)
+        rate = ARCHETYPE_RATE.get((t.profile or {}).get("archetype"), rate or 0.08)
+        if pressure >= 0.5:
+            rate = max(rate, ARCHETYPE_RATE["cash_short_jobshop"])
+        ref = t.standing_terms.get("unit_price") or 0.0
+        offered = t.standing_terms.get("ppm_commitment")
+        if offered is not None and std.get("ppm_commitment") is None:
+            std["ppm_commitment"] = offered
+        ppm = max(std.get("ppm_commitment") or 0, offered or 0, (t.profile or {}).get("ppm_actual") or 0)
+        lead = ARCHETYPE_LEAD_EFFORT.get((t.profile or {}).get("archetype"), 0.001)
+        return {"standard": std, "interest_rate": rate, "usual_rate": 0.07, "ref_price": ref, "ppm": ppm,
+                "lead_effort": lead}
+
+    @staticmethod
+    def effort(terms, model):
+        std, ref = model["standard"], model["ref_price"]
+        days = max(0, (std.get("lead_time_days") or 0) - (terms.get("lead_time_days") or 0)) \
+            if std.get("lead_time_days") is not None and terms.get("lead_time_days") is not None else 0
+        ppm = max(0, (std.get("ppm_commitment") or 0) - (terms.get("ppm_commitment") or 0)) \
+            if std.get("ppm_commitment") is not None and terms.get("ppm_commitment") is not None else 0
+        return ref * (model.get("lead_effort", 0.001) * days + 0.00001 * ppm)
+
+    def worth(self, case, terms, model):
+        try:
+            return supplier_value(case, terms, model) - self.effort(terms, model)
+        except (KeyError, TypeError, ZeroDivisionError):
+            return None
+
+    def menu(self, case, t, a, c_cap):
+        model = self.supplier_model(case, t)
+        target = self.worth(case, a, model)
+        if target is None:
+            return []
+        domains = {}
+        for f in case["negotiable"]:
+            options = list((case.get("term_options") or {}).get(f) or [])
+            if f == "unit_price" or f in STRUCTURAL or not options:
+                continue
+            if a.get(f) not in options:
+                options.append(a.get(f))
+            domains[f] = options
+        while domains and math.prod(len(v) for v in domains.values()) > MENU_COMBOS:
+            f = max(domains, key=lambda k: len(domains[k]))
+            v = domains[f]
+            keep = [a.get(f), v[0], v[-1], v[len(v) // 2]]
+            domains[f] = list(dict.fromkeys(x for x in keep if x in v))
+            if len(domains[f]) == len(v):
+                break
+        theirs = t.standing_terms.get("unit_price")
+        at_theirs = self.c(case, {**a, "unit_price": theirs}, t) if theirs else math.inf
+        rel_case, rel_floors = relationship_case(case), {}
+        found = []
+        for combo in itertools.product(*domains.values()):
+            levers = {**a, **dict(zip(domains, combo, strict=True))}
+            v0 = self.worth(case, {**levers, "unit_price": 0.0}, model)
+            v1 = self.worth(case, {**levers, "unit_price": 1.0}, model)
+            if v0 is None or v1 is None or v1 - v0 <= 1e-9:
+                continue
+            price = round((target - v0) / (v1 - v0), 2)
+            if price <= 0:
+                continue
+            terms = complete_offer(case, {**levers, "unit_price": price})
+            if not must_haves_ok(case, terms, t.standard):
+                continue
+            if rel_case:
+                floor = rel_floors.setdefault(
+                    tuple(sorted((k, str(v)) for k, v in levers.items() if k != "unit_price")),
+                    relationship_floor(case, terms, t.standard, t.profile),
+                )
+                if floor and terms["unit_price"] < floor:
+                    terms = {**terms, "unit_price": floor}
+            cost = self.c(case, terms, t)
+            if cost >= c_cap - 0.5:
+                continue
+            if theirs and self.c(case, {**terms, "unit_price": theirs}, t) > at_theirs * (1 + OWN_PRICE_SLACK) + 1.0:
+                continue
+            changes = sum(terms.get(f) != a.get(f) for f in domains)
+            found.append((cost, changes, terms))
+        if not found:
+            return []
+        found.sort(key=lambda x: (x[0], x[1]))
+        best = found[0][0]
+        picked, seen = [], set()
+        for cost, _, terms in found:
+            if cost > best * (1 + MENU_SPREAD):
+                break
+            levers = tuple((f, str(terms.get(f))) for f in domains)
+            if levers in seen or (picked and not set(levers) - {p for s in picked for p in s[1]}):
+                continue
+            if any(terms["unit_price"] == q["unit_price"] and abs(cost - qc) < 1.0 for q, _, qc in picked):
+                continue
+            seen.add(levers)
+            picked.append((terms, levers, cost))
+            if len(picked) == 3:
+                break
+        return [terms for terms, _, _ in picked]
 
     def lever_trades(self, case, t, a, asks=()):
         """Packages that give the supplier a term it values at equal cost to us (costing.lever_values):
@@ -542,9 +621,7 @@ class Policy:
                 low = min(costs.values())
                 ties = [options[i] for i, c in costs.items() if c <= low + 1.0]
                 theirs = terms.get(f)
-                if f in COMMITMENT and all(isinstance(o, int | float) for o in ties):
-                    out[f] = max(ties)
-                elif theirs in ties:
+                if theirs in ties:
                     out[f] = theirs
                 elif isinstance(theirs, int | float) and all(isinstance(o, int | float) for o in ties):
                     out[f] = min(ties, key=lambda o: abs(o - theirs))

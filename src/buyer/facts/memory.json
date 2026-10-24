@@ -1,5 +1,5 @@
 {
- "built_from": 32,
+ "built_from": 53,
  "entries": {
   "sup:70110|part:310010": {
    "supplier_id": "sup:70110",
@@ -9,13 +9,15 @@
    "type": "price_increase",
    "rfq": false,
    "best_price": 135.1891,
-   "deal_price": 133.3,
+   "deal_price": 135.2,
    "opening_price": 138.55,
    "estimate": 132.64,
    "sessions": [
     "75b0649b950a28a1",
     "1e8873242578819a",
-    "d5066cc6096c56b0"
+    "d5066cc6096c56b0",
+    "36af37afc740c44a",
+    "a37615af18aa4080"
    ],
    "cases": [
     "case:P01"
@@ -23,7 +25,9 @@
    "scores": [
     0.7602917704457346,
     0.9262781239225645,
-    0.9690850144547528
+    0.9690850144547528,
+    0.9262781239225645,
+    0.9106338463828725
    ],
    "full_cost_observed": 130.04
   },
@@ -34,20 +38,26 @@
    ],
    "type": "quality",
    "rfq": false,
-   "best_price": 43.9003,
-   "deal_price": 47.5,
+   "best_price": 43.4503,
+   "deal_price": 46.0,
    "opening_price": 47.0,
    "estimate": 45.15,
    "sessions": [
     "5c6ad7af86a5cc18",
-    "63790d86bf6ed9cd"
+    "63790d86bf6ed9cd",
+    "901d44ee44a2b719",
+    "e64718a7e72075f3",
+    "940188058ebc9ac8"
    ],
    "cases": [
     "case:P11"
    ],
    "scores": [
     0.23077898794231855,
-    0.3980101386251581
+    0.3980101386251581,
+    0.5736028468421396,
+    0.5736028468421396,
+    0.5736028468421396
    ],
    "full_cost_observed": null
   },
@@ -59,19 +69,23 @@
    "type": "rfq",
    "rfq": true,
    "best_price": 26.2885,
-   "deal_price": 28.06,
+   "deal_price": 28.05,
    "opening_price": 36.0,
    "estimate": 36.87,
    "sessions": [
     "e3d74883d943335c",
-    "f08d345be23034e7"
+    "f08d345be23034e7",
+    "a89a4dadb8349e0d",
+    "891fdbdf85fd1192"
    ],
    "cases": [
     "case:P05"
    ],
    "scores": [
     0.45615830047421624,
-    0.8175839516400172
+    0.8175839516400172,
+    0.8186136543498912,
+    0.8186136543498912
    ],
    "full_cost_observed": null
   },
@@ -107,13 +121,15 @@
    "type": "capacity",
    "rfq": false,
    "best_price": 27.3814,
-   "deal_price": 31.9,
+   "deal_price": 31.8,
    "opening_price": 32.2,
    "estimate": 24.31,
    "sessions": [
     "34cdb95db7ef6f4a",
     "60ecd6410c112727",
-    "1ac5d4979d01125f"
+    "1ac5d4979d01125f",
+    "e74ede01046b6f55",
+    "ccb1025c37286693"
    ],
    "cases": [
     "case:P10"
@@ -121,7 +137,9 @@
    "scores": [
     0.5390452124905989,
     0.6316827463686654,
-    0.6472939820644754
+    0.6472939820644754,
+    0.6472939820644754,
+    0.6550995999123804
    ],
    "full_cost_observed": null
   },
@@ -133,13 +151,15 @@
    "type": "price_increase",
    "rfq": false,
    "best_price": 365.6829,
-   "deal_price": 371.58,
+   "deal_price": 372.2,
    "opening_price": 370.96,
    "estimate": 374.95,
    "sessions": [
     "e2b202405ab5ddb9",
     "1782088abe444a5f",
-    "c75e3d16d0fa9d2a"
+    "c75e3d16d0fa9d2a",
+    "24bac3e39c80cb8c",
+    "e36d2ea9361a51f7"
    ],
    "cases": [
     "case:P02"
@@ -147,7 +167,9 @@
    "scores": [
     0.23652009231008223,
     0.22361712264198644,
-    0.2391006862437053
+    0.2391006862437053,
+    0.1591022743015074,
+    0.1591022743015074
    ],
    "full_cost_observed": null
   },
@@ -165,12 +187,16 @@
    "sessions": [
     "324828e357c4a78c",
     "c7762690d89610e8",
-    "fb6a4ee46f0e8edf"
+    "fb6a4ee46f0e8edf",
+    "212327f9ca2cf7b8",
+    "538599b0ff47d37b"
    ],
    "cases": [
     "case:P03"
    ],
    "scores": [
+    0.8955516532525242,
+    0.8955516532525242,
     0.8955516532525242,
     0.8955516532525242,
     0.8955516532525242
@@ -188,13 +214,15 @@
    "type": "bundling",
    "rfq": false,
    "best_price": 4.9539,
-   "deal_price": 5.47,
+   "deal_price": 5.44,
    "opening_price": 5.74,
    "estimate": null,
    "sessions": [
     "a26d2404f9a3e800",
     "4a101a1b0bf6e4ae",
-    "75710688c65ba899"
+    "75710688c65ba899",
+    "151d1659f66d458f",
+    "ab0314a34471a73a"
    ],
    "cases": [
     "case:P07"
@@ -202,7 +230,9 @@
    "scores": [
     0.6449639165749952,
     0.6471864799292181,
-    0.6603475413601065
+    0.6603475413601065,
+    0.6932501949373276,
+    0.6800891335064392
    ],
    "full_cost_observed": null
   },
@@ -220,12 +250,16 @@
    "sessions": [
     "f091ede7341fe3ba",
     "825bd3432fb1ed24",
-    "77e392bc962cc1c7"
+    "77e392bc962cc1c7",
+    "8c1c2a1adb111a81",
+    "f4eb92bbdeeb2ad5"
    ],
    "cases": [
     "case:P04"
    ],
    "scores": [
+    0.8098066042011054,
+    0.8098066042011054,
     0.8098066042011054,
     0.8098066042011054,
     0.8098066042011054
@@ -240,14 +274,16 @@
    "type": "raw_material",
    "rfq": false,
    "best_price": 4.9102,
-   "deal_price": 5.2,
+   "deal_price": 5.39,
    "opening_price": 6.05,
    "estimate": 5.3994,
    "sessions": [
     "84890ecf07a04fb3",
     "776dccc05335a90c",
     "e7fe5b7e575ac033",
-    "9b159f074f616be9"
+    "9b159f074f616be9",
+    "ff799fbc2333c242",
+    "fbbf38c9f6c8d4d4"
    ],
    "cases": [
     "case:P08"
@@ -256,7 +292,9 @@
     0.4544780252873441,
     0.4544780252873441,
     0.4544780252873441,
-    0.6772536073009168
+    0.6772536073009168,
+    0.5881433858864394,
+    0.4656167816061186
    ],
    "full_cost_observed": null
   },
@@ -268,14 +306,16 @@
    "type": "raw_material",
    "rfq": false,
    "best_price": 4.5538,
-   "deal_price": 5.5,
+   "deal_price": 5.6,
    "opening_price": 6.1,
    "estimate": 5.7858,
    "sessions": [
     "a9a2846e26245ae6",
     "7c970402e6ff396b",
     "21b6e032d2621e98",
-    "76dd99484423384e"
+    "76dd99484423384e",
+    "6a0c945575cb572d",
+    "5a09e68bf894891f"
    ],
    "cases": [
     "case:P18"
@@ -284,7 +324,9 @@
     0.2946951516478595,
     0.2946951516478595,
     0.22727681380922413,
-    0.3621134894864948
+    0.3621134894864948,
+    0.3621134894864948,
+    0.37704813824667677
    ],
    "full_cost_observed": null
   }

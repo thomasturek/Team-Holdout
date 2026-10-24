@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 from arena_kit.cost import must_haves_ok, total_cost
 
-from buyer.policy.policy import Policy, ThreadState
+from buyer.policy.policy import Policy, ThreadState, load_params
 
 CASES = Path(__file__).resolve().parents[1] / "runs" / "cases" / "practice.json"
 SID = "sup:70140"
@@ -37,20 +37,51 @@ def test_the_counter_to_a_must_have_breaking_offer_keeps_the_must_haves(case):
     assert all(must_haves_ok(case, s, {}) for s in decision.term_sheets)
 
 
-def test_the_counter_offers_a_longer_payment_term_that_saves_us_money():
-    case = practice("case:P02")
-    terms = {"unit_price": 370.96, "payment_days": 30, "index_clause": None}
-    t = ThreadState("sup:70240", "offer:70240-1", terms, "open", {}, 9)
-    decision = Policy({"claims_per_msg": 0}).decide(case, t)
-    a = decision.term_sheets[0]
-    slow = [s for s in decision.term_sheets if s["payment_days"] == 90]
-    assert slow and slow[0]["unit_price"] > a["unit_price"]
-    assert total_cost(case, slow[0], {}) < total_cost(case, a, {})
+@pytest.mark.parametrize("case_id, quote", [
+    ("case:P02", {"unit_price": 370.96, "payment_days": 30, "index_clause": None}),
+    ("case:P08", {"unit_price": 6.05, "payment_days": 30, "contract_months": 12, "index_clause": None}),
+])
+def test_the_packages_are_worth_the_same_to_the_supplier_and_cheapest_for_us(case_id, quote):
+    case = practice(case_id)
+    t = ThreadState("sup:x", "offer:x-1", quote, "open", {"payment_days": 30}, 9)
+    p = Policy({"claims_per_msg": 0})
+    sheets = p.decide(case, t).term_sheets
+    model = p.supplier_model(case, t)
+    worth = [p.worth(case, s, model) for s in sheets]
+    costs = [total_cost(case, s, {"payment_days": 30}) for s in sheets]
+    assert len(sheets) >= 2
+    assert max(worth) - min(worth) < 0.01 * sheets[0]["unit_price"]
+    assert max(costs) <= min(costs) * 1.003 + 1
+    assert all(c < total_cost(case, quote, {"payment_days": 30}) for c in costs)
 
 
-def test_a_longer_contract_that_costs_us_nothing_is_offered():
-    case = practice("case:P07")
-    theirs = {"unit_price": 5.53, "payment_days": 30, "contract_months": 24}
-    out = Policy.best_options(case, theirs, {}, skip={"payment_days"})
-    assert out["contract_months"] == 36
-    assert total_cost(case, out, {}) == total_cost(case, theirs, {})
+def test_no_package_costs_us_more_at_the_suppliers_own_price():
+    case = practice("case:P03")
+    quote = {"unit_price": 438.21, "payment_days": 30, "contract_months": 12, "volume_per_year": 4580}
+    t = ThreadState("sup:x", "offer:x-1", quote, "open", {"payment_days": 30}, 9)
+    p = Policy({"claims_per_msg": 0})
+    sheets = p.decide(case, t).term_sheets
+    assert sheets and all(s["payment_days"] >= 45 for s in sheets)
+
+
+def test_a_chargeback_the_supplier_pays_for_is_traded_for_price():
+    case = practice("case:P11")
+    quote = {"unit_price": 47.0, "ppm_commitment": 6400, "chargeback_eur_per_complaint": 0}
+    t = ThreadState("sup:x", "offer:x-1", quote, "open", {}, 9)
+    sheets = Policy({"claims_per_msg": 0}).decide(case, t).term_sheets
+    assert sheets[0]["chargeback_eur_per_complaint"] == 0
+    assert all(must_haves_ok(case, s, {}) for s in sheets)
+
+
+def test_a_floor_that_stops_our_concession_holds_instead_of_closing():
+    case = practice("case:P01")
+    quote = {"unit_price": 138.55, "effective_date": "2026-11-01", "payment_days": 30}
+    profile = {"floor_estimate": 135.19, "floor_source": "should_cost", "full_cost_observed": 130.04}
+    p = Policy({**load_params(), "claims_per_msg": 0})
+    t = ThreadState("sup:70110", "offer:1", quote, "open", {"payment_days": 30}, 9, profile=profile)
+    first = p.decide(case, t)
+    assert first.kind == "send"
+    t.standing_id, t.status = "offer:2", "open"
+    t.standing_terms = {**first.term_sheets[0], "unit_price": 138.6, "payment_days": 45, "effective_date": "2027-04-01"}
+    t.rounds_left = 8
+    assert p.decide(case, t).kind == "send"
