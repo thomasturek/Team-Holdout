@@ -15,6 +15,11 @@ DEFAULT_RANGES = {
     "approval_step_pct": (1.0, 5.0),
     "patience": (1, 3),
     "walk_after_final": (0.1, 0.6),
+    "insist_share": (0.3, 0.7),
+    "reciprocity": (0.0, 0.8),
+    "insult_pct": (3.0, 20.0),
+    "first_drop": (0.0, 0.04),
+    "lead_premium_pct_week": (0.0, 2.0),
     "cost_vs_current": (0.75, 0.95),
     "floor_error": 0.08,
 }
@@ -50,6 +55,13 @@ def sample(case, rng, ranges=None):
         approval_step_pct=u("approval_step_pct"),
         patience=rng.randint(*r["patience"]),
         walk_after_final=u("walk_after_final"),
+        insist_payment=rng.random() < u("insist_share"),
+        reciprocity=u("reciprocity"),
+        insult_pct=u("insult_pct"),
+        first_drop=u("first_drop"),
+        lead_premium_pct_week=u("lead_premium_pct_week"),
+        std_incoterm=rng.choice(case.get("term_options", {}).get("incoterm") or [None]),
+        std_lead_time=rng.choice(case.get("term_options", {}).get("lead_time_days") or [None]),
         std_payment_days=std_days,
     )
     estimate = full_cost * math.exp(rng.gauss(0, r["floor_error"]))

@@ -15,6 +15,8 @@ BOUNDS = {
     "cash_discount_pct": (0.0, 5.0),
     "push_final": (0.0, 1.0),
     "min_open_discount_pct": (1.0, 10.0),
+    "rival_undercut_pct": (0.0, 5.0),
+    "lead_standard": (0.0, 1.0),
 }
 DEFAULTS = {
     "open_frac": 0.3,
@@ -24,6 +26,8 @@ DEFAULTS = {
     "cash_discount_pct": 1.5,
     "push_final": 0.0,
     "min_open_discount_pct": 4.0,
+    "rival_undercut_pct": 1.0,
+    "lead_standard": 0.0,
 }
 
 
@@ -54,6 +58,7 @@ class ThreadState:
     their_prices: list = field(default_factory=list)
     pushed_final: bool = False
     opening_cost: float | None = None
+    opening_payment_days: int | None = None
 
 
 def load_params(path=PARAMS_FILE):
@@ -82,6 +87,7 @@ class Policy:
         c_theirs = self.cost(case, t)
         if t.opening_cost is None:
             t.opening_cost = c_theirs
+            t.opening_payment_days = t.standing_terms.get("payment_days")
         acceptable = self.acceptable(case, t, c_theirs, rival_best_c)
 
         if t.status == "agreed":
@@ -96,7 +102,7 @@ class Policy:
         close = t.our_prices and theirs <= t.our_prices[-1] * (1 + p["accept_gap_pct"] / 100)
         if close and acceptable and c_theirs < t.opening_cost:
             return self.accept(t)
-        return self.offer(case, t, self.next_price(t, theirs))
+        return self.offer(case, t, self.next_price(t, theirs), rival_best_c=rival_best_c)
 
     def closing(self, case, threads: dict) -> Decision:
         best = None
@@ -136,29 +142,48 @@ class Policy:
             price = last + (step if step is not None else self.p["concede"]) * (theirs - last)
         return round(min(max(price, low), theirs), 2)
 
-    def offer(self, case, t, price, intent="firm, appreciative"):
+    def offer(self, case, t, price, intent="firm, appreciative", rival_best_c=math.inf):
         b = case["buyer"]
         base = {**t.standing_terms, "unit_price": price}
         if "payment_days" in case["negotiable"]:
             base["payment_days"] = b["reference_payment_days"]
         a = self.best_options(case, complete_offer(case, base), t.standard, skip={"payment_days"})
+        if rival_best_c < math.inf:
+            c_a = total_cost(case, a, t.standard)
+            target = rival_best_c * (1 - self.p["rival_undercut_pct"] / 100)
+            if c_a > target:
+                slope = total_cost(case, {**a, "unit_price": a["unit_price"] + 1}, t.standard) - c_a
+                if slope > 0:
+                    a = {**a, "unit_price": round(max(0.01, a["unit_price"] - (c_a - target) / slope), 2)}
         sheets = [a]
         options = case.get("term_options", {}).get("payment_days") or []
         faster = [d for d in options if d < a.get("payment_days", 0)]
         if faster and self.p["cash_discount_pct"] > 0:
             sheet_b = complete_offer(
                 case,
-                {**a, "unit_price": price * (1 - self.p["cash_discount_pct"] / 100), "payment_days": max(faster)},
+                {**a, "unit_price": a["unit_price"] * (1 - self.p["cash_discount_pct"] / 100), "payment_days": max(faster)},
             )
             if total_cost(case, sheet_b, t.standard) < total_cost(case, a, t.standard):
                 sheets.append(sheet_b)
-        std_days = t.standard.get("payment_days")
-        if "payment_days" in case["negotiable"] and std_days in options and len(sheets) < 3:
-            sheet_s = complete_offer(case, {**a, "payment_days": std_days})
+        std_days = t.standard.get("payment_days") or t.opening_payment_days
+        if "payment_days" in case["negotiable"] and std_days in options and std_days != a.get("payment_days"):
+            sheet_s = self.same_cost(case, complete_offer(case, {**a, "payment_days": std_days}), a, t.standard)
             if sheet_s not in sheets:
-                sheets.append(sheet_s)
+                if self.p["lead_standard"] > 0.5:
+                    sheets.insert(0, sheet_s)
+                else:
+                    sheets.append(sheet_s)
+        sheets = sheets[:3]
         t.our_prices.append(a["unit_price"])
         return Decision("send", t.supplier_id, term_sheets=sheets, intent=intent)
+
+    @staticmethod
+    def same_cost(case, sheet, ref, standard):
+        c_ref, c = total_cost(case, ref, standard), total_cost(case, sheet, standard)
+        slope = total_cost(case, {**sheet, "unit_price": sheet["unit_price"] + 1}, standard) - c
+        if slope <= 0:
+            return sheet
+        return {**sheet, "unit_price": round(max(0.01, sheet["unit_price"] - (c - c_ref) / slope), 2)}
 
     @staticmethod
     def best_options(case, terms, standard, skip=()):
@@ -166,5 +191,14 @@ class Policy:
         for f, options in case.get("term_options", {}).items():
             if f == "unit_price" or f in skip or f not in case["negotiable"] or not options:
                 continue
-            out[f] = min(options, key=lambda o: total_cost(case, {**out, f: o}, standard))
+            costs = {i: total_cost(case, {**out, f: o}, standard) for i, o in enumerate(options)}
+            low = min(costs.values())
+            ties = [options[i] for i, c in costs.items() if c <= low + 1.0]
+            theirs = terms.get(f)
+            if theirs in ties:
+                continue
+            if isinstance(theirs, int | float) and all(isinstance(o, int | float) for o in ties):
+                out[f] = min(ties, key=lambda o: abs(o - theirs))
+            else:
+                out[f] = ties[0]
         return out
