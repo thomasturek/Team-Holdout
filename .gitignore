@@ -20,3 +20,5 @@ dist/
 build/
 .next/
 npm-debug.log*
+
+runs/
