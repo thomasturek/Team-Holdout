@@ -22,19 +22,23 @@ ARCHETYPES = {"family_foundry", "group_ladder", "cash_short_jobshop", "near_mono
 def test_every_practice_supplier_has_a_floor(case_id):
     case = PRACTICE[case_id]
     p = profile(case)[case["suppliers"][0]]
-    assert p["floor_estimate"] and p["floor_estimate"] > 0
-    assert 0 < p["floor_confidence"] <= 0.15
+    if len(case["parts"]) > 1 and not (case.get("buyer") or {}).get("current_unit_price"):
+        assert p["floor_estimate"] is None or p["floor_source"] == "observed_best"  # a kit without its price
+    else:
+        assert p["floor_estimate"] and p["floor_estimate"] > 0
+        assert 0 < p["floor_confidence"] <= 0.15
     assert p["archetype"] in ARCHETYPES
     assert p["approval_style"] in ("flat", "ladder")
     assert 0 <= p["cash_pressure"] <= 1 and p["cash_rate_estimate"] >= 0.08
 
 
-@pytest.mark.parametrize("case_id", ["case:P04", "case:P07", "case:P08", "case:P11", "case:P18"])
+@pytest.mark.parametrize("case_id", ["case:P04", "case:P08", "case:P11", "case:P18"])
 def test_gap_cases_use_the_market_price(case_id):
+    """The data-only estimate (before the supplier memory replaces it with the observed best)."""
     case = PRACTICE[case_id]
     p = profile(case)[case["suppliers"][0]]
-    assert p["floor_source"] in ("own_price", "market_price")
-    assert p["floor_confidence"] == 0.15
+    assert p["floor_computed_source"] in ("own_price", "market_price")
+    assert p["floor_computed"] > 0
 
 
 def test_floor_is_close_to_current_price():

@@ -1,0 +1,227 @@
+{
+ "built_from": 13,
+ "entries": {
+  "sup:70110|part:310010": {
+   "supplier_id": "sup:70110",
+   "parts": [
+    "part:310010"
+   ],
+   "type": "price_increase",
+   "rfq": false,
+   "best_price": 135.1891,
+   "deal_price": 137.9,
+   "opening_price": 138.55,
+   "estimate": 132.64,
+   "sessions": [
+    "75b0649b950a28a1"
+   ],
+   "cases": [
+    "case:P01"
+   ],
+   "scores": [
+    0.7602917704457346
+   ]
+  },
+  "sup:70140|part:310020": {
+   "supplier_id": "sup:70140",
+   "parts": [
+    "part:310020"
+   ],
+   "type": "quality",
+   "rfq": false,
+   "best_price": 43.9003,
+   "deal_price": 48.5,
+   "opening_price": 47.0,
+   "estimate": 45.15,
+   "sessions": [
+    "5c6ad7af86a5cc18"
+   ],
+   "cases": [
+    "case:P11"
+   ],
+   "scores": [
+    0.23077898794231855
+   ]
+  },
+  "sup:70250|part:320070": {
+   "supplier_id": "sup:70250",
+   "parts": [
+    "part:320070"
+   ],
+   "type": "rfq",
+   "rfq": true,
+   "best_price": 26.3552,
+   "deal_price": 31.64,
+   "opening_price": 38.5,
+   "estimate": 36.87,
+   "sessions": [
+    "42fd7e08f8173890",
+    "25a2dfb27dd01504"
+   ],
+   "cases": [
+    "case:P05"
+   ],
+   "scores": [
+    0.418754860979784,
+    0.45582415853525043
+   ]
+  },
+  "sup:70410|part:340010": {
+   "supplier_id": "sup:70410",
+   "parts": [
+    "part:340010"
+   ],
+   "type": "capacity",
+   "rfq": false,
+   "best_price": 28.0946,
+   "deal_price": 34.0,
+   "opening_price": 32.2,
+   "estimate": 24.31,
+   "sessions": [
+    "34cdb95db7ef6f4a"
+   ],
+   "cases": [
+    "case:P10"
+   ],
+   "scores": [
+    0.5390452124905989
+   ]
+  },
+  "sup:70510|part:350011": {
+   "supplier_id": "sup:70510",
+   "parts": [
+    "part:350011"
+   ],
+   "type": "price_increase",
+   "rfq": false,
+   "best_price": 365.6829,
+   "deal_price": 371.6,
+   "opening_price": 370.96,
+   "estimate": 374.95,
+   "sessions": [
+    "e2b202405ab5ddb9"
+   ],
+   "cases": [
+    "case:P02"
+   ],
+   "scores": [
+    0.23652009231008223
+   ]
+  },
+  "sup:70530|part:350020": {
+   "supplier_id": "sup:70530",
+   "parts": [
+    "part:350020"
+   ],
+   "type": "renewal",
+   "rfq": false,
+   "best_price": 426.533,
+   "deal_price": 430.31,
+   "opening_price": 438.21,
+   "estimate": 403.21,
+   "sessions": [
+    "324828e357c4a78c"
+   ],
+   "cases": [
+    "case:P03"
+   ],
+   "scores": [
+    0.8955516532525242
+   ]
+  },
+  "sup:70610|part:360010+part:360011+part:360012+part:360030": {
+   "supplier_id": "sup:70610",
+   "parts": [
+    "part:360010",
+    "part:360011",
+    "part:360012",
+    "part:360030"
+   ],
+   "type": "bundling",
+   "rfq": false,
+   "best_price": 4.9869,
+   "deal_price": 5.53,
+   "opening_price": 5.74,
+   "estimate": null,
+   "sessions": [
+    "a26d2404f9a3e800"
+   ],
+   "cases": [
+    "case:P07"
+   ],
+   "scores": [
+    0.6449639165749952
+   ]
+  },
+  "sup:70620|part:360020": {
+   "supplier_id": "sup:70620",
+   "parts": [
+    "part:360020"
+   ],
+   "type": "renewal",
+   "rfq": false,
+   "best_price": 4.899,
+   "deal_price": 4.91,
+   "opening_price": 4.96,
+   "estimate": 4.3492,
+   "sessions": [
+    "f091ede7341fe3ba"
+   ],
+   "cases": [
+    "case:P04"
+   ],
+   "scores": [
+    0.8098066042011054
+   ]
+  },
+  "sup:70710|part:370010": {
+   "supplier_id": "sup:70710",
+   "parts": [
+    "part:370010"
+   ],
+   "type": "raw_material",
+   "rfq": false,
+   "best_price": 4.9102,
+   "deal_price": 5.4,
+   "opening_price": 6.05,
+   "estimate": 5.3994,
+   "sessions": [
+    "84890ecf07a04fb3",
+    "776dccc05335a90c"
+   ],
+   "cases": [
+    "case:P08"
+   ],
+   "scores": [
+    0.4544780252873441,
+    0.4544780252873441
+   ]
+  },
+  "sup:70740|part:370010": {
+   "supplier_id": "sup:70740",
+   "parts": [
+    "part:370010"
+   ],
+   "type": "raw_material",
+   "rfq": false,
+   "best_price": 4.5538,
+   "deal_price": 5.6,
+   "opening_price": 6.1,
+   "estimate": 5.7858,
+   "sessions": [
+    "a9a2846e26245ae6",
+    "7c970402e6ff396b"
+   ],
+   "cases": [
+    "case:P18"
+   ],
+   "scores": [
+    0.2946951516478595,
+    0.2946951516478595
+   ]
+  }
+ },
+ "rfq_caps": {
+  "part:320070": 26.3552
+ }
+}
