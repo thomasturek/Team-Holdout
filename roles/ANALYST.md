@@ -1,5 +1,7 @@
 # THE ANALYST (simulator, policy, training)
 
+**Owner: Thomas**
+
 > Read [`../AGENTS.md`](../AGENTS.md) first: the idea, hard constraints, architecture, interfaces
 > (`SupplierProfile`, `Claim`, `Signals`, `Decision`), timeline and guardrails. This file is your job.
 > Start every task by saying "Acting as ANALYST".

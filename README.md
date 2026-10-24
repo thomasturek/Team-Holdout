@@ -1,6 +1,6 @@
 # alex-thomas
 
-Hackathon project by Alex & Thomas for the Tacto Negotiation Arena. Challenge instructions: [`CHALLENGE.md`](CHALLENGE.md).
+Hackathon project by Thomas, Halichem, Felix and Alex for the Tacto Negotiation Arena. Challenge instructions: [`CHALLENGE.md`](CHALLENGE.md).
 
 ## The idea
 
@@ -35,7 +35,9 @@ uv run arena me
 
 ## Team
 
-| Who    | Focus |
-|--------|-------|
-| Alex   |       |
-| Thomas |       |
+| Who | Role | Focus |
+|---|---|---|
+| Thomas | [ANALYST](roles/ANALYST.md) | ML: simulator, policy, training, calibration |
+| Halichem | [DIPLOMAT](roles/DIPLOMAT.md) | LLM: reading supplier e-mails, writing ours |
+| Felix | [SCOUT](roles/SCOUT.md) | Data and rules: costs, supplier profiles, claims |
+| Alex | [OPERATOR](roles/OPERATOR.md) | Runtime and ops: API, parallelism, logging, final runner |
