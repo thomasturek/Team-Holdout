@@ -15,7 +15,7 @@ BOUNDS = {
     "accept_gap_pct": (0.0, 5.0),
     "cash_discount_pct": (0.0, 5.0),
     "push_final": (0.0, 1.0),
-    "min_open_discount_pct": (1.0, 10.0),
+    "min_open_discount_pct": (1.0, 30.0),
     "rival_undercut_pct": (0.0, 5.0),
     "lead_standard": (0.0, 1.0),
 }
@@ -30,8 +30,10 @@ DEFAULTS = {
     "rival_undercut_pct": 1.0,
     "lead_standard": 0.0,
     "claims_per_msg": 2,
-    "claim_min_strength": 0.3,
+    "claim_min_strength": 0.2,
+    "deep_open_pct": 20.0,
 }
+DEEP_OPEN_TYPES = ("raw_material", "rfq")  # practice C_best sits 16-26 % below the quote in these
 
 
 @dataclass
@@ -68,6 +70,8 @@ class ThreadState:
     alt: tuple | None = None
     mirrored: bool = False
     struct_seen: dict = field(default_factory=dict)
+    last_sheet: dict | None = None
+    case_type: str | None = None
     dropped: bool = False  # we walked away from this bidder while others played on (no longer a rival)
 
 
@@ -95,6 +99,7 @@ class Policy:
         theirs = t.standing_terms.get("unit_price")
         if t.status in ("walked_away", "no_bid") or theirs is None:
             return Decision("walk", sid)
+        t.case_type = case.get("type")
         self.pick_offer(case, t)
         c_theirs = self.cost(case, t)
         if t.opening_cost is None:
@@ -120,7 +125,11 @@ class Policy:
         close = t.our_costs and c_theirs <= t.our_costs[-1] * (1 + p["accept_gap_pct"] / 100)
         if close and acceptable and c_theirs < t.opening_cost:
             return self.close(case, t, acceptable, c_theirs, rival_best_c)
-        return self.offer(case, t, self.next_price(t, theirs), rival_best_c=rival_best_c)
+        prev = t.last_sheet
+        decision = self.offer(case, t, self.next_price(t, theirs), rival_best_c=rival_best_c)
+        if prev is not None and decision.term_sheets[0] == prev and acceptable:
+            return self.close(case, t, acceptable, c_theirs, rival_best_c)  # repeating ourselves makes them go final
+        return decision
 
     def closing(self, case, threads: dict) -> Decision:
         best = None
@@ -168,7 +177,10 @@ class Policy:
         return floor * (1 + self.p["floor_margin_pct"] / 100)
 
     def next_price(self, t, theirs, step=None):
-        low = min(self.floor_ask(t, theirs), theirs * (1 - self.p["min_open_discount_pct"] / 100))
+        discount = self.p["min_open_discount_pct"]
+        if t.case_type in DEEP_OPEN_TYPES:
+            discount = max(discount, self.p["deep_open_pct"])
+        low = min(self.floor_ask(t, theirs), theirs * (1 - discount / 100))
         if not t.our_prices:
             price = low + self.p["open_frac"] * (theirs - low)
         else:
@@ -190,6 +202,10 @@ class Policy:
                 slope = total_cost(case, {**a, "unit_price": a["unit_price"] + 1}, t.standard) - c_a
                 if slope > 0:
                     a = {**a, "unit_price": round(max(0.01, a["unit_price"] - (c_a - target) / slope), 2)}
+        if t.standing_terms.get("unit_price") is not None:
+            c_theirs = total_cost(case, t.standing_terms, t.standard)
+            if total_cost(case, a, t.standard) > c_theirs:  # never ask for more than they already give us
+                a = self.same_cost(case, a, t.standing_terms, t.standard)
         sheets = [a]
         options = case.get("term_options", {}).get("payment_days") or []
         faster = [d for d in options if d < a.get("payment_days", 0)]
@@ -217,6 +233,7 @@ class Policy:
         if cash_first:
             sheets.insert(0, sheets.pop(sheets.index(sheet_b)))
         sheets = sheets[:3]
+        t.last_sheet = a
         t.our_prices.append(a["unit_price"])
         t.our_costs.append(total_cost(case, a, t.standard))
         chosen = self.pick_claims(case, t)
@@ -338,17 +355,18 @@ class Policy:
     @staticmethod
     def best_options(case, terms, standard, skip=()):
         out = dict(terms)
-        for f, options in case.get("term_options", {}).items():
-            if f == "unit_price" or f in skip or f not in case["negotiable"] or not options:
-                continue
-            costs = {i: total_cost(case, {**out, f: o}, standard) for i, o in enumerate(options)}
-            low = min(costs.values())
-            ties = [options[i] for i, c in costs.items() if c <= low + 1.0]
-            theirs = terms.get(f)
-            if theirs in ties:
-                continue
-            if isinstance(theirs, int | float) and all(isinstance(o, int | float) for o in ties):
-                out[f] = min(ties, key=lambda o: abs(o - theirs))
-            else:
-                out[f] = ties[0]
+        for _ in range(2):  # a second pass gives back a lever that a later one made free (ppm under a high chargeback)
+            for f, options in case.get("term_options", {}).items():
+                if f == "unit_price" or f in skip or f not in case["negotiable"] or not options:
+                    continue
+                costs = {i: total_cost(case, {**out, f: o}, standard) for i, o in enumerate(options)}
+                low = min(costs.values())
+                ties = [options[i] for i, c in costs.items() if c <= low + 1.0]
+                theirs = terms.get(f)
+                if theirs in ties:
+                    out[f] = theirs
+                elif isinstance(theirs, int | float) and all(isinstance(o, int | float) for o in ties):
+                    out[f] = min(ties, key=lambda o: abs(o - theirs))
+                else:
+                    out[f] = ties[0]
         return out
