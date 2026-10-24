@@ -123,6 +123,8 @@ class CasePlayer:
                     except Exception as e:  # one broken thread must not stop the case
                         log.exception("%s: a thread crashed", self.case_id)
                         self.log("error", detail=e)
+            with self._close_lock:  # a close still in flight (watchdog, another worker): wait for its result
+                pass
             if not s.over.is_set() and s.live_threads():  # every worker stopped, the case is open: close it
                 self._close(self._closing_decision(), "no thread left to play")
             s.over.set()
