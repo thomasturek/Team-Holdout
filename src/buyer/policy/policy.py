@@ -33,7 +33,7 @@ DEFAULTS = {
     "claim_min_strength": 0.2,
     "deep_open_pct": 20.0,
 }
-DEEP_OPEN_TYPES = ("raw_material", "rfq")  # practice C_best sits 16-26 % below the quote in these
+DEEP_OPEN_TYPES = ("raw_material", "rfq")
 
 
 @dataclass
@@ -128,7 +128,7 @@ class Policy:
         prev = t.last_sheet
         decision = self.offer(case, t, self.next_price(t, theirs), rival_best_c=rival_best_c)
         if prev is not None and decision.term_sheets[0] == prev and acceptable:
-            return self.close(case, t, acceptable, c_theirs, rival_best_c)  # repeating ourselves makes them go final
+            return self.close(case, t, acceptable, c_theirs, rival_best_c)
         return decision
 
     def closing(self, case, threads: dict) -> Decision:
@@ -204,7 +204,7 @@ class Policy:
                     a = {**a, "unit_price": round(max(0.01, a["unit_price"] - (c_a - target) / slope), 2)}
         if t.standing_terms.get("unit_price") is not None:
             c_theirs = total_cost(case, t.standing_terms, t.standard)
-            if total_cost(case, a, t.standard) > c_theirs:  # never ask for more than they already give us
+            if total_cost(case, a, t.standard) > c_theirs:
                 a = self.same_cost(case, a, t.standing_terms, t.standard)
         sheets = [a]
         options = case.get("term_options", {}).get("payment_days") or []
@@ -222,6 +222,17 @@ class Policy:
             if total_cost(case, sheet_b, t.standard) < total_cost(case, a, t.standard):
                 sheets.append(sheet_b)
                 cash_first = pressure >= 0.5
+        slower = [d for d in options if d > a.get("payment_days", math.inf)]
+        if "payment_days" in case["negotiable"] and slower and pressure < 0.5:
+            days_c = max(slower)
+            theirs_rate = rate if rate > 0 else 0.5 * b["interest_rate"]
+            if theirs_rate < b["interest_rate"]:
+                markup = (theirs_rate + b["interest_rate"]) / 2 * (days_c - a["payment_days"]) / 360
+                sheet_c = complete_offer(
+                    case, {**a, "unit_price": round(a["unit_price"] * (1 + markup), 2), "payment_days": days_c}
+                )
+                if total_cost(case, sheet_c, t.standard) < total_cost(case, a, t.standard):
+                    sheets.insert(1, sheet_c)
         std_days = t.standard.get("payment_days") or t.opening_payment_days
         if "payment_days" in case["negotiable"] and std_days in options and std_days != a.get("payment_days"):
             sheet_s = self.same_cost(case, complete_offer(case, {**a, "payment_days": std_days}), a, t.standard)
@@ -355,7 +366,7 @@ class Policy:
     @staticmethod
     def best_options(case, terms, standard, skip=()):
         out = dict(terms)
-        for _ in range(2):  # a second pass gives back a lever that a later one made free (ppm under a high chargeback)
+        for _ in range(2):
             for f, options in case.get("term_options", {}).items():
                 if f == "unit_price" or f in skip or f not in case["negotiable"] or not options:
                     continue
