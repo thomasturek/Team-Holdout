@@ -22,6 +22,10 @@ DEFAULT_RANGES = {
     "lead_premium_pct_week": (0.0, 2.0),
     "cost_vs_current": (0.75, 0.95),
     "floor_error": 0.08,
+    # holders (practice 2026-10-24): share of suppliers, steps before the hold, step decay
+    "hold_share": (0.5, 0.7),
+    "hold_after": (1, 3),
+    "decay": (0.2, 0.5),
 }
 
 
@@ -46,6 +50,7 @@ def sample(case, rng, ranges=None):
         std_days = rng.choices(days, [weights.get(str(d), 0.01) for d in days])[0]
     else:
         std_days = rng.choice([d for d in options if d <= 60] or options)
+    holder = rng.random() < u("hold_share")
     params = SupplierParams(
         full_cost=full_cost,
         open_margin=open_margin,
@@ -63,6 +68,8 @@ def sample(case, rng, ranges=None):
         std_incoterm=rng.choice(case.get("term_options", {}).get("incoterm") or [None]),
         std_lead_time=rng.choice(case.get("term_options", {}).get("lead_time_days") or [None]),
         std_payment_days=std_days,
+        hold_after=rng.randint(*r["hold_after"]) if holder else 99,
+        decay=u("decay") if holder else 1.0,
     )
     estimate = full_cost * math.exp(rng.gauss(0, r["floor_error"]))
     profile = {"floor_estimate": estimate, "cash_rate_estimate": params.cash_rate}

@@ -21,6 +21,11 @@ class SupplierParams:
     lead_premium_pct_week: float = 0.0
     std_incoterm: str | None = None
     std_lead_time: int | None = None
+    # front-loaded concessions, then a hold - how the practice suppliers behaved (2026-10-24: one big
+    # first step, each next one about 0.3x the last, then no move in 51 % of all replies)
+    hold_after: int = 99  # concession steps before it holds; 99 = never holds
+    decay: float = 1.0  # each step at most decay x the last one
+    lever_unlock_pct: float = 0.5  # a non-price gain worth this % of full cost buys one more step
 
 
 class SyntheticSupplier:
@@ -46,6 +51,8 @@ class SyntheticSupplier:
         self.final_sent = False
         self.angry = False
         self.n = 0
+        self.steps = 0
+        self.last_step = None
         self.terms = self.price_terms({**self.standard, **fixed}, self.ask)
 
     def value(self, terms):
@@ -73,11 +80,20 @@ class SyntheticSupplier:
     def opening(self):
         return {"status": "open", "term_sheet_id": f"offer:{self.sid}-0", "terms": self.terms}
 
+    def lever_gain(self, terms):
+        """What the non-price terms of a sheet are worth to it over its standard terms, per unit."""
+        base = {**terms}
+        for f in ("payment_days", "volume_per_year", "contract_months", "lead_time_days"):
+            if f in base and f in self.standard:
+                base[f] = self.standard[f]
+        return self.value(terms) - self.value(base)
+
     def respond(self, sheets):
         self.round += 1
-        best = sheets[0]
-        if self.p.insist_payment and "payment_days" in best:
-            best = {**best, "payment_days": self.standard["payment_days"]}
+        if self.p.insist_payment:
+            std_days = self.standard["payment_days"]
+            sheets = [{**s, "payment_days": std_days} if "payment_days" in s else s for s in sheets]
+        best = max(sheets, key=self.value)  # it reads every package and takes the one worth most to it
         v = self.value(best)
         if v >= self.ask - 0.005:
             return self.reply("agreed", best)
@@ -89,8 +105,11 @@ class SyntheticSupplier:
             self.best_seen, self.idle = best, 0
         else:
             self.idle += 1
-            if self.idle > self.p.patience:
-                return self.reply("walked_away", self.terms)
+            if self.idle > self.p.patience and not self.final_sent:
+                # a buyer that stops moving gets its last word, not a walk-out: no practice supplier
+                # walked away in 2026-10-24's sessions; pushing past the final offer may still end it
+                self.final_sent = True
+                return self.reply("final_offer", self.price_terms(best, self.ask))
         if self.final_sent:
             if self.rng.random() < self.p.walk_after_final:
                 return self.reply("walked_away", self.terms)
@@ -103,9 +122,17 @@ class SyntheticSupplier:
                 step += self.p.reciprocity * (v - last_v)
             if self.angry:
                 step *= 0.5
+            if self.last_step is not None and self.p.decay < 1:
+                step = min(step, self.last_step * self.p.decay)
+            if self.steps >= self.p.hold_after:
+                unlock = self.lever_gain(best) >= self.p.full_cost * self.p.lever_unlock_pct / 100
+                step = step if unlock else 0.0
             cap = self.ask * self.p.approval_step_pct / 100
             if step > cap and self.round % 2:
                 step = cap
+            if step > 0:
+                self.steps += 1
+                self.last_step = step
             self.ask = max(self.floor, self.ask - step)
         status = "open"
         if self.ask - self.floor < 0.01 * self.floor:
