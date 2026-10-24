@@ -1,0 +1,28 @@
+{
+ "_readme": "Hand corrections to supplier profiles (SCOUT). Key: supplier ID, or 'sup:...|part:...' for one part. Fields replace the computed value, 'notes' are added, keys starting with _ are comments. '_why' is required: the evidence, with doc/news IDs. Applied on every read - no rebuild needed.",
+ "sup:70140": {
+  "archetype": "cash_short_jobshop",
+  "cash_pressure": 0.6,
+  "_why": "MD: 'the bank is watching every month', asked twice to pay earlier, won't sign anything that lowers margin (doc:20260715-70140-M1); asks for payment in 10 days (doc:20260710-70140-M2); restructures (news:20260911-28); red scorecard (sc:70140@2026Q3)"
+ },
+ "sup:70160": {
+  "archetype": "family_foundry",
+  "cash_pressure": 0.25,
+  "_why": "privately owned, flat decisions; asks for payment in 10 days against a cash discount (doc:20260701-70160-M1); has accepted below full cost to keep volume (negotiation_history)"
+ },
+ "sup:70330": {
+  "archetype": "cash_short_jobshop",
+  "cash_pressure": 0.5,
+  "_why": "second shift on hold since spring, could take additional parts at short notice (doc:20260206-70330-M1); asks for payment in 10 days against a cash discount (doc:20260316-70330-M2)"
+ },
+ "sup:70570": {
+  "archetype": "group_ladder",
+  "approval_style": "ladder",
+  "_why": "price changes above 2 % need the pricing committee, meets every two weeks (doc:20260314-70570-M2); head office froze price reductions until Dec 2027, open on payment terms and call-off flexibility (doc:20260927-70570-M1); acquired by an investor (news)"
+ },
+ "sup:70730": {
+  "archetype": "group_ladder",
+  "approval_style": "ladder",
+  "_why": "price changes above 2 % need the pricing committee (doc:20260308-70730-M2); bought nickel and alloys forward until Jan 2027, market price 'not our reality' (doc:20260727-70730-M1); owner offered to walk us through the calculation (doc:20260806-70730-M3)"
+ }
+}

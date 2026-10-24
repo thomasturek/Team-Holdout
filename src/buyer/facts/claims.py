@@ -11,6 +11,13 @@ Kinds (``Claim.key``):
     otd:<supplier> / ppm:<supplier> latest rolling scorecard: on-time delivery / defect rate
     po:<supplier>:<part>            our order prices with this supplier: stable or falling
     po_rival:<supplier>:<part>:<rival>  what we pay another source for the same part (below this supplier)
+    rival:<supplier>:<quote|offer>  RFQ, at run time: a rival bidder's offer in this session or a quote
+                                    of the case, below this supplier's standing price
+                                    (``claims(case, sid, threads=threads)``)
+
+Hand review: ``supplier_claims(sid, part)`` gives the bank of one supplier outside a case
+(``profile_all()`` stores it per profile); a key listed under ``drop_claims`` for the supplier in
+overrides.json is never returned again.
 
 Rules (brief/api.md "What counts"): each ID counts once per case - across suppliers too, so an
 index claim or a PO line cited to one bidder is spent for the others - and at most 3 checked claims
@@ -182,11 +189,10 @@ def _asked_pct(data: CaseData) -> float | None:
 # ------------------------------------------------------------------ builders
 
 
-def index_claims(data: CaseData, idx: _Index) -> list[Claim]:
-    """One claim per cost-driver series: the 12-month change ending at the series' latest month."""
-    out = []
-    asked = _asked_pct(data)
-    for series, weight in sorted(_drivers(data, data.case.get("parts") or []).items(), key=lambda x: -x[1]):
+def _driver_windows(data: CaseData, idx: _Index, parts: list[str]):
+    """(series, weight, start, end, id0, id1, change %) per cost driver, heaviest first: the
+    12-month change ending at the series' latest month, if the arena would accept the window."""
+    for series, weight in sorted(_drivers(data, parts).items(), key=lambda x: -x[1]):
         months = idx.series.get(series)
         if not months:
             continue
@@ -195,7 +201,23 @@ def index_claims(data: CaseData, idx: _Index) -> list[Claim]:
         if start not in months or _months_between(end, idx.last_month) >= 12:
             continue
         (id0, v0), (id1, v1) = months[start], months[end]
-        change = (v1 / v0 - 1) * 100
+        yield series, weight, start, end, id0, id1, (v1 / v0 - 1) * 100
+
+
+def driver_changes(part: str, data: CaseData | None = None) -> list[dict]:
+    """The part's cost drivers for SupplierProfile.cost_drivers:
+    [{series, name, weight, change_12m_pct, ids: [from, to]}], heaviest first."""
+    data = data or CaseData()
+    return [{"series": s, "name": _series_words(data, s), "weight": w, "change_12m_pct": round(chg, 2),
+             "ids": [id0, id1]}
+            for s, w, _, _, id0, id1, chg in _driver_windows(data, _index(data), [part])]
+
+
+def index_claims(data: CaseData, idx: _Index) -> list[Claim]:
+    """One claim per cost-driver series: the 12-month change ending at the series' latest month."""
+    out = []
+    asked = _asked_pct(data)
+    for series, weight, start, end, id0, id1, change in _driver_windows(data, idx, data.case.get("parts") or []):
         sentence = f"{_series_words(data, series)} changed {change:+.1f}% from {start} to {end} ({id0}, {id1})."
         bar = asked if asked else 5.0  # a change well below what is asked speaks for us
         strength = min(1.0, 2 * weight) * max(0.0, min(1.0, (bar - change) / bar))
@@ -295,12 +317,92 @@ def po_claims(data: CaseData, idx: _Index, sid: str) -> list[Claim]:
     return out
 
 
+def _case_quote_refs(case: dict) -> set[str]:
+    """Quotes the case lets us cite: in its refs or as the reference of our alternative."""
+    alt = (case.get("buyer") or {}).get("alternative") or {}
+    return {r for r in [*(case.get("refs") or []), alt.get("ref")] if r and r.startswith("quote:")}
+
+
+def session_offers(threads: dict) -> dict[str, dict]:
+    """Every offer the suppliers made in this session: {offer_id: {supplier, unit_price, round}}.
+    ``threads``: {supplier_id: [messages]} as the runtime keeps them."""
+    out = {}
+    for sid, events in (threads or {}).items():
+        for i, m in enumerate(events or []):
+            if m.get("from") == "buyer":
+                continue
+            for ts in m.get("term_sheets") or []:
+                price = (ts.get("terms") or {}).get("unit_price")
+                if ts.get("term_sheet_id") and price is not None:
+                    out[ts["term_sheet_id"]] = {"supplier": sid, "unit_price": price, "round": i}
+    return out
+
+
+def _standing_price(events) -> float | None:
+    for m in reversed(events or []):
+        if m.get("from") != "buyer" and m.get("term_sheets"):
+            return (m["term_sheets"][0].get("terms") or {}).get("unit_price")
+    return None
+
+
+def rival_claims(case: dict, threads: dict, supplier_id: str, data: CaseData | None = None) -> list[Claim]:
+    """RFQ: the cheapest standing offer of every other bidder in this session, and the case's
+    rival quotes - each below this supplier's standing price. The arena counts a rival quote or
+    offer once per supplier: it may be cited to every other bidder (and reveals it to them)."""
+    data = data or CaseData(case)
+    part = (case.get("parts") or [None])[0]
+    unit = (data.query("SELECT price_unit FROM parts WHERE id = ?", (part,)) or [{}])[0].get("price_unit")
+    theirs = _standing_price((threads or {}).get(supplier_id))
+    offers = session_offers(threads)
+    candidates = []
+    for sid in threads or {}:
+        if sid == supplier_id:
+            continue
+        mine = [(oid, o) for oid, o in offers.items() if o["supplier"] == sid]
+        if mine:  # the rival's latest offer: the one that stands
+            oid, o = max(mine, key=lambda x: x[1]["round"])
+            candidates.append((oid, o["unit_price"], f"Another supplier has offered {_eur(o['unit_price'], unit)}"))
+    for ref in sorted(_case_quote_refs(case)):
+        q = data.lookup(ref) or {}
+        if q.get("supplier") != supplier_id and q.get("part") in (case.get("parts") or []) and q.get("unit_price"):
+            candidates.append((ref, q["unit_price"], f"We hold a quote at {_eur(q['unit_price'], unit)}"))
+    out = []
+    for ref, price, text in sorted(candidates, key=lambda c: c[1]):
+        if theirs is not None and price >= theirs:
+            continue
+        gap = (theirs - price) / theirs if theirs else 0.05
+        sentence = f"{text} for this part ({ref})."
+        claim = Claim(f"rival:{supplier_id}:{ref}", sentence, [ref], "verified", round(min(1.0, 0.4 + 5 * gap), 3))
+        if check(case, supplier_id, sentence, data=data, offers=offers) == "verified":
+            out.append(claim)
+    return out
+
+
+def supplier_claims(supplier_id: str, part_id: str, data: CaseData | None = None) -> list[Claim]:
+    """The claims about one supplier and part outside any case - for profile_all() and the hand
+    review. The supplier's latest price letter stands in for the case's trigger document."""
+    data = data or CaseData()
+    letters = sorted(_index(data).letters.get(supplier_id, []), key=lambda x: x[1].get("date") or "")
+    case = {"case_id": f"review:{supplier_id}:{part_id}", "parts": [part_id], "suppliers": [supplier_id],
+            "trigger_doc": letters[-1][0] if letters else None}
+    return claims(case, supplier_id, data=CaseData(case, data.package))
+
+
+def _dropped(supplier_id: str) -> set[str]:
+    """Claim keys the hand review rejected for this supplier (overrides.json ``drop_claims``)."""
+    from .profile import _overrides  # profile imports claims lazily too: no cycle
+
+    return set(_overrides().get(supplier_id, {}).get("drop_claims") or [])
+
+
 # ------------------------------------------------------------------ public API
 
 
-def claims(case: dict, supplier_id: str | None = None, data: CaseData | None = None) -> list[Claim]:
+def claims(case: dict, supplier_id: str | None = None, data: CaseData | None = None,
+           threads: dict | None = None) -> list[Claim]:
     """Every claim of the case that checks as ``verified`` (strongest first), for one supplier or
-    for all of them. Claims that our own checker does not verify are dropped, never returned."""
+    for all of them. With ``threads`` (RFQ, at run time) the rival offers and quotes too. Claims
+    that our own checker does not verify, or that the hand review dropped, are never returned."""
     data = data or CaseData(case)
     idx = _index(data)
     suppliers = [supplier_id] if supplier_id else list(case.get("suppliers") or [])
@@ -308,14 +410,19 @@ def claims(case: dict, supplier_id: str | None = None, data: CaseData | None = N
     out = []
     for sid in suppliers:
         bank = shared + notice_claims(data, idx, sid) + scorecard_claims(data, idx, sid) + po_claims(data, idx, sid)
-        out += [c for c in bank if check(case, sid, c.sentence, data=data) == "verified"]
+        bank = [c for c in bank if check(case, sid, c.sentence, data=data) == "verified"]
+        if threads and len(case.get("suppliers") or []) > 1:
+            bank += rival_claims(case, threads, sid, data=data)
+        drop = _dropped(sid)
+        out += [c for c in bank if c.key not in drop]
     unique = list({c.key: c for c in out}.values())  # index claims appear once
     return sorted(unique, key=lambda c: -c.strength)
 
 
 def compatible(bank: list[Claim], used: set[str] = frozenset(), limit: int = 3) -> list[Claim]:
     """Up to ``limit`` claims in order that share no ref with each other or with ``used`` (IDs
-    already cited in this case) - a message the arena will not mark ``duplicate``."""
+    already cited in this case) - a message the arena will not mark ``duplicate``. Rival quotes and
+    offers count once per supplier: in ``used`` put the ones cited to this supplier only."""
     out, seen = [], set(used)
     for c in bank:
         if seen.isdisjoint(c.refs):
@@ -327,20 +434,32 @@ def compatible(bank: list[Claim], used: set[str] = frozenset(), limit: int = 3) 
 
 
 def check(case: dict, supplier_id: str, sentence: str, used: set[str] = frozenset(),
-          data: CaseData | None = None) -> str:
+          data: CaseData | None = None, offers: dict | None = None) -> str:
     """Our copy of the arena's check for one sentence: verified | irrelevant | contradicted |
-    duplicate. Stricter than the arena where the brief is vague (we would rather drop a claim)."""
+    duplicate. Stricter than the arena where the brief is vague (we would rather drop a claim).
+    ``offers``: the session's offers (``session_offers(threads)``) - the only offer IDs that exist."""
     data = data or CaseData(case)
+    offers = offers or {}
     ids = ID_RE.findall(sentence)
     if not ids:
         return "irrelevant"
-    if any(not data.citable(i) for i in ids):
+    if any(not (data.citable(i) or i in offers) for i in ids):
         return "contradicted"
     if any(i in used for i in ids):
         return "duplicate"
-    facts = {i: data.lookup(i) for i in ids}
+    facts = {i: offers.get(i) or data.lookup(i) for i in ids}
     kinds = {i.split(":", 1)[0] for i in ids}
     parts = set(case.get("parts") or [])
+
+    if kinds <= {"quote", "offer"} and len(ids) == 1:  # a rival's price, same part
+        (ref,) = ids
+        f = facts[ref]
+        if f.get("supplier") == supplier_id:
+            return "irrelevant"
+        if ref.startswith("quote:") and (ref not in _case_quote_refs(case) or f.get("part") not in parts):
+            return "irrelevant"
+        stated = re.findall(rf"EUR\s*({NUM})", sentence)
+        return "verified" if stated and all(_rel_ok(_num(s), f["unit_price"]) for s in stated) else "contradicted"
 
     if kinds == {"idx"}:
         if len(ids) != 2:

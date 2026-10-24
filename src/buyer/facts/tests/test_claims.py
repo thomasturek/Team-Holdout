@@ -3,7 +3,7 @@ import time
 import pytest
 from facts_cases import kit_cases, practice_cases
 
-from buyer.facts.claims import check, claims, compatible
+from buyer.facts.claims import check, claims, compatible, session_offers, supplier_claims
 from buyer.facts.package import CaseData
 
 PRACTICE = practice_cases()
@@ -102,3 +102,55 @@ def test_case_facts_letter_gives_a_notice_claim():
     bank = {c.key: c for c in claims(case)}
     assert "doc:new" in bank["notice:sup:70110"].refs
     assert check(case, "sup:70110", bank["notice:sup:70110"].sentence) == "verified"
+
+
+# ------------------------------------------------------------------ RFQ: rival offers and quotes
+
+RFQ = {"case_id": "case:T", "parts": ["part:310020"], "suppliers": ["sup:70140", "sup:70190"],
+       "refs": ["quote:7200011"], "buyer": {"alternative": {"kind": "none", "ref": None}}}
+
+
+def _offer(sid, n, price):
+    return {"from": f"sales@{sid[4:]}", "term_sheets": [{"term_sheet_id": f"offer:{sid[4:]}-{n}",
+                                                         "terms": {"unit_price": price}}]}
+
+
+THREADS = {"sup:70140": [_offer("sup:70140", 0, 49.90)],
+           "sup:70190": [_offer("sup:70190", 0, 55.00), {"from": "buyer"}, _offer("sup:70190", 1, 48.20)]}
+
+
+def test_rival_offer_is_cited_to_the_dearer_bidder_only():
+    bank = {c.key: c for c in claims(RFQ, threads=THREADS)}
+    c = bank["rival:sup:70140:offer:70190-1"]  # the latest offer stands, not the opening 55.00
+    assert "EUR 48.20" in c.sentence and c.refs == ["offer:70190-1"]
+    assert not any(k.startswith("rival:sup:70190") for k in bank)  # nothing cheaper than its 48.20
+    assert check(RFQ, "sup:70140", c.sentence, offers=session_offers(THREADS)) == "verified"
+
+
+def test_case_quote_is_cited_when_cheaper():
+    threads = {**THREADS, "sup:70140": [_offer("sup:70140", 0, 60.00)]}
+    bank = {c.key: c for c in claims(RFQ, "sup:70140", threads=threads)}
+    assert "EUR 53.56" in bank["rival:sup:70140:quote:7200011"].sentence  # sup:70190's quote of this case
+
+
+def test_rival_checks():
+    offers = session_offers(THREADS)
+    s = "Another supplier has offered EUR 48.20 for this part (offer:70190-1)."
+    assert check(RFQ, "sup:70140", s.replace("48.20", "45.00"), offers=offers) == "contradicted"
+    assert check(RFQ, "sup:70140", s) == "contradicted"  # no such offer outside the session
+    assert check(RFQ, "sup:70190", s, offers=offers) == "irrelevant"  # its own offer
+    assert check(RFQ, "sup:70140", "A quote at EUR 49.20 (quote:7100007).") == "irrelevant"  # not a quote of the case
+    assert not any(c.key.startswith("rival") for c in claims(RFQ))  # no threads, no rival claims
+
+
+def test_supplier_claims_for_the_review():
+    bank = {c.key for c in supplier_claims("sup:70110", "part:310010")}
+    assert {"notice:sup:70110", "otd:sup:70110", "index:PPI-D351"} <= bank
+
+
+def test_dropped_claims_never_come_back(monkeypatch):
+    import buyer.facts.claims as cl
+
+    monkeypatch.setattr(cl, "_dropped", lambda sid: {"otd:sup:70110"})
+    keys = {c.key for c in claims(P01, "sup:70110")}
+    assert "otd:sup:70110" not in keys and "ppm:sup:70110" in keys
