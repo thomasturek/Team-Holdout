@@ -68,6 +68,7 @@ class ThreadState:
     alt: tuple | None = None
     mirrored: bool = False
     struct_seen: dict = field(default_factory=dict)
+    dropped: bool = False  # we walked away from this bidder while others played on (no longer a rival)
 
 
 def load_params(path=PARAMS_FILE):
@@ -102,7 +103,13 @@ class Policy:
         acceptable = self.acceptable(case, t, c_theirs, rival_best_c)
 
         if t.status == "agreed":
-            return self.accept(t) if acceptable else Decision("walk", sid)
+            if acceptable:
+                return self.accept(t)
+            if self.eligible_cost(case, t, include_dropped=True) is not None and t.rounds_left > 1:
+                # it agrees, but an eligible rival is cheaper: keep this bidder in play with a counter priced
+                # against that rival instead of walking away from a valid fallback
+                return self.offer(case, t, self.next_price(t, theirs), rival_best_c=rival_best_c)
+            return Decision("walk", sid)
         if t.status == "final_offer":
             if p["push_final"] > 0.5 and not t.pushed_final and t.rounds_left > 1:
                 t.pushed_final = True
@@ -121,8 +128,8 @@ class Policy:
             if t.status in ("walked_away", "no_bid") or not t.standing_id:
                 continue
             self.pick_offer(case, t)
-            c = self.cost(case, t)
-            if self.acceptable(case, t, c, math.inf) and (best is None or c < best[0]):
+            c = self.eligible_cost(case, t, include_dropped=True)  # at the cap any live eligible offer beats none
+            if c is not None and (best is None or c < best[0]):
                 best = (c, t)
         if best is None:
             return Decision("walk", next(iter(threads)))
@@ -131,12 +138,27 @@ class Policy:
     def cost(self, case, t):
         return total_cost(case, t.standing_terms, t.standard)
 
+    def eligible_cost(self, case, t, include_dropped=False):
+        """C of t's standing offer if it could be accepted now, else None - the one rule for rivals,
+        acceptance and the closing move: the thread is live (and, as a rival, not dropped by us), it has a
+        standing offer with a price, the must-haves hold on its terms with the supplier's standard terms,
+        and it beats the alternative."""
+        if t.status in ("walked_away", "no_bid") or (t.dropped and not include_dropped):
+            return None
+        if not t.standing_id or t.standing_terms.get("unit_price") is None:
+            return None
+        if not must_haves_ok(case, t.standing_terms, t.standard):
+            return None
+        c = self.cost(case, t)
+        return c if c < alternative_cost(case) else None
+
+    def rival_best(self, case, threads, t):
+        """The cheapest eligible standing offer among the other bidders (inf if none)."""
+        costs = (self.eligible_cost(case, o) for o in threads.values() if o is not t)
+        return min((c for c in costs if c is not None), default=math.inf)
+
     def acceptable(self, case, t, c_theirs, rival_best_c):
-        return (
-            must_haves_ok(case, t.standing_terms, t.standard)
-            and c_theirs < alternative_cost(case)
-            and c_theirs <= rival_best_c
-        )
+        return self.eligible_cost(case, t, include_dropped=True) is not None and c_theirs <= rival_best_c
 
     def accept(self, t):
         return Decision("accept", t.supplier_id, accept_sheet_id=t.standing_id)

@@ -25,7 +25,6 @@ threads of an RFQ never wait for each other.
 import dataclasses
 import json
 import logging
-import math
 import os
 import threading
 import time
@@ -107,11 +106,10 @@ class PolicyAgent:
             for st in states.values():
                 st.case_threads = threads
             t = states[supplier_id]
-            live = [
-                o for o in states.values() if o is not t and o.standing_id and o.status not in ("walked_away", "no_bid")
-            ]
-            rival = min((self.policy.cost(case, o) for o in live), default=math.inf)
+            rival = self.policy.rival_best(case, states, t)  # eligible offers only (Policy.eligible_cost)
             decision = self.policy.decide(case, t, rival_best_c=rival)
+            if decision.kind == "walk":  # the runtime stops this thread (or ends the case): no longer a rival
+                t.dropped = True
             profile = self._writer_profile(case, decision.supplier_id)
         move, email = self._message(case, threads, decision, profile, reading, deadline)
         diplomat = diplomat_trace(reading, email)

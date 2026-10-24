@@ -55,7 +55,7 @@ def episode(case, policy: Policy, rng, ranges=None):
         if not live:
             break
         for t in live:
-            rival = min((policy.cost(case, o) for o in live if o is not t and o.standing_id), default=math.inf)
+            rival = policy.rival_best(case, threads, t)  # the same eligibility rule as at run time
             decision = policy.decide(case, t, rival_best_c=rival)
             if decision.kind == "accept":
                 c_deal = cost(t.standing_terms, t.standard)
