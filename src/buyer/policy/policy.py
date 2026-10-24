@@ -279,8 +279,8 @@ class Policy:
                 if slope > 0:
                     a = {**a, "unit_price": round(max(0.01, a["unit_price"] - (c_a - target) / slope), 2)}
         if t.standing_terms.get("unit_price") is not None:
-            c_theirs = total_cost(case, t.standing_terms, t.standard)
-            if total_cost(case, a, t.standard) > c_theirs:
+            c_theirs = self.c(case, t.standing_terms, t)
+            if self.c(case, a, t) > c_theirs:  # never ask for more than they already give us
                 a = self.same_cost(case, a, t.standing_terms, t.standard)
         sheets = [a]
         options = case.get("term_options", {}).get("payment_days") or []
@@ -307,7 +307,7 @@ class Policy:
                 sheet_c = complete_offer(
                     case, {**a, "unit_price": round(a["unit_price"] * (1 + markup), 2), "payment_days": days_c}
                 )
-                if total_cost(case, sheet_c, t.standard) < total_cost(case, a, t.standard):
+                if self.c(case, sheet_c, t) < self.c(case, a, t):
                     sheets.insert(1, sheet_c)
         std_days = t.standard.get("payment_days") or t.opening_payment_days
         if "payment_days" in case["negotiable"] and std_days in options and std_days != a.get("payment_days"):
