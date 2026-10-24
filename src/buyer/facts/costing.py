@@ -26,11 +26,32 @@ Market-price and country-factor estimates (+-10-15 %) are left out: the charge c
 
 from __future__ import annotations
 
-from arena_kit.cost import RELATIONSHIP_GOALS, total_cost
+from arena_kit.cost import RELATIONSHIP_GOALS, must_haves_ok, supplier_value, total_cost
 
 DEFAULT_RATE = 0.08
 FULL_COST_FACTOR = 0.98  # arena full cost / our data estimate, from the logged charges (P01, P02, P03)
 SURE_SOURCES = ("should_cost",)  # data estimates good enough to price the charge (supplier-specific)
+
+# what a supplier asks for (the reader's `asks`, src/buyer/llm/README.md) as a term and a direction
+ASK_LEVERS = {
+    "faster_payment": ("payment_days", "down"),
+    "volume": ("volume_per_year", "up"),
+    "longer_contract": ("contract_months", "up"),
+    "earlier_effective_date": ("effective_date", "down"),
+    "index_clause": ("index_clause", "on"),
+    "longer_lead_time": ("lead_time_days", "up"),
+    "incoterm": ("incoterm", "any"),
+}
+
+# a cost driver the supplier blames (reader `cost_drivers_claimed`) and the index series a clause on it follows
+DRIVER_SERIES = {
+    "copper": ("CU-",),
+    "nickel": ("AS-",),
+    "alloy": ("AS-",),
+    "stainless": ("AS-",),
+    "steel": ("PPI-C24",),
+    "raw_material": ("CU-", "AS-", "PPI-C24"),
+}
 
 
 def relationship_case(case: dict) -> bool:
@@ -39,16 +60,18 @@ def relationship_case(case: dict) -> bool:
         and bool(b.get("sustainable_margin_pct"))
 
 
-def supplier_estimate(case: dict, profile: dict | None, standard: dict | None = None) -> dict | None:
+def supplier_estimate(case: dict, profile: dict | None, standard: dict | None = None,
+                      sure_only: bool = True) -> dict | None:
     """What arena_kit.cost needs to price the relationship term, or None without a sure full cost.
     ``standard``: the supplier's standard terms from its quote PDF once the session has them; before
-    that its master-data terms (``vendor_terms``), then the buyer's plan."""
+    that its master-data terms (``vendor_terms``), then the buyer's plan. ``sure_only=False`` takes
+    any estimate - good enough to rank what a term is worth to the supplier, not to price the charge."""
     profile = profile or {}
     full_cost = profile.get("full_cost_observed")
     if not full_cost:
         estimate = profile.get("floor_computed") or profile.get("floor_estimate")
         source = profile.get("floor_computed_source") or profile.get("floor_source")
-        if not estimate or source not in SURE_SOURCES:
+        if not estimate or (sure_only and source not in SURE_SOURCES):
             return None
         full_cost = FULL_COST_FACTOR * estimate
     b = case["buyer"]
@@ -92,3 +115,80 @@ def relationship_floor(case: dict, terms: dict, standard: dict | None = None,
             lo = m1
     best = round((lo + hi) / 2, 2)
     return None if best <= 0.5 * supplier["full_cost"] + 0.01 else best
+
+
+def asked(lever: dict, terms: dict, asks) -> bool:
+    """Does switching ``lever`` (an item of lever_values) give the supplier something it asked for?"""
+    for ask in asks or ():
+        field, direction = ASK_LEVERS.get(ask, (None, None))
+        if field != lever["field"]:
+            continue
+        old, new = terms.get(field), lever["option"]
+        if direction == "on":
+            return new is not None
+        if direction == "any":
+            return True
+        if old is None or new is None:
+            continue
+        if (direction == "up" and new > old) or (direction == "down" and new < old):
+            return True
+    return False
+
+
+def lever_values(case: dict, terms: dict, standard: dict | None = None, profile: dict | None = None) -> list[dict]:
+    """Every other allowed value of every negotiable term (case `term_options`) next to ``terms``:
+
+        field, option   the switch
+        delta_c         what it costs us in EUR of C at the same price (< 0: it saves us money)
+        sheet           ``terms`` with the switch, priced so that our C stays the same (the price change from
+                        the plain cost slope; the relationship charge only enters ``delta_c``)
+        supplier_gain   what that equal-cost sheet is worth to the supplier per unit, in cash
+                        (arena_kit.cost.supplier_value: payment days, freight, tooling, chargeback;
+                        contract length, volume and an index clause are security, not cash: 0)
+        must_haves_ok   the equal-cost sheet keeps the case's must-haves
+
+    A switch with ``supplier_gain`` > 0 costs us nothing and is worth something to the supplier: the
+    trade to offer when it holds. One it asked for (``asked``) is worth offering at equal cost too."""
+    base = c(case, terms, standard, profile)
+    est = supplier_estimate(case, profile, standard, sure_only=False)
+    worth = supplier_value(case, terms, est) if est else None
+    out = []
+    for field, options in (case.get("term_options") or {}).items():
+        if field == "unit_price" or field not in case.get("negotiable", ()) or not options:
+            continue
+        for option in options:
+            if option == terms.get(field):
+                continue
+            switched = {**terms, field: option}
+            c_switched = c(case, switched, standard, profile)
+            delta = c_switched - base
+            # EUR of C per EUR of price at the switched terms (a volume switch changes it) - the plain cost:
+            # near the relationship knee the charge distorts the slope (P02: EUR 722 instead of 6,110 per EUR)
+            up = {**switched, "unit_price": terms["unit_price"] + 1}
+            slope = total_cost(case, up, standard) - total_cost(case, switched, standard)
+            sheet = None
+            if slope > 0:
+                price = round(terms["unit_price"] - delta / slope, 2)
+                sheet = {**switched, "unit_price": price} if price > 0 else None
+            gain = supplier_value(case, sheet, est) - worth if est and sheet else None
+            out.append({"field": field, "option": option, "delta_c": round(delta, 2), "sheet": sheet,
+                        "supplier_gain": None if gain is None else round(gain, 4),
+                        "must_haves_ok": bool(sheet) and must_haves_ok(case, sheet, standard)})
+    return out
+
+
+def clause_wanted(case: dict, signals: dict | None) -> bool:
+    """The supplier blames a cost driver that an index clause allowed in this case would follow - its
+    risk is the clause's subject, so offering the clause answers it (P02 2026-10-24: Nordmark argued
+    copper in every reply, CU-NOTATION clauses were negotiable, we never offered one)."""
+    claimed = [str(x) for x in (signals or {}).get("cost_drivers_claimed") or []]
+    series = {o["series"] for o in (case.get("term_options") or {}).get("index_clause") or [] if o}
+    if "index_clause" not in case.get("negotiable", ()) or not series or not claimed:
+        return False
+    for word in claimed:
+        if word in series:
+            return True
+        prefixes = DRIVER_SERIES.get(word.lower(), ())
+        if any(sr.startswith(pre) for sr in series for pre in prefixes):
+            return True
+    return False

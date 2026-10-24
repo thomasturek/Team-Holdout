@@ -5,11 +5,14 @@ from pathlib import Path
 
 from arena_kit.cost import complete_offer, must_haves_ok, total_cost
 
+from buyer.facts.costing import asked as lever_asked
 from buyer.facts.costing import c as relationship_c
-from buyer.facts.costing import relationship_floor
+from buyer.facts.costing import clause_wanted, lever_values, relationship_floor
 
 PARAMS_FILE = Path(__file__).with_name("params.json")
 STRUCTURAL = ("index_clause",)
+CASH_LEVERS = ("payment_days", "incoterm", "tooling_eur")  # where our estimate of the supplier's gain holds
+MAX_TRADE_DROP = 0.05  # a lever costing us more than 5 % of the price is no trade the supplier would take
 
 BOUNDS = {
     "open_frac": (0.0, 1.0),
@@ -27,6 +30,7 @@ BOUNDS = {
     "endgame_moves": (0.0, 3.0),
     "endgame_frac": (0.0, 0.8),
     "accept_target_pct": (0.0, 10.0),
+    "lever_trades": (0.0, 1.0),
 }
 DEFAULTS = {
     "open_frac": 0.3,
@@ -51,6 +55,10 @@ DEFAULTS = {
     "endgame_moves": 1,  # moves left at which one bigger step is allowed
     "endgame_frac": 0.5,  # that step: share of the remaining gap
     "accept_target_pct": 0.0,  # accept at or below a sure floor x (1 + this); 0 = off (trained: about 2.3)
+    # lever trades: when the supplier holds or asks for a term, offer that term at equal cost to us.
+    # Practice 2026-10-25: every losing deal closed at the supplier's holding price; our sheets only ever
+    # varied the payment days, while suppliers asked for volume, longer contracts, index clauses.
+    "lever_trades": 1.0,  # > 0.5 = on
 }
 DEEP_OPEN_TYPES = ("raw_material", "rfq")
 
@@ -97,6 +105,7 @@ class ThreadState:
     holds: int = 0  # replies in a row in which the supplier did not move towards us
     holding: bool = False  # this move we hold our price and change the package instead
     asked_breakdown: bool = False
+    clause_countered: bool = False  # we offered its package with a wider index deadband once before closing
 
 
 def load_params(path=PARAMS_FILE):
@@ -319,6 +328,14 @@ class Policy:
                     sheets.append(sheet_s)
         if cash_first:
             sheets.insert(0, sheets.pop(sheets.index(sheet_b)))
+        asks = list((t.signals or {}).get("asks") or [])
+        if clause_wanted(case, t.signals) and "index_clause" not in asks:
+            asks.append("index_clause")  # it blames the driver a clause would follow: offer the clause
+        if self.p["lever_trades"] > 0.5 and (t.holding or asks):
+            trades = [x for x in self.lever_trades(case, t, a, asks) if x not in sheets]
+            if trades:
+                sheets = [sheets[0], *trades[:2], *sheets[1:]]
+                intent = f"{intent}; we can meet you on other terms"
         sheets = sheets[:3]
         questions = []
         if t.holding:  # same price: lead with another package, ask for its costs once
@@ -334,6 +351,29 @@ class Policy:
         if any(c.key.startswith("rival:") for c in chosen):
             intent = f"{intent}, competition: another offer is on the table"
         return Decision("send", t.supplier_id, term_sheets=sheets, claims=chosen, questions=questions, intent=intent)
+
+    def lever_trades(self, case, t, a, asks=()):
+        """Packages that give the supplier a term it values at equal cost to us (costing.lever_values):
+        first the terms it asked for (the cheapest version of each for us - e.g. a 5 % deadband, the
+        smallest volume step, a contract beyond the horizon that costs nothing), then cash terms our
+        estimate says it gains on. None that would cut the price by more than MAX_TRADE_DROP."""
+        picks = {}
+        for v in lever_values(case, a, t.standard, t.profile):
+            if not v["must_haves_ok"]:
+                continue
+            sheet = complete_offer(case, v["sheet"])
+            if sheet == a or (a["unit_price"] - sheet["unit_price"]) > MAX_TRADE_DROP * a["unit_price"]:
+                continue
+            gain = v["supplier_gain"] or 0.0
+            if lever_asked(v, a, asks):
+                rank = (0, v["delta_c"])  # asked for: the version that costs us least
+            elif v["field"] in CASH_LEVERS and gain > 0.002 * a["unit_price"]:
+                rank = (1, -gain)  # worth more to it than to us
+            else:
+                continue
+            if v["field"] not in picks or rank < picks[v["field"]][0]:
+                picks[v["field"]] = (rank, sheet)
+        return [sheet for _, sheet in sorted(picks.values(), key=lambda x: x[0])]
 
     def pick_offer(self, case, t):
         t.alt = None
@@ -366,11 +406,51 @@ class Policy:
             if alt[0] < alternative_cost(case) and alt[0] <= rival_best_c:
                 t.mirrored = True
                 sheet = complete_offer(case, dict(alt[2]))
+                variants = self.clause_variants(case, t, sheet)  # its package, but our cheapest deadband first
+                t.clause_countered = t.clause_countered or bool(variants)
                 t.our_prices.append(sheet["unit_price"])
                 t.our_costs.append(self.c(case, sheet, t))
-                return Decision("send", t.supplier_id, term_sheets=[sheet],
-                                intent="appreciative: we accept your alternative proposal as offered")
+                intent = "appreciative: we accept your alternative proposal as offered"
+                if variants:
+                    intent += "; we would prefer the same with a wider index deadband"
+                return Decision("send", t.supplier_id, term_sheets=[*variants, sheet][:3], intent=intent)
+        if acceptable and t.status == "open" and t.rounds_left > 1 and not t.clause_countered:
+            variants = self.clause_variants(case, t, complete_offer(case, dict(t.standing_terms)))
+            if variants:  # one more message before closing: its own package stays on the table as the last sheet
+                t.clause_countered = True
+                own = complete_offer(case, dict(t.standing_terms))
+                t.our_prices.append(own["unit_price"])
+                t.our_costs.append(self.c(case, own, t))
+                return Decision("send", t.supplier_id, term_sheets=[*variants, own][:3],
+                                intent="appreciative: we can agree to your offer; we would prefer it with a wider "
+                                       "index deadband")
         return self.accept(t) if acceptable else Decision("walk", t.supplier_id)
+
+    def clause_variants(self, case, t, sheet):
+        """``sheet`` with the index clause cheapest for us (e.g. a 5 % instead of a 0 % deadband): once at
+        the same price, once priced so that our C equals ``sheet``'s. [] when its clause is already the
+        cheapest or it has none. The supplier keeps ``sheet`` as an option - this can only gain."""
+        out = []
+        for f in STRUCTURAL:
+            if f not in case["negotiable"] or sheet.get(f) is None:
+                continue
+            options = [v for v in (case.get("term_options") or {}).get(f) or [] if v is not None]
+            if not options:
+                continue
+            c_sheet = self.c(case, sheet, t)
+            cheapest = min(options, key=lambda v: self.c(case, {**sheet, f: v}, t))
+            same_price = complete_offer(case, {**sheet, f: cheapest})
+            c_same = self.c(case, same_price, t)
+            if cheapest == sheet[f] or c_same >= c_sheet:
+                continue
+            slope = self.c(case, {**same_price, "unit_price": same_price["unit_price"] + 1}, t) - c_same
+            out.append(same_price)
+            if slope > 0:
+                price = round(same_price["unit_price"] + (c_sheet - c_same) / slope, 2)
+                equal_cost = complete_offer(case, {**same_price, "unit_price": price})
+                if equal_cost not in out and equal_cost != sheet:
+                    out.append(equal_cost)
+        return out
 
     def adopt_structure(self, case, sheet, t):
         out = dict(sheet)
@@ -390,10 +470,13 @@ class Policy:
             if out != sheet and not must_haves_ok(case, out, t.standard):
                 out = dict(sheet)
         for f in STRUCTURAL:
-            if best and len(structures) > 1 and f in best[1]:
-                continue
             insists = bool(t.offers) and all(terms.get(f) is not None for _, terms in t.offers)
-            options = [v for v in t.struct_seen.get(f) or [] if v is not None]
+            if best and len(structures) > 1 and f in best[1] and not insists:
+                continue
+            # it insists on a clause: counter with the one cheapest for us the case allows (a 5 % deadband),
+            # not the one it proposed (0 % cost EUR 31k in P08 on 2026-10-24)
+            options = [v for v in (case.get("term_options") or {}).get(f) or [] if v is not None] \
+                or [v for v in t.struct_seen.get(f) or [] if v is not None]
             if f in case["negotiable"] and insists and options:
                 out[f] = min(options, key=lambda v: self.c(case, {**out, f: v}, t))
         return out
