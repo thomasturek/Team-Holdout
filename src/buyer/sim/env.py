@@ -41,13 +41,19 @@ def episode(case, policy: Policy, rng, ranges=None):
             their_prices=[o["terms"]["unit_price"]],
         )
 
-    def cost(t, std):
-        return total_cost(case, t, std)
+    def cost(terms, std, sid):
+        # scored like the arena: the relationship charge (stabilise / secure_supply) from the supplier's
+        # real economics - the policy only has the Scout's estimate of them
+        s = suppliers[sid]
+        truth = {"full_cost": s.p.full_cost, "interest_rate": s.p.cash_rate, "standard": s.standard}
+        return total_cost(case, terms, std, truth)
 
-    opening = [cost(t.standing_terms, t.standard) for t in threads.values() if must_haves_ok(case, t.standing_terms, t.standard)]
+    opening = [cost(t.standing_terms, t.standard, t.supplier_id) for t in threads.values()
+               if must_haves_ok(case, t.standing_terms, t.standard)]
     c_open = min(opening) if opening else math.inf
     c_alt = alternative_cost(case)
-    c_best = min([s.best_package(cost) for s in suppliers.values()] + [c_alt])
+    c_best = min([s.best_package(lambda terms, std, sid=sid: cost(terms, std, sid)) for sid, s in suppliers.items()]
+                 + [c_alt])
 
     rounds, decision = 0, None
     while True:
@@ -58,7 +64,7 @@ def episode(case, policy: Policy, rng, ranges=None):
             rival = policy.rival_best(case, threads, t)  # the same eligibility rule as at run time
             decision = policy.decide(case, t, rival_best_c=rival)
             if decision.kind == "accept":
-                c_deal = cost(t.standing_terms, t.standard)
+                c_deal = cost(t.standing_terms, t.standard, t.supplier_id)
                 return result(c_open, c_deal, c_best, "deal", rounds)
             if decision.kind == "walk":
                 t.status = "walked_away"
