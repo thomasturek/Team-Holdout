@@ -115,7 +115,7 @@ def test_a_trained_ranker_can_pick_another_safe_candidate_and_the_state_follows(
 def test_unfamiliar_states_fall_back_to_v0_and_say_why():
     t = thread(S01)
     t.profile = {}  # no floor, no archetype
-    odd = {**S01, "type": "quality"}
+    odd = {**S01, "type": "spot_buy"}  # no training case has it
     sel = PolicyV2().select(odd, t)
     d0 = Policy().decide(odd, thread(S01, profile={}))
     assert sel.policy_source == "v0_fallback" and sel.confidence < ood.MEDIUM

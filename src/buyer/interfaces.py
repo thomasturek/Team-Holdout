@@ -93,3 +93,22 @@ class PolicySelection:  # ANALYST -> OPERATOR (logged), DIPLOMAT gets only .deci
     ood_reasons: list[str]
     ranked_candidates: list[dict]  # every candidate: id, family, kind, cost, value, valid, reasons
     reason: str = ""  # why this candidate was selected
+
+
+# --- V3 (docs/V3_ROBUSTNESS_PLAN.md): adversarial validation --------------------------------------
+
+
+@dataclass
+class AdversarialCase:  # ANALYST (sim/mutations.py) -> SCOUT (facts/case_check.py) -> OPERATOR (sim/robust.py)
+    case_id: str  # e.g. "case:S01~alt_just_above#1007"
+    parent_case_id: str | None
+    generator: str  # programmatic | llm | human
+    generator_version: str
+    seed: int
+    mutations: list[str]
+    distribution: str  # in_distribution | near_ood | far_ood (intended; robust.py also measures it)
+    case: dict
+    scripted_responses: list[dict]  # supplier overrides: {"supplier": {SupplierParams field: value}, "profile": {...}}
+    expected_properties: list[str]  # e.g. must_not_accept_worse_than_alternative, must_fallback
+    expected_policy: str | None  # ml | conservative_ml | fallback | deadline
+    validation: dict  # schema / economic errors, measured novelty

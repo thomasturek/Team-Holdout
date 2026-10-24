@@ -70,25 +70,28 @@ class PolicyV2:
         pre.opening_cost, pre.opening_payment_days = work.opening_cost, work.opening_payment_days
         cands = gen.generate(case, pre, self.v0, v0, rival_best_c, claims=claims, ctx=ctx)
         ranked, disagreement = self.ranker.rank(cands)
-        confidence, reasons = ood.assess(case, pre, ranked, disagreement, v0)
+        confidence, reasons, cap = ood.assess(case, pre, ranked, disagreement, v0)
         table = [row(c, ranked) for c in cands]
         v0_cand = next(c for c in cands if c.candidate_id == "v0")
         if not ranked:
             return PolicySelection(v0, "v0_fallback", 0.0, reasons + ["no valid candidate"], table,
                                    "no valid candidate"), None  # fmt: skip
-        if confidence >= ood.HIGH:
+        level = "ml" if confidence >= ood.HIGH else "conservative" if confidence >= ood.MEDIUM else "fallback"
+        level = max(level, cap, key=("ml", "conservative", "fallback").index)  # the more cautious of the two
+        if level == "ml":
             best, source = ranked[0][0], "v2_ml"
-        elif confidence >= ood.MEDIUM:
+        elif level == "conservative":
             safe = [r for r in ranked if r[0].family in gen.CONSERVATIVE]
             best, source = (safe[0][0] if safe else v0_cand), "v2_conservative"
         else:
-            return PolicySelection(v0, "v0_fallback", confidence, reasons, table,
-                                   f"confidence {confidence} < {ood.MEDIUM}"), None  # fmt: skip
+            why = f"confidence {confidence} < {ood.MEDIUM}" if confidence < ood.MEDIUM else "the model's doubts"
+            return PolicySelection(v0, "v0_fallback", confidence, reasons, table, why), None
         if best is v0_cand or not best.valid:
             decision, chosen = self._with_claims(v0, v0_cand), None
         else:
             decision, chosen = self._decision(v0, best), best
-        why = f"{best.candidate_id}: value {next(r[1] for r in ranked if r[0] is best):.4f}, confidence {confidence}"
+        value = next((r[1] for r in ranked if r[0] is best), None)  # V0's candidate may be unranked (invalid)
+        why = f"{best.candidate_id}: value {'-' if value is None else f'{value:.4f}'}, confidence {confidence}"
         return PolicySelection(decision, source, confidence, reasons, table, why), chosen
 
     @staticmethod

@@ -215,6 +215,29 @@ class PolicySelection:              # ANALYST (policy/v2.py) -> OPERATOR (logged
     reason: str = ""
 ```
 
+**V3 (branch `feature/v3-robustness`, see [`docs/V3_ROBUSTNESS_PLAN.md`](docs/V3_ROBUSTNESS_PLAN.md)).** Adversarial
+validation of V2: programmatic mutations (`sim/mutations.py`), the SCOUT's case gates
+(`facts/case_check.py`), the harness with property checks, novelty and calibration (`sim/robust.py`),
+suites in `tests/generated/{train,development,locked}` (locked: `BUYER_LOCKED_EVAL=1`, once per
+release candidate), the reader's accuracy on misleading e-mails (`llm/accuracy.py`).
+
+```python
+@dataclass
+class AdversarialCase:              # ANALYST (sim/mutations.py) -> SCOUT (facts/case_check.py) -> OPERATOR (sim/robust.py)
+    case_id: str
+    parent_case_id: str | None
+    generator: str                  # programmatic | llm | human
+    generator_version: str
+    seed: int
+    mutations: list[str]
+    distribution: str               # in_distribution | near_ood | far_ood (intended; robust.novelty measures it)
+    case: dict
+    scripted_responses: list[dict]  # supplier / belief overrides
+    expected_properties: list[str]
+    expected_policy: str | None
+    validation: dict
+```
+
 ---
 
 ## 4. The roles

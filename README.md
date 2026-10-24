@@ -38,6 +38,8 @@ BUYER_POLICY=v1        # default: Policy V0. shadow = V0 plays, V2 decides on a 
 BUYER_READER=parallel  # default: the LLM reader runs beside the writer; blocking = reader first, then the move
 uv run python -m buyer.policy.report --set sandbox      # V2 evidence: sources, shadow agreement, reasons, latency
 uv run python -m buyer.sim.compare --episodes 200       # V1 vs V2 on the same synthetic suppliers
+uv run python -m buyer.sim.robust run --split development   # V3: adversarial suite, properties, calibration
+uv run python -m buyer.llm.accuracy --locked            # V3: reader precision / recall on misleading e-mails
 ```
 
 Logs: `runs/<set>/<case>/<session>.jsonl`, one JSON file per session in `runs/<set>_sessions/`,
