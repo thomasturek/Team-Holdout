@@ -31,7 +31,16 @@ from concurrent.futures import TimeoutError as FutureTimeout
 
 from arena_kit.client import ArenaError
 from arena_kit.docs import read_document
-from arena_kit.play import CLOSE_BEFORE_CAP_S, ENDED, ROUND_MARGIN_S, RemoteTable, closing_move, latest, moves_left
+from arena_kit.play import (
+    CLOSE_BEFORE_CAP_S,
+    ENDED,
+    MOVE_LIMIT_S,
+    ROUND_MARGIN_S,
+    RemoteTable,
+    closing_move,
+    latest,
+    moves_left,
+)
 
 from .log import NullLog, archive_session
 
@@ -100,6 +109,7 @@ class CasePlayer:
             for m in events:
                 self._documents(m, sid, wait=True)
         self.log("opening", threads=threads)
+        self._clocks()
         workers = list(threads)
         # A decision that came back too late keeps running; don't wait for it at the end.
         self._decide_pool = ThreadPoolExecutor(max_workers=len(workers) * 2, thread_name_prefix="decide")
@@ -120,6 +130,27 @@ class CasePlayer:
             self._decide_pool.shutdown(wait=False, cancel_futures=True)
             self._docs_pool.shutdown(wait=True)  # the case is over: the arena answers these at once now
         return self._finish(s.result or self.table.result())
+
+    def _clocks(self):
+        """Each thread's 60 s as the arena counts them (`seconds_left`) - after a crash and a resume
+        part of them is gone - and the threads it has already closed."""
+        s = self.state
+        try:
+            state = self.client.session(self.table.session_id)
+        except Exception as e:
+            self.log("error", detail=e, where="session state at start")
+            return
+        now, resumed = time.monotonic(), any(m.get("from") == "buyer" for ev in s.threads.values() for m in ev)
+        with s.lock:
+            for sid, th in (state.get("threads") or {}).items():
+                if sid not in s.replied_at:
+                    continue
+                if th.get("seconds_left") is not None:
+                    s.replied_at[sid] = now - max(0.0, MOVE_LIMIT_S - th["seconds_left"])
+                if th.get("closed"):
+                    s.closed.add(sid)
+        if resumed:
+            self.log("resumed", threads=state.get("threads"))
 
     def _finish(self, result):
         self.log("result", result=result)

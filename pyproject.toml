@@ -5,6 +5,9 @@ description = "Team Holdout's buyer agent for the Tacto Negotiation Arena"
 requires-python = ">=3.12,<3.13"
 dependencies = ["arena-kit[anthropic,sim]"]
 
+[project.scripts]
+buyer = "buyer.runtime.runner:main"
+
 [tool.uv.sources]
 arena-kit = { path = "starter-kit", editable = true }
 

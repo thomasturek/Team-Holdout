@@ -19,6 +19,20 @@ uv run arena me           # the key works: practice quota and best scores
 uv run pytest
 ```
 
+### Running the agent
+
+```bash
+uv run buyer quota                                      # practice sessions used / left (200 per 24 h)
+uv run buyer practice --agent naive --purpose baseline  # every hosted practice case once (costs quota; keeps 20)
+uv run buyer practice --cases P01 P04 --repeat 2
+uv run buyer sandbox --repeat 3                         # case:D01 + case:D02, free
+uv run buyer final                                      # the Live Final: every wave until the last has closed
+uv run python -m buyer.runtime.harvest                  # sandbox non-stop for the Analyst (see docs/LOGS.md)
+```
+
+Logs: `runs/<set>/<case>/<session>.jsonl`, one JSON file per session in `runs/<set>_sessions/`,
+the runner's own log in `runs/runner-<mode>-<time>.log`. Format: [`docs/LOGS.md`](docs/LOGS.md).
+
 Our code imports the kit directly (`from arena_kit.cost import total_cost`); edits in `starter-kit/`
 take effect without reinstalling. `buyer.runtime.env.load()` reads `.env`, then `starter-kit/.env`.
 
