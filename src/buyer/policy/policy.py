@@ -50,6 +50,7 @@ DEFAULTS = {
     "accept_target_pct": 0.0,  # accept at or below a sure floor x (1 + this); 0 = off (trained: about 2.3)
 }
 DEEP_OPEN_TYPES = ("raw_material", "rfq")
+COMMITMENT = ("contract_months", "volume_per_year")
 
 
 @dataclass
@@ -154,7 +155,7 @@ class Policy:
         prev = t.last_sheet
         decision = self.offer(case, t, self.next_price(t, theirs, case=case), rival_best_c=rival_best_c)
         if prev is not None and decision.term_sheets[0] == prev and acceptable and not t.holding:
-            return self.close(case, t, acceptable, c_theirs, rival_best_c)  # repeating ourselves makes them go final
+            return self.close(case, t, acceptable, c_theirs, rival_best_c)
         return decision
 
     def closing(self, case, threads: dict) -> Decision:
@@ -237,8 +238,8 @@ class Policy:
                     step, t.holding = 0.0, True
                 else:
                     step = p["token_frac"] * default  # first hold, or a hold past the stall limit
-        if t.rounds_left <= round(p["endgame_moves"]) + 1:
-            step, t.holding = max(step, p["endgame_frac"] * gap), False
+            if t.rounds_left <= round(p["endgame_moves"]) + 1:
+                step, t.holding = max(step, p["endgame_frac"] * gap), False
         return step
 
     def at_target(self, case, t, c_theirs):
@@ -445,7 +446,9 @@ class Policy:
                 low = min(costs.values())
                 ties = [options[i] for i, c in costs.items() if c <= low + 1.0]
                 theirs = terms.get(f)
-                if theirs in ties:
+                if f in COMMITMENT and all(isinstance(o, int | float) for o in ties):
+                    out[f] = max(ties)
+                elif theirs in ties:
                     out[f] = theirs
                 elif isinstance(theirs, int | float) and all(isinstance(o, int | float) for o in ties):
                     out[f] = min(ties, key=lambda o: abs(o - theirs))
