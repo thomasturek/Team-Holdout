@@ -1,6 +1,6 @@
 # alex-thomas
 
-Hackathon project by Alex & Thomas for the Certivity industrial AI challenge. Challenge instructions: [`CHALLENGE.md`](CHALLENGE.md).
+Hackathon project by Alex & Thomas for the Tacto Negotiation Arena. Challenge instructions: [`CHALLENGE.md`](CHALLENGE.md).
 
 ## The idea
 
@@ -11,9 +11,10 @@ See [`docs/IDEA.md`](docs/IDEA.md).
 ```bash
 git clone <repo-url>
 cd alex-thomas
+cd starter-kit
 cp .env.example .env
-pip install jsonschema
-python tools/fetch_regulations.py
+uv sync --all-extras
+uv run arena me
 ```
 
 ## Project structure
@@ -22,14 +23,11 @@ python tools/fetch_regulations.py
 .
 ├── src/
 ├── scripts/
-├── data/
 ├── docs/
 │   └── IDEA.md
-├── cases/
-├── subgoal/
-├── regulations/
-├── schemas/
-├── tools/
+├── brief/
+├── data/
+├── starter-kit/
 ├── CHALLENGE.md
 ├── .env.example
 └── README.md

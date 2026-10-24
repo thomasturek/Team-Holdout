@@ -12,6 +12,7 @@ __pycache__/
 .venv/
 venv/
 .pytest_cache/
+.ruff_cache/
 .ipynb_checkpoints/
 
 node_modules/
@@ -19,8 +20,3 @@ dist/
 build/
 .next/
 npm-debug.log*
-
-data/*
-!data/.gitkeep
-
-regulations/pdf/
