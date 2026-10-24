@@ -359,6 +359,7 @@ class Policy:
             for f, options in case.get("term_options", {}).items():
                 if f == "unit_price" or f in skip or f not in case["negotiable"] or not options:
                     continue
+                options = [o for o in options if must_haves_ok(case, {**out, f: o}, standard)] or options
                 costs = {i: total_cost(case, {**out, f: o}, standard) for i, o in enumerate(options)}
                 low = min(costs.values())
                 ties = [options[i] for i, c in costs.items() if c <= low + 1.0]
