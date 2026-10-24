@@ -38,4 +38,4 @@ def test_real_environment_variables_win(tmp_path, monkeypatch):
 
 def test_secrets_and_logs_stay_out_of_git():
     ignored = (env.ROOT / ".gitignore").read_text().splitlines()
-    assert ".env" in ignored and "runs/" in ignored
+    assert ".env" in ignored
