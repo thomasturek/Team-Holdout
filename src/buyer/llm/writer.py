@@ -55,7 +55,7 @@ from .vocab import STYLE
 log = logging.getLogger("buyer.llm")
 
 SYSTEM = (Path(__file__).parent / "prompts" / "writer_system.md").read_text(encoding="utf-8")
-MAX_TOKENS = 700
+MAX_TOKENS = 10000
 MAX_OWN_WORDS = 160  # the prompt asks for <= 90; above this the model ignored the brief -> template
 MIN_OWN_WORDS = 8
 HISTORY = 4  # messages of the thread shown to the model
