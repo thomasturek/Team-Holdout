@@ -241,7 +241,24 @@ class Policy:
 
     def adopt_structure(self, case, sheet, t):
         out = dict(sheet)
+        best = None
+        for _, terms in t.offers or []:
+            if terms.get("unit_price") is None or not must_haves_ok(case, terms, t.standard):
+                continue
+            c = total_cost(case, terms, t.standard)
+            if best is None or c < best[0]:
+                best = (c, terms)
+        structures = {tuple(sorted((k, str(v)) for k, v in terms.items() if k not in ("unit_price", "payment_days")))
+                      for _, terms in t.offers or []}
+        if best and len(structures) > 1:
+            for f in case["negotiable"]:
+                if f not in ("unit_price", "payment_days") and f in best[1]:
+                    out[f] = best[1][f]
+            if out != sheet and not must_haves_ok(case, out, t.standard):
+                out = dict(sheet)
         for f in STRUCTURAL:
+            if best and len(structures) > 1 and f in best[1]:
+                continue
             insists = bool(t.offers) and all(terms.get(f) is not None for _, terms in t.offers)
             options = [v for v in t.struct_seen.get(f) or [] if v is not None]
             if f in case["negotiable"] and insists and options:
