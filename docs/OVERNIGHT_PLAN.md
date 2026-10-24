@@ -110,8 +110,10 @@ move   = {offer_id, round, status, terms, alternatives, missing_fields, claims, 
 3. **Every change pays rent** (section 3.3). A final pruning pass removes any kept component whose
    removal does not lower the score.
 4. **The submission is never at risk.** All work on the branch `overnight/<date>`; never push to `main`,
-   never move the `v1-working` tag, never run `buyer practice` / `buyer final` (practice quota is the
-   team's), never set `BUYER_LOCKED_EVAL=1` except in the single end-of-night evaluation.
+   never move the `v1-working` tag, never run `buyer final`, never set `BUYER_LOCKED_EVAL=1` except in
+   the single end-of-night evaluation. **Practice runs: tonight they are allowed within the budget of
+   [`NIGHT_HANDOFF.md`](NIGHT_HANDOFF.md) section 3 (always `--reserve 50`); that file supersedes this one
+   where they disagree.**
 5. **Fix the simulator before trusting it.** Gains on a mis-specified simulator are fake: the first
    experiments improve its fidelity, only then does optimising against it make sense.
 6. **Stay in your lane where you can.** Changes to another role's module are allowed on the overnight
@@ -221,7 +223,8 @@ the last 10 rows of `LOG.md`. Run exactly one iteration of section 3.2. Obey sec
 - **Stop hook:** `uv run pytest -q && uv run pytest -q src/buyer/facts` + `ruff check` on changed files.
   Red -> the session cannot end; fix or revert.
 - **PreToolUse hook (Bash):** blocks `git push` to anything but `overnight/*`; `git switch main`,
-  `git reset` on `main`, tag edits; `buyer practice`, `buyer final`, `buyer sandbox`; `BUYER_LOCKED_EVAL=1`
+  `git reset` on `main`, tag edits; `buyer final`; `buyer practice` without `--reserve 50` (see
+  NIGHT_HANDOFF.md section 3); `BUYER_LOCKED_EVAL=1`
   outside the end-of-night step; edits to `src/buyer/sim/scoreboard.py` and the seed sets after E0.
 - **Environment:** `LLM_DISABLED=1` for everything in the loop - the simulator does not read prose and
   evaluation must not call an LLM.
