@@ -77,9 +77,12 @@ exactly as the API returns them (see `brief/api.md`, Messages), attachments with
 | `decision` | before each move of the policy | `supplier_id`, `trace`: `{decision: {kind, supplier_id, term_sheets, accept_sheet_id, claims, questions, intent}, rival_best_c}` (later also Signals) |
 | `hold` | the decision was too slow; a holding message went out instead | `supplier_id`, `after_s` |
 | `drop` | we stopped playing a thread (agent walked away from one bidder, or the round limit) | `supplier_id`, `reason` |
-| `refresh` | after a `409` (late, round limit, thread ended): the thread as the arena has it | `supplier_id`, `thread` |
+| `refresh` | after a `409` (late, round limit, thread ended), or with `why: "closing"` after a failed closing attempt: the thread as the arena has it | `supplier_id`, `thread`, `why` |
 | `error` | an API error or a crash in a thread | `supplier_id`, `status`, `detail`, `where` |
-| `closing` | the accept or walk-away that ends the case | `supplier_id`, `message`, `why` (agent / cap near / no thread left) |
+| `closing` | one attempt to end the case (accept or walk away); there can be several if one fails | `supplier_id`, `message`, `why` (agent / cap near / no thread left) |
+| `close_failed` | the attempt was refused (422 e.g. a stale term sheet, 409) or got no answer (network) | `supplier_id`, `status`, `detail`, `unconfirmed` (true: it may have landed - the arena is asked before anything else) |
+| `closed` | the arena confirmed the end | `supplier_id`, `how` (`reply`: the result came with the answer; `reconciled`: GET session said ended), `end_reason` |
+| `close_unresolved` | outside a wave the runtime stopped trying (MAX_CLOSE_ATTEMPTS) with the case still open | `why`, `attempts` |
 | `result` | the case ended | `result` (deal, terms, `c_open`, `c_deal`, `c_alt`, `c_best`, `score`, `cost_breakdown`) |
 | `session` | after the end | `data` = `GET /v1/sessions/{sid}`; `data.result.trace` = per move `{round, actor, move, reasons}` |
 | `backoffice` | after the end | `data` = `GET /v1/sessions/{sid}/backoffice`, or `error` (403 in the final) |

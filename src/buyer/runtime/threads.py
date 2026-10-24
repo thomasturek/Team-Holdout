@@ -21,6 +21,18 @@ what the thread now says and plays on from there.
 
 A walk-away while other bidders are still live only stops this worker (walking away would end the
 whole case); the last live thread's walk-away ends it.
+
+Closing (accept or walk away) is supervised until the arena confirms the end:
+  - `closing` (an attempt is in flight) and `ended` (the arena said so: a result in the reply, or
+    GET /sessions/{sid} reports `ended`) are separate. While an attempt is in flight no worker sends
+    a new offer; workers stop for good only on `ended`.
+  - After any failed or unanswered attempt - 422 (e.g. a stale term sheet), 409, a network error
+    with the response lost - the runtime asks the arena (`_reconcile`). Ended: take its result, never
+    act again. Still open: re-read every live thread and try again with a fresh closing decision.
+    If even that question fails, the next attempt asks first: never two terminal actions without
+    the arena's answer in between.
+  - The watchdog keeps trying near the cap until the case has ended (the arena ends it at the cap);
+    when every worker has stopped, `play` supervises the close the same way.
 """
 
 import logging
@@ -52,6 +64,9 @@ WATCH_EVERY_S = 1.0
 DOWNLOADS = 4  # attachment downloads at once per case
 MAX_FAILURES = 2  # the agent failing (or its messages refused) this often in a row: stop playing the thread
 INVALID = "invalid"
+CLOSE_RETRY_S = 1.0  # between closing attempts after a failed one
+MAX_CLOSE_ATTEMPTS = 5  # without a wave cap (practice, sandbox): give up supervising after this many
+AFTER_CAP_S = 30.0  # past the wave's cap the arena has ended the case: confirm it, then stop
 HOLD_BODY = (
     "Thank you for your message. We are reviewing it internally and will come back to you with our "
     "position shortly.\n\nBest regards\nHollerau Pumpenwerke, Purchasing"
@@ -64,13 +79,17 @@ class CaseState:
     def __init__(self, case, threads):
         self.case, self.threads = case, threads
         self.lock = threading.Lock()
-        self.over = threading.Event()  # set once the case has ended (or a close is under way)
+        self.ended = threading.Event()  # the arena confirmed the end (a result, or GET session: ended)
+        self.closing = threading.Event()  # an accept / walk-away is in flight: no new offers meanwhile
+        self.unconfirmed = False  # a terminal action may have landed but the arena's answer is unknown
+        self.retry_at = 0.0  # monotonic: no new closing attempt before this
         self.result = None
         self.closed = set()  # threads the arena has closed (timeouts, walked away, no bid)
         self.replied_at = {sid: time.monotonic() for sid in threads}  # our 60 s run from here
         self.slowest = 0.0  # longest round so far, any thread: decision + supplier reply
         self.texts = {}  # attachment_id -> text, so refreshed threads keep their documents
         self.pending = {}  # attachment_id -> attachment dicts waiting for its text (download running)
+        self.inflight = set()  # threads with a message of ours on its way (the worker records the reply)
 
     def snapshot(self):
         with self.lock:
@@ -95,6 +114,7 @@ class CasePlayer:
         self.state = None
         self._close_lock = threading.Lock()
         self._decide_pool = self._docs_pool = None
+        self._stopped = threading.Event()  # play() is done: the watchdog stops
 
     # -- the case -------------------------------------------------------------------------------
     def play(self):
@@ -123,12 +143,9 @@ class CasePlayer:
                     except Exception as e:  # one broken thread must not stop the case
                         log.exception("%s: a thread crashed", self.case_id)
                         self.log("error", detail=e)
-            with self._close_lock:  # a close still in flight (watchdog, another worker): wait for its result
-                pass
-            if not s.over.is_set() and s.live_threads():  # every worker stopped, the case is open: close it
-                self._close(self._closing_decision(), "no thread left to play")
-            s.over.set()
+            self._supervise_close("no thread left to play")  # every worker stopped: see the case to its end
         finally:
+            self._stopped.set()
             self._decide_pool.shutdown(wait=False, cancel_futures=True)
             self._docs_pool.shutdown(wait=True)  # the case is over: the arena answers these at once now
         return self._finish(s.result or self.table.result())
@@ -175,11 +192,17 @@ class CasePlayer:
 
     # -- one supplier thread --------------------------------------------------------------------
     def _worker(self, sid):
-        s, failures = self.state, 0
-        while not s.over.is_set() and s.live(sid):
+        s, failures, close_failures = self.state, 0, 0  # close_failures: not reset by a fresh decision
+        while not s.ended.is_set() and s.live(sid):
+            if s.closing.is_set():  # an accept / walk-away is in flight: no new offer until it is settled
+                s.ended.wait(WATCH_EVERY_S / 5)
+                continue
             view = s.snapshot()
             if self._cap_near():
-                return self._close(self._closing_decision(), "the wave's cap is near")
+                if self._close_now("the wave's cap is near"):
+                    return
+                s.ended.wait(CLOSE_RETRY_S)  # not closed (yet): the arena's state is re-read, try again
+                continue
             t0 = s.replied_at[sid]
             try:
                 decision = self._decide(view, sid, t0)
@@ -193,8 +216,10 @@ class CasePlayer:
                 decision = None
             else:
                 failures = 0 if decision else failures
-            if s.over.is_set():
+            if s.ended.is_set():
                 return
+            if s.closing.is_set():  # a close started while this decision was made: it would race with it
+                continue
             if decision is None:  # too slow or failed: hold the thread instead of letting it time out
                 decision = self._hold(view, sid, t0)
             msg = decision["message"]
@@ -205,7 +230,14 @@ class CasePlayer:
                 self.log("drop", supplier_id=sid)
                 return
             if action:
-                return self._close(decision, "the agent's decision")
+                if self._close(decision, "the agent's decision"):
+                    return
+                close_failures += 1  # refused or unconfirmed, the case still open: decide again on fresh state
+                if close_failures >= MAX_FAILURES:
+                    self.log("drop", supplier_id=sid, reason="its closing moves failed repeatedly")
+                    return
+                s.ended.wait(CLOSE_RETRY_S)
+                continue
             if moves_left(s.case, view[sid]) <= 0:  # round limit: only an accept is left
                 self.log("drop", supplier_id=sid, reason="round limit")
                 return
@@ -230,7 +262,7 @@ class CasePlayer:
                 decision = future.result(timeout=max(0.0, min(WATCH_EVERY_S / 5, left)))
                 break
             except FutureTimeout:
-                if self.state.over.is_set():
+                if self.state.ended.is_set():
                     return None
                 if left <= 0:
                     log.warning("%s %s: no decision %ss after the reply - holding", self.case_id, sid, self.hold_at)
@@ -247,8 +279,18 @@ class CasePlayer:
         return decision
 
     def _send(self, sid, msg, decide_s):
-        s, sent = self.state, time.monotonic()
+        s = self.state
         self.log("sent", supplier_id=sid, message=msg, decide_s=round(decide_s, 2))
+        with s.lock:
+            s.inflight.add(sid)
+        try:
+            return self._exchange(sid, msg)
+        finally:  # after the reply is recorded: a resync from now on sees it
+            with s.lock:
+                s.inflight.discard(sid)
+
+    def _exchange(self, sid, msg):
+        s, sent = self.state, time.monotonic()
         try:
             reply = self.client.send_message(self.table.session_id, sid, msg)
         except ArenaError as e:
@@ -295,11 +337,44 @@ class CasePlayer:
         return bool(cap) and time.time() > cap - max(CLOSE_BEFORE_CAP_S, self.state.slowest + ROUND_MARGIN_S)
 
     def _watch(self):
-        """The workers check the cap before every move, but they may all be waiting for replies."""
-        while not self.state.over.wait(WATCH_EVERY_S):
+        """The workers check the cap before every move, but they may all be waiting for replies. Once
+        the cap is near it keeps trying (a failed attempt is retried) until the arena confirms the end."""
+        s = self.state
+        while not s.ended.wait(WATCH_EVERY_S) and not self._stopped.is_set():
             if self._cap_near():
-                self._close(self._closing_decision(), "the wave's cap is near (watchdog)")
-                return
+                self._close_now("the wave's cap is near (watchdog)")
+
+    def _supervise_close(self, why):
+        """Every worker has stopped and the case may still be open: close it and stay with it until the
+        arena confirms the end - with a wave cap until the cap has passed (the arena ends the case
+        there), without one for at most MAX_CLOSE_ATTEMPTS attempts."""
+        s, attempts = self.state, 0
+        while not s.ended.is_set():
+            cap = self.deadline() if callable(self.deadline) else self.deadline
+            if cap and time.time() > cap + AFTER_CAP_S:
+                self._reconcile(None)  # past the cap: the arena has ended the case, take its result
+                break
+            if not cap and attempts >= MAX_CLOSE_ATTEMPTS:
+                break
+            attempts += 1
+            if s.live_threads():
+                self._close_now(why)
+            else:  # no live thread: the arena ends the case by itself
+                self._reconcile(None)
+            if not s.ended.is_set():
+                s.ended.wait(CLOSE_RETRY_S)
+        if not s.ended.is_set():
+            log.warning("%s: the case is still open after %d closing attempts", self.case_id, attempts)
+            self.log("close_unresolved", why=why, attempts=attempts)
+
+    def _close_now(self, why):
+        """The closing decision on the current state, played; True once the case has ended."""
+        try:
+            decision = self._closing_decision()
+        except Exception as e:  # e.g. no live thread left for the kit's closing move
+            self.log("error", detail=e, where="closing decision")
+            return self.state.ended.is_set()
+        return self._close(decision, why)
 
     def _closing_decision(self):
         view = self.state.snapshot()
@@ -313,36 +388,100 @@ class CasePlayer:
         return closing_move(self.state.case, live)
 
     def _close(self, decision, why):
-        """Accept or walk away - once per case, whichever worker or the watchdog gets here first."""
+        """Accept or walk away - one attempt at a time, whichever worker or supervisor gets here first.
+        True once the arena has confirmed the end. After a failed attempt the next one waits
+        CLOSE_RETRY_S, so its caller decides again on the state the failure re-read."""
         s = self.state
         with self._close_lock:
-            if s.over.is_set():
-                return
-            s.over.set()
-            sid, msg = decision["supplier_id"], decision["message"]
-            self.log("closing", supplier_id=sid, message=msg, why=why)
-            log.info("%s %s %s (%s)", self.case_id, sid, msg.get("action"), why)
+            if s.ended.is_set():
+                return True
+            if time.monotonic() < s.retry_at:  # an attempt just failed: decide again first
+                return False
+            s.closing.set()
             try:
-                reply = self.client.send_message(self.table.session_id, sid, msg)
-            except ArenaError as e:
-                self.log("error", supplier_id=sid, status=e.status, detail=e.detail, where="closing")
-                if e.status != 409:  # e.g. a stale term sheet (422): nothing happened, play on
-                    log.warning("%s: closing move refused: %s", self.case_id, e)
-                    s.over.clear()
-                    return
-                state = self.client.session(self.table.session_id)
-                if state.get("status") != "ended":  # a late accept: the case goes on
-                    s.over.clear()
-                    self._refresh(sid)
-                    return
-                reply = {"result": state.get("result") or {"deal": False, "end_reason": state.get("end_reason")}}
-            s.result = reply.get("result", reply)
+                self._attempt(decision, why)
+            finally:
+                s.closing.clear()
+                if not s.ended.is_set():
+                    s.retry_at = time.monotonic() + CLOSE_RETRY_S
+            return s.ended.is_set()
+
+    def _attempt(self, decision, why):
+        """One terminal action, then - unless the reply carries the result - the arena's word on it."""
+        s = self.state
+        if s.unconfirmed and not self._reconcile(None):  # an earlier action's outcome is unknown: ask first
+            return
+        if s.ended.is_set():
+            return
+        sid, msg = decision["supplier_id"], decision["message"]
+        self.log("closing", supplier_id=sid, message=msg, why=why)
+        log.info("%s %s %s (%s)", self.case_id, sid, msg.get("action"), why)
+        try:
+            reply = self.client.send_message(self.table.session_id, sid, msg)
+        except ArenaError as e:  # 422 (e.g. a stale term sheet), 409 (late, ended), 5xx after retries
+            s.unconfirmed = e.status >= 500  # a server error: the action may have landed
+            log.warning("%s: closing move failed (%s) - asking the arena", self.case_id, e)
+            self.log("close_failed", supplier_id=sid, status=e.status, detail=e.detail, unconfirmed=s.unconfirmed)
+        except Exception as e:  # the network, after the client's retries: the response is lost
+            s.unconfirmed = True
+            log.warning("%s: closing move unanswered (%s) - asking the arena", self.case_id, e)
+            self.log("close_failed", supplier_id=sid, detail=e, unconfirmed=True)
+        else:
+            if "result" in reply:
+                self._ended(reply["result"])
+                self.log("closed", supplier_id=sid, how="reply")
+                return
+            s.unconfirmed = True  # an answer without the result: ask
+        self._reconcile(sid)
+
+    def _reconcile(self, sid):
+        """Ask the arena whether the case has ended. Ended: take its result. Still open: re-read every
+        thread no worker is waiting on (the offers may have moved on). False if the arena could not be
+        asked - the outcome of the last action stays unknown and the next attempt asks again first."""
+        s = self.state
+        try:
+            state = self.client.session(self.table.session_id)
+        except Exception as e:
+            self.log("error", detail=e, where="reconcile")
+            return False
+        s.unconfirmed = False
+        if state.get("status") == "ended":
+            self._ended(state.get("result") or {"deal": False, "end_reason": state.get("end_reason")})
+            self.log("closed", supplier_id=sid, how="reconciled", end_reason=state.get("end_reason"))
+            return True
+        self._sync(state)
+        return True
+
+    def _sync(self, state):
+        """Every thread as the arena has it, with its clock from `seconds_left` - except those a worker
+        has a message in flight on (that worker records the reply itself)."""
+        s = self.state
+        for sid, th in (state.get("threads") or {}).items():
+            with s.lock:
+                if sid not in s.threads or sid in s.inflight:
+                    continue
+            try:
+                t = self.client.thread(self.table.session_id, sid)
+            except Exception as e:
+                self.log("error", supplier_id=sid, detail=e, where="sync")
+                continue
+            for m in t["messages"]:
+                self._documents(m, sid)
+            with s.lock:
+                if sid in s.inflight:  # a worker sent meanwhile: its reply is the newer state
+                    continue
+                s.threads[sid] = t["messages"]
+                if t.get("closed") or th.get("closed"):
+                    s.closed.add(sid)
+                if th.get("seconds_left") is not None:
+                    s.replied_at[sid] = time.monotonic() - max(0.0, MOVE_LIMIT_S - th["seconds_left"])
+            self.log("refresh", supplier_id=sid, thread=t, why="closing")
 
     def _ended(self, result):
         s = self.state
         with s.lock:
             s.result = s.result or result
-        s.over.set()
+        s.ended.set()
 
     # -- helpers --------------------------------------------------------------------------------
     def _documents(self, message, sid=None, wait=False):
