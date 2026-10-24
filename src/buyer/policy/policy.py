@@ -28,6 +28,8 @@ DEFAULTS = {
     "min_open_discount_pct": 4.0,
     "rival_undercut_pct": 1.0,
     "lead_standard": 0.0,
+    "claims_per_msg": 2,
+    "claim_min_strength": 0.3,
 }
 
 
@@ -59,6 +61,9 @@ class ThreadState:
     pushed_final: bool = False
     opening_cost: float | None = None
     opening_payment_days: int | None = None
+    offers: list = field(default_factory=list)
+    our_costs: list = field(default_factory=list)
+    case_threads: dict | None = None
 
 
 def load_params(path=PARAMS_FILE):
@@ -78,12 +83,15 @@ def alternative_cost(case):
 class Policy:
     def __init__(self, params=None):
         self.p = {**DEFAULTS, **(params if params is not None else load_params())}
+        self.banks, self.used_refs, self.used_keys = {}, set(), set()
 
     def decide(self, case, t: ThreadState, rival_best_c=math.inf) -> Decision:
         p, sid = self.p, t.supplier_id
         theirs = t.standing_terms.get("unit_price")
         if t.status in ("walked_away", "no_bid") or theirs is None:
             return Decision("walk", sid)
+        self.pick_offer(case, t)
+        theirs = t.standing_terms.get("unit_price", theirs)
         c_theirs = self.cost(case, t)
         if t.opening_cost is None:
             t.opening_cost = c_theirs
@@ -99,7 +107,7 @@ class Policy:
             return self.accept(t) if acceptable else Decision("walk", sid)
         if t.rounds_left <= 1:
             return self.accept(t) if acceptable else Decision("walk", sid)
-        close = t.our_prices and theirs <= t.our_prices[-1] * (1 + p["accept_gap_pct"] / 100)
+        close = t.our_costs and c_theirs <= t.our_costs[-1] * (1 + p["accept_gap_pct"] / 100)
         if close and acceptable and c_theirs < t.opening_cost:
             return self.accept(t)
         return self.offer(case, t, self.next_price(t, theirs), rival_best_c=rival_best_c)
@@ -109,6 +117,7 @@ class Policy:
         for t in threads.values():
             if t.status in ("walked_away", "no_bid") or not t.standing_id:
                 continue
+            self.pick_offer(case, t)
             c = self.cost(case, t)
             if self.acceptable(case, t, c, math.inf) and (best is None or c < best[0]):
                 best = (c, t)
@@ -175,7 +184,62 @@ class Policy:
                     sheets.append(sheet_s)
         sheets = sheets[:3]
         t.our_prices.append(a["unit_price"])
-        return Decision("send", t.supplier_id, term_sheets=sheets, intent=intent)
+        t.our_costs.append(total_cost(case, a, t.standard))
+        chosen = self.pick_claims(case, t)
+        if any(c.key.startswith("rival:") for c in chosen):
+            intent = f"{intent}, competition: another offer is on the table"
+        return Decision("send", t.supplier_id, term_sheets=sheets, claims=chosen, intent=intent)
+
+    def pick_offer(self, case, t):
+        best = None
+        for sheet_id, terms in t.offers or []:
+            if terms.get("unit_price") is None or not must_haves_ok(case, terms, t.standard):
+                continue
+            c = total_cost(case, terms, t.standard)
+            if best is None or c < best[0]:
+                best = (c, sheet_id, terms)
+        if best:
+            t.standing_id, t.standing_terms = best[1], best[2]
+
+    def pick_claims(self, case, t):
+        limit = int(self.p["claims_per_msg"])
+        if limit <= 0 or not case.get("case_id"):
+            return []
+        key = (case["case_id"], t.supplier_id)
+        if key not in self.banks:
+            try:
+                from buyer.facts.claims import claims
+
+                self.banks[key] = sorted(claims(case, t.supplier_id), key=lambda c: -c.strength)
+            except Exception:
+                self.banks[key] = []
+        rejected = set((t.signals or {}).get("rejected_args") or [])
+        bank = list(self.banks[key])
+        if t.case_threads and len(case.get("suppliers") or []) > 1:
+            try:
+                from buyer.facts.claims import rival_claims
+
+                bank = sorted(bank + rival_claims(case, t.case_threads, t.supplier_id), key=lambda c: -c.strength)
+            except Exception:
+                pass
+        pool = [
+            c for c in bank
+            if c.strength >= self.p["claim_min_strength"]
+            and (t.supplier_id, c.key) not in self.used_keys
+            and c.key not in rejected
+            and self.used_refs.isdisjoint(c.refs)
+        ]
+        chosen, seen = [], set()
+        for c in pool:
+            if seen.isdisjoint(c.refs):
+                chosen.append(c)
+                seen |= set(c.refs)
+            if len(chosen) == limit:
+                break
+        for c in chosen:
+            self.used_refs |= set(c.refs)
+            self.used_keys.add((t.supplier_id, c.key))
+        return chosen
 
     @staticmethod
     def same_cost(case, sheet, ref, standard):

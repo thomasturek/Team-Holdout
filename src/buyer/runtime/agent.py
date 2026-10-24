@@ -77,6 +77,7 @@ class PolicyAgent:
             profile = self.profiles.get(sid) or {}
             t = self.states[sid] = ThreadState(sid, sheet_id, terms, "open", {}, 0, profile=profile)
         t.standing_id, t.standing_terms = sheet_id, terms
+        t.offers = [(ts["term_sheet_id"], ts["terms"]) for ts in latest(events).get("term_sheets") or [] if ts.get("term_sheet_id")]
         t.status = latest(events).get("status") or "open"
         t.standard = standard_terms(events) or t.standard
         t.rounds_left = moves_left(case, events)
@@ -97,6 +98,8 @@ class PolicyAgent:
         self._warm(case)  # first move of a case: profiles and data (a few seconds, once), outside the lock
         with self._lock:
             states = {sid: self._state(case, sid, ev) for sid, ev in threads.items()}
+            for st in states.values():
+                st.case_threads = threads
             t = states[supplier_id]
             live = [
                 o for o in states.values() if o is not t and o.standing_id and o.status not in ("walked_away", "no_bid")
@@ -113,6 +116,8 @@ class PolicyAgent:
         self._warm(case)
         with self._lock:
             states = {sid: self._state(case, sid, ev) for sid, ev in threads.items()}
+            for st in states.values():
+                st.case_threads = threads
             decision = self.policy.closing(case, states)
             profile = self._writer_profile(case, decision.supplier_id)
         move, _ = self._message(case, threads, decision, profile, None, start + CLOSING_BUDGET_S)
