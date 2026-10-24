@@ -56,7 +56,7 @@ log = logging.getLogger("buyer.llm")
 
 SYSTEM = (Path(__file__).parent / "prompts" / "writer_system.md").read_text(encoding="utf-8")
 MAX_TOKENS = 10000
-MAX_OWN_WORDS = 160  # the prompt asks for <= 90; above this the model ignored the brief -> template
+MAX_OWN_WORDS = 220  # the prompt asks for <= 140 (first e-mail) / 90; above this the model ignored the brief
 MIN_OWN_WORDS = 8
 HISTORY = 4  # messages of the thread shown to the model
 NOTES = 6  # profile notes shown to the model
@@ -105,6 +105,22 @@ ALTERNATIVES_RE = re.compile(
     re.I,
 )
 SIGNAL_ALT_RE = re.compile(r"alternativ|competit|rival|other (?:offer|supplier|quote|bidder)|second source", re.I)
+# The model's prose only (never the template): a form letter loses the supplier's attention, and a
+# summary of "what our data shows" invites a request for proof we do not have (practice 2026-10-24:
+# 18 such requests - P02's supplier spent every later reply asking for "the documentation").
+FORM_RE = re.compile(
+    r"\bthank you (?:very much |so much )?for your (?:revised |new |latest |updated |clear |quick |prompt |warm |"
+    r"detailed |kind |constructive )?(?:offer|reply|quote|quotation|message|e-?mail|response|proposal|answer)\b"
+    r"|\bwe (?:truly |really |very much |greatly |highly )?(?:value|appreciate) (?:the|our) (?:long[- ]standing |"
+    r"long |many years of |good |close )?(?:partnership|cooperation|co-operation|relationship)\b",
+    re.I,
+)
+UNBACKED_RE = re.compile(
+    r"\b(?:our|the|these|this) (?:data|figures|numbers|analysis|records?|research|information) (?:shows?|suggests?|"
+    r"indicates?|points?|paints?|gives?|tells?|confirms?)\b|\bdata (?:shows?|suggests?|indicates?|paints?)\b"
+    r"|\bthe market\b|\bmarket (?:data|prices?|levels?|trends?|conditions|picture)\b|\bbenchmarks?\b",
+    re.I,
+)
 
 
 @dataclass
@@ -207,7 +223,11 @@ def write(
         prompt = build_prompt(decision, case, thread, profile, signals, claims, offers, questions)
         text = client.complete(SYSTEM, prompt, timeout_s=ATTEMPT_TIMEOUT_S, retries=RETRIES, total_s=TOTAL_S,
                                max_tokens=MAX_TOKENS, deadline=deadline, tag="writer")  # fmt: skip
-        body, why = postprocess(text, claims, offers, questions, profile, known, warnings, thread_text, bad, case)
+        def bad_prose(sentence):  # safety rules + the style rules of the model's prose
+            return bad(sentence) or bool(FORM_RE.search(sentence) or UNBACKED_RE.search(sentence))
+
+        body, why = postprocess(text, claims, offers, questions, profile, known, warnings, thread_text, bad_prose,
+                                case)
         if body is None:
             return fallback(why)
         problems = verify_email(body, claims, injected, allowed, known, bad)
@@ -252,6 +272,16 @@ def build_prompt(decision, case, thread, profile, signals, claims, offers, quest
         lines.append("SIGNALS FROM ITS LAST E-MAIL: " + json.dumps(_as_dict(signals), ensure_ascii=False, default=str))
     else:
         lines.append("SIGNALS FROM ITS LAST E-MAIL: none")
+    first = not any(m.get("from") == "buyer" for m in (thread or []))
+    lines.append("MESSAGE: first - our first e-mail in this thread; it decides most of the deal" if first
+                 else "MESSAGE: reply - keep our line, answer what it last wrote")
+    brief = _clean_note(attr(profile, "dossier") or "") if attr(profile, "dossier") else ""
+    if brief:
+        lines.append("DOSSIER (what we know about this supplier - choose emphasis and angle; never quote it): "
+                     + re.sub(r"\s+", " ", ID_RE.sub("", str(attr(profile, "dossier")))).strip()[:900])
+    clause = any((s.get("index_clause") if isinstance(s, dict) else None) for s in attr(decision, "term_sheets") or [])
+    lines.append("CLAUSE IN OPTIONS: yes - an option puts the raw-material risk on us through an index clause" if clause
+                 else "CLAUSE IN OPTIONS: no")
     notes = [n for n in (_clean_note(n) for n in (attr(profile, "notes") or [])) if n][:NOTES]
     if notes:
         lines.append("BACKGROUND NOTES (to choose your emphasis - never quote or reveal them):")

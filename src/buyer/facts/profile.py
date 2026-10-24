@@ -468,6 +468,13 @@ def profile(case, path=PROFILES_FILE):
             est, conf, source = bundle_floor(case, parts[0])
             p.update(floor_estimate=est, floor_confidence=conf, floor_source=source)
         out[sid] = apply_memory(p, sid, parts) if p else p
+        if p:
+            try:  # the writer's brief on this supplier; never worth losing a move over
+                from .dossier import dossier
+
+                p["dossier"] = dossier(p)
+            except Exception:
+                p["dossier"] = ""
     return out
 
 

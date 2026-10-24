@@ -1,0 +1,228 @@
+{
+ "suppliers": {
+  "sup:70110": {
+   "sessions": 4,
+   "contact_role": "Owner",
+   "drivers": [
+    "LCI-C",
+    "PPI-C241",
+    "raw_material"
+   ],
+   "asks": [
+    "earlier_effective_date"
+   ],
+   "said": [],
+   "first_move": 0.03221644713421156,
+   "later_move": 0.003070180917418828,
+   "replies_to_final": 4
+  },
+  "sup:70140": {
+   "sessions": 5,
+   "contact_role": "Export Manager",
+   "drivers": [
+    "LCI-C",
+    "PPI-C241",
+    "PPI-D351"
+   ],
+   "asks": [
+    "faster_payment",
+    "volume",
+    "other: lower chargeback per complaint"
+   ],
+   "said": [
+    "needs_cash",
+    "wants_volume"
+   ],
+   "first_move": 0.017113963438350838,
+   "later_move": 0.0,
+   "replies_to_final": 7
+  },
+  "sup:70210": {
+   "sessions": 5,
+   "contact_role": "Owner",
+   "drivers": [
+    "LCI-C",
+    "PPI-C2431",
+    "AS-14404"
+   ],
+   "asks": [
+    "faster_payment"
+   ],
+   "said": [],
+   "first_move": 0.11720925925925932,
+   "later_move": 0.0,
+   "replies_to_final": 3
+  },
+  "sup:70240": {
+   "sessions": 5,
+   "contact_role": "Export Manager",
+   "drivers": [
+    "LCI-C",
+    "PPI-C2431",
+    "AS-14404"
+   ],
+   "asks": [],
+   "said": [],
+   "first_move": -0.06922388059701493,
+   "later_move": 0.014492753623188406,
+   "replies_to_final": 4
+  },
+  "sup:70250": {
+   "sessions": 5,
+   "contact_role": "Owner",
+   "drivers": [
+    "LCI-C",
+    "PPI-C2431",
+    "AS-14404"
+   ],
+   "asks": [
+    "volume",
+    "faster_payment",
+    "other: decision on final offer"
+   ],
+   "said": [
+    "free_capacity",
+    "needs_cash"
+   ],
+   "first_move": 0.1632900432900433,
+   "later_move": 0.011249999999999906,
+   "replies_to_final": 4
+  },
+  "sup:70410": {
+   "sessions": 5,
+   "contact_role": "Segment Manager",
+   "drivers": [],
+   "asks": [
+    "volume",
+    "longer_lead_time",
+    "longer_contract"
+   ],
+   "said": [
+    "wants_volume"
+   ],
+   "first_move": 0.17014429283653562,
+   "later_move": 0.0,
+   "replies_to_final": 1
+  },
+  "sup:70510": {
+   "sessions": 4,
+   "contact_role": "Key Account Manager",
+   "drivers": [
+    "raw_material",
+    "CU-NOTATION",
+    "LCI-C"
+   ],
+   "asks": [
+    "faster_payment"
+   ],
+   "said": [
+    "asks_for_proof",
+    "prefers_standard_payment",
+    "wants_clause"
+   ],
+   "first_move": 0.00236472658931898,
+   "later_move": 0.0006716818914562063,
+   "replies_to_final": 4
+  },
+  "sup:70530": {
+   "sessions": 4,
+   "contact_role": "Key Account Manager",
+   "drivers": [
+    "CU-NOTATION",
+    "LCI-C",
+    "PPI-C2611"
+   ],
+   "asks": [
+    "volume",
+    "forecast",
+    "faster_payment"
+   ],
+   "said": [
+    "asks_for_proof",
+    "committee",
+    "wants_volume"
+   ],
+   "first_move": 0.07153161530169588,
+   "later_move": 0.0,
+   "replies_to_final": 6
+  },
+  "sup:70610": {
+   "sessions": 4,
+   "contact_role": "Inside Sales",
+   "drivers": [
+    "PPI-C2594",
+    "LCI-C"
+   ],
+   "asks": [
+    "volume",
+    "longer_contract",
+    "faster_payment"
+   ],
+   "said": [
+    "free_capacity"
+   ],
+   "first_move": 0.14577776186469504,
+   "later_move": 0.0030298312635474176,
+   "replies_to_final": 4
+  },
+  "sup:70620": {
+   "sessions": 4,
+   "contact_role": "Inside Sales",
+   "drivers": [
+    "LCI-C",
+    "PPI-C2815"
+   ],
+   "asks": [
+    "volume",
+    "forecast",
+    "faster_payment"
+   ],
+   "said": [
+    "free_capacity"
+   ],
+   "first_move": 0.01088494924968516,
+   "later_move": 0.0,
+   "replies_to_final": 3
+  },
+  "sup:70710": {
+   "sessions": 5,
+   "contact_role": "Inside Sales",
+   "drivers": [
+    "AS-14404",
+    "LCI-C",
+    "PPI-C2431"
+   ],
+   "asks": [
+    "index_clause",
+    "longer_contract"
+   ],
+   "said": [
+    "wants_clause"
+   ],
+   "first_move": 0.07025021003844682,
+   "later_move": 0.0,
+   "replies_to_final": 3
+  },
+  "sup:70740": {
+   "sessions": 5,
+   "contact_role": "Inside Sales",
+   "drivers": [
+    "AS-14404",
+    "LCI-C",
+    "PPI-C2431"
+   ],
+   "asks": [
+    "index_clause",
+    "volume",
+    "longer_contract"
+   ],
+   "said": [
+    "free_capacity",
+    "wants_clause"
+   ],
+   "first_move": 0.055840294189279965,
+   "later_move": 0.0,
+   "replies_to_final": 3
+  }
+ }
+}
