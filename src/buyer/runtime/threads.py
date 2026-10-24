@@ -33,7 +33,7 @@ from arena_kit.client import ArenaError
 from arena_kit.docs import read_document
 from arena_kit.play import CLOSE_BEFORE_CAP_S, ENDED, ROUND_MARGIN_S, RemoteTable, closing_move, latest, moves_left
 
-from .log import NullLog
+from .log import NullLog, archive_session
 
 log = logging.getLogger("buyer.threads")
 
@@ -74,8 +74,11 @@ class CaseState:
 
 
 class CasePlayer:
-    def __init__(self, client, case_id, agent, *, case=None, deadline=None, log=None, hold_at=HOLD_AT_S, run=None):
+    def __init__(
+        self, client, case_id, agent, *, case=None, deadline=None, log=None, hold_at=HOLD_AT_S, run=None, archive=None
+    ):
         self.client, self.case_id, self.agent, self.run = client, case_id, agent, run or {}
+        self.archive, self.case_file = archive, case  # archive: a folder for one JSON file per ended session
         self.table = RemoteTable(client, case)  # with the case file, a final 409 resumes the running session
         self.deadline, self.log, self.hold_at = deadline, log or NullLog(), hold_at
         self.state = None
@@ -85,6 +88,7 @@ class CasePlayer:
     # -- the case -------------------------------------------------------------------------------
     def play(self):
         case, threads = self.table.open(self.case_id)
+        self.case_file = case or self.case_file
         self.log.bind(self.table.session_id)
         self.log("case", case_id=self.case_id, session_id=self.table.session_id, case=case, run=self.run)
         if self.table.done:  # resumed a case that had already ended
@@ -123,6 +127,13 @@ class CasePlayer:
                 self.log(kind, error={"status": e.status, "detail": e.detail})
             except Exception as e:
                 self.log(kind, error=str(e))
+        if self.archive:
+            try:
+                path = archive_session(self.client, sid, self.case_file or {}, self.archive, self.run)
+                self.log("archived", path=str(path))
+            except Exception as e:  # the JSONL log still has everything
+                log.exception("%s: archiving session %s failed", self.case_id, sid)
+                self.log("error", detail=e, where="archive")
         return result
 
     # -- one supplier thread --------------------------------------------------------------------
@@ -314,8 +325,11 @@ class CasePlayer:
         return subject if subject.lower().startswith("re:") else f"Re: {subject}"
 
 
-def play_case(client, case_id, agent, *, case=None, deadline=None, log=None, hold_at=HOLD_AT_S, run=None):
+def play_case(client, case_id, agent, *, case=None, deadline=None, log=None, hold_at=HOLD_AT_S, run=None, archive=None):
     """Play one case to its end with every thread at once; returns the result. `run`: the settings
-    it ran with (agent, params, ...), logged on the case line."""
-    player = CasePlayer(client, case_id, agent, case=case, deadline=deadline, log=log, hold_at=hold_at, run=run)
+    it ran with (agent, params, ...), logged on the case line. `archive`: a folder - each ended
+    session is also saved there as one JSON file (see log.archive_session)."""
+    player = CasePlayer(
+        client, case_id, agent, case=case, deadline=deadline, log=log, hold_at=hold_at, run=run, archive=archive
+    )
     return player.play()

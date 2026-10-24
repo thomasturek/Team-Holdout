@@ -8,9 +8,17 @@ and calibration data. Sandbox sessions do not count against the practice quota.
 
 Episode n plays case n % len(cases) with parameter set (n // len(cases)) % len(sets), so every set
 meets every case in turn. explore.json is read again before each session: edit it while the
-harvester runs. Each session is logged in runs/sandbox/<case>/<session>.jsonl (docs/LOGS.md) with
-the agent and parameter set on its `case` line. Before it starts, the harvester also saves the
-sandbox and practice case files to runs/cases/<set>.json (listing cases costs no quota).
+harvester runs.
+
+Probes: every --probe-every'th session (default 3; 0 = none) is a probe - the same policy, but it
+pushes once past a final offer, or proposes one of the case's payment terms on every term sheet,
+or both (agent.probes). Probes are marked `run.probe` everywhere, so they can be left out.
+
+Each ended session is saved as one JSON file in runs/sandbox_sessions/ (case file, every
+supplier's thread exactly as the API returns it, result; see log.archive_session), and logged in
+detail in runs/sandbox/<case>/<session>.jsonl (decisions, timings; docs/LOGS.md). Before it starts,
+the harvester also saves the sandbox and practice case files to runs/cases/<set>.json (listing
+cases costs no quota).
 
 The key allows 10 open sessions for the whole team: keep --parallel below that (default 8) while
 someone else plays practice. Ctrl+C stops starting new sessions and lets the running ones finish;
@@ -31,7 +39,7 @@ from concurrent.futures import ThreadPoolExecutor
 from arena_kit.client import ArenaClient, ArenaError
 
 from . import env
-from .agent import explore_params, new_agent
+from .agent import explore_params, probe_agent, probes
 from .log import SessionLog, summary
 from .threads import play_case
 
@@ -63,8 +71,11 @@ def version(sets):
 
 
 class Harvester:
-    def __init__(self, client, *, agent="policy", parallel=8, set_="sandbox", case_ids=None, root=env.RUNS):
+    def __init__(
+        self, client, *, agent="policy", parallel=8, set_="sandbox", case_ids=None, root=env.RUNS, probe_every=3
+    ):
         self.client, self.agent, self.parallel, self.set, self.root = client, agent, parallel, set_, root
+        self.probe_every, self.archive = probe_every, root / f"{set_}_sessions"
         cases = client.cases(set_)
         self.cases = [c for c in cases if case_ids is None or c["case_id"] in case_ids]
         if not self.cases:
@@ -72,7 +83,7 @@ class Harvester:
         self.id = time.strftime("%Y%m%d-%H%M%S-") + uuid.uuid4().hex[:4]
         self.stop = threading.Event()
         self._n, self._lock = itertools.count(), threading.Lock()
-        self.results = []  # (params_index, case_id, score or None, deal)
+        self.results = []  # (label: "set <i>" or "probe ...", case_id, score or None, deal)
 
     def run(self, sessions=None, until=None):
         """Play until `sessions` have started, `until` (time.time()) has passed, or stop is set."""
@@ -101,18 +112,21 @@ class Harvester:
         sets = explore_params()
         case = self.cases[n % len(self.cases)]
         index = (n // len(self.cases)) % len(sets)
-        params = sets[index]
+        params, probe = sets[index], self.probe(n, case)
         run = {
             "agent": self.agent,
             "params": params,
             "params_index": index,
             "explore": version(sets),
+            "probe": probe,
             "harvest": self.id,
             "episode": n,
         }
+        label = f"probe {label_of(probe)}" if probe else f"set {index}"
         lg = SessionLog(self.set, case["case_id"], root=self.root)
         try:
-            result = play_case(self.client, case["case_id"], new_agent(self.agent, params), case=case, log=lg, run=run)
+            agent = probe_agent(self.agent, params, probe or {})
+            result = play_case(self.client, case["case_id"], agent, case=case, log=lg, run=run, archive=self.archive)
         except ArenaError as e:
             lg("error", status=e.status, detail=e.detail, where="harvest")
             wait = BUSY_WAIT_S if e.status == 429 else ERROR_WAIT_S
@@ -127,15 +141,29 @@ class Harvester:
         finally:
             lg.close()
         with self._lock:
-            self.results.append((index, case["case_id"], result.get("score"), result.get("deal")))
-        log.info("#%d set %d  %s", n, index, summary(lg.path))
+            self.results.append((label, case["case_id"], result.get("score"), result.get("deal")))
+        log.info("#%d %s  %s", n, label, summary(lg.path))
+
+    def probe(self, n, case):
+        """The probe variant episode n plays, or None for a plain session."""
+        if not self.probe_every or n % self.probe_every != self.probe_every - 1:
+            return None
+        variants = probes(case)
+        return variants[(n // self.probe_every) % len(variants)]
+
+
+def label_of(probe):
+    parts = (["push past final"] if probe.get("push_final") else []) + (
+        [f"{probe['payment_days']}d payment"] if "payment_days" in probe else []
+    )
+    return " + ".join(parts)
 
 
 def report(results):
-    """Mean score per parameter set and case."""
+    """Mean score per parameter set (or probe) and case."""
     by = {}
-    for index, case_id, score, _ in results:
-        by.setdefault((index, case_id), []).append(score or 0.0)
+    for label, case_id, score, _ in results:
+        by.setdefault((label, case_id), []).append(score or 0.0)
     return [(i, c, len(v), round(statistics.mean(v), 3)) for (i, c), v in sorted(by.items())]
 
 
@@ -146,6 +174,7 @@ def main(argv=None):
     ap.add_argument("--sessions", type=int, help="stop after this many sessions")
     ap.add_argument("--hours", type=float, help="stop after this many hours")
     ap.add_argument("--cases", nargs="*", help="only these case ids (default: every sandbox case)")
+    ap.add_argument("--probe-every", type=int, default=3, help="every n-th session is a probe (0: none)")
     ap.add_argument("-v", "--verbose", action="store_true")
     args = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s", datefmt="%H:%M:%S")
@@ -156,14 +185,17 @@ def main(argv=None):
     client = ArenaClient()
     saved = save_cases(client)
     log.info("case files saved to %s: %s", env.RUNS / "cases", saved)
-    h = Harvester(client, agent=args.agent, parallel=min(args.parallel, 10), case_ids=args.cases)
+    h = Harvester(
+        client, agent=args.agent, parallel=min(args.parallel, 10), case_ids=args.cases, probe_every=args.probe_every
+    )
     until = time.time() + args.hours * 3600 if args.hours else None
     log.info("harvest %s: %s, %d parameter set(s), %d at once", h.id, [c["case_id"] for c in h.cases],
              len(explore_params()), h.parallel)  # fmt: skip
     results = h.run(args.sessions, until)
     print(f"\n{len(results)} sessions")
-    for index, case_id, n, mean in report(results):
-        print(f"set {index:3d}  {case_id}  sessions {n:4d}  mean score {mean}")
+    for label, case_id, n, mean in report(results):
+        print(f"{label:32s}  {case_id}  sessions {n:4d}  mean score {mean}")
+    print(f"sessions saved in {h.archive}")
 
 
 if __name__ == "__main__":

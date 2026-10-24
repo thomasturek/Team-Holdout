@@ -16,7 +16,7 @@ import os
 import threading
 
 from arena_kit.docs import standard_terms
-from arena_kit.play import latest, moves_left, standing
+from arena_kit.play import closing_move, latest, moves_left, standing
 
 from .env import ROOT
 
@@ -80,6 +80,52 @@ class PolicyAgent:
             states = {sid: self._state(case, sid, ev) for sid, ev in threads.items()}
             decision = self.policy.closing(case, states)
         return to_message(decision, threads[decision.supplier_id])
+
+
+class PaymentProbe:
+    """Harvest probe: every term sheet the agent sends proposes `payment_days` (one of the case's
+    options) instead of what the agent chose - how do suppliers price other payment terms?"""
+
+    def __init__(self, agent, payment_days):
+        self.agent, self.days = agent, payment_days
+
+    def decide(self, case, threads, supplier_id):
+        d = self.agent.decide(case, threads, supplier_id)
+        msg = d["message"]
+        if not msg.get("term_sheets") or "payment_days" not in case["negotiable"]:
+            return d
+        sheets = []
+        for ts in msg["term_sheets"]:
+            terms = {**ts["terms"], "payment_days": self.days}
+            if terms not in [s["terms"] for s in sheets]:  # sheets that differed only in payment days
+                sheets.append({**ts, "terms": terms})
+        trace = {**(d.get("trace") or {}), "probe": {"payment_days": self.days, "agent_sheets": msg["term_sheets"]}}
+        return {**d, "message": {**msg, "term_sheets": sheets}, "trace": trace}
+
+    def closing(self, case, threads):
+        if hasattr(self.agent, "closing"):
+            return self.agent.closing(case, threads)
+        return closing_move(case, threads)
+
+
+def probes(case):
+    """The probe variants for a case: push past a final offer; propose each payment term the case
+    allows; both together."""
+    days = case.get("term_options", {}).get("payment_days") or [] if "payment_days" in case["negotiable"] else []
+    return [
+        {"push_final": True},
+        *({"payment_days": d} for d in days),
+        *({"push_final": True, "payment_days": d} for d in days),
+    ]
+
+
+def probe_agent(name, params, probe):
+    """An agent for a probe variant: push_final through the policy's own parameter, payment days
+    through PaymentProbe."""
+    if probe.get("push_final"):
+        params = {**(params or {}), "push_final": 1.0}  # the policy pushes once after a final offer
+    agent = new_agent(name, params)
+    return PaymentProbe(agent, probe["payment_days"]) if "payment_days" in probe else agent
 
 
 def to_message(decision, events):

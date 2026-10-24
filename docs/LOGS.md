@@ -26,6 +26,28 @@ the sandbox and practice case files to `runs/cases/sandbox.json` and `runs/cases
 (what `sim/env.py` loads). Until the Scout and Diplomat are wired in, the policy plays without
 supplier profiles (`profile` is `{}`) and with a fixed template e-mail.
 
+**Probes.** Every 3rd session (`--probe-every 3`, `0` = none) is a probe: the same policy, but it
+pushes once past a final offer (`push_final` forced on), or proposes one of the case's
+`payment_days` options on every term sheet, or both - cycling through the variants. Probe sessions
+carry `run.probe`, e.g. `{"push_final": true, "payment_days": 30}` (`null` for plain sessions), so
+they can be studied or left out. In a payment probe the `decision` trace keeps the policy's own
+sheets under `trace.probe.agent_sheets`.
+
+## One JSON file per sandbox session: `runs/sandbox_sessions/`
+
+Each ended session is also saved as one file, `runs/sandbox_sessions/<ended at>_<case>_<session>.json`
+(sorted by time), everything fetched from the API after the end:
+
+| key | |
+|---|---|
+| `session_id`, `case_id`, `set`, `saved_at`, `end_reason`, `replay_url` | |
+| `run` | the settings it ran with, as on the JSONL `case` line (parameter set, probe, harvest id) |
+| `case` | the case file |
+| `threads` | `{supplier_id: GET /v1/sessions/{sid}/threads/{supplier_id}}` exactly as returned: `messages` (every e-mail both ways, in order), `status`, `closed`, `offer_id`, `timeouts` |
+| `result` | the session result (deal, terms, `c_open`, `c_deal`, `c_alt`, `c_best`, `score`, `cost_breakdown`) with the `trace` |
+
+Attachment text and our timings and decisions are only in the JSONL logs below.
+
 ## Reading them
 
 ```python

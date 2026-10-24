@@ -111,6 +111,33 @@ def iter_logs(set_=None, root=RUNS):
     return sorted(Path(root).glob(pattern), key=lambda p: p.stat().st_mtime)
 
 
+# -- one JSON file per ended session ------------------------------------------------------------
+def archive_session(client, session_id, case, folder, run=None):
+    """The whole session as one JSON file in `folder`, everything as the API returns it after the
+    end: the case file, each supplier's thread (GET .../threads/{supplier}: every message, both
+    directions, in order, plus the timeout answers) and the result (with the trace where the set
+    shows it). File name: <ended at>_<case>_<session>.json, so the folder sorts by time."""
+    state = client.session(session_id)
+    suppliers = list(state.get("threads") or case.get("suppliers") or [])
+    doc = {
+        "session_id": session_id,
+        "case_id": state.get("case_id") or case.get("case_id"),
+        "set": state.get("set"),
+        "saved_at": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+        "run": run or {},
+        "case": case,
+        "threads": {sid: client.thread(session_id, sid) for sid in suppliers},
+        "result": state.get("result"),
+        "end_reason": state.get("end_reason"),
+        "replay_url": state.get("replay_url"),
+    }
+    folder = Path(folder)
+    folder.mkdir(parents=True, exist_ok=True)
+    path = folder / f"{time.strftime('%Y%m%d-%H%M%S')}_{safe(doc['case_id'])}_{safe(session_id)}.json"
+    path.write_text(json.dumps(doc, indent=1, ensure_ascii=False, default=_default), encoding="utf-8")
+    return path
+
+
 # -- after the end: trace and back office -----------------------------------------------------
 def _session_id(events):
     return next((e.get("session_id") for e in events if e["kind"] == "case" and e.get("session_id")), None)
