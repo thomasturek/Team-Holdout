@@ -15,6 +15,8 @@ lever values in €, every verified claim); you never pick offers, rank claims f
 strategy. The Analyst never reads the raw data; it gets everything through your outputs, including
 the per-supplier statistics it needs to build its training population (`profile_all()` below).
 
+
+
 **Tasks, in priority order**
 
 P0 - must exist by Saturday evening
