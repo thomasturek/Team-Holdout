@@ -368,10 +368,11 @@ def profile_all(path=PROFILES_FILE, write=True):
     """Profiles of every detailed supplier x part: {"as_of", "profiles": {supplier: {part: profile}}}.
     The Analyst's input for its training population; the agent's lookup table at run time."""
     from .claims import supplier_claims
+    from .memory import apply_memory
 
     out = {"as_of": AS_OF, "profiles": {}}
     for sid, part in pairs():
-        p = supplier_profile(sid, part)
+        p = apply_memory(supplier_profile(sid, part), sid, [part])
         if p:
             p["claims"] = [asdict(c) for c in supplier_claims(sid, part)]  # for the review; cases build their own
             out["profiles"].setdefault(sid, {})[part] = p
@@ -440,15 +441,33 @@ def lookup_profile(supplier_id, part_id, path=PROFILES_FILE):
     return apply_overrides(json.loads(json.dumps(p)), supplier_id, part_id)  # a copy: the cache stays clean
 
 
+def bundle_floor(case, part_id):
+    """(floor, confidence, source) for a bundle: its unit_price is per kit, so the floor comes from
+    today's kit price (the case's current_unit_price) x the cost-to-price ratio, never above it."""
+    price = (case.get("buyer") or {}).get("current_unit_price")
+    if not price:
+        return None, None, None
+    category = (_rows("SELECT category FROM parts WHERE id = ?", (part_id,)) or [{}])[0].get("category")
+    ratios = _cost_to_price()
+    return round(price * min(1.0, ratios.get(category, ratios["all"])), 4), MARKET_CONFIDENCE, "bundle_current_price"
+
+
 def profile(case, path=PROFILES_FILE):
-    """Profile per supplier for the case's first part, plus ``floor_by_part`` for bundles."""
+    """Profile per supplier for the case: the first part's profile with the case's floor - the kit
+    price for bundles (``floor_by_part`` keeps the parts' own floors) - and the supplier memory."""
+    from .memory import apply_memory
+
     parts = case.get("parts") or [None]
     out = {}
     for sid in case.get("suppliers", []):
         p = lookup_profile(sid, parts[0], path)
         if p and len(parts) > 1:
             p["floor_by_part"] = {part: (lookup_profile(sid, part, path) or {}).get("floor_estimate") for part in parts}
-        out[sid] = p
+            for k in ("floor_computed", "floor_computed_source", "memory"):  # the first part's, not the kit's
+                p.pop(k, None)
+            est, conf, source = bundle_floor(case, parts[0])
+            p.update(floor_estimate=est, floor_confidence=conf, floor_source=source)
+        out[sid] = apply_memory(p, sid, parts) if p else p
     return out
 
 

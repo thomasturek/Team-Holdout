@@ -77,6 +77,8 @@ CASH_RE = _re(
     r"pay (?:our invoices |the invoices |us )?late",
     r"late payments?",
     r"paid late",
+    r"\bhausbank\b",
+    r"kürzere(?:s|n)? zahlungsziel",
 )
 CAPACITY_RE = _re(
     r"fully booked",
@@ -96,6 +98,7 @@ CAPACITY_RE = _re(
     r"longer (?:lead|delivery) times",
     r"(?:lead|delivery) times? (?:have|has) (?:been )?(?:extended|increased)",
     r"only against a binding",
+    r"\bfully (?:loaded|utili[sz]ed|occupied)\b",
     r"ausgelastet",
     r"kapazitätsengpass",
     r"keine (?:freien )?kapazität",
@@ -117,6 +120,10 @@ FINAL_RE = _re(
     r"final position",
     r"absolute (?:limit|minimum)",
     r"take it or leave it",
+    r"reached the (?:end|limit) of what we can",
+    r"\bwould rather (?:decline|walk away|not (?:take|accept) (?:the|this) (?:order|business))",
+    r"(?<!kein )(?<!nicht unser )\bunser letztes wort",
+    r"weiter können wir (?:\w+ ){0,3}nicht",
 )
 # forward-looking only: "head office has frozen prices" is a fact, not a pending approval
 APPROVAL_RE = _re(
@@ -137,6 +144,8 @@ APPROVAL_RE = _re(
     r"exceeds my (?:authority|mandate)",
     r"beyond my (?:authority|mandate)",
     r"freigabe",
+    r"decision is not (?:mine|ours|my own) alone",
+    r"present (?:it|this|your \w+) to (?:him|her|our (?:owner|management|managing director|board|director|boss))",
 )
 APPROVED_RE = _re(
     r"(?:has|have) (?:now )?(?:been )?approved",
@@ -212,6 +221,9 @@ IRRITATED_RE = _re(
     r"no longer willing",
     r"no basis for (?:further|any)",
     r"withdraw (?:our|the) (?:offer|quote)",
+    r"with all due respect",
+    r"for the (?:third|fourth|fifth|umpteenth) time",
+    r"(?:third|fourth|fifth) time (?:that )?we (?:have to |must )?explain",
 )
 WARM_RE = _re(
     r"\bpleasure\b",
@@ -225,6 +237,8 @@ WARM_RE = _re(
     r"we value",
     r"gerne",
     r"gern ",
+    r"look forward to (?:continuing|our|working)",
+    r"good (?:cooperation|collaboration|partnership)",
 )
 # Rules for asks: phrases only (bare words like "volume" or "payment terms" also appear when a
 # supplier merely states its terms)
@@ -241,6 +255,7 @@ ASK_RULES = (
         r"\bskonto",
         r"shorter payment (?:terms?|target)",
         r"payment helps our cash",
+        r"kürzere(?:s|n)? zahlungsziel",
     )),
     ("volume", _re(
         r"(?:more|additional|higher|larger|extra) (?:volume|parts|quantities|business|work)",

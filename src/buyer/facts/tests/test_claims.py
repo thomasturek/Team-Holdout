@@ -54,7 +54,8 @@ def test_notice_only_when_the_letter_gives_less_than_the_contract():
 
 def test_kinds_present():
     keys = {k.key.split(":")[0] for c in PRACTICE for k in claims(c)}
-    assert {"index", "notice", "otd", "ppm", "po", "po_rival"} <= keys
+    assert {"index", "notice", "otd", "ppm", "po"} <= keys
+    assert "po_rival" not in keys  # the arena rates other suppliers' orders irrelevant
 
 
 def test_wrong_figure_is_contradicted():
@@ -154,3 +155,11 @@ def test_dropped_claims_never_come_back(monkeypatch):
     monkeypatch.setattr(cl, "_dropped", lambda sid: {"otd:sup:70110"})
     keys = {c.key for c in claims(P01, "sup:70110")}
     assert "otd:sup:70110" not in keys and "ppm:sup:70110" in keys
+
+
+def test_other_suppliers_orders_are_irrelevant():
+    """P18 replay: "The price history data you cite does not concern this part or our company"."""
+    s = ("We also buy it at EUR 128.42 on 2024-10-04 (po:4500011493-10) and EUR 126.53 on 2026-09-21 "
+         "(po:4500014428-10).")  # sup:70110's orders
+    assert check(P01, "sup:70110", s) == "verified"
+    assert check(P01, "sup:70140", s) == "irrelevant"
