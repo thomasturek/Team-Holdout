@@ -11,7 +11,7 @@ from buyer.runtime.agent import new_agent
 from buyer.runtime.log import SessionLog, read
 from buyer.runtime.threads import play_case
 
-READER_S = 0.5
+READER_S = 2.0  # far above a loaded machine's move time, so "did not wait" and "waited" never overlap
 ANSWER = json.dumps({"tone": "warm", "cash_pressure": True, "asks": ["faster payment"]})
 
 
@@ -29,23 +29,25 @@ def slow_reader():
     yield
 
 
-def play(client, tmp_path):
+def play(client, tmp_path, agent=None):
     lg = SessionLog("sim", "case:S01", root=tmp_path)
-    assert play_case(client, "case:S01", new_agent("policy"), log=lg)["ended"]
+    assert play_case(client, "case:S01", agent or new_agent("policy"), log=lg)["ended"]
     events = read(lg.path)
     return [e for e in events if e["kind"] == "sent"], [e for e in events if e["kind"] == "decision"]
 
 
 def test_the_llm_reader_does_not_delay_the_move(sim, tmp_path, slow_reader):
     client, _, _ = sim
-    sent, decisions = play(client, tmp_path)
+    agent = new_agent("policy")
+    sent, decisions = play(client, tmp_path, agent)
     later = [e["decide_s"] for e in sent[1:]]  # the first move also loads the case's profiles and data, once
     assert later and max(later) < READER_S / 2, later
     llm = [d["trace"]["diplomat"].get("reader_llm") or d["trace"]["diplomat"].get("reader_llm_previous")
            for d in decisions]  # fmt: skip
-    assert llm and all(r for r in llm)
-    done = [r for r in llm if not r.get("pending")]
-    assert done and all(r["source"].startswith("llm") and r["signals"]["tone"] == "warm" for r in done)
+    assert llm and all(r for r in llm)  # each move logs the LLM reading, or that it is still running
+    time.sleep(READER_S + 1.0)  # the background readings finish after the (instant) simulated game
+    readings = list(agent.llm_readings.values())
+    assert readings and all(r[1].source.startswith("llm") and r[1].signals.tone == "warm" for r in readings)
 
 
 def test_blocking_mode_waits_for_the_llm_reader(sim, tmp_path, slow_reader, monkeypatch):
