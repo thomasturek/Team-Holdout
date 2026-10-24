@@ -1,8 +1,8 @@
 {
-  "open_frac": 0.3,
-  "concede": 0.35,
-  "floor_margin_pct": 4.0,
-  "accept_gap_pct": 1.0,
-  "cash_discount_pct": 1.5,
-  "push_final": 0.0
+  "open_frac": 0.0102,
+  "concede": 0.1911,
+  "floor_margin_pct": 0.0038,
+  "accept_gap_pct": 0.4226,
+  "cash_discount_pct": 1.354,
+  "push_final": 0.0386
 }
