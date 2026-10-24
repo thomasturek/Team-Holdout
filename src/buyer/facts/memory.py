@@ -10,7 +10,8 @@ observed floor, much tighter than any estimate from the data package. The final 
 
 ``memory.json`` sits next to this file and is committed (``runs/`` is not), so the final machine
 has it. ``apply_memory(profile, supplier, parts)`` is called by ``profile(case)``:
-    same supplier, same parts   floor = the observed best price (confidence 3 %)
+    same supplier, same parts   floor = the observed best price (confidence 3 %); a relationship charge
+                                we paid gives its full cost exactly (``full_cost_observed``)
     same supplier, other parts  floor x (observed best / our estimate) of its logged cases
     RFQ                         the best price of the case caps every bidder's floor for that part
 """
@@ -23,7 +24,8 @@ import statistics
 from functools import lru_cache
 from pathlib import Path
 
-from arena_kit.cost import total_cost
+from arena_kit.cost import relationship_cost, total_cost
+from arena_kit.docs import standard_terms
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 SESSIONS = REPO_ROOT / "runs" / "practice_sessions"
@@ -68,7 +70,35 @@ def observation(doc: dict) -> dict | None:
         "deal_price": r["terms"]["unit_price"],
         "best_price": best_price(case, r["terms"], r["c_best"]),
         "score": r.get("score"),
+        "terms": r["terms"],
+        "standard": standard_terms(thread.get("messages") or []) or {},
+        "relationship": (r.get("cost_breakdown") or {}).get("relationship") or 0.0,
+        "case": case,
     }
+
+
+def implied_full_cost(o: dict, profile: dict) -> float | None:
+    """The supplier full cost at which the arena's relationship charge for this deal is what we paid
+    (bisection; our estimate of its cash rate and standard terms). None without a charge."""
+    from .costing import relationship_case, supplier_estimate
+
+    if o["relationship"] <= 1.0 or not relationship_case(o["case"]):
+        return None
+    base = supplier_estimate(o["case"], {**profile, "full_cost_observed": 1.0}, o["standard"])
+    if base is None:
+        return None
+
+    def charge(full_cost):
+        return relationship_cost(o["case"], o["terms"], o["standard"], {**base, "full_cost": full_cost})
+
+    lo, hi = 0.3 * o["deal_price"], 1.5 * o["deal_price"]  # the charge rises with the full cost
+    for _ in range(80):
+        mid = (lo + hi) / 2
+        if charge(mid) < o["relationship"]:
+            lo = mid
+        else:
+            hi = mid
+    return round((lo + hi) / 2, 4)
 
 
 def observations(folder: Path = SESSIONS) -> list[dict]:
@@ -95,15 +125,17 @@ def build(folder: Path = SESSIONS, path: Path = MEMORY_FILE, write: bool = True)
         o = obs[-1]
         best = round(statistics.median(x["best_price"] for x in obs), 4)
         rfq = len(o["bidders"]) > 1
-        estimate = None
+        estimate, p = None, {}
         if len(o["parts"]) == 1:  # the data-only estimate, before any memory
             p = lookup_profile(o["supplier_id"], o["parts"][0]) or {}
             estimate = p.get("floor_computed") or p.get("floor_estimate")
+        implied = [f for f in (implied_full_cost(x, p) for x in obs if not rfq) if f]
         entries[k] = {
             "supplier_id": o["supplier_id"], "parts": o["parts"], "type": o["type"], "rfq": rfq,
             "best_price": best, "deal_price": o["deal_price"], "opening_price": o["opening_price"],
             "estimate": estimate, "sessions": [x["session_id"] for x in obs],
             "cases": sorted({x["case_id"] for x in obs}), "scores": [x["score"] for x in obs],
+            "full_cost_observed": round(statistics.median(implied), 4) if implied else None,
         }
         if rfq:
             part = "+".join(o["parts"])
@@ -150,6 +182,8 @@ def apply_memory(p: dict, supplier_id: str, parts, memory: dict | None = None) -
     if seen and not seen["rfq"]:
         floor, conf, source = seen["best_price"], OBSERVED_CONFIDENCE, "observed_best"
         p["memory"] = {k: seen[k] for k in ("best_price", "deal_price", "opening_price", "cases", "scores")}
+        if seen.get("full_cost_observed"):
+            p["full_cost_observed"] = seen["full_cost_observed"]
     else:
         bias = supplier_bias(supplier_id, memory)
         if bias is not None and floor is not None:
