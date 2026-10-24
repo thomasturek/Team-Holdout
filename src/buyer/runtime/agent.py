@@ -11,6 +11,9 @@ The runtime asks an agent for one supplier's next move at a time (see `threads.p
           goes out as an e-mail written around it. What the harvester plays, with the parameter sets
           from explore.json. Without an LLM (LLM_DISABLED=1, no LLM_MODEL or no key) the Diplomat
           uses its keyword rules and its template e-mail - the cheap mode for harvesting.
+          BUYER_POLICY picks the policy: v1 (default) = Policy V0; shadow = V0 plays and Phase 2's
+          safe candidate ranking (src/buyer/policy/v2.py) decides on a copy, only logged; v2 = V2
+          plays, with V0 as its fallback. Closing near the cap is always V0's.
 
 One move of the policy agent, inside MOVE_BUDGET_S from the call (threads.py allows 25 s from the
 supplier's reply): read the reply with the keyword rules (milliseconds) -> policy (plain code, under
@@ -22,6 +25,7 @@ old order (LLM reader first, then policy and writer). The LLM calls run outside 
 threads of an RFQ never wait for each other.
 """
 
+import copy
 import dataclasses
 import json
 import logging
@@ -40,6 +44,7 @@ EXPLORE = ROOT / "src" / "buyer" / "policy" / "explore.json"
 MOVE_BUDGET_S = 23.0  # reader + policy + writer, from the call; threads.DECIDE_BUDGET_S (25) runs from the reply
 READER_BUDGET_S = 10.0  # DIPLOMAT.md: the reader answers in < 10 s, else its keyword rules
 CLOSING_BUDGET_S = 8.0  # near the wave's cap: accept / walk need no LLM; a rare closing e-mail must be quick
+CLAIMS_PER_MESSAGE = 2  # V2: verified claims per e-mail (the arena checks up to 3; fewer keeps the e-mail short)
 
 
 class PerThread:
@@ -71,6 +76,17 @@ class PolicyAgent:
         self.blocking_reader = os.environ.get("BUYER_READER", "parallel").strip().lower() == "blocking"
         self._data, self._data_tried = None, False  # the Scout's CaseData: which IDs exist (writer's known_id)
         self._init_lock = threading.Lock()  # loading profiles and data once per case, outside the policy's lock
+        self.mode, self.v2 = policy_mode(), None  # BUYER_POLICY: v1 (default) | shadow | v2
+        if self.mode != "v1":
+            try:
+                from buyer.policy.v2 import PolicyV2
+
+                self.v2 = PolicyV2(self.policy)
+            except Exception:
+                log.exception("V2 could not be built - playing V1")
+                self.mode = "v1"
+        self.claim_banks = None  # V2: the Scout's verified claims per supplier, built once per case
+        self.used_refs = {}  # supplier -> IDs already cited to it (a claim is never repeated)
 
     def _state(self, case, sid, events):
         from buyer.policy.policy import ThreadState
@@ -108,13 +124,54 @@ class PolicyAgent:
                 o for o in states.values() if o is not t and o.standing_id and o.status not in ("walked_away", "no_bid")
             ]
             rival = min((self.policy.cost(case, o) for o in live), default=math.inf)
-            decision = self.policy.decide(case, t, rival_best_c=rival)
+            decision, policy_trace = self._decide(case, threads, t, rival)
             profile = self._writer_profile(case, decision.supplier_id)
         move, email = self._message(case, threads, decision, profile, reading, deadline)
         diplomat = diplomat_trace(reading, email)
         diplomat.update(self._llm_reading_trace(supplier_id, len(threads[supplier_id])))
-        trace = {"decision": decision, "rival_best_c": rival, "diplomat": diplomat}
+        trace = {"decision": decision, "rival_best_c": rival, "diplomat": diplomat, "policy_mode": self.mode,
+                 **policy_trace}  # fmt: skip
         return {**move, "trace": trace}
+
+    # -- V1 / shadow / V2 -----------------------------------------------------------------------
+    def _decide(self, case, threads, t, rival):
+        """The move and what to log about it. v1: Policy V0. shadow: V0 plays, V2 decides on a copy
+        and is only logged. v2: V2's PolicySelection; any V2 error plays V0. Under the lock."""
+        if self.v2 is None:
+            return self.policy.decide(case, t, rival_best_c=rival), {}
+        from buyer.policy.v2 import selection_trace
+
+        sid = t.supplier_id
+        ctx = {"known_id": self._known_id(case, threads), "used_refs": set(self.used_refs.get(sid, ()))}
+        claims = self._claims_for(sid)
+        if self.mode == "shadow":
+            before = copy.deepcopy(t)
+            decision = self.policy.decide(case, t, rival_best_c=rival)
+            try:
+                sel = self.v2.select(case, before, rival, claims=claims, ctx=ctx)  # `before` is thrown away
+                return decision, {"shadow": {**selection_trace(sel), "agrees": same_move(decision, sel.decision)}}
+            except Exception as e:  # the shadow never touches the real move
+                log.exception("%s: shadow V2 failed", sid)
+                return decision, {"shadow": {"error": f"{type(e).__name__}: {e}"}}
+        before = copy.deepcopy(t)
+        try:
+            sel = self.v2.select(case, t, rival, claims=claims, ctx=ctx, commit=True)
+            return sel.decision, {"v2": selection_trace(sel)}
+        except Exception as e:
+            log.exception("%s: V2 failed - V0 plays this move", sid)
+            for f in dataclasses.fields(before):  # a half-done V2 must not leave its marks
+                setattr(t, f.name, getattr(before, f.name))
+            decision = self.policy.decide(case, t, rival_best_c=rival)
+            return decision, {"v2": {"policy_source": "v1_fallback", "error": f"{type(e).__name__}: {e}"}}
+
+    def _claims_for(self, sid):
+        """Up to CLAIMS_PER_MESSAGE verified claims for this supplier that cite nothing already cited."""
+        bank = (self.claim_banks or {}).get(sid) or []
+        if not bank:
+            return []
+        from buyer.facts.claims import compatible
+
+        return compatible(bank, set(self.used_refs.get(sid, ())), limit=CLAIMS_PER_MESSAGE)
 
     def closing(self, case, threads):
         start = time.monotonic()
@@ -202,6 +259,8 @@ class PolicyAgent:
         if decision.kind == "send":
             with self._lock:
                 self.last_sent[decision.supplier_id] = decision
+                refs = {r for c in decision.claims or [] for r in (getattr(c, "refs", None) or [])}
+                self.used_refs.setdefault(decision.supplier_id, set()).update(refs)
         return move, email
 
     def _warm(self, case):
@@ -214,6 +273,10 @@ class PolicyAgent:
                     if self.profiles is None:
                         self.profiles = profiles
             self._case_data(case)
+            if self.v2 is not None and self.claim_banks is None:
+                banks = scout_claims(case, self._data)
+                with self._lock:
+                    self.claim_banks = banks
 
     def _case_data(self, case):
         """The Scout's CaseData for this case (case facts, Sunday release, package), or None."""
@@ -293,6 +356,39 @@ def probe_agent(name, params, probe):
         params = {**(params or {}), "push_final": 1.0}  # the policy pushes once after a final offer
     agent = new_agent(name, params)
     return PaymentProbe(agent, probe["payment_days"]) if "payment_days" in probe else agent
+
+
+POLICY_MODES = ("v1", "shadow", "v2")
+
+
+def policy_mode():
+    """BUYER_POLICY: v1 (default, Policy V0) | shadow (V0 plays, V2 is logged) | v2 (V2 plays).
+    One environment variable returns the agent to V1 (docs/PHASE2_SAFE_ARCHITECTURE.md, O1)."""
+    mode = (os.environ.get("BUYER_POLICY") or "v1").strip().lower()
+    if mode not in POLICY_MODES:
+        log.warning("BUYER_POLICY=%r is not one of %s - playing v1", mode, POLICY_MODES)
+        return "v1"
+    return mode
+
+
+def same_move(a, b):
+    """Two Decisions make the same move: same action, and for a send the same lead term sheet."""
+    if a.kind != b.kind:
+        return False
+    if a.kind == "send":
+        return (a.term_sheets or [None])[0] == (b.term_sheets or [None])[0]
+    return a.accept_sheet_id == b.accept_sheet_id
+
+
+def scout_claims(case, data=None):
+    """The Scout's verified claims per supplier (strongest first); {} if the facts layer fails."""
+    try:
+        from buyer.facts.claims import claims
+
+        return {sid: claims(case, sid, data=data) for sid in case.get("suppliers", [])}
+    except Exception:
+        log.exception("claim bank failed - V2 plays without claims")
+        return {}
 
 
 def scout_profiles(case):

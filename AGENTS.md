@@ -93,15 +93,22 @@ src/buyer/
     profile.py              SupplierProfile builder
     claims.py               Claim bank: verified sentences with IDs
     costing.py              thin wrappers over arena_kit.cost (C, deltas, lever values)
+    shield.py               Phase 2: the one validator for candidates + their euro features
   policy/                   ANALYST
     policy.py               Policy class: decide(state) -> Decision
     params.json             trained parameters (versioned, committed)
+    candidates.py           Phase 2: safe candidate actions (v0, price steps, cash trade, accept, walk)
+    ranker.py               Phase 2: ensemble ranker (ranker.json = trained weights; prior without it)
+    ood.py                  Phase 2: confidence + reasons; low confidence -> Policy V0
+    v2.py                   Phase 2: PolicyV2.select -> PolicySelection
+    report.py               Phase 2: shadow / v2 evidence from the run logs
   sim/                      ANALYST
     supplier.py             SyntheticSupplier
     population.py           sampling of hidden supplier settings
     env.py                  episode runner using real case files + cost.py scoring
     train.py                optimiser (CMA-ES / random search)
     calibrate.py            fit population ranges to logged real runs
+    compare.py              Phase 2: V1 vs V2 on the same synthetic suppliers
   llm/                      DIPLOMAT
     client.py               provider wrapper, timeouts, fallback
     reader.py               e-mail -> Signals
@@ -171,6 +178,41 @@ class Decision:                     # ANALYST -> DIPLOMAT, OPERATOR
     claims: list[Claim]             # <= 3, never one already used in this case for this supplier
     questions: list[str]            # e.g. "cost breakdown", "earliest lead time"
     intent: str                     # one line for the writer: "firm, appreciative, signal alternatives"
+```
+
+**Phase 2 (branch `feature/safe-candidate-policy`, see [`docs/PHASE2_SAFE_ARCHITECTURE.md`](docs/PHASE2_SAFE_ARCHITECTURE.md)).**
+Code generates safe candidates, the SCOUT's shield checks them, ML ranks them, an uncertainty check
+falls back to Policy V0. `BUYER_POLICY=v1` (default) | `shadow` (V0 plays, V2 only logged) | `v2`.
+Pending the team's agreement (section 9) - V1 stays the default until the activation gate passes.
+
+```python
+@dataclass
+class CandidateAction:              # ANALYST (policy/candidates.py) -> SCOUT (facts/shield.py) -> ANALYST (policy/ranker.py)
+    candidate_id: str               # "v0", "price_step:0.5", "cash_trade", "accept", "walk"
+    kind: str                       # send | accept | walk
+    supplier_id: str
+    term_sheets: list[dict]
+    claims: list[Claim]
+    questions: list[str]
+    intent: str
+    buyer_cost: float | None
+    saving_vs_open: float | None
+    improvement_vs_alternative: float | None
+    supplier_value_estimate: float | None
+    features: dict                  # fixed schema, policy/candidates.features
+    valid: bool                     # passed the shield
+    rejection_reasons: list[str]
+    accept_sheet_id: str | None = None
+    family: str = ""                # v0 | price_step | cash_trade | accept | walk
+
+@dataclass
+class PolicySelection:              # ANALYST (policy/v2.py) -> OPERATOR (logged); the DIPLOMAT gets only .decision
+    decision: Decision
+    policy_source: str              # v2_ml | v2_conservative | v0_fallback | v0_rule
+    confidence: float
+    ood_reasons: list[str]
+    ranked_candidates: list[dict]
+    reason: str = ""
 ```
 
 ---

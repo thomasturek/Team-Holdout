@@ -30,6 +30,16 @@ uv run buyer final                                      # the Live Final: every 
 uv run python -m buyer.runtime.harvest                  # sandbox non-stop for the Analyst (see docs/LOGS.md)
 ```
 
+Switches (environment or `.env`):
+
+```bash
+BUYER_POLICY=v1        # default: Policy V0. shadow = V0 plays, V2 decides on a copy and is only logged;
+                       # v2 = safe candidate ranking plays (docs/PHASE2_SAFE_ARCHITECTURE.md), V0 as fallback
+BUYER_READER=parallel  # default: the LLM reader runs beside the writer; blocking = reader first, then the move
+uv run python -m buyer.policy.report --set sandbox      # V2 evidence: sources, shadow agreement, reasons, latency
+uv run python -m buyer.sim.compare --episodes 200       # V1 vs V2 on the same synthetic suppliers
+```
+
 Logs: `runs/<set>/<case>/<session>.jsonl`, one JSON file per session in `runs/<set>_sessions/`,
 the runner's own log in `runs/runner-<mode>-<time>.log`. Format: [`docs/LOGS.md`](docs/LOGS.md).
 

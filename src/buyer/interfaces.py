@@ -60,3 +60,36 @@ class Decision:  # ANALYST -> DIPLOMAT, OPERATOR
     claims: list[Claim]  # <= 3, never one already used in this case for this supplier
     questions: list[str]  # e.g. "cost breakdown", "earliest lead time"
     intent: str  # one line for the writer: "firm, appreciative, signal alternatives"
+
+
+# --- Phase 2 (docs/PHASE2_SAFE_ARCHITECTURE.md): code generates safe candidates, ML ranks them ---
+
+
+@dataclass
+class CandidateAction:  # ANALYST (generator) -> SCOUT (shield) -> ANALYST (ranker)
+    candidate_id: str  # e.g. "v0", "price_step:0.5", "cash_trade", "accept", "walk"
+    kind: str  # send | accept | walk
+    supplier_id: str
+    term_sheets: list[dict]  # complete, snapped; empty for accept / walk
+    claims: list[Claim]
+    questions: list[str]
+    intent: str
+    buyer_cost: float | None  # C of the primary sheet (send), the standing offer (accept), the alternative (walk)
+    saving_vs_open: float | None  # C_open - buyer_cost
+    improvement_vs_alternative: float | None  # C_alternative - buyer_cost (> 0: beats it)
+    supplier_value_estimate: float | None  # EUR per unit the deal is worth to the supplier (our estimate)
+    features: dict[str, float | int | str | bool]
+    valid: bool  # passed the SCOUT's shield
+    rejection_reasons: list[str]
+    accept_sheet_id: str | None = None  # accept only
+    family: str = ""  # v0 | price_step | cash_trade | accept | walk
+
+
+@dataclass
+class PolicySelection:  # ANALYST -> OPERATOR (logged), DIPLOMAT gets only .decision
+    decision: Decision
+    policy_source: str  # v2_ml | v2_conservative | v0_fallback | v0_rule
+    confidence: float  # 0..1; more uncertainty never raises it
+    ood_reasons: list[str]
+    ranked_candidates: list[dict]  # every candidate: id, family, kind, cost, value, valid, reasons
+    reason: str = ""  # why this candidate was selected
