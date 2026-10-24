@@ -18,6 +18,12 @@ BOUNDS = {
     "min_open_discount_pct": (1.0, 30.0),
     "rival_undercut_pct": (0.0, 5.0),
     "lead_standard": (0.0, 1.0),
+    "reciprocity": (0.0, 1.5),
+    "token_frac": (0.0, 0.6),
+    "stall_limit": (1.0, 5.0),
+    "endgame_moves": (0.0, 3.0),
+    "endgame_frac": (0.0, 0.8),
+    "accept_target_pct": (0.0, 10.0),
 }
 DEFAULTS = {
     "open_frac": 0.3,
@@ -32,6 +38,16 @@ DEFAULTS = {
     "claims_per_msg": 2,
     "claim_min_strength": 0.2,
     "deep_open_pct": 20.0,
+    # reciprocal concessions: our step follows the supplier's last step (in EUR of C), not the gap.
+    # Practice 2026-10-24: suppliers held still in 51 % of their replies; we kept moving anyway.
+    # Off by default (0 = the old fixed `concede` step): it only paid off in the simulator when the whole
+    # set was retrained with it (sim/train.py tunes these keys) - switch on via params.json.
+    "reciprocity": 0.0,  # our step per step of theirs (trained: about 1.1)
+    "token_frac": 0.25,  # first round it holds: a token step (share of the old step) to keep it talking
+    "stall_limit": 3,  # holds of theirs during which we hold too (and change the package instead)
+    "endgame_moves": 1,  # moves left at which one bigger step is allowed
+    "endgame_frac": 0.5,  # that step: share of the remaining gap
+    "accept_target_pct": 0.0,  # accept at or below a sure floor x (1 + this); 0 = off (trained: about 2.3)
 }
 DEEP_OPEN_TYPES = ("raw_material", "rfq")
 
@@ -73,6 +89,11 @@ class ThreadState:
     last_sheet: dict | None = None
     case_type: str | None = None
     dropped: bool = False  # we walked away from this bidder while others played on (no longer a rival)
+    their_costs: list = field(default_factory=list)  # C of each standing offer, in order (reciprocity)
+    seen_ids: list = field(default_factory=list)
+    holds: int = 0  # replies in a row in which the supplier did not move towards us
+    holding: bool = False  # this move we hold our price and change the package instead
+    asked_breakdown: bool = False
 
 
 def load_params(path=PARAMS_FILE):
@@ -102,6 +123,9 @@ class Policy:
         t.case_type = case.get("type")
         self.pick_offer(case, t)
         c_theirs = self.cost(case, t)
+        if t.standing_id not in t.seen_ids:
+            t.seen_ids.append(t.standing_id)
+            t.their_costs.append(c_theirs)
         if t.opening_cost is None:
             t.opening_cost = c_theirs
             t.opening_payment_days = t.standing_terms.get("payment_days")
@@ -113,7 +137,7 @@ class Policy:
             if self.eligible_cost(case, t, include_dropped=True) is not None and t.rounds_left > 1:
                 # it agrees, but an eligible rival is cheaper: keep this bidder in play with a counter priced
                 # against that rival instead of walking away from a valid fallback
-                return self.offer(case, t, self.next_price(t, theirs), rival_best_c=rival_best_c)
+                return self.offer(case, t, self.next_price(t, theirs, case=case), rival_best_c=rival_best_c)
             return Decision("walk", sid)
         if t.status == "final_offer":
             if p["push_final"] > 0.5 and not t.pushed_final and t.rounds_left > 1:
@@ -125,10 +149,12 @@ class Policy:
         close = t.our_costs and c_theirs <= t.our_costs[-1] * (1 + p["accept_gap_pct"] / 100)
         if close and acceptable and c_theirs < t.opening_cost:
             return self.close(case, t, acceptable, c_theirs, rival_best_c)
-        prev = t.last_sheet
-        decision = self.offer(case, t, self.next_price(t, theirs), rival_best_c=rival_best_c)
-        if prev is not None and decision.term_sheets[0] == prev and acceptable:
+        if acceptable and self.at_target(case, t, c_theirs):
             return self.close(case, t, acceptable, c_theirs, rival_best_c)
+        prev = t.last_sheet
+        decision = self.offer(case, t, self.next_price(t, theirs, case=case), rival_best_c=rival_best_c)
+        if prev is not None and decision.term_sheets[0] == prev and acceptable and not t.holding:
+            return self.close(case, t, acceptable, c_theirs, rival_best_c)  # repeating ourselves makes them go final
         return decision
 
     def closing(self, case, threads: dict) -> Decision:
@@ -176,17 +202,54 @@ class Policy:
         floor = t.profile.get("floor_estimate") or theirs * 0.85
         return floor * (1 + self.p["floor_margin_pct"] / 100)
 
-    def next_price(self, t, theirs, step=None):
+    def next_price(self, t, theirs, step=None, case=None):
         discount = self.p["min_open_discount_pct"]
         if t.case_type in DEEP_OPEN_TYPES:
             discount = max(discount, self.p["deep_open_pct"])
         low = min(self.floor_ask(t, theirs), theirs * (1 - discount / 100))
+        t.holding = False
         if not t.our_prices:
             price = low + self.p["open_frac"] * (theirs - low)
         else:
             last = t.our_prices[-1]
-            price = last + (step if step is not None else self.p["concede"]) * (theirs - last)
+            price = last + (step * (theirs - last) if step is not None else self.concession(case, t, theirs, last))
         return round(min(max(price, low), theirs), 2)
+
+    def concession(self, case, t, theirs, last):
+        """Our step in unit price: as large as the supplier's last step towards us (x `reciprocity`,
+        measured in EUR of C so a changed term counts), a token step the first time it holds, nothing
+        while it keeps holding or steps back (we change the package instead), and one bigger step in
+        the endgame. Without a case or with reciprocity 0: the old fixed share of the gap."""
+        p, gap = self.p, theirs - last
+        default = p["concede"] * gap
+        if case is None or p["reciprocity"] <= 0 or len(t.their_costs) < 2:
+            step = default
+        else:
+            slope = total_cost(case, {**t.standing_terms, "unit_price": theirs + 1}, t.standard) - t.their_costs[-1]
+            move = (t.their_costs[-2] - t.their_costs[-1]) / slope if slope > 0 else 0.0  # their step, in price
+            tol = 0.0005 * theirs
+            if move > tol:
+                t.holds = 0
+                step = min(p["reciprocity"] * move, 0.5 * gap)
+            else:
+                t.holds += 1
+                if move < -tol or 1 < t.holds <= round(p["stall_limit"]):
+                    step, t.holding = 0.0, True
+                else:
+                    step = p["token_frac"] * default  # first hold, or a hold past the stall limit
+        if t.rounds_left <= round(p["endgame_moves"]) + 1:
+            step, t.holding = max(step, p["endgame_frac"] * gap), False
+        return step
+
+    def at_target(self, case, t, c_theirs):
+        """Accept without haggling on when the offer is at or below a sure floor (observed, or a
+        supplier-specific should-cost) x (1 + accept_target_pct). An unsure floor never decides."""
+        prof = t.profile or {}
+        floor = prof.get("floor_estimate")
+        if not floor or (prof.get("floor_confidence") or 1.0) > 0.05 or self.p["accept_target_pct"] <= 0:
+            return False
+        target = {**t.standing_terms, "unit_price": floor * (1 + self.p["accept_target_pct"] / 100)}
+        return c_theirs <= total_cost(case, target, t.standard)
 
     def offer(self, case, t, price, intent="firm, appreciative", rival_best_c=math.inf):
         b = case["buyer"]
@@ -244,13 +307,20 @@ class Policy:
         if cash_first:
             sheets.insert(0, sheets.pop(sheets.index(sheet_b)))
         sheets = sheets[:3]
+        questions = []
+        if t.holding:  # same price: lead with another package, ask for its costs once
+            k = t.holds % len(sheets)
+            sheets = sheets[k:] + sheets[:k]
+            intent = "firm on price, open on the other terms"
+            if not t.asked_breakdown:
+                questions, t.asked_breakdown = ["cost breakdown"], True
         t.last_sheet = a
         t.our_prices.append(a["unit_price"])
         t.our_costs.append(total_cost(case, a, t.standard))
         chosen = self.pick_claims(case, t)
         if any(c.key.startswith("rival:") for c in chosen):
             intent = f"{intent}, competition: another offer is on the table"
-        return Decision("send", t.supplier_id, term_sheets=sheets, claims=chosen, intent=intent)
+        return Decision("send", t.supplier_id, term_sheets=sheets, claims=chosen, questions=questions, intent=intent)
 
     def pick_offer(self, case, t):
         t.alt = None
