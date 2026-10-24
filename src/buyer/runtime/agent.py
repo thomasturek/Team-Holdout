@@ -13,6 +13,7 @@ The runtime asks an agent for one supplier's next move at a time (see `threads.p
 import json
 import math
 import os
+import logging
 import threading
 
 from arena_kit.docs import standard_terms
@@ -20,6 +21,7 @@ from arena_kit.play import closing_move, latest, moves_left, standing
 
 from .env import ROOT
 
+log = logging.getLogger("buyer.agent")
 EXPLORE = ROOT / "src" / "buyer" / "policy" / "explore.json"
 SIGNATURE = "Best regards\nHollerau Pumpenwerke, Purchasing"
 
@@ -45,6 +47,7 @@ class PolicyAgent:
 
         self.policy = Policy({**load_params(), **(params or {})})  # a partial set changes only what it names
         self.states, self._lock = {}, threading.Lock()  # the policy is fast plain code: one at a time
+        self.profiles = None  # the Scout's supplier profiles, built once per case
 
     def _state(self, case, sid, events):
         from buyer.policy.policy import ThreadState
@@ -52,7 +55,9 @@ class PolicyAgent:
         sheet_id, terms = standing(events)
         t = self.states.get(sid)
         if t is None:
-            t = self.states[sid] = ThreadState(sid, sheet_id, terms, "open", {}, 0)
+            if self.profiles is None:
+                self.profiles = scout_profiles(case)
+            t = self.states[sid] = ThreadState(sid, sheet_id, terms, "open", {}, 0, profile=self.profiles.get(sid) or {})
         t.standing_id, t.standing_terms = sheet_id, terms
         t.status = latest(events).get("status") or "open"
         t.standard = standard_terms(events) or t.standard
@@ -126,6 +131,17 @@ def probe_agent(name, params, probe):
         params = {**(params or {}), "push_final": 1.0}  # the policy pushes once after a final offer
     agent = new_agent(name, params)
     return PaymentProbe(agent, probe["payment_days"]) if "payment_days" in probe else agent
+
+
+def scout_profiles(case):
+    """The Scout's profile per supplier (floor estimate, cash rate); {} if the facts layer fails."""
+    try:
+        from buyer.facts.profile import profile
+
+        return profile(case)
+    except Exception:
+        log.exception("supplier profiles failed - playing without them")
+        return {}
 
 
 def to_message(decision, events):

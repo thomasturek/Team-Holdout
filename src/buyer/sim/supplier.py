@@ -14,6 +14,13 @@ class SupplierParams:
     patience: int
     walk_after_final: float
     std_payment_days: int
+    insist_payment: bool = False
+    reciprocity: float = 0.0
+    insult_pct: float = 100.0
+    first_drop: float = 0.0
+    lead_premium_pct_week: float = 0.0
+    std_incoterm: str | None = None
+    std_lead_time: int | None = None
 
 
 class SyntheticSupplier:
@@ -22,8 +29,8 @@ class SyntheticSupplier:
         b, fixed = case["buyer"], case.get("fixed_terms", {})
         self.standard = {
             "payment_days": params.std_payment_days,
-            "incoterm": fixed.get("incoterm") or "FCA",
-            "lead_time_days": b["need_lead_time_days"],
+            "incoterm": fixed.get("incoterm") or params.std_incoterm or "FCA",
+            "lead_time_days": fixed.get("lead_time_days") or params.std_lead_time or b["need_lead_time_days"],
             "volume_per_year": b["need_per_year"],
             "contract_months": round(12 * b["horizon_years"]),
             "tooling_eur": 0,
@@ -37,11 +44,17 @@ class SyntheticSupplier:
         self.idle = 0
         self.round = 0
         self.final_sent = False
+        self.angry = False
         self.n = 0
         self.terms = self.price_terms({**self.standard, **fixed}, self.ask)
 
     def value(self, terms):
-        return supplier_value(self.case, terms, self.me)
+        v = supplier_value(self.case, terms, self.me)
+        lead = terms.get("lead_time_days")
+        if lead is not None and self.p.lead_premium_pct_week:
+            faster = max(0, self.standard["lead_time_days"] - lead) / 7
+            v -= self.p.full_cost * self.p.lead_premium_pct_week / 100 * faster
+        return v
 
     def price_for(self, terms, value):
         v0 = self.value({**terms, "unit_price": 0.0})
@@ -62,11 +75,16 @@ class SyntheticSupplier:
 
     def respond(self, sheets):
         self.round += 1
-        best = max(sheets, key=self.value)
+        best = sheets[0]
+        if self.p.insist_payment and "payment_days" in best:
+            best = {**best, "payment_days": self.standard["payment_days"]}
         v = self.value(best)
         if v >= self.ask - 0.005:
             return self.reply("agreed", best)
-        moved = self.best_seen is None or v > self.value(self.best_seen) + 1e-6
+        last_v = self.value(self.best_seen) if self.best_seen is not None else None
+        if last_v is None and v < self.p.full_cost * (1 - self.p.insult_pct / 100):
+            self.angry = True
+        moved = last_v is None or v > last_v + 1e-6
         if moved:
             self.best_seen, self.idle = best, 0
         else:
@@ -77,8 +95,14 @@ class SyntheticSupplier:
             if self.rng.random() < self.p.walk_after_final:
                 return self.reply("walked_away", self.terms)
             return self.reply("final_offer", self.price_terms(best, self.ask))
+        if self.round == 1 and self.p.first_drop:
+            self.ask = max(self.floor, self.ask * (1 - self.p.first_drop))
         if moved:
             step = self.p.concede * (self.ask - max(v, self.floor))
+            if last_v is not None:
+                step += self.p.reciprocity * (v - last_v)
+            if self.angry:
+                step *= 0.5
             cap = self.ask * self.p.approval_step_pct / 100
             if step > cap and self.round % 2:
                 step = cap

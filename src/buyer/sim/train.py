@@ -12,7 +12,7 @@ def evaluate(params, cases, episodes, seed):
     policy = Policy(params)
     scores = [episode(rng.choice(cases), policy, rng)["score"] for _ in range(episodes)]
     scores.sort()
-    return statistics.mean(scores), scores[len(scores) // 10]
+    return statistics.mean(scores), scores[len(scores) // 10], sum(x == 0 for x in scores) / len(scores)
 
 
 def train(iters, pop, episodes, elite_frac=0.25, seed=0, start=None):
@@ -39,7 +39,7 @@ def train(iters, pop, episodes, elite_frac=0.25, seed=0, start=None):
             best = candidates[0]
         print(f"iter {it + 1:2d}  best {candidates[0][0][0]:.3f}  p10 {candidates[0][0][1]:.3f}  overall {best[0][0]:.3f}")
     check = evaluate(best[1], cases, episodes * 2, seed + 10_000)
-    print(f"holdout  mean {check[0]:.3f}  p10 {check[1]:.3f}")
+    print(f"holdout  mean {check[0]:.3f}  p10 {check[1]:.3f}  zeros {check[2]:.1%}")
     return best[1]
 
 
