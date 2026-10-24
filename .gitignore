@@ -21,4 +21,6 @@ build/
 .next/
 npm-debug.log*
 
+# run logs and harvested data (curated datasets: add with git add -f)
 runs/
+.local-tools/
