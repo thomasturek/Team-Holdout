@@ -11,7 +11,7 @@ from pathlib import Path
 from arena_kit.cli import load_env
 
 ROOT = Path(__file__).resolve().parents[3]
-RUNS = ROOT / "runs"
+RUNS = Path(os.environ.get("BUYER_RUNS") or ROOT / "runs")  # BUYER_RUNS: log somewhere else (e.g. arena-sim tries)
 ENV_FILES = (ROOT / ".env", ROOT / "starter-kit" / ".env")
 PATH_KEYS = ("ARENA_DATA",)
 

@@ -8,6 +8,23 @@ runs/<set>/<case>/<session>.jsonl      e.g. runs/sandbox/case_D02/9f3c...jsonl
 
 `<set>` is `practice`, `sandbox`, `final` (or `sim` for the local simulator). `:` in IDs becomes `_`
 (Windows file names). `runs/` is gitignored; curated datasets can be added with `git add -f`.
+`BUYER_RUNS=<folder>` logs somewhere else (e.g. tries against arena-sim).
+
+## The sandbox harvester
+
+```bash
+uv run python -m buyer.runtime.harvest                  # until Ctrl+C (running sessions finish first)
+uv run python -m buyer.runtime.harvest --sessions 40    # or --hours 8; --parallel 8 (default)
+```
+
+Plays `case:D01` and `case:D02` non-stop with the Analyst's policy (`--agent policy`, the default):
+episode `n` plays case `n % 2` with parameter set `(n // 2) % len(sets)` from
+`src/buyer/policy/explore.json` - a JSON list of parameter dicts, re-read before every session, so
+it can be edited while the harvester runs. A set only needs the keys it changes; the rest come from
+`params.json`. No file: `params.json` alone. Sandbox sessions cost no practice quota. It also saves
+the sandbox and practice case files to `runs/cases/sandbox.json` and `runs/cases/practice.json`
+(what `sim/env.py` loads). Until the Scout and Diplomat are wired in, the policy plays without
+supplier profiles (`profile` is `{}`) and with a fixed template e-mail.
 
 ## Reading them
 
@@ -30,11 +47,11 @@ exactly as the API returns them (see `brief/api.md`, Messages), attachments with
 
 | kind | when | fields |
 |---|---|---|
-| `case` | first line | `case_id`, `session_id`, `case` (the full case file) |
+| `case` | first line | `case_id`, `session_id`, `case` (the full case file), `run`: `{agent, params, params_index, explore, harvest, episode}` - `explore` is a fingerprint of explore.json, `harvest` the harvester run's id |
 | `opening` | right after | `threads`: `{supplier_id: [opening message]}` with quote PDF text |
 | `sent` | each message we send | `supplier_id`, `message` (as sent), `decide_s` (supplier reply → our send) |
 | `reply` | each supplier reply | `supplier_id`, `message` (status, term_sheets, claim_results, signals, attachments), `wait_s` (how long the reply took) |
-| `decision` | when the agent hands over a trace | `supplier_id`, `trace` (e.g. the Decision and Signals - whatever the agent returns under `"trace"`) |
+| `decision` | before each move of the policy | `supplier_id`, `trace`: `{decision: {kind, supplier_id, term_sheets, accept_sheet_id, claims, questions, intent}, rival_best_c}` (later also Signals) |
 | `hold` | the decision was too slow; a holding message went out instead | `supplier_id`, `after_s` |
 | `drop` | we stopped playing a thread (agent walked away from one bidder, or the round limit) | `supplier_id`, `reason` |
 | `refresh` | after a `409` (late, round limit, thread ended): the thread as the arena has it | `supplier_id`, `thread` |
@@ -56,5 +73,21 @@ uv run python -m buyer.runtime.log backfill --set final
 appends the missing `session` / `backoffice` lines (marked `"backfill": true`). Running it twice
 adds nothing twice.
 
-**Planned:** the harvester and runner will add the run's settings (agent name, policy parameter set
-from `explore.json`) to the `case` line, so each episode can be matched to the parameters it ran with.
+## Example: score per parameter set
+
+```python
+from collections import defaultdict
+from buyer.runtime.log import iter_logs, read
+
+scores = defaultdict(list)
+for path in iter_logs("sandbox"):
+    events = read(path)
+    run = next(e for e in events if e["kind"] == "case").get("run", {})
+    result = next((e["result"] for e in events if e["kind"] == "result"), None)
+    if result:
+        scores[(run.get("explore"), run.get("params_index"))].append(result.get("score") or 0)
+```
+
+Per-round concessions for calibration: the `reply` events of one `supplier_id`, in order -
+`message.term_sheets[0].terms.unit_price` and `message.status`, against the `sent` term sheets
+before them; `wait_s` is how long each reply took.
