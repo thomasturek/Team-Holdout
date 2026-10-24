@@ -32,7 +32,7 @@ from .vocab import ASK_WORDS, ASKS, DRIVER_WORDS, DRIVERS, LOOSE_SERIES_RE, SERI
 log = logging.getLogger("buyer.llm")
 
 SYSTEM = (Path(__file__).parent / "prompts" / "reader_system.md").read_text(encoding="utf-8")
-MAX_TOKENS = 500
+MAX_TOKENS = 10000
 FIELDS = [f.name for f in dataclasses.fields(Signals)]
 BOOL_FIELDS = ("cash_pressure", "capacity_issue", "final_offer_language", "approval_pending")
 LIST_FIELDS = ("cost_drivers_claimed", "accepted_args", "rejected_args", "asks", "offered_variants")

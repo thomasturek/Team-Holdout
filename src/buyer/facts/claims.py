@@ -10,7 +10,6 @@ Kinds (``Claim.key``):
     notice:<supplier>               the price letter gives less notice than the contract requires
     otd:<supplier> / ppm:<supplier> latest rolling scorecard: on-time delivery / defect rate
     po:<supplier>:<part>            our order prices with this supplier: stable or falling
-    po_rival:<supplier>:<part>:<rival>  what we pay another source for the same part (below this supplier)
     rival:<supplier>:<quote|offer>  RFQ, at run time: a rival bidder's offer in this session or a quote
                                     of the case, below this supplier's standing price
                                     (``claims(case, sid, threads=threads)``)
@@ -73,7 +72,6 @@ class _Index:
     def __init__(self, facts: dict):
         self.series: dict[str, dict[str, tuple[str, float]]] = defaultdict(dict)  # series -> month -> (id, value)
         self.po: dict[tuple[str, str], list[tuple[str, dict]]] = defaultdict(list)  # (supplier, part) -> [(id, row)]
-        self.po_part: dict[str, list[tuple[str, dict]]] = defaultdict(list)
         self.sc: dict[str, list[tuple[str, dict]]] = defaultdict(list)
         self.letters: dict[str, list[tuple[str, dict]]] = defaultdict(list)  # docs with notice days
         self.contracts: dict[str, list[tuple[str, dict]]] = defaultdict(list)
@@ -86,7 +84,6 @@ class _Index:
                 self.series[f["series"]][f["month"]] = (ref, f["value"])
             elif kind == "po":
                 self.po[(f["supplier"], f["part"])].append((ref, f))
-                self.po_part[f["part"]].append((ref, f))
             elif kind == "sc":
                 self.sc[f["supplier"]].append((ref, f))
             elif kind == "doc" and f.get("days") is not None:
@@ -111,7 +108,7 @@ def _index(data: CaseData) -> _Index:
     if not data.case_facts:
         return _indices[key]
     idx = _Index({})  # case facts on top: copy the shared index shallowly, then add
-    for name in ("series", "po", "po_part", "sc", "letters", "contracts"):
+    for name in ("series", "po", "sc", "letters", "contracts"):
         shared = getattr(_indices[key], name)
         getattr(idx, name).update({k: (dict(v) if isinstance(v, dict) else list(v)) for k, v in shared.items()})
     idx.add(data.case_facts)
@@ -283,7 +280,7 @@ def _po_sentence(lines) -> str:
 
 
 def po_claims(data: CaseData, idx: _Index, sid: str) -> list[Claim]:
-    """Our order prices with this supplier (stable or falling) and with other sources (cheaper)."""
+    """Our order prices with this supplier: stable or falling."""
     as_of = AS_OF
     out = []
     for part in data.case.get("parts") or []:
@@ -298,22 +295,8 @@ def po_claims(data: CaseData, idx: _Index, sid: str) -> list[Claim]:
                 sentence = f"Our orders of {words} with you were placed at {_po_sentence(lines)}: the price {trend}."
                 strength = 0.5 if flat else 0.5 + min(0.3, (first - last) / first * 10)
                 out.append(Claim(f"po:{sid}:{part}", sentence, [r for r, _ in lines], "verified", strength))
-        current = own[-1][1]["unit_price"] if own else None
-        rivals = [r for r in _recent(idx.po_part.get(part, []), as_of) if r[1]["supplier"] != sid]
-        by_sup = defaultdict(list)
-        for r in rivals:
-            by_sup[r[1]["supplier"]].append(r)
-        for rival, rows in sorted(by_sup.items()):
-            lines = _spread(rows, 2) if len(rows) >= 2 else []
-            if not lines:
-                continue
-            price = lines[-1][1]["unit_price"]
-            if current is not None and price >= current:
-                continue
-            sentence = f"We also buy {words} from another source, at {_po_sentence(lines)}."
-            gap = (current - price) / current if current else 0.05
-            out.append(Claim(f"po_rival:{sid}:{part}:{rival}", sentence, [r for r, _ in lines], "verified",
-                             round(min(1.0, 0.3 + 5 * gap), 3)))
+    # No claims from other suppliers' orders: the arena answers "does not concern this part or our
+    # company" (irrelevant) - P18, practice 2026-10-24.
     return out
 
 
@@ -492,8 +475,8 @@ def check(case: dict, supplier_id: str, sentence: str, used: set[str] = frozense
         rows = list(facts.values())
         if not 2 <= len(rows) <= 8 or len({f["part"] for f in rows}) != 1:
             return "irrelevant"
-        if rows[0]["part"] not in parts:
-            return "irrelevant"
+        if rows[0]["part"] not in parts or any(f["supplier"] != supplier_id for f in rows):
+            return "irrelevant"  # another supplier's orders "do not concern our company" (arena, P18)
         stated = re.findall(rf"EUR\s*({NUM})", sentence)
         prices = [f["unit_price"] for f in rows]
         ok = len(stated) == len(prices) and all(any(_rel_ok(_num(s), p) for p in prices) for s in stated)
