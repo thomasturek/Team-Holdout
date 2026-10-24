@@ -217,7 +217,7 @@ def index_claims(data: CaseData, idx: _Index) -> list[Claim]:
     for series, weight, start, end, id0, id1, change in _driver_windows(data, idx, data.case.get("parts") or []):
         sentence = f"{_series_words(data, series)} changed {change:+.1f}% from {start} to {end} ({id0}, {id1})."
         bar = asked if asked else 5.0  # a change well below what is asked speaks for us
-        strength = min(1.0, 2 * weight) * max(0.0, min(1.0, (bar - change) / bar))
+        strength = min(1.0, 2 * weight) * max(0.0, min(1.0, (bar - change) / bar)) if change <= 0 else 0.0
         out.append(Claim(f"index:{series}", sentence, [id0, id1], "verified", round(strength, 3)))
     return out
 

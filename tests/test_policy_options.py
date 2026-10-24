@@ -46,3 +46,11 @@ def test_the_counter_offers_a_longer_payment_term_that_saves_us_money():
     slow = [s for s in decision.term_sheets if s["payment_days"] == 90]
     assert slow and slow[0]["unit_price"] > a["unit_price"]
     assert total_cost(case, slow[0], {}) < total_cost(case, a, {})
+
+
+def test_a_longer_contract_that_costs_us_nothing_is_offered():
+    case = practice("case:P07")
+    theirs = {"unit_price": 5.53, "payment_days": 30, "contract_months": 24}
+    out = Policy.best_options(case, theirs, {}, skip={"payment_days"})
+    assert out["contract_months"] == 36
+    assert total_cost(case, out, {}) == total_cost(case, theirs, {})
