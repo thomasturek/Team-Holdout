@@ -22,7 +22,7 @@ build-backend = "hatchling.build"
 packages = ["src/buyer"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "src/buyer/llm/tests"]
 
 [tool.ruff]
 line-length = 120

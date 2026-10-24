@@ -99,28 +99,21 @@ def test_deadline_shortens_the_call():
     assert time.monotonic() - t0 < 0.5
 
 
-def test_settings_from_env_with_role_override():
-    keys = ["LLM_PROVIDER", "LLM_MODEL", "LLM_EFFORT", "LLM_READER_MODEL", "LLM_READER_EFFORT", "ANTHROPIC_API_KEY",
-            "LLM_DISABLED", "LLM_READER_DISABLED"]  # fmt: skip
-    saved = {k: os.environ.get(k) for k in keys}
-    try:
-        for k in keys:
-            os.environ.pop(k, None)
-        assert settings_from_env().disabled  # no model, no key
-        os.environ.update({"LLM_MODEL": "big", "ANTHROPIC_API_KEY": "x", "LLM_READER_MODEL": "fast", "LLM_READER_EFFORT": ""})  # noqa: E501
-        w, r = settings_from_env("writer"), settings_from_env("reader")
-        assert (w.model, w.effort, w.disabled) == ("big", "low", False)
-        assert r.model == "fast" and r.effort == "low"  # an empty role variable falls through
-        os.environ["LLM_EFFORT"] = ""
-        assert settings_from_env("writer").effort is None
-        os.environ["LLM_DISABLED"] = "1"
-        assert settings_from_env("writer").disabled
-    finally:
-        for k, v in saved.items():
-            if v is None:
-                os.environ.pop(k, None)
-            else:
-                os.environ[k] = v
+def test_settings_from_env_with_role_override(monkeypatch):
+    # Every LLM_* variable goes, not a fixed list: buyer.runtime loads .env (LLM_WRITER_MODEL, ...) on import.
+    for k in [k for k in os.environ if k.startswith("LLM_")] + ["ANTHROPIC_API_KEY"]:
+        monkeypatch.delenv(k, raising=False)
+    assert settings_from_env().disabled  # no model, no key
+    env = {"LLM_MODEL": "big", "ANTHROPIC_API_KEY": "x", "LLM_READER_MODEL": "fast", "LLM_READER_EFFORT": ""}
+    for k, v in env.items():
+        monkeypatch.setenv(k, v)
+    w, r = settings_from_env("writer"), settings_from_env("reader")
+    assert (w.model, w.effort, w.disabled) == ("big", "low", False)
+    assert r.model == "fast" and r.effort == "low"  # an empty role variable falls through
+    monkeypatch.setenv("LLM_EFFORT", "")
+    assert settings_from_env("writer").effort is None
+    monkeypatch.setenv("LLM_DISABLED", "1")
+    assert settings_from_env("writer").disabled
 
 
 def test_latency_summary():

@@ -345,8 +345,8 @@ def test_odd_greetings_with_invented_names_are_replaced():
 
 
 def test_exotic_placeholders_never_reach_the_supplier():
-    for ph in ("<<claim>>", "⟦claim⟧", "{% claim %}", "(claim one)", "<insert claim here>", "［［offers］］", "<<offers>>",
-               "<<claim_1>>"):
+    for ph in ("<<claim>>", "⟦claim⟧", "{% claim %}", "(claim one)", "<insert claim here>",
+               "［［offers］］", "<<offers>>", "<<claim_1>>"):
         sent(GOOD_LLM_BODY.replace("[[CLAIM_1]]", ph))  # check_dod: no residue, claims verbatim
 
 

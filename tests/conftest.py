@@ -1,3 +1,4 @@
+import os
 import secrets
 import socket
 import threading
@@ -5,6 +6,19 @@ import time
 
 import pytest
 from arena_kit import ArenaClient
+
+
+@pytest.fixture(autouse=True)
+def no_llm(monkeypatch):
+    """Tests never call a real LLM (and never spend the key in .env): the Diplomat runs on its keyword
+    rules and its template. LLM_LIVE_TESTS=1 lets the live tests through."""
+    from buyer.llm import reset_clients
+
+    if os.environ.get("LLM_LIVE_TESTS") != "1":
+        monkeypatch.setenv("LLM_DISABLED", "1")
+    reset_clients()
+    yield
+    reset_clients()
 
 
 class Clock:

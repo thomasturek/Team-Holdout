@@ -6,15 +6,25 @@ The runtime asks an agent for one supplier's next move at a time (see `threads.p
 
   naive   the kit's NaiveAgent, per thread: the baseline to beat
   llm     the kit's LLMAgent, per thread (needs ANTHROPIC_API_KEY)
-  policy  the Analyst's Policy (src/buyer/policy) with a plain template e-mail - no Scout facts,
-          no Diplomat yet. What the harvester plays, with the parameter sets from explore.json.
+  policy  the Analyst's Policy (src/buyer/policy) with the Scout's profiles and the Diplomat
+          (src/buyer/llm): every supplier reply is read into Signals (thread state), every Decision
+          goes out as an e-mail written around it. What the harvester plays, with the parameter sets
+          from explore.json. Without an LLM (LLM_DISABLED=1, no LLM_MODEL or no key) the Diplomat
+          uses its keyword rules and its template e-mail - the cheap mode for harvesting.
+
+One move of the policy agent, inside MOVE_BUDGET_S from the call (threads.py allows 25 s from the
+supplier's reply): read the reply (LLM, at most READER_BUDGET_S) -> policy (plain code, under the
+agent's lock) -> write the e-mail (LLM, the rest of the budget; else the template). The LLM calls
+run outside the lock, so the threads of an RFQ never wait for each other.
 """
 
+import dataclasses
 import json
+import logging
 import math
 import os
-import logging
 import threading
+import time
 
 from arena_kit.docs import standard_terms
 from arena_kit.play import closing_move, latest, moves_left, standing
@@ -23,7 +33,9 @@ from .env import ROOT
 
 log = logging.getLogger("buyer.agent")
 EXPLORE = ROOT / "src" / "buyer" / "policy" / "explore.json"
-SIGNATURE = "Best regards\nHollerau Pumpenwerke, Purchasing"
+MOVE_BUDGET_S = 23.0  # reader + policy + writer, from the call; threads.DECIDE_BUDGET_S (25) runs from the reply
+READER_BUDGET_S = 10.0  # DIPLOMAT.md: the reader answers in < 10 s, else its keyword rules
+CLOSING_BUDGET_S = 8.0  # near the wave's cap: accept / walk need no LLM; a rare closing e-mail must be quick
 
 
 class PerThread:
@@ -40,7 +52,8 @@ class PerThread:
 
 class PolicyAgent:
     """The Analyst's Policy over the runtime's threads: keeps one ThreadState per supplier, updated
-    from the messages before every decision; turns its Decision into a message."""
+    from the messages before every decision (the Diplomat's Signals included); turns its Decision
+    into an e-mail with the Diplomat's writer."""
 
     def __init__(self, params=None):
         from buyer.policy.policy import Policy, load_params
@@ -48,6 +61,10 @@ class PolicyAgent:
         self.policy = Policy({**load_params(), **(params or {})})  # a partial set changes only what it names
         self.states, self._lock = {}, threading.Lock()  # the policy is fast plain code: one at a time
         self.profiles = None  # the Scout's supplier profiles, built once per case
+        self.readings = {}  # supplier -> (messages in the thread when read, Reading of its latest reply)
+        self.last_sent = {}  # supplier -> our last "send" Decision (the reader maps claim results to its claims)
+        self._data, self._data_tried = None, False  # the Scout's CaseData: which IDs exist (writer's known_id)
+        self._init_lock = threading.Lock()  # loading profiles and data once per case, outside the policy's lock
 
     def _state(self, case, sid, events):
         from buyer.policy.policy import ThreadState
@@ -57,7 +74,8 @@ class PolicyAgent:
         if t is None:
             if self.profiles is None:
                 self.profiles = scout_profiles(case)
-            t = self.states[sid] = ThreadState(sid, sheet_id, terms, "open", {}, 0, profile=self.profiles.get(sid) or {})
+            profile = self.profiles.get(sid) or {}
+            t = self.states[sid] = ThreadState(sid, sheet_id, terms, "open", {}, 0, profile=profile)
         t.standing_id, t.standing_terms = sheet_id, terms
         t.status = latest(events).get("status") or "open"
         t.standard = standard_terms(events) or t.standard
@@ -67,9 +85,16 @@ class PolicyAgent:
             for m in events
             if m.get("from") != "buyer" and m.get("term_sheets")
         ]
+        reading = self.readings.get(sid)
+        if reading:  # the Diplomat's reading of this supplier's latest reply
+            t.signals = dataclasses.asdict(reading[1].signals)
         return t
 
     def decide(self, case, threads, supplier_id):
+        start = time.monotonic()
+        deadline = start + MOVE_BUDGET_S
+        reading = self._read(supplier_id, threads[supplier_id], min(start + READER_BUDGET_S, deadline))
+        self._warm(case)  # first move of a case: profiles and data (a few seconds, once), outside the lock
         with self._lock:
             states = {sid: self._state(case, sid, ev) for sid, ev in threads.items()}
             t = states[supplier_id]
@@ -78,13 +103,99 @@ class PolicyAgent:
             ]
             rival = min((self.policy.cost(case, o) for o in live), default=math.inf)
             decision = self.policy.decide(case, t, rival_best_c=rival)
-        return {**to_message(decision, threads[supplier_id]), "trace": {"decision": decision, "rival_best_c": rival}}
+            profile = self._writer_profile(case, decision.supplier_id)
+        move, email = self._message(case, threads, decision, profile, reading, deadline)
+        trace = {"decision": decision, "rival_best_c": rival, "diplomat": diplomat_trace(reading, email)}
+        return {**move, "trace": trace}
 
     def closing(self, case, threads):
+        start = time.monotonic()
+        self._warm(case)
         with self._lock:
             states = {sid: self._state(case, sid, ev) for sid, ev in threads.items()}
             decision = self.policy.closing(case, states)
-        return to_message(decision, threads[decision.supplier_id])
+            profile = self._writer_profile(case, decision.supplier_id)
+        move, _ = self._message(case, threads, decision, profile, None, start + CLOSING_BUDGET_S)
+        return move
+
+    # -- the Diplomat ---------------------------------------------------------------------------
+    def _read(self, sid, events, deadline):
+        """The Reading of this supplier's latest reply - read once per reply, outside the lock (it may
+        call the LLM). None if the reader fails: the policy then plays on the Signals it had."""
+        from buyer.llm import read
+
+        with self._lock:
+            done = self.readings.get(sid)
+            if done and done[0] == len(events):
+                return done[1]
+            last = self.last_sent.get(sid)
+        try:
+            reading = read(latest(events), last_decision=last, deadline=deadline)
+        except Exception:
+            log.exception("%s: reading the reply failed - playing on the earlier signals", sid)
+            return None
+        with self._lock:
+            self.readings[sid] = (len(events), reading)
+        return reading
+
+    def _message(self, case, threads, decision, profile, reading, deadline):
+        move, email = message_for(
+            decision,
+            case,
+            threads.get(decision.supplier_id) or [],
+            profile,
+            reading.signals if reading else None,
+            known_id=self._known_id(case, threads),
+            deadline=deadline,
+        )
+        if decision.kind == "send":
+            with self._lock:
+                self.last_sent[decision.supplier_id] = decision
+        return move, email
+
+    def _warm(self, case):
+        """The Scout's profiles and CaseData, loaded once per case by the first thread that gets here;
+        the others wait for it (instead of playing a move without them)."""
+        with self._init_lock:
+            if self.profiles is None:
+                profiles = scout_profiles(case)
+                with self._lock:
+                    if self.profiles is None:
+                        self.profiles = profiles
+            self._case_data(case)
+
+    def _case_data(self, case):
+        """The Scout's CaseData for this case (case facts, Sunday release, package), or None."""
+        if not self._data_tried:
+            self._data_tried = True
+            try:
+                from buyer.facts.package import CaseData
+
+                self._data = CaseData(case)
+            except Exception:
+                log.exception("case data failed - the writer keeps only the IDs of its claims")
+        return self._data
+
+    def _known_id(self, case, threads):
+        """known_id for the writer: an ID the arena knows - citable data, or an offer of this session."""
+        offers = {ts.get("term_sheet_id") for ev in threads.values() for m in ev for ts in m.get("term_sheets") or []}
+        data = self._case_data(case)
+
+        def known(ref):
+            return ref in offers or (data is not None and data.citable(ref))
+
+        return known
+
+    def _writer_profile(self, case, sid):
+        """The Scout's profile of this supplier, with its name for the greeting."""
+        p = dict((self.profiles or {}).get(sid) or {})
+        p.setdefault("supplier_id", sid)
+        if not p.get("name") and self._data is not None:
+            try:
+                p["name"] = (self._data.lookup(sid) or {}).get("name")
+            except Exception:
+                pass
+        return p
 
 
 class PaymentProbe:
@@ -144,31 +255,25 @@ def scout_profiles(case):
         return {}
 
 
-def to_message(decision, events):
-    """A Decision as the runtime sends it. Until the Diplomat's writer exists: a plain template."""
-    sid = decision.supplier_id
-    if decision.kind == "accept":
-        return {
-            "supplier_id": sid,
-            "message": {"action": {"type": "accept", "term_sheet_id": decision.accept_sheet_id}},
-        }
-    if decision.kind == "walk":
-        return {"supplier_id": sid, "message": {"action": {"type": "walk_away"}}}
-    subject = next((m.get("subject") for m in events if m.get("subject")), "Your offer")
-    sheets = [{"terms": ts} for ts in decision.term_sheets]
-    options = "the term sheet" if len(sheets) == 1 else "the alternative term sheets"
-    body = (
-        "Dear Sir or Madam,\n\nthank you for your offer. Please find our proposal in "
-        f"{options} attached; we would be glad to agree on one of them.\n\n{SIGNATURE}"
-    )
-    return {
-        "supplier_id": sid,
-        "message": {
-            "subject": subject if subject.startswith("Re:") else f"Re: {subject}",
-            "body": body,
-            "term_sheets": sheets,
-        },
-    }
+def message_for(decision, case, events, profile=None, signals=None, known_id=None, deadline=None):
+    """A Decision as the runtime sends it: ({"supplier_id", "message"}, Email or None). The e-mail is
+    the Diplomat's (`buyer.llm.to_message`): the LLM's words around the Decision's figures, else its
+    template; accept and walk-away are actions without an e-mail."""
+    from buyer.llm import to_message
+
+    message, email = to_message(decision, case, events, profile, signals, known_id=known_id, deadline=deadline)
+    return {"supplier_id": decision.supplier_id, "message": message}, email
+
+
+def diplomat_trace(reading, email):
+    """What the Diplomat did in a move, for the run log (the Analyst calibrates on it)."""
+    out = {}
+    if reading is not None:
+        out["reader"] = {"source": reading.source, "latency_s": reading.latency_s, "error": reading.error,
+                         "from_rules": reading.from_rules, "signals": reading.signals}  # fmt: skip
+    if email is not None:
+        out["writer"] = {"source": email.source, "latency_s": email.latency_s, "warnings": email.warnings}
+    return out
 
 
 def new_agent(name="naive", params=None):

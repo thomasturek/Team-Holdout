@@ -2,6 +2,8 @@
 
 import json
 
+from buyer.llm.compose import offers_block, sign_off
+from buyer.llm.guard import foreign_numbers
 from buyer.runtime import agent as agents
 from buyer.runtime.agent import PolicyAgent, new_agent, probe_agent, probes
 from buyer.runtime.harvest import Harvester, report, save_cases
@@ -18,9 +20,11 @@ def test_the_analysts_policy_plays_every_case_to_an_end(sim, tmp_path):
         decisions = [e for e in read(lg.path) if e["kind"] == "decision"]
         assert decisions and {"kind", "supplier_id", "term_sheets"} <= set(decisions[0]["trace"]["decision"])
         for e in read(lg.path):
-            if e["kind"] == "sent":  # complete term sheets, no stray numbers in the template body
-                assert all(set(ts["terms"]) == set(case["negotiable"]) for ts in e["message"]["term_sheets"])
-                assert not any(ch.isdigit() for ch in e["message"]["body"])
+            if e["kind"] == "sent":  # complete term sheets; figures only in the code-made term-sheet lines
+                sheets = e["message"].get("term_sheets") or []
+                assert all(set(ts["terms"]) == set(case["negotiable"]) for ts in sheets)
+                prose = e["message"]["body"].replace(offers_block(sheets), " ").replace(sign_off(), " ")
+                assert not foreign_numbers(prose, set()), prose
 
 
 def test_a_partial_parameter_set_keeps_the_trained_values():
