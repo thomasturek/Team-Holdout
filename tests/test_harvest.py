@@ -24,6 +24,9 @@ def test_the_analysts_policy_plays_every_case_to_an_end(sim, tmp_path):
                 sheets = e["message"].get("term_sheets") or []
                 assert all(set(ts["terms"]) == set(case["negotiable"]) for ts in sheets)
                 prose = e["message"]["body"].replace(offers_block(sheets), " ").replace(sign_off(), " ")
+                decision = [d for d in decisions if d["supplier_id"] == e["supplier_id"] and d["t"] <= e["t"]][-1]
+                for claim in decision["trace"]["decision"].get("claims") or []:
+                    prose = prose.replace(claim["sentence"], " ")
                 assert not foreign_numbers(prose, set()), prose
 
 

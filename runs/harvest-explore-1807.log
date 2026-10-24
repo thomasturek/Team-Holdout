@@ -1,0 +1,401 @@
+18:07:30 case files saved to /Users/thomas.turek/Documents/GitHub/alex-thomas/runs/cases: {'sandbox': 2, 'practice': 19}
+18:07:30 harvest 20261024-180730-27cb: ['case:D01', 'case:D02'], 40 parameter set(s), 6 at once
+18:07:30 session a029dacb2b98e5c7
+18:07:31 session 02bd1fca0e803019
+18:07:31 session 7da66f0c59a5228e
+18:07:31 session b90e852ba9128fae
+18:07:31 episode 1 case:D02: HTTP 429: at most 10 open sessions per key - waiting 10s
+18:07:31 episode 3 case:D02: HTTP 429: at most 10 open sessions per key - waiting 10s
+18:07:33 #0 set 0  case:D01  b90e852ba9128fae  sent 4  errors 0 []  deal True  score 0.769  complete
+18:07:33 session e7584f2b2016eb31
+18:07:41 session 5293ee1a0e70b8bb
+18:07:41 episode 8 case:D01: HTTP 429: at most 10 open sessions per key - waiting 10s
+18:07:51 episode 9 case:D02: HTTP 429: at most 10 open sessions per key - waiting 10s
+18:08:02 session 2e276dbce50a1cde
+18:08:28 #10 set 5  case:D01  2e276dbce50a1cde  sent 1  errors 0 []  deal True  score 0.571  complete
+18:08:28 session 9796e8c0dd114dc8
+18:08:44 #7 set 3  case:D02  5293ee1a0e70b8bb  sent 4  errors 0 []  deal True  score 0.335  complete
+18:08:44 session 9728513241c367a4
+18:08:47 #2 set 1  case:D01  02bd1fca0e803019  sent 5  errors 0 []  deal True  score 0.856  complete
+18:08:47 session cbbb34d1acea2d2d
+18:09:02 #6 set 3  case:D01  e7584f2b2016eb31  sent 6  errors 0 []  deal True  score 0.822  complete
+18:09:03 session 2cb7396f90ad0f5e
+18:09:12 #12 set 6  case:D01  9728513241c367a4  sent 1  errors 0 []  deal True  score 0.655  complete
+18:09:12 session 3ffb1b4a9a6a52d0
+18:09:14 #5 set 2  case:D02  7da66f0c59a5228e  sent 6  errors 1 [409]  deal True  score 0.293  complete
+18:09:14 session d730099f0bd8b1ec
+18:09:26 #4 set 2  case:D01  a029dacb2b98e5c7  sent 6  errors 0 []  deal True  score 0.755  complete
+18:09:26 session 5bc74ce9eb1411da
+18:09:26 #14 set 7  case:D01  2cb7396f90ad0f5e  sent 1  errors 0 []  deal True  score 0.571  complete
+18:09:27 session c2aa33353242de5b
+18:09:27 #13 set 6  case:D02  cbbb34d1acea2d2d  sent 2  errors 0 []  deal True  score 0.293  complete
+18:09:28 session f2caf3665105dd26
+18:09:50 #18 set 9  case:D01  c2aa33353242de5b  sent 1  errors 0 []  deal True  score 0.655  complete
+18:09:50 session 951364cfcf8ce4cd
+18:09:52 #15 set 7  case:D02  3ffb1b4a9a6a52d0  sent 2  errors 0 []  deal True  score 0.251  complete
+18:09:52 session dfd4f90833cf3e5f
+18:09:56 #16 set 8  case:D01  d730099f0bd8b1ec  sent 3  errors 0 []  deal True  score 0.889  complete
+18:09:56 session 89e20d0a4985e427
+18:10:03 #11 set 5  case:D02  9796e8c0dd114dc8  sent 5  errors 0 []  deal True  score 0.271  complete
+18:10:04 session 613874568ce0a0b5
+18:10:08 #19 set 9  case:D02  f2caf3665105dd26  sent 2  errors 0 []  deal True  score 0.251  complete
+18:10:08 session a6fab9d0256d11e3
+18:10:23 #20 set 10  case:D01  951364cfcf8ce4cd  sent 1  errors 0 []  deal True  score 0.571  complete
+18:10:23 session c2e0c06531e141a2
+18:10:26 #17 set 8  case:D02  5bc74ce9eb1411da  sent 4  errors 0 []  deal True  score 0.419  complete
+18:10:27 session 1bb14194e37bd048
+18:10:31 #24 set 12  case:D01  a6fab9d0256d11e3  sent 1  errors 0 []  deal True  score 0.588  complete
+18:10:31 session c581263135227a9c
+18:10:42 #25 set 12  case:D02  c2e0c06531e141a2  sent 2  errors 1 [409]  deal True  score 0.314  complete
+18:10:42 session d1d1f67e639cf944
+18:10:43 #21 set 10  case:D02  dfd4f90833cf3e5f  sent 2  errors 0 []  deal True  score 0.251  complete
+18:10:43 session 66fa4ca803abddaf
+18:11:04 #28 set 14  case:D01  d1d1f67e639cf944  sent 1  errors 0 []  deal True  score 0.655  complete
+18:11:05 session f5a1246be6632be7
+18:11:23 #29 set 14  case:D02  66fa4ca803abddaf  sent 2  errors 0 []  deal True  score 0.272  complete
+18:11:23 session 972d490cf8dd595e
+18:11:26 #30 set 15  case:D01  f5a1246be6632be7  sent 1  errors 0 []  deal True  score 0.571  complete
+18:11:26 session 7efa20eb5684878e
+18:11:39 #22 set 11  case:D01  89e20d0a4985e427  sent 6  errors 0 []  deal True  score 0.789  complete
+18:11:39 session 37e0eee2f9469457
+18:12:06 #27 set 13  case:D02  c581263135227a9c  sent 7  errors 0 []  deal True  score 0.398  complete
+18:12:06 session 67a72a1917ebc732
+18:12:07 #23 set 11  case:D02  613874568ce0a0b5  sent 8  errors 0 []  deal True  score 0.377  complete
+18:12:07 session 413667faa28b87a0
+18:12:11 #26 set 13  case:D01  1bb14194e37bd048  sent 7  errors 0 []  deal True  score 0.921  complete
+18:12:11 session f10ddf36a7d346ab
+18:12:26 #35 set 17  case:D02  413667faa28b87a0  sent 2  errors 1 [409]  deal True  score 0.314  complete
+18:12:26 session 23840ed7af803d63
+18:12:42 #34 set 17  case:D01  67a72a1917ebc732  sent 1  errors 0 []  deal True  score 0.571  complete
+18:12:42 session 0963b6b85903b613
+18:12:43 #31 set 15  case:D02  972d490cf8dd595e  sent 5  errors 1 [409]  deal True  score 0.292  complete
+18:12:43 session 75f4bc95463adc45
+18:12:51 #32 set 16  case:D01  7efa20eb5684878e  sent 6  errors 0 []  deal True  score 0.872  complete
+18:12:51 session eb8224978b014b3b
+18:12:58 #39 set 19  case:D02  75f4bc95463adc45  sent 2  errors 1 [409]  deal True  score 0.314  complete
+18:12:58 session 74ed3f36ff4dc3bb
+18:13:01 #38 set 19  case:D01  0963b6b85903b613  sent 1  errors 0 []  deal True  score 0.538  complete
+18:13:02 session 2c8ad8b1988fdef7
+18:13:08 #36 set 18  case:D01  f10ddf36a7d346ab  sent 3  errors 0 []  deal True  score 0.839  complete
+18:13:10 session 55f82652aece6eeb
+18:13:20 #42 set 21  case:D01  2c8ad8b1988fdef7  sent 1  errors 0 []  deal True  score 0.504  complete
+18:13:21 session 6152eb5992f97551
+18:13:38 #40 set 20  case:D01  eb8224978b014b3b  sent 3  errors 0 []  deal True  score 0.872  complete
+18:13:38 session d8dfa7ba4e78d4fc
+18:13:46 #37 set 18  case:D02  23840ed7af803d63  sent 4  errors 0 []  deal True  score 0.356  complete
+18:13:46 session f4a253fec9c269fe
+18:13:58 #41 set 20  case:D02  74ed3f36ff4dc3bb  sent 4  errors 0 []  deal True  score 0.377  complete
+18:13:58 session c1beefd2ab38c2d3
+18:14:03 #33 set 16  case:D02  37e0eee2f9469457  sent 9  errors 0 []  deal True  score 0.377  complete
+18:14:03 session aeeb27608628e354
+18:14:08 #43 set 21  case:D02  55f82652aece6eeb  sent 2  errors 0 []  deal True  score 0.23  complete
+18:14:08 session 0167e1968394506a
+18:14:19 #44 set 22  case:D01  6152eb5992f97551  sent 4  errors 0 []  deal True  score 0.889  complete
+18:14:20 session d89ed7a6383fdcff
+18:14:22 #48 set 24  case:D01  aeeb27608628e354  sent 1  errors 0 []  deal True  score 0.655  complete
+18:14:23 #45 set 22  case:D02  d8dfa7ba4e78d4fc  sent 4  errors 1 [409]  deal True  score 0.377  complete
+18:14:23 session ead36a178dbc6dff
+18:14:23 session 6afc8582e3dbedb9
+18:14:41 #50 set 25  case:D01  d89ed7a6383fdcff  sent 1  errors 0 []  deal True  score 0.588  complete
+18:14:41 session 0242ff319f4c341c
+18:14:57 #49 set 24  case:D02  0167e1968394506a  sent 2  errors 0 []  deal True  score 0.293  complete
+18:14:57 session 7182fc50ebfa7e1c
+18:14:59 #46 set 23  case:D01  f4a253fec9c269fe  sent 5  errors 0 []  deal True  score 0.872  complete
+18:14:59 session ac961ec7f83af2e0
+18:15:05 #52 set 26  case:D01  6afc8582e3dbedb9  sent 3  errors 0 []  deal True  score 0.789  complete
+18:15:05 session bf67135c8dd6eda8
+18:15:19 #53 set 26  case:D02  0242ff319f4c341c  sent 2  errors 0 []  deal True  score 0.314  complete
+18:15:19 session ca8a78a4ff48e3f3
+18:15:25 #51 set 25  case:D02  ead36a178dbc6dff  sent 2  errors 0 []  deal True  score 0.293  complete
+18:15:25 session 964f297484455028
+18:15:28 #56 set 28  case:D01  bf67135c8dd6eda8  sent 1  errors 0 []  deal True  score 0.588  complete
+18:15:28 session 82ad1b3d86466632
+18:15:33 #54 set 27  case:D01  7182fc50ebfa7e1c  sent 2  errors 0 []  deal True  score 0.722  complete
+18:15:33 session 7a2096cde7078c26
+18:15:44 #58 set 29  case:D01  964f297484455028  sent 1  errors 0 []  deal True  score 0.538  complete
+18:15:44 session 08c9f1e867069ce2
+18:15:46 #47 set 23  case:D02  c1beefd2ab38c2d3  sent 6  errors 0 []  deal True  score 0.356  complete
+18:15:46 session d8c62436164f8ca9
+18:15:48 #55 set 27  case:D02  ac961ec7f83af2e0  sent 2  errors 0 []  deal True  score 0.314  complete
+18:15:48 session 8f2bdbf55bd79251
+18:16:04 #62 set 31  case:D01  d8c62436164f8ca9  sent 1  errors 0 []  deal True  score 0.655  complete
+18:16:04 session 3de9394c8d9b7673
+18:16:16 #61 set 30  case:D02  08c9f1e867069ce2  sent 2  errors 0 []  deal True  score 0.272  complete
+18:16:16 session e23d52c8311ef988
+18:16:20 #59 set 29  case:D02  82ad1b3d86466632  sent 2  errors 0 []  deal True  score 0.293  complete
+18:16:21 session 9578e57c5f872160
+18:16:22 #57 set 28  case:D02  ca8a78a4ff48e3f3  sent 2  errors 0 []  deal True  score 0.251  complete
+18:16:22 session 1dbfd082fc15d1bc
+18:16:27 #64 set 32  case:D01  3de9394c8d9b7673  sent 1  errors 0 []  deal True  score 0.588  complete
+18:16:27 session da947e9f456fbc43
+18:16:28 #63 set 31  case:D02  8f2bdbf55bd79251  sent 2  errors 0 []  deal True  score 0.251  complete
+18:16:28 session 8a3e9c8f06175f8d
+18:16:49 #68 set 34  case:D01  da947e9f456fbc43  sent 1  errors 0 []  deal True  score 0.588  complete
+18:16:49 #66 set 33  case:D01  9578e57c5f872160  sent 1  errors 0 []  deal True  score 0.621  complete
+18:16:49 session a950a2c43b4facfe
+18:16:50 session 939c78b64311c8a2
+18:16:51 #65 set 32  case:D02  e23d52c8311ef988  sent 2  errors 0 []  deal True  score 0.272  complete
+18:16:51 session a2cf26bd795857ba
+18:17:02 #60 set 30  case:D01  7a2096cde7078c26  sent 6  errors 0 []  deal True  score 0.739  complete
+18:17:02 session b157114d6cde358c
+18:17:06 #67 set 33  case:D02  1dbfd082fc15d1bc  sent 3  errors 1 [409]  deal True  score 0.314  complete
+18:17:06 session 2f2c4f2764cbcf10
+18:17:08 #69 set 34  case:D02  8a3e9c8f06175f8d  sent 2  errors 0 []  deal True  score 0.23  complete
+18:17:08 session d9fef233622cc79d
+18:17:20 #70 set 35  case:D01  a950a2c43b4facfe  sent 1  errors 0 []  deal True  score 0.555  complete
+18:17:21 session db22ec68609c1fb1
+18:17:29 #72 set 36  case:D01  a2cf26bd795857ba  sent 2  errors 0 []  deal True  score 0.739  complete
+18:17:30 session 998ad7756f8b4201
+18:17:30 #71 set 35  case:D02  939c78b64311c8a2  sent 2  errors 0 []  deal True  score 0.314  complete
+18:17:30 session 2e664bd93b6efa13
+18:17:42 #76 set 38  case:D01  db22ec68609c1fb1  sent 1  errors 0 []  deal True  score 0.655  complete
+18:17:42 session 8920b453913adcdb
+18:17:44 #73 set 36  case:D02  b157114d6cde358c  sent 3  errors 1 [409]  deal True  score 0.335  complete
+18:17:44 session 03b9cd89b1af4db9
+18:17:46 #80 set 0  case:D01  03b9cd89b1af4db9  sent 6  errors 0 []  deal True  score 0.905  complete
+18:17:46 session 9096c5fca6ddc9ea
+18:17:47 #74 set 37  case:D01  2f2c4f2764cbcf10  sent 2  errors 0 []  deal True  score 0.739  complete
+18:17:47 session 9a1deb95282825f5
+18:17:52 #75 set 37  case:D02  d9fef233622cc79d  sent 2  errors 0 []  deal True  score 0.314  complete
+18:17:53 session 45259f039a58945f
+18:17:55 #78 set 39  case:D01  2e664bd93b6efa13  sent 1  errors 0 []  deal True  score 0.638  complete
+18:17:55 session 5f78c30baf4e6c48
+18:17:57 #84 set 2  case:D01  5f78c30baf4e6c48  sent 6  errors 0 []  deal True  score 0.755  complete
+18:17:57 session 4516d924794a0e97
+18:18:02 #81 set 0  case:D02  9096c5fca6ddc9ea  sent 9  errors 0 []  deal True  score 0.398  complete
+18:18:02 session 59caa8851b0edecd
+18:18:04 #86 set 3  case:D01  59caa8851b0edecd  sent 6  errors 0 []  deal True  score 0.822  complete
+18:18:04 session ec492b83341a528e
+18:18:06 #87 set 3  case:D02  ec492b83341a528e  sent 4  errors 0 []  deal True  score 0.335  complete
+18:18:06 session 1979fa28f96e49a4
+18:18:09 #85 set 2  case:D02  4516d924794a0e97  sent 6  errors 0 []  deal True  score 0.293  complete
+18:18:09 session 90f22d32257b68c4
+18:18:24 #88 set 4  case:D01  1979fa28f96e49a4  sent 1  errors 0 []  deal True  score 0.555  complete
+18:18:25 session 241aeb7009d2e01b
+18:18:25 #77 set 38  case:D02  998ad7756f8b4201  sent 2  errors 0 []  deal True  score 0.314  complete
+18:18:25 session 32b90fb99ea2195f
+18:18:26 #90 set 5  case:D01  241aeb7009d2e01b  sent 1  errors 0 []  deal True  score 0.571  complete
+18:18:27 session 87c90bd4531e6f5a
+18:18:28 #91 set 5  case:D02  32b90fb99ea2195f  sent 5  errors 0 []  deal True  score 0.271  complete
+18:18:28 session d7b9e2462ed5a664
+18:18:28 #92 set 6  case:D01  87c90bd4531e6f5a  sent 1  errors 0 []  deal True  score 0.655  complete
+18:18:29 session b0e4df43b390d3f4
+18:18:30 #94 set 7  case:D01  b0e4df43b390d3f4  sent 1  errors 0 []  deal True  score 0.571  complete
+18:18:30 #93 set 6  case:D02  d7b9e2462ed5a664  sent 2  errors 0 []  deal True  score 0.293  complete
+18:18:31 session ed6f779382fbeede
+18:18:31 session 5de8151f1958d2f7
+18:18:33 #95 set 7  case:D02  ed6f779382fbeede  sent 2  errors 0 []  deal True  score 0.251  complete
+18:18:33 #96 set 8  case:D01  5de8151f1958d2f7  sent 3  errors 0 []  deal True  score 0.889  complete
+18:18:33 session a755e1a0e46a39be
+18:18:33 session a327d81dd4d937c9
+18:18:34 #79 set 39  case:D02  8920b453913adcdb  sent 2  errors 0 []  deal True  score 0.23  complete
+18:18:35 session bd94257d6c01e6ee
+18:18:36 #98 set 9  case:D01  a327d81dd4d937c9  sent 1  errors 0 []  deal True  score 0.655  complete
+18:18:37 session 18a581cf1397849c
+18:18:37 #97 set 8  case:D02  a755e1a0e46a39be  sent 4  errors 0 []  deal True  score 0.419  complete
+18:18:38 session 9d8bd89a7024c096
+18:18:38 #99 set 9  case:D02  bd94257d6c01e6ee  sent 2  errors 0 []  deal True  score 0.251  complete
+18:18:39 session 92fef6aced307096
+18:18:39 #100 set 10  case:D01  18a581cf1397849c  sent 1  errors 0 []  deal True  score 0.571  complete
+18:18:40 session 405d6aa3f21133ac
+18:18:41 #101 set 10  case:D02  9d8bd89a7024c096  sent 2  errors 0 []  deal True  score 0.251  complete
+18:18:41 session 0f8387384ac3f4a8
+18:18:43 #102 set 11  case:D01  92fef6aced307096  sent 6  errors 0 []  deal True  score 0.789  complete
+18:18:44 session f2f6984212205b78
+18:18:44 #104 set 12  case:D01  0f8387384ac3f4a8  sent 1  errors 0 []  deal True  score 0.588  complete
+18:18:44 #103 set 11  case:D02  405d6aa3f21133ac  sent 8  errors 0 []  deal True  score 0.377  complete
+18:18:44 session a56456089611a35c
+18:18:45 session 1b514f3fc10f8094
+18:18:48 #106 set 13  case:D01  a56456089611a35c  sent 7  errors 0 []  deal True  score 0.921  complete
+18:18:48 session 4f4a4526f7ba48f4
+18:18:49 #108 set 14  case:D01  4f4a4526f7ba48f4  sent 1  errors 0 []  deal True  score 0.655  complete
+18:18:49 session 5ed9350d94f6a22b
+18:18:50 #109 set 14  case:D02  5ed9350d94f6a22b  sent 2  errors 0 []  deal True  score 0.272  complete
+18:18:51 session a09040f2264fdb08
+18:18:51 #89 set 4  case:D02  90f22d32257b68c4  sent 2  errors 0 []  deal True  score 0.209  complete
+18:18:52 session 0bef271ae5fdf1ce
+18:18:52 #110 set 15  case:D01  a09040f2264fdb08  sent 1  errors 0 []  deal True  score 0.571  complete
+18:18:53 session e4f29d89eeaddd1d
+18:18:55 #112 set 16  case:D01  e4f29d89eeaddd1d  sent 6  errors 0 []  deal True  score 0.872  complete
+18:18:55 session 5b1a17540f2597d6
+18:18:57 #113 set 16  case:D02  5b1a17540f2597d6  sent 8  errors 0 []  deal True  score 0.377  complete
+18:18:57 session ea27e099a9b8ed0c
+18:18:58 #114 set 17  case:D01  ea27e099a9b8ed0c  sent 1  errors 0 []  deal True  score 0.571  complete
+18:18:58 session 94c6248cb509d335
+18:19:01 #107 set 13  case:D02  1b514f3fc10f8094  sent 8  errors 0 []  deal True  score 0.398  complete
+18:19:02 session c467af3c031499b5
+18:19:03 #116 set 18  case:D01  c467af3c031499b5  sent 3  errors 0 []  deal True  score 0.839  complete
+18:19:03 session d95c0ee02cbc2f84
+18:19:04 #111 set 15  case:D02  0bef271ae5fdf1ce  sent 5  errors 0 []  deal True  score 0.292  complete
+18:19:05 session 85f4438bd6547341
+18:19:05 #118 set 19  case:D01  85f4438bd6547341  sent 1  errors 0 []  deal True  score 0.538  complete
+18:19:06 session 99327a9aa689ce68
+18:19:13 #82 set 1  case:D01  9a1deb95282825f5  sent 5  errors 0 []  deal True  score 0.889  complete
+18:19:13 session 7f18ea334e2eb438
+18:19:15 #120 set 20  case:D01  7f18ea334e2eb438  sent 3  errors 0 []  deal True  score 0.872  complete
+18:19:15 #105 set 12  case:D02  f2f6984212205b78  sent 2  errors 0 []  deal True  score 0.314  complete
+18:19:15 session dcb8e8ff57525e5f
+18:19:15 session e25a52e6b069b198
+18:19:17 #122 set 21  case:D01  e25a52e6b069b198  sent 1  errors 0 []  deal True  score 0.504  complete
+18:19:18 session a12f8e71c2869f3c
+18:19:18 #121 set 20  case:D02  dcb8e8ff57525e5f  sent 4  errors 0 []  deal True  score 0.377  complete
+18:19:18 #115 set 17  case:D02  94c6248cb509d335  sent 2  errors 0 []  deal True  score 0.314  complete
+18:19:19 session 03f70e8814cbc682
+18:19:19 session 58c165ff741be9b4
+18:19:21 #123 set 21  case:D02  a12f8e71c2869f3c  sent 2  errors 0 []  deal True  score 0.23  complete
+18:19:22 session e76e0dde360604a5
+18:19:22 #117 set 18  case:D02  d95c0ee02cbc2f84  sent 5  errors 0 []  deal True  score 0.356  complete
+18:19:22 #124 set 22  case:D01  03f70e8814cbc682  sent 4  errors 0 []  deal True  score 0.889  complete
+18:19:23 session d406d67b0a7d87d7
+18:19:23 session be4d64130f74aa8a
+18:19:26 #128 set 24  case:D01  be4d64130f74aa8a  sent 1  errors 0 []  deal True  score 0.655  complete
+18:19:26 #126 set 23  case:D01  e76e0dde360604a5  sent 5  errors 0 []  deal True  score 0.872  complete
+18:19:26 session 138bd6dcf1696795
+18:19:26 session 87eb48854f07ca9e
+18:19:27 #127 set 23  case:D02  d406d67b0a7d87d7  sent 6  errors 0 []  deal True  score 0.356  complete
+18:19:27 session 1ff431234d841a0b
+18:19:29 #130 set 25  case:D01  87eb48854f07ca9e  sent 1  errors 0 []  deal True  score 0.588  complete
+18:19:29 session ea4ca6ae5a23f3f1
+18:19:29 #129 set 24  case:D02  138bd6dcf1696795  sent 2  errors 0 []  deal True  score 0.293  complete
+18:19:30 session 2fa87f7e9437d3f3
+18:19:31 #119 set 19  case:D02  99327a9aa689ce68  sent 2  errors 0 []  deal True  score 0.314  complete
+18:19:31 session d61d156b25bbee1f
+18:19:31 #131 set 25  case:D02  1ff431234d841a0b  sent 2  errors 0 []  deal True  score 0.293  complete
+18:19:32 session 93841cdf4feee8f1
+18:19:34 #132 set 26  case:D01  ea4ca6ae5a23f3f1  sent 3  errors 0 []  deal True  score 0.789  complete
+18:19:34 session f63a1c066a4fc2db
+18:19:34 #133 set 26  case:D02  2fa87f7e9437d3f3  sent 2  errors 0 []  deal True  score 0.314  complete
+18:19:35 session 274086bad8014b3a
+18:19:35 #134 set 27  case:D01  d61d156b25bbee1f  sent 2  errors 0 []  deal True  score 0.722  complete
+18:19:36 session 036c51712c55ddce
+18:19:36 #135 set 27  case:D02  93841cdf4feee8f1  sent 2  errors 0 []  deal True  score 0.314  complete
+18:19:37 session 97e63abec14c15fe
+18:19:38 #136 set 28  case:D01  f63a1c066a4fc2db  sent 1  errors 0 []  deal True  score 0.588  complete
+18:19:38 session 671577f96d539455
+18:19:40 #138 set 29  case:D01  036c51712c55ddce  sent 1  errors 0 []  deal True  score 0.538  complete
+18:19:40 #137 set 28  case:D02  274086bad8014b3a  sent 2  errors 0 []  deal True  score 0.251  complete
+18:19:41 session c24c9c5d436a54d6
+18:19:41 #125 set 22  case:D02  58c165ff741be9b4  sent 4  errors 0 []  deal True  score 0.377  complete
+18:19:41 session 7a65e015d7f96380
+18:19:41 session b221fae4ab7e953c
+18:19:43 #139 set 29  case:D02  97e63abec14c15fe  sent 2  errors 0 []  deal True  score 0.293  complete
+18:19:43 session 3cbc8985e4049e6d
+18:19:45 #142 set 31  case:D01  7a65e015d7f96380  sent 1  errors 0 []  deal True  score 0.655  complete
+18:19:46 session 62181fea468884e6
+18:19:46 #140 set 30  case:D01  671577f96d539455  sent 6  errors 0 []  deal True  score 0.739  complete
+18:19:46 #141 set 30  case:D02  c24c9c5d436a54d6  sent 2  errors 0 []  deal True  score 0.272  complete
+18:19:47 session e0c597b842aa16c4
+18:19:47 session 14e643527f8499c0
+18:19:47 #143 set 31  case:D02  b221fae4ab7e953c  sent 2  errors 0 []  deal True  score 0.251  complete
+18:19:48 session 522ab6f054346a1e
+18:19:48 #144 set 32  case:D01  3cbc8985e4049e6d  sent 1  errors 0 []  deal True  score 0.588  complete
+18:19:48 session 2604d7bed2bea98e
+18:19:51 #146 set 33  case:D01  e0c597b842aa16c4  sent 1  errors 0 []  deal True  score 0.621  complete
+18:19:51 #145 set 32  case:D02  62181fea468884e6  sent 2  errors 0 []  deal True  score 0.272  complete
+18:19:52 session a6bd2d762d578759
+18:19:52 session b9a93970ec14de72
+18:19:52 #148 set 34  case:D01  522ab6f054346a1e  sent 1  errors 0 []  deal True  score 0.588  complete
+18:19:52 #147 set 33  case:D02  14e643527f8499c0  sent 2  errors 0 []  deal True  score 0.314  complete
+18:19:53 session d9c29c8d04f387ed
+18:19:53 session fb79f4345f9768a0
+18:19:54 #149 set 34  case:D02  2604d7bed2bea98e  sent 2  errors 0 []  deal True  score 0.23  complete
+18:19:55 session 8caf51b6f8d90005
+18:19:56 #150 set 35  case:D01  a6bd2d762d578759  sent 1  errors 0 []  deal True  score 0.555  complete
+18:19:56 session ebd34ec78c8f8f94
+18:19:57 #151 set 35  case:D02  b9a93970ec14de72  sent 2  errors 0 []  deal True  score 0.314  complete
+18:19:57 #152 set 36  case:D01  d9c29c8d04f387ed  sent 2  errors 0 []  deal True  score 0.739  complete
+18:19:57 session c2f3acd179436e99
+18:19:58 session 5f58c568728f3701
+18:19:59 #154 set 37  case:D01  8caf51b6f8d90005  sent 2  errors 0 []  deal True  score 0.739  complete
+18:20:09 session 60505f02075ebd85
+18:20:11 #155 set 37  case:D02  ebd34ec78c8f8f94  sent 2  errors 0 []  deal True  score 0.314  complete
+18:20:11 #156 set 38  case:D01  c2f3acd179436e99  sent 1  errors 0 []  deal True  score 0.655  complete
+18:20:11 session ac58142a19b0493e
+18:20:12 #83 set 1  case:D02  45259f039a58945f  sent 9  errors 0 []  deal True  score 0.356  complete
+18:20:12 #157 set 38  case:D02  5f58c568728f3701  sent 2  errors 0 []  deal True  score 0.314  complete
+18:20:12 #158 set 39  case:D01  60505f02075ebd85  sent 1  errors 0 []  deal True  score 0.638  complete
+18:20:13 #159 set 39  case:D02  ac58142a19b0493e  sent 2  errors 0 []  deal True  score 0.23  complete
+18:20:31 #153 set 36  case:D02  fb79f4345f9768a0  sent 4  errors 0 []  deal True  score 0.335  complete
+
+156 sessions
+set 0                             case:D01  sessions    2  mean score 0.837
+set 0                             case:D02  sessions    1  mean score 0.398
+set 1                             case:D01  sessions    2  mean score 0.872
+set 1                             case:D02  sessions    1  mean score 0.356
+set 10                            case:D01  sessions    2  mean score 0.571
+set 10                            case:D02  sessions    2  mean score 0.251
+set 11                            case:D01  sessions    2  mean score 0.789
+set 11                            case:D02  sessions    2  mean score 0.377
+set 12                            case:D01  sessions    2  mean score 0.588
+set 12                            case:D02  sessions    2  mean score 0.314
+set 13                            case:D01  sessions    2  mean score 0.921
+set 13                            case:D02  sessions    2  mean score 0.398
+set 14                            case:D01  sessions    2  mean score 0.655
+set 14                            case:D02  sessions    2  mean score 0.272
+set 15                            case:D01  sessions    2  mean score 0.571
+set 15                            case:D02  sessions    2  mean score 0.292
+set 16                            case:D01  sessions    2  mean score 0.872
+set 16                            case:D02  sessions    2  mean score 0.377
+set 17                            case:D01  sessions    2  mean score 0.571
+set 17                            case:D02  sessions    2  mean score 0.314
+set 18                            case:D01  sessions    2  mean score 0.839
+set 18                            case:D02  sessions    2  mean score 0.356
+set 19                            case:D01  sessions    2  mean score 0.538
+set 19                            case:D02  sessions    2  mean score 0.314
+set 2                             case:D01  sessions    2  mean score 0.755
+set 2                             case:D02  sessions    2  mean score 0.293
+set 20                            case:D01  sessions    2  mean score 0.872
+set 20                            case:D02  sessions    2  mean score 0.377
+set 21                            case:D01  sessions    2  mean score 0.504
+set 21                            case:D02  sessions    2  mean score 0.23
+set 22                            case:D01  sessions    2  mean score 0.889
+set 22                            case:D02  sessions    2  mean score 0.377
+set 23                            case:D01  sessions    2  mean score 0.872
+set 23                            case:D02  sessions    2  mean score 0.356
+set 24                            case:D01  sessions    2  mean score 0.655
+set 24                            case:D02  sessions    2  mean score 0.293
+set 25                            case:D01  sessions    2  mean score 0.588
+set 25                            case:D02  sessions    2  mean score 0.293
+set 26                            case:D01  sessions    2  mean score 0.789
+set 26                            case:D02  sessions    2  mean score 0.314
+set 27                            case:D01  sessions    2  mean score 0.722
+set 27                            case:D02  sessions    2  mean score 0.314
+set 28                            case:D01  sessions    2  mean score 0.588
+set 28                            case:D02  sessions    2  mean score 0.251
+set 29                            case:D01  sessions    2  mean score 0.538
+set 29                            case:D02  sessions    2  mean score 0.293
+set 3                             case:D01  sessions    2  mean score 0.822
+set 3                             case:D02  sessions    2  mean score 0.335
+set 30                            case:D01  sessions    2  mean score 0.739
+set 30                            case:D02  sessions    2  mean score 0.272
+set 31                            case:D01  sessions    2  mean score 0.655
+set 31                            case:D02  sessions    2  mean score 0.251
+set 32                            case:D01  sessions    2  mean score 0.588
+set 32                            case:D02  sessions    2  mean score 0.272
+set 33                            case:D01  sessions    2  mean score 0.621
+set 33                            case:D02  sessions    2  mean score 0.314
+set 34                            case:D01  sessions    2  mean score 0.588
+set 34                            case:D02  sessions    2  mean score 0.23
+set 35                            case:D01  sessions    2  mean score 0.555
+set 35                            case:D02  sessions    2  mean score 0.314
+set 36                            case:D01  sessions    2  mean score 0.739
+set 36                            case:D02  sessions    2  mean score 0.335
+set 37                            case:D01  sessions    2  mean score 0.739
+set 37                            case:D02  sessions    2  mean score 0.314
+set 38                            case:D01  sessions    2  mean score 0.655
+set 38                            case:D02  sessions    2  mean score 0.314
+set 39                            case:D01  sessions    2  mean score 0.638
+set 39                            case:D02  sessions    2  mean score 0.23
+set 4                             case:D01  sessions    1  mean score 0.555
+set 4                             case:D02  sessions    1  mean score 0.209
+set 5                             case:D01  sessions    2  mean score 0.571
+set 5                             case:D02  sessions    2  mean score 0.271
+set 6                             case:D01  sessions    2  mean score 0.655
+set 6                             case:D02  sessions    2  mean score 0.293
+set 7                             case:D01  sessions    2  mean score 0.571
+set 7                             case:D02  sessions    2  mean score 0.251
+set 8                             case:D01  sessions    2  mean score 0.889
+set 8                             case:D02  sessions    2  mean score 0.419
+set 9                             case:D01  sessions    2  mean score 0.655
+set 9                             case:D02  sessions    2  mean score 0.251
+sessions saved in /Users/thomas.turek/Documents/GitHub/alex-thomas/runs/sandbox_sessions
