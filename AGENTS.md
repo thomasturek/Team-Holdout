@@ -54,14 +54,14 @@ time the agent plays every thread and every case in parallel.
                  GET /v1/cases (case files arrive before the clock runs)
                                    |
                                    v
- +---------------- ANALYST (plain code) -----------------+
+ +---------------- SCOUT (plain code) -----------------+
  | DataPackage + case.facts + Sunday release             |
  | SupplierProfile per supplier  |  Claim bank per case  |
  | Costing: C of any term sheet, standard terms, must-haves, alternative |
  +-------------------------------------------------------+
                                    |
                                    v
- +--------------- COACH (ML policy) ----------------------+
+ +--------------- ANALYST (ML policy) ----------------------+
  | Policy(params.json): state -> Decision                 |
  | state = case, profile, offers so far, signals, rounds/time left |
  | trained offline against SyntheticSupplier population   |
@@ -88,15 +88,15 @@ time the agent plays every thread and every case in parallel.
 ```
 pyproject.toml              root project; depends on starter-kit (arena-kit) as a path dependency
 src/buyer/
-  facts/                    ANALYST
+  facts/                    SCOUT
     package.py              load DataPackage + Sunday release + case.facts
     profile.py              SupplierProfile builder
     claims.py               Claim bank: verified sentences with IDs
     costing.py              thin wrappers over arena_kit.cost (C, deltas, lever values)
-  policy/                   COACH
+  policy/                   ANALYST
     policy.py               Policy class: decide(state) -> Decision
     params.json             trained parameters (versioned, committed)
-  sim/                      COACH
+  sim/                      ANALYST
     supplier.py             SyntheticSupplier
     population.py           sampling of hidden supplier settings
     env.py                  episode runner using real case files + cost.py scoring
@@ -108,7 +108,7 @@ src/buyer/
     writer.py               Decision -> e-mail
     prompts/                prompt files
   runtime/                  OPERATOR
-    agent.py                BuyerAgent: wires Analyst + Coach + Diplomat
+    agent.py                BuyerAgent: wires Scout + Analyst + Diplomat
     threads.py              concurrent per-thread loop
     runner.py               practice / sandbox / final runners
     harvest.py              sandbox + practice data collection
@@ -122,7 +122,7 @@ These are the seams. Change them only with agreement of both sides; update this 
 
 ```python
 @dataclass
-class SupplierProfile:              # ANALYST -> COACH, DIPLOMAT
+class SupplierProfile:              # SCOUT -> ANALYST, DIPLOMAT
     supplier_id: str
     name: str
     country: str
@@ -140,15 +140,15 @@ class SupplierProfile:              # ANALYST -> COACH, DIPLOMAT
     standard_terms: dict            # from the quote PDF once the session is open
 
 @dataclass
-class Claim:                        # ANALYST -> DIPLOMAT (via COACH)
+class Claim:                        # SCOUT -> DIPLOMAT (via ANALYST)
     key: str                        # e.g. "index:PPI-D351", "rival_quote:70140", "notice:doc+ctr"
     sentence: str                   # final English sentence, figure and IDs included, verified offline
     refs: list[str]
     expected: str                   # "verified"
-    strength: float                 # 0..1 prior usefulness; COACH updates from claim_results
+    strength: float                 # 0..1 prior from the SCOUT; only the ANALYST uses it to choose
 
 @dataclass
-class Signals:                      # DIPLOMAT (reader) -> COACH
+class Signals:                      # DIPLOMAT (reader) -> ANALYST
     cash_pressure: bool
     capacity_issue: bool
     final_offer_language: bool
@@ -161,7 +161,7 @@ class Signals:                      # DIPLOMAT (reader) -> COACH
     tone: str                       # warm | neutral | irritated
 
 @dataclass
-class Decision:                     # COACH -> DIPLOMAT, OPERATOR
+class Decision:                     # ANALYST -> DIPLOMAT, OPERATOR
     kind: str                       # "send" | "accept" | "walk"
     supplier_id: str
     term_sheets: list[dict]         # complete, snapped (complete_offer); empty for accept/walk
@@ -180,16 +180,34 @@ only inside its folder.
 
 | Role | File | Owns | Mission |
 |---|---|---|---|
-| THE ANALYST | [`roles/ANALYST.md`](roles/ANALYST.md) | `src/buyer/facts/` | Exact numbers, supplier profiles, claims that always verify |
-| THE COACH | [`roles/COACH.md`](roles/COACH.md) | `src/buyer/policy/`, `src/buyer/sim/` | Policy trained in simulation, calibrated on real runs |
+| THE SCOUT | [`roles/SCOUT.md`](roles/SCOUT.md) | `src/buyer/facts/` | Exact numbers, supplier profiles, claims that always verify |
+| THE ANALYST | [`roles/ANALYST.md`](roles/ANALYST.md) | `src/buyer/policy/`, `src/buyer/sim/` | Policy trained in simulation, calibrated on real runs |
 | THE DIPLOMAT | [`roles/DIPLOMAT.md`](roles/DIPLOMAT.md) | `src/buyer/llm/` | LLM reads supplier e-mails, writes ours; fast and safe |
 | THE OPERATOR | [`roles/OPERATOR.md`](roles/OPERATOR.md) | `src/buyer/runtime/`, `pyproject.toml`, `runs/` | Everything in parallel, nothing times out, everything logged |
+
+### Who owns what (no overlaps - if it's not here, ask before building it)
+
+| Thing | Owner | Others |
+|---|---|---|
+| Reading the data package, case facts, Sunday release | SCOUT | nobody else reads raw data |
+| Cost C, lever values in €, must-have and alternative checks | SCOUT | everyone calls `facts/costing.py` |
+| Supplier profiles, floor / cash / archetype estimates, `runs/profiles/all.json` | SCOUT | |
+| Verified claims (building and checking them) | SCOUT | |
+| Parsing session documents (quote PDF, cost breakdown, 8D, schedule) into numbers | SCOUT | |
+| Synthetic supplier, training population, training, calibration | ANALYST | |
+| Policy: offers, levers, claim choice, accept / walk / push, closing move | ANALYST | |
+| `params.json`, `explore.json` | ANALYST | |
+| LLM client (the only one), prompts | DIPLOMAT | SCOUT may call the client offline |
+| Reading supplier e-mail prose into `Signals` | DIPLOMAT | |
+| Writing our e-mails, template fallback | DIPLOMAT | |
+| API calls, sessions, threads, parallelism, clock, retries, crash resume | OPERATOR | |
+| Logging, harvesting, practice quota, final runner, submission | OPERATOR | |
 
 ---
 
 ## 5. Timeline (Saturday 24 Oct -> Sunday 25 Oct, CET; clocks go back overnight)
 
-| When | Analyst | Coach | Diplomat | Operator |
+| When | Scout | Analyst | Diplomat | Operator |
 |---|---|---|---|---|
 | Sat now -> 18:00 | package, costing, floor, claim bank | policy v0 | client, writer, template fallback | pyproject, logging, per-thread loop, harvester |
 | Sat 18:00 | **Integration: full agent v0 plays all 10 practice cases once + sandbox** | | | |
@@ -211,7 +229,7 @@ If anything slips: policy v0 + writer + per-thread loop is a complete, submittab
 |---|---|
 | Baseline: naive and LLM kit agents on all 10 hosted cases | 20 |
 | Agent v0 on all 10 cases | 10 |
-| Calibration runs (varied params, logged for the Coach) | 90 |
+| Calibration runs (varied params, logged for the Analyst) | 90 |
 | Validation of trained policy (held-out comparison) | 40 |
 | Sunday pre-flight and final check | 20 |
 | Reserve | 20 |

@@ -1,59 +1,68 @@
-# THE ANALYST (data and rules)
+# THE ANALYST (simulator, policy, training)
 
 > Read [`../AGENTS.md`](../AGENTS.md) first: the idea, hard constraints, architecture, interfaces
 > (`SupplierProfile`, `Claim`, `Signals`, `Decision`), timeline and guardrails. This file is your job.
 > Start every task by saying "Acting as ANALYST".
 
-**Mission:** turn the data package and the case file into exact numbers, a profile of every supplier
-and a bank of claims that always come back `verified`.
+**Mission:** a policy that wins against suppliers it has never seen, trained in simulation,
+calibrated on real runs.
 
-**Owns:** `src/buyer/facts/`. Outputs `SupplierProfile`, `Claim`, costing helpers.
+**Owns:** `src/buyer/policy/`, `src/buyer/sim/`, `params.json`.
+
+**Boundary with the SCOUT:** the Scout describes, you decide. You never read the raw data package
+or reimplement costing; you consume `SupplierProfile`, `Claim` and the costing helpers from
+`src/buyer/facts/`. You own every choice: which offers, which levers, which claims and in what
+order, when to accept or walk. Missing a fact? Ask the Scout to add it to the profile.
 
 **Tasks, in priority order**
 
-P0 - must exist by Saturday evening
-- [ ] `package.py`: load `DataPackage(ARENA_DATA)`; merge `case["facts"]`; merge the Sunday release
-      automatically when present. One function `lookup(id)` that checks case facts first.
-- [ ] `costing.py`: `c(case, terms, std, supplier=None)` and `c_alt(case)` over `arena_kit.cost`;
-      `lever_values(case, terms, std)` = € change in C for each lever step (payment days per option,
-      effective date per option, volume, lead time, incoterm). The Coach uses these directly.
-- [ ] Floor estimate: `should_cost` row for the part (prefer the row with this `supplier_id`, error
-      ~5 %); else German base x country factor (AT/CH 1.05, CZ/PL/HU 0.82, TR 0.75, CN 0.7, DE 1.0),
-      error 5-15 %. Convert to the case's `price_unit`. Fallbacks when no should-cost row: lowest
-      price in `quotes` / `price_conditions` for the part minus a typical margin; mark confidence low.
-- [ ] Claim bank per case, every claim verified offline against `facts.json` with the API's check
-      rules (api.md "What counts", tolerance +-0.5 pp / +-0.5 %):
-  - index claims: for each `cost_drivers` series of the part, the 12-month change ending at the
-    series' latest month (window <= 12 months, ending within the last 12 months of the data). Keep
-    the ones that fell or rose less than the supplier's asked %. Sentence names the series in words.
-  - rival quote / offer claims (RFQ): filled in at run time from the opening quotes.
-  - notice claims: price letter `doc` (notice days) vs contract `ctr` clause notice; only when the
-    letter gives less notice than the contract requires.
-  - scorecard / quality claims: `sc` rows (OTD mean, ppm mean), `qn` for quality cases.
-  - PO price history: 2-8 `po` lines of the same part showing stable or falling prices.
-  - should-cost claim: `cost:<part>` with its unit_cost (use with care - it reveals our estimate).
-  - forecast claims: `fc:` volume changes (more volume = leverage).
-- [ ] `profile.py`: SupplierProfile from `suppliers`, `supplier_intel` (equity ratio, credit index
-      and its 12-month change, owner type, staff, turnover), `invoices` (how late Hollerau pays
-      it), `negotiation_history` (asked vs settled), `scorecards`, `contracts`/`contract_clauses`,
-      `news`, `documents` + `correspondence/` text.
+P0 - Saturday evening
+- [ ] **Policy v0, hand-tuned, no training needed.** It must already beat the naive agent. Logic:
+  - target price = max(floor_estimate x (1 + margin_floor), what C_best-like reasoning allows);
+    walk-away = alternative's C (or fallback-based C if no alternative).
+  - open: 2-3 sheets. Sheet A: low price at our reference terms. Sheet B: lower price for shorter
+    payment (if cash_pressure) or for a later effective date. Sheet C: price for a longer contract
+    or higher volume if the case allows. All computed so each sheet has a similar C for us; the
+    supplier's pick reveals what it values.
+  - each round: concede a small step towards the supplier's last price (reciprocity), never below
+    floor; keep using 2-3 sheets; rotate in a new verified claim (max 3 per message, each once).
+  - `final_offer`: push at most once with a small step, only if rounds and time allow; else accept
+    if C beats the alternative and must-haves hold.
+  - `agreed`: accept.
+  - RFQ: run all threads; cite the cheapest rival offer to the others; close with the best C.
+  - stabilise / secure_supply: stop when the estimated supplier margin reaches
+    `sustainable_margin_pct`.
+  - deadline: `closing(state)` = best standing sheet that keeps must-haves and beats the
+    alternative, else walk. The Operator calls it when time is short; you define it.
+  - `explore.json`: parameter sets for the Operator's sandbox harvester (spread around v0).
+- [ ] Policy parameters in `params.json` (initial guesses): open_discount, concession_rate,
+      concession_decay, cash_trade_ratio, date_trade_ratio, push_after_final (bool/prob),
+      accept_gap_pct, walk_margin_pct, sheets_per_round, claim_order.
 
 P1 - Saturday night
-- [ ] Archetype classifier (rules first): family foundry, group with approval ladder, cash-short job
-      shop, near-monopolist, unknown. Inputs: owner_type, group_parent, equity ratio, credit index
-      trend, sourcing (number of qualified sources for the part), notes keywords.
-- [ ] `cash_rate_estimate` and `cash_pressure` from equity ratio, credit index (higher = worse,
-      German style), our late payments, notes/news mentioning liquidity, quote remarks.
-- [ ] Supplier estimate for the relationship term (`full_cost`, `interest_rate`, `standard`) so the
-      Coach can price `stabilise` / `secure_supply` cases with `total_cost(..., supplier)`.
-- [ ] Correspondence miner: extract per supplier the facts that move it (cash, capacity, owner
-      succession, new customer, energy contract, strike...). Rules + optional LLM pass **offline**,
-      cached to `runs/profiles/*.json`. Noise exists: keep only notes with a supplier and a date.
+- [ ] **SyntheticSupplier** (`sim/supplier.py`), behaviour from the brief:
+  - hidden: floor (full cost), target margin, cash rate, approval threshold and delay, concession
+    rate per our move, patience, sensitivity to claims (verified claim = small concession or
+    "not our reality" by archetype), walk probability after pushing a final offer.
+  - never below floor; gives nothing without a move from us; bigger steps need approval (slower,
+    smaller); answers the term sheet it likes best at its own price; `final_offer` near its limit;
+    `agreed` when we meet its price; values payment days at its cash rate, contract length as
+    security only.
+- [ ] **Population** (`sim/population.py`): ranges per archetype built from the Scout's
+      `runs/profiles/all.json` (never from the raw data). Domain randomisation: wide ranges.
+- [ ] **Env** (`sim/env.py`): runs Policy vs SyntheticSupplier on real practice case files; scores
+      with the official formula (C_open from the synthetic opening, C_best from the hidden floor
+      with every lever applied).
+- [ ] **Train** (`sim/train.py`): CMA-ES or random search over policy params, objective = mean
+      score over thousands of episodes across case types; also report the 10th percentile (we hate
+      zeros). Output `params.json` + a report.
 
-P2 - Sunday 08:00-12:00
-- [ ] Re-run with the Sunday release; diff new news / letters / memo per supplier; add new claims.
-- [ ] Unit tests: every claim in the bank for all 19 practice cases checks as `verified` against
-      `facts.json` with our own checker.
+P2 - Sunday morning
+- [ ] **Calibrate** (`sim/calibrate.py`): from Operator logs, fit population ranges so simulated
+      concession curves, final-offer timing, payment-day pricing and `c_best` match real runs
+      (least squares on per-round price moves). Retrain. Compare sim-predicted vs real score on
+      held-out practice cases.
+- [ ] Freeze `params.json` by Sun 12:00 with the commit that the final runs.
 
-**Definition of done:** for any case file, `build(case)` returns profiles and a claim bank in < 2 s,
-zero claims that would be `contradicted`.
+**Definition of done:** trained policy beats policy v0 on held-out real practice cases, no case
+scores 0 from a broken must-have or a bad accept.

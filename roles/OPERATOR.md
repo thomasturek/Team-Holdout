@@ -5,7 +5,7 @@
 > Start every task by saying "Acting as OPERATOR".
 
 **Mission:** every case and every thread runs at the same time, nothing times out, nothing crashes,
-and every byte of every run is logged for the Coach.
+and every byte of every run is logged for the Analyst.
 
 **Owns:** `src/buyer/runtime/`, root `pyproject.toml`, `.env` handling, `runs/`.
 
@@ -20,11 +20,13 @@ P0 - first, everyone depends on it
 - [ ] **Per-thread concurrency** (`threads.py`). The kit's `play()` sends one message at a time and
       waits up to ~60 s for the reply - other RFQ threads time out meanwhile. Our loop: one worker
       per supplier thread, each with its own 60 s clock; a shared case state (all offers, so the
-      Coach can cite rivals); a single accept closes the case, all workers stop.
-- [ ] Deadline handling: per move < 25 s budget; wave cap from `seconds_left`; close 90 s before
-      cap or slowest round + margin (as `play.closing_move`).
+      Analyst can cite rivals); a single accept closes the case, all workers stop.
+- [ ] Deadline handling: per move < 25 s budget; wave cap from `seconds_left`; 90 s before the cap
+      (or slowest round + margin) call the Analyst's `policy.closing(state)` and execute it. You own
+      the clock; the Analyst owns what the closing move is.
 - [ ] `harvest.py`: run the sandbox (`case:D01`, `case:D02`) continuously, 10 sessions in
-      parallel, with varied policy params (exploration) - this is the Coach's free training data.
+      parallel, with the exploration parameter sets the Analyst provides in
+      `src/buyer/policy/explore.json`. You run and log; you never choose policy parameters.
 
 P1 - Saturday night
 - [ ] `runner.py`: `practice`, `sandbox`, `final` modes. Final mode = our version of `play_waves`

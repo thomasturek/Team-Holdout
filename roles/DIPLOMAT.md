@@ -30,8 +30,6 @@ P0 - Saturday evening
 P1 - Saturday night
 - [ ] `reader.py`: supplier e-mail + attachments text -> `Signals` JSON (schema above), strict
       JSON, validated. Fast model, < 10 s. Fallback: keyword rules.
-- [ ] Parse cost breakdown XLSX, 8D, delivery schedule into structured numbers (code, not LLM,
-      where `docs.py` allows) - hand them to the Analyst/Coach (a cost breakdown narrows the floor).
 - [ ] Prompt tests: 20 recorded supplier e-mails from logs -> expected Signals.
 
 P2 - Sunday morning
