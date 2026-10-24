@@ -15,6 +15,131 @@ and the reason is logged. Complexity that does not move the score never survives
 
 ---
 
+## START HERE - setup (teammate + Claude Code, ~20 min)
+
+### For the teammate: what only a human can do
+
+```bash
+git pull                       # on main
+uv sync
+claude                         # start Claude Code in the repo root, then paste the prompt below
+```
+
+Before or while Claude works, do the things Claude cannot do:
+
+1. **Keys:** `.env` in the repo root has `ARENA_API_KEY`, `ANTHROPIC_API_KEY` and real model names
+   (not `PASTE-...`). Claude checks them but cannot get them.
+2. **EHL material:** give Claude the link to the previous EHL winner's repo / write-up (or put the files
+   into `docs/ehl/`). No link -> Claude skips the EHL part and logs it.
+3. **Laptop:** plugged in, sleep off (Settings -> System -> Power -> "Never" when plugged in), Windows
+   Update paused, stable Wi-Fi.
+
+**The prompt to paste into Claude Code:**
+
+> Read `docs/OVERNIGHT_PLAN.md` (all of it, starting with "START HERE") and `docs/NIGHT_HANDOFF.md`,
+> then `AGENTS.md`. Do the whole setup in "START HERE - for Claude" yourself: run every step, check every
+> item of the setup checklist (this section and NIGHT_HANDOFF.md section 6), and build anything that is
+> missing. Ask me only for what a human must provide (keys, the EHL link, laptop settings). When the setup
+> is complete and verified, show me the summary and the start command; do not start the loop until I say
+> go. EHL material: <paste the link here, or "none">.
+
+### For Claude Code: the setup, step by step
+
+You are the **setup session** (interactive, with the teammate). Do every step below yourself, in order.
+If something a step needs does not exist, **create it** following this plan; if it needs a human (a key, a
+link, a physical setting), ask once and continue with what you can do. Verify each step before the next
+one and report a short checklist at the end.
+
+**Step 1 - Repo and tests**
+- `git switch main && git pull --ff-only && uv sync`
+- `uv run pytest -q` and `uv run pytest -q src/buyer/facts` must be green. If red on a clean `main`:
+  stop and tell the teammate (do not fix `main` yourself).
+
+**Step 2 - Keys, quota, data**
+- `uv run arena me` must answer with our team. If not: the key is missing or wrong -> ask the teammate.
+- Check `.env` model names are real (no `PASTE-`); `uv run python -m buyer.llm.bench` once to see the LLM
+  works (skip if no LLM key; the loop runs with `LLM_DISABLED=1` anyway).
+- **`uv run buyer quota`** -> note `used`, `left`, `resets_at`. Re-plan NIGHT_HANDOFF.md section 3 if
+  `left` is not ~155. If `left` < 70: practice runs are off for the night (sandbox only).
+
+**Step 3 - The overnight branch**
+- `git switch -c overnight/2026-10-25 && git push -u origin overnight/2026-10-25`
+  (if it exists: switch to it and `git merge --ff-only main` if possible).
+- All files below are created and committed **on this branch only**, never on `main`.
+
+**Step 4 - EHL material** (NIGHT_HANDOFF.md section 4)
+- With a link: clone or download into `docs/ehl/src/` (never into `src/buyer/`), copy their README /
+  write-up into `docs/ehl/`, find and record their licence in `docs/ehl/LICENCE-NOTE.md`. If the repo is
+  large, keep only what is needed and note what was left out.
+- Without a link: write `docs/ehl/README.md` saying "no material provided" and continue.
+
+**Step 5 - Loop files** (create whatever is missing)
+- `docs/overnight/ITERATION.md` - the fixed instruction for each night session (text in section 4.2,
+  plus: "obey NIGHT_HANDOFF.md section 3 for practice runs; log `uv run buyer quota` after every practice
+  run").
+- `docs/overnight/BACKLOG.md` - every idea of section 5 in order, one line each:
+  `| id | idea | tier | status (open / in progress / kept / reverted / skipped) | notes |`, all `open`;
+  add a line `EHL-study | open` right after E0 if EHL material exists.
+- `docs/overnight/LOG.md` - header row from section 4.4; first line: start time, `buyer quota` numbers,
+  `main` commit, branch.
+- `runs/overnight/` (directory for session logs and scoreboard files).
+
+**Step 6 - Runner script** `scripts/overnight.sh` (Git Bash) - as in section 4.1, plus:
+- `export LLM_DISABLED=1` at the top; `cd` to the repo root; abort if the current branch is not
+  `overnight/*`.
+- Stop at 06:30 *new* time (clocks go back at 03:00); stop when the last line of LOG.md starts with `STOP`.
+- Before each iteration: `git switch overnight/2026-10-25` (a crashed session may have left another branch
+  checked out) and `git stash` anything uncommitted with a message.
+- One line per iteration to `runs/overnight/runner.log`: time, iteration, exit code.
+- Make it restartable: running it again continues with the next open idea (state is in the files).
+
+**Step 7 - Hooks and permissions** - in **`.claude/settings.local.json`** (local to this laptop, not
+committed: hooks in the shared `.claude/settings.json` would also block the teammates' own sessions).
+Implement the checks in a small script `scripts/overnight_guard.py` (committed on the branch), called by
+the hooks; a hook that exits with code 2 blocks the action and shows its stderr to Claude.
+- `PreToolUse` with matcher `Bash`: read the tool input (JSON on stdin), block (exit 2) when the command
+  contains: `git push` to anything but `overnight/`; `git switch main` / `git checkout main` /
+  `git reset` while on `main` / `git push --force` / `git tag`; `buyer final`; `buyer practice` without
+  `--reserve 50` (or with a smaller reserve); `BUYER_LOCKED_EVAL=1`.
+- `PreToolUse` with matcher `Edit|Write`: block edits to `src/buyer/sim/scoreboard.py` and
+  `src/buyer/sim/seeds.json` once they are committed on the branch (E0 done), and any edit to `.env`.
+- `Stop`: run `uv run pytest -q` and `uv run pytest -q src/buyer/facts`; on failure exit 2 with the
+  failing test names, so the session must fix or revert before it ends.
+- Permissions: allow `uv run *`, `git *` (the guard filters), `python *`, file edits in the repo; the
+  runner uses `--permission-mode acceptEdits`.
+
+**Step 8 - Dry run**
+- Test the guard: feed it a few sample commands (a push to `main`, `buyer practice` without reserve, a
+  push to `overnight/...`) and show it blocks / allows correctly.
+- Run **one** iteration by hand: `bash scripts/overnight.sh` with the iteration count set to 1 (an env
+  variable, e.g. `ITERATIONS=1`). It should do E0 (the scoreboard), append a LOG.md row, and leave the
+  tests green. Check `runs/overnight/session-1.log`.
+- Commit the setup files on `overnight/2026-10-25` and push.
+
+**Step 9 - Report and wait**
+- Show: the checklist below with a tick or a reason for each line, the quota, the start command
+  (`ITERATIONS=12 bash scripts/overnight.sh`), and how to stop it (write `STOP: manual` as the last line of
+  `docs/overnight/LOG.md`, or Ctrl+C in its terminal).
+- Wait for the teammate's "go". Then the teammate starts the runner in a **separate Git Bash window** and
+  leaves it running; this setup session can be closed.
+
+### Setup checklist (all must be ticked before "go")
+
+- [ ] `main` pulled, `uv sync`, both test runs green
+- [ ] `uv run arena me` OK; real model names in `.env`
+- [ ] `buyer quota` noted in LOG.md; budget re-planned if needed
+- [ ] branch `overnight/2026-10-25` created and pushed
+- [ ] EHL material in `docs/ehl/` with licence note - or "none" recorded
+- [ ] `docs/overnight/ITERATION.md`, `BACKLOG.md`, `LOG.md`, `runs/overnight/`
+- [ ] `scripts/overnight.sh` (LLM_DISABLED, branch check, 06:30 stop, STOP line, restartable)
+- [ ] `scripts/overnight_guard.py` + hooks in `.claude/settings.local.json`; guard tested
+- [ ] one dry-run iteration done, tests green, setup committed and pushed on the branch
+- [ ] laptop on power, sleep off, updates paused (teammate confirms)
+- [ ] anything else this plan or NIGHT_HANDOFF.md needs that is missing: **created by you** and listed
+      in the report
+
+---
+
 ## 0. Orientation for the overnight Claude
 
 ### 0.1 The project in five sentences
@@ -218,7 +343,7 @@ but the context grows all night: more tokens per step and more drift.)
 the last 10 rows of `LOG.md`. Run exactly one iteration of section 3.2. Obey sections 1, 3.3, 3.4 and
 4.3. Finish by appending one row to `LOG.md`. If nothing is left to do, append `STOP: <reason>`."
 
-### 4.3 Hooks and permissions (`.claude/settings.json`, committed)
+### 4.3 Hooks and permissions (`.claude/settings.local.json` on the night laptop - see START HERE step 7)
 
 - **Stop hook:** `uv run pytest -q && uv run pytest -q src/buyer/facts` + `ruff check` on changed files.
   Red -> the session cannot end; fix or revert.
@@ -403,7 +528,7 @@ The team decides; the loop never merges to `main`.
 |---|---|
 | Agree on thresholds (3.3, 3.4) and the backlog order; Thomas OK for E1 / E4 touching `policy.py` and `sim/` | team, 10 min |
 | `scripts/overnight.sh`, `docs/overnight/ITERATION.md`, empty `BACKLOG.md` (copy of section 5's list with status "open") and `LOG.md` | anyone |
-| `.claude/settings.json` hooks and permissions (4.3) | anyone |
+| `.claude/settings.local.json` hooks and permissions (4.3) - the setup session builds them (START HERE) | Claude |
 | Create and push the branch `overnight/<date>` from `main` | anyone |
 | Laptop: plugged in, sleep off, updates paused, `uv sync` done, `claude` logged in | the laptop owner |
 

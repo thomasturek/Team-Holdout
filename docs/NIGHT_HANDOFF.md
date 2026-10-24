@@ -187,7 +187,12 @@ licence. Without that material the overnight Claude skips this section and says 
 6. Pre-flight on the final machine (line E), `uv run arena me`, LLM credits for ~1 h of parallel play.
 7. 13:00 submit the hash; before 13:30 start `uv run buyer final` with logging; hands off.
 
-## 6. Setup checklist for the teammate (before starting the loop)
+## 6. Setup checklist (before starting the loop)
+
+The setup session of Claude Code works through this list itself - see `OVERNIGHT_PLAN.md`, "START
+HERE": it runs every step, builds anything missing, and asks the teammate only for keys, the EHL link and
+laptop settings.
+
 
 - [ ] `git pull` on `main`; `uv sync`; `uv run pytest -q` and `uv run pytest -q src/buyer/facts` green.
 - [ ] `.env` has `ARENA_API_KEY` and a working LLM key + real model names (not the placeholder);
@@ -196,7 +201,7 @@ licence. Without that material the overnight Claude skips this section and says 
 - [ ] Branch `overnight/2026-10-25` from `main`, pushed.
 - [ ] `docs/overnight/ITERATION.md`, `BACKLOG.md` (OVERNIGHT_PLAN section 5 + EHL placeholder), `LOG.md`.
 - [ ] `scripts/overnight.sh` (OVERNIGHT_PLAN 4.1) - 12 iterations, stop at 06:30 new time.
-- [ ] `.claude/settings.json` hooks (OVERNIGHT_PLAN 4.3) **with these changes for tonight**:
+- [ ] `.claude/settings.local.json` hooks (OVERNIGHT_PLAN 4.3, local to the night laptop) **with these changes for tonight**:
       allow `buyer practice` only with `--reserve 50` (block it otherwise); allow `buyer sandbox`;
       still block `buyer final`, pushes to `main`, tag edits, edits to the frozen scoreboard and seeds.
 - [ ] `LLM_DISABLED=1` in the loop's environment by default; experiments about prose (none planned
