@@ -72,7 +72,8 @@ exactly as the API returns them (see `brief/api.md`, Messages), attachments with
 | `case` | first line | `case_id`, `session_id`, `case` (the full case file), `run`: `{agent, params, params_index, explore, harvest, episode}` - `explore` is a fingerprint of explore.json, `harvest` the harvester run's id |
 | `opening` | right after | `threads`: `{supplier_id: [opening message]}` with quote PDF text |
 | `sent` | each message we send | `supplier_id`, `message` (as sent), `decide_s` (supplier reply → our send) |
-| `reply` | each supplier reply | `supplier_id`, `message` (status, term_sheets, claim_results, signals, attachments), `wait_s` (how long the reply took) |
+| `reply` | each supplier reply | `supplier_id`, `message` (status, term_sheets, claim_results, signals, attachments - their text follows in `attachment` events), `wait_s` (how long the reply took) |
+| `attachment` | an attachment of a reply finished downloading (in the background, so a thread never waits for it) | `supplier_id`, `attachment_id`, `name`, `text` |
 | `decision` | before each move of the policy | `supplier_id`, `trace`: `{decision: {kind, supplier_id, term_sheets, accept_sheet_id, claims, questions, intent}, rival_best_c}` (later also Signals) |
 | `hold` | the decision was too slow; a holding message went out instead | `supplier_id`, `after_s` |
 | `drop` | we stopped playing a thread (agent walked away from one bidder, or the round limit) | `supplier_id`, `reason` |

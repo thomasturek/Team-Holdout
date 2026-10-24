@@ -40,6 +40,7 @@ log = logging.getLogger("buyer.threads")
 DECIDE_BUDGET_S = 25  # AGENTS.md: every move inside 25 s of the supplier's reply
 HOLD_AT_S = 48  # still no decision: send the holding message (the arena's limit is 60 s)
 WATCH_EVERY_S = 1.0
+DOWNLOADS = 4  # attachment downloads at once per case
 MAX_FAILURES = 2  # the agent failing (or its messages refused) this often in a row: stop playing the thread
 INVALID = "invalid"
 HOLD_BODY = (
@@ -60,6 +61,7 @@ class CaseState:
         self.replied_at = {sid: time.monotonic() for sid in threads}  # our 60 s run from here
         self.slowest = 0.0  # longest round so far, any thread: decision + supplier reply
         self.texts = {}  # attachment_id -> text, so refreshed threads keep their documents
+        self.pending = {}  # attachment_id -> attachment dicts waiting for its text (download running)
 
     def snapshot(self):
         with self.lock:
@@ -83,7 +85,7 @@ class CasePlayer:
         self.deadline, self.log, self.hold_at = deadline, log or NullLog(), hold_at
         self.state = None
         self._close_lock = threading.Lock()
-        self._decide_pool = None
+        self._decide_pool = self._docs_pool = None
 
     # -- the case -------------------------------------------------------------------------------
     def play(self):
@@ -94,13 +96,14 @@ class CasePlayer:
         if self.table.done:  # resumed a case that had already ended
             return self._finish(self.table.done)
         self.state = s = CaseState(case, threads)
-        for events in threads.values():
+        for sid, events in threads.items():  # the opening quotes: before any thread plays, so wait for them
             for m in events:
-                self._documents(m)
+                self._documents(m, sid, wait=True)
         self.log("opening", threads=threads)
         workers = list(threads)
         # A decision that came back too late keeps running; don't wait for it at the end.
         self._decide_pool = ThreadPoolExecutor(max_workers=len(workers) * 2, thread_name_prefix="decide")
+        self._docs_pool = ThreadPoolExecutor(max_workers=DOWNLOADS, thread_name_prefix="docs")
         try:
             threading.Thread(target=self._watch, daemon=True, name=f"cap-{self.case_id}").start()
             with ThreadPoolExecutor(max_workers=len(workers), thread_name_prefix="thread") as pool:
@@ -115,6 +118,7 @@ class CasePlayer:
             s.over.set()
         finally:
             self._decide_pool.shutdown(wait=False, cancel_futures=True)
+            self._docs_pool.shutdown(wait=True)  # the case is over: the arena answers these at once now
         return self._finish(s.result or self.table.result())
 
     def _finish(self, result):
@@ -230,7 +234,7 @@ class CasePlayer:
         self.log("reply", supplier_id=sid, message=reply, wait_s=round(now - sent, 2))
         if "result" in reply:  # e.g. the last live supplier walked away
             return self._ended(reply["result"])
-        self._documents(reply)
+        self._documents(reply, sid)
         with s.lock:
             s.threads[sid] += [{**msg, "from": "buyer"}, reply]
             s.slowest = max(s.slowest, now - s.replied_at[sid])
@@ -244,7 +248,7 @@ class CasePlayer:
             return self._ended(state.get("result") or {"deal": False, "end_reason": state.get("end_reason")})
         t = self.client.thread(self.table.session_id, sid)
         for m in t["messages"]:
-            self._documents(m)
+            self._documents(m, sid)
         with s.lock:
             s.threads[sid] = t["messages"]
             if t.get("closed"):
@@ -308,16 +312,47 @@ class CasePlayer:
         s.over.set()
 
     # -- helpers --------------------------------------------------------------------------------
-    def _documents(self, message):
-        """Add each attachment's text (downloaded once per attachment)."""
-        texts = self.state.texts
+    def _documents(self, message, sid=None, wait=False):
+        """Add each attachment's text, downloaded once per attachment. In play the download runs in
+        the background (`wait=False`): the arena may hold a GET until another supplier's reply on the
+        same session is written, and this thread must not wait for that - its text is filled in when
+        it arrives (and logged as an "attachment" event). Until then a decision sees the attachment
+        without "text"; `standard_terms` falls back to the opening quote."""
+        s = self.state
         for att in message.get("attachments") or []:
             aid = att.get("attachment_id")
-            if aid and "text" not in att:
-                if aid not in texts:
-                    texts[aid] = read_document(att["name"], self.table.attachment(aid))
-                att["text"] = texts[aid]
+            if not aid or "text" in att:
+                continue
+            with s.lock:
+                if aid in s.texts:
+                    att["text"] = s.texts[aid]
+                    continue
+                waiting = s.pending.setdefault(aid, [])
+                waiting.append(att)
+                if len(waiting) > 1:  # already downloading
+                    continue
+            if wait or self._docs_pool is None:
+                self._download(aid, att["name"], sid, log_it=False)
+            else:
+                self._docs_pool.submit(self._download, aid, att["name"], sid)
         return message
+
+    def _download(self, aid, name, sid, log_it=True):
+        s = self.state
+        try:
+            text = read_document(name, self.table.attachment(aid))
+        except Exception as e:  # asked again with the next message that carries it
+            log.warning("%s %s: attachment %s: %s", self.case_id, sid, name, e)
+            self.log("error", supplier_id=sid, detail=e, where="attachment", attachment_id=aid)
+            with s.lock:
+                s.pending.pop(aid, None)
+            return
+        with s.lock:
+            s.texts[aid] = text
+            for att in s.pending.pop(aid, []):
+                att["text"] = text
+        if log_it:
+            self.log("attachment", supplier_id=sid, attachment_id=aid, name=name, text=text)
 
     @staticmethod
     def _subject(events):

@@ -190,3 +190,47 @@ def test_a_refused_message_is_replaced_by_a_hold(sim, tmp_path):
     result = play_case(client, "case:S01", Scripted(sup_70270=invalid_once), log=lg)
     assert result["deal"]
     assert kinds(lg, "error")[0]["status"] == 422 and len(kinds(lg, "hold")) == 1
+
+
+class AskBreakdown:
+    """Lowballs with a cost-breakdown question, so every supplier reply carries an attachment;
+    accepts after `rounds` messages."""
+
+    def __init__(self, rounds=4):
+        self.rounds = rounds
+
+    def decide(self, case, threads, sid):
+        events = threads[sid]
+        if sum(m.get("from") == "buyer" for m in events) >= self.rounds:
+            return accept(threads, sid)
+        sheet_id, terms = standing(events)
+        from arena_kit.cost import complete_offer
+
+        sheet = complete_offer(case, {**terms, "unit_price": round(terms["unit_price"] * 0.5, 2)})
+        body = "Thank you. Could you send a cost breakdown?"
+        return {
+            "supplier_id": sid,
+            "message": {"subject": "Re: offer", "body": body, "term_sheets": [{"terms": sheet}]},
+        }
+
+
+def test_a_thread_answers_without_waiting_for_another_suppliers_reply(slow_sim, tmp_path):
+    """Serial arena: B's reply carries a cost breakdown while A's supplier takes 1.5 s per reply.
+    B must decide and send at once, not after A's supplier has answered."""
+    client = slow_sim({A: 1.5, B: 0.0}, serial=True)
+    lg = logged(tmp_path, RFQ)
+    play_case(client, RFQ, AskBreakdown(), log=lg)
+    b_sends = [e for e in kinds(lg, "sent") if e["supplier_id"] == B][1:]  # after a reply with an attachment
+    assert b_sends and max(e["decide_s"] for e in b_sends) < 0.5, [e["decide_s"] for e in b_sends]
+    texts = [e for e in kinds(lg, "attachment") if e["supplier_id"] == B]
+    assert texts and all(e["name"] == "cost-breakdown.xlsx" and e["text"] for e in texts)
+
+
+def test_a_fast_thread_plays_several_rounds_while_a_slow_supplier_writes(slow_sim, tmp_path):
+    """Parallel arena: B gets all its rounds in while A's supplier is still writing its first reply."""
+    client = slow_sim({A: 2.0, B: 0.0}, serial=False)
+    lg = logged(tmp_path, RFQ)
+    play_case(client, RFQ, AskBreakdown(rounds=10), log=lg)
+    first_a_reply = next(e["t"] for e in kinds(lg, "reply") if e["supplier_id"] == A)
+    b_before = [e for e in kinds(lg, "reply") if e["supplier_id"] == B and e["t"] < first_a_reply]
+    assert len(b_before) >= 3
