@@ -1,5 +1,7 @@
 # THE SCOUT (data and rules)
 
+**Owner: Felix**
+
 > Read [`../AGENTS.md`](../AGENTS.md) first: the idea, hard constraints, architecture, interfaces
 > (`SupplierProfile`, `Claim`, `Signals`, `Decision`), timeline and guardrails. This file is your job.
 > Start every task by saying "Acting as SCOUT".
@@ -14,6 +16,8 @@ raw data package and computes €. You deliver facts and estimates (floor, cash 
 lever values in €, every verified claim); you never pick offers, rank claims for use, or set
 strategy. The Analyst never reads the raw data; it gets everything through your outputs, including
 the per-supplier statistics it needs to build its training population (`profile_all()` below).
+
+
 
 **Tasks, in priority order**
 

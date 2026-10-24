@@ -1,0 +1,11 @@
+{
+  "open_frac": 0.101,
+  "concede": 0.125,
+  "floor_margin_pct": 2.5504,
+  "accept_gap_pct": 0.3616,
+  "cash_discount_pct": 2.9229,
+  "push_final": 0.3071,
+  "min_open_discount_pct": 9.3602,
+  "rival_undercut_pct": 0.7733,
+  "lead_standard": 0.0136
+}

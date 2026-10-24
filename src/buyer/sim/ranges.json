@@ -1,0 +1,56 @@
+{
+  "cost_vs_current": [
+    0.85,
+    1.08
+  ],
+  "open_margin": [
+    0.0088,
+    0.1288
+  ],
+  "min_margin": [
+    -0.03,
+    0.08
+  ],
+  "max_concession": [
+    0.0523,
+    0.0923
+  ],
+  "std_payment_weights": {
+    "30": 35,
+    "45": 7,
+    "60": 3,
+    "90": 1
+  },
+  "concede": [
+    0.02,
+    0.1762
+  ],
+  "cash_rate": [
+    0.0198,
+    0.0998
+  ],
+  "walk_after_final": [
+    0.0368,
+    0.4368
+  ],
+  "insist_share": [
+    0.3123,
+    0.6123
+  ],
+  "reciprocity": [
+    0.0,
+    0.3957
+  ],
+  "insult_pct": [
+    0.0,
+    7.9466
+  ],
+  "first_drop": [
+    0.0051,
+    0.0351
+  ],
+  "lead_premium_pct_week": [
+    2.6506,
+    3.6506
+  ]
+}
