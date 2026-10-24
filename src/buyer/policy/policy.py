@@ -6,6 +6,7 @@ from pathlib import Path
 from arena_kit.cost import complete_offer, must_haves_ok, total_cost
 
 PARAMS_FILE = Path(__file__).with_name("params.json")
+STRUCTURAL = ("index_clause",)
 
 BOUNDS = {
     "open_frac": (0.0, 1.0),
@@ -64,6 +65,9 @@ class ThreadState:
     offers: list = field(default_factory=list)
     our_costs: list = field(default_factory=list)
     case_threads: dict | None = None
+    alt: tuple | None = None
+    mirrored: bool = False
+    struct_seen: dict = field(default_factory=dict)
 
 
 def load_params(path=PARAMS_FILE):
@@ -91,7 +95,6 @@ class Policy:
         if t.status in ("walked_away", "no_bid") or theirs is None:
             return Decision("walk", sid)
         self.pick_offer(case, t)
-        theirs = t.standing_terms.get("unit_price", theirs)
         c_theirs = self.cost(case, t)
         if t.opening_cost is None:
             t.opening_cost = c_theirs
@@ -104,12 +107,12 @@ class Policy:
             if p["push_final"] > 0.5 and not t.pushed_final and t.rounds_left > 1:
                 t.pushed_final = True
                 return self.offer(case, t, self.next_price(t, theirs, step=0.5), intent="final push")
-            return self.accept(t) if acceptable else Decision("walk", sid)
+            return self.close(case, t, acceptable, c_theirs, rival_best_c)
         if t.rounds_left <= 1:
             return self.accept(t) if acceptable else Decision("walk", sid)
         close = t.our_costs and c_theirs <= t.our_costs[-1] * (1 + p["accept_gap_pct"] / 100)
         if close and acceptable and c_theirs < t.opening_cost:
-            return self.accept(t)
+            return self.close(case, t, acceptable, c_theirs, rival_best_c)
         return self.offer(case, t, self.next_price(t, theirs), rival_best_c=rival_best_c)
 
     def closing(self, case, threads: dict) -> Decision:
@@ -157,6 +160,7 @@ class Policy:
         if "payment_days" in case["negotiable"]:
             base["payment_days"] = b["reference_payment_days"]
         a = self.best_options(case, complete_offer(case, base), t.standard, skip={"payment_days"})
+        a = self.adopt_structure(case, a, t)
         if rival_best_c < math.inf:
             c_a = total_cost(case, a, t.standard)
             target = rival_best_c * (1 - self.p["rival_undercut_pct"] / 100)
@@ -167,13 +171,19 @@ class Policy:
         sheets = [a]
         options = case.get("term_options", {}).get("payment_days") or []
         faster = [d for d in options if d < a.get("payment_days", 0)]
+        rate, pressure = self.cash(t)
+        cash_first = False
         if faster and self.p["cash_discount_pct"] > 0:
-            sheet_b = complete_offer(
-                case,
-                {**a, "unit_price": a["unit_price"] * (1 - self.p["cash_discount_pct"] / 100), "payment_days": max(faster)},
-            )
+            days_b = min(faster) if pressure >= 0.5 else max(faster)
+            gap = (a["payment_days"] - days_b) / 360
+            ours = b["interest_rate"] * gap
+            disc = self.p["cash_discount_pct"] / 100
+            if rate > b["interest_rate"]:
+                disc = max(disc, ours + 0.5 * (rate - b["interest_rate"]) * gap)
+            sheet_b = complete_offer(case, {**a, "unit_price": a["unit_price"] * (1 - disc), "payment_days": days_b})
             if total_cost(case, sheet_b, t.standard) < total_cost(case, a, t.standard):
                 sheets.append(sheet_b)
+                cash_first = pressure >= 0.5
         std_days = t.standard.get("payment_days") or t.opening_payment_days
         if "payment_days" in case["negotiable"] and std_days in options and std_days != a.get("payment_days"):
             sheet_s = self.same_cost(case, complete_offer(case, {**a, "payment_days": std_days}), a, t.standard)
@@ -182,6 +192,8 @@ class Policy:
                     sheets.insert(0, sheet_s)
                 else:
                     sheets.append(sheet_s)
+        if cash_first:
+            sheets.insert(0, sheets.pop(sheets.index(sheet_b)))
         sheets = sheets[:3]
         t.our_prices.append(a["unit_price"])
         t.our_costs.append(total_cost(case, a, t.standard))
@@ -191,15 +203,50 @@ class Policy:
         return Decision("send", t.supplier_id, term_sheets=sheets, claims=chosen, intent=intent)
 
     def pick_offer(self, case, t):
-        best = None
+        t.alt = None
         for sheet_id, terms in t.offers or []:
-            if terms.get("unit_price") is None or not must_haves_ok(case, terms, t.standard):
+            for f in STRUCTURAL:
+                if f in terms:
+                    seen = t.struct_seen.setdefault(f, [])
+                    if terms[f] not in seen:
+                        seen.append(terms[f])
+            if sheet_id == t.standing_id or terms.get("unit_price") is None:
+                continue
+            if not must_haves_ok(case, terms, t.standard):
                 continue
             c = total_cost(case, terms, t.standard)
-            if best is None or c < best[0]:
-                best = (c, sheet_id, terms)
-        if best:
-            t.standing_id, t.standing_terms = best[1], best[2]
+            if t.alt is None or c < t.alt[0]:
+                t.alt = (c, sheet_id, terms)
+
+    @staticmethod
+    def cash(t):
+        prof, sig = t.profile or {}, t.signals or {}
+        rate = prof.get("cash_rate_estimate") or 0.0
+        pressure = prof.get("cash_pressure") or 0.0
+        if sig.get("cash_pressure") or "faster_payment" in (sig.get("asks") or []):
+            rate, pressure = max(rate, 0.2), max(pressure, 0.6)
+        return rate, pressure
+
+    def close(self, case, t, acceptable, c_theirs, rival_best_c):
+        alt = t.alt
+        if alt and alt[0] < c_theirs and t.rounds_left > 1 and not t.mirrored:
+            if alt[0] < alternative_cost(case) and alt[0] <= rival_best_c:
+                t.mirrored = True
+                sheet = complete_offer(case, dict(alt[2]))
+                t.our_prices.append(sheet["unit_price"])
+                t.our_costs.append(total_cost(case, sheet, t.standard))
+                return Decision("send", t.supplier_id, term_sheets=[sheet],
+                                intent="appreciative: we accept your alternative proposal as offered")
+        return self.accept(t) if acceptable else Decision("walk", t.supplier_id)
+
+    def adopt_structure(self, case, sheet, t):
+        out = dict(sheet)
+        for f in STRUCTURAL:
+            insists = bool(t.offers) and all(terms.get(f) is not None for _, terms in t.offers)
+            options = [v for v in t.struct_seen.get(f) or [] if v is not None]
+            if f in case["negotiable"] and insists and options:
+                out[f] = min(options, key=lambda v: total_cost(case, {**out, f: v}, t.standard))
+        return out
 
     def pick_claims(self, case, t):
         limit = int(self.p["claims_per_msg"])

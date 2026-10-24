@@ -1,0 +1,362 @@
+17:51:33 case files saved to /Users/thomas.turek/Documents/GitHub/alex-thomas/runs/cases: {'sandbox': 2, 'practice': 19}
+17:51:33 harvest 20261024-175133-8f97: ['case:D01', 'case:D02'], 6 parameter set(s), 6 at once
+17:51:33 session 3442032193bb2204
+17:51:33 session 9c331fca5a2a90ee
+17:51:33 session a0bc641a0cdf2d98
+17:51:34 session 4d55cb6b4d2f5d04
+17:51:34 session f458721eb4137ed0
+17:51:34 session d50dc55c781fd59c
+17:51:40 #0 set 0  case:D01  9c331fca5a2a90ee  sent 4  errors 0 []  deal True  score 0.777  complete
+17:51:41 session b49ac4d288ea7f3f
+17:51:42 #1 set 0  case:D02  3442032193bb2204  sent 10  errors 0 []  deal True  score 0.335  complete
+17:51:42 session 20fcefd442f01a25
+17:51:42 #3 set 1  case:D02  4d55cb6b4d2f5d04  sent 12  errors 0 []  deal True  score 0.116  complete
+17:51:42 session eff417edfeea6e36
+17:52:04 #2 probe push past final  case:D01  d50dc55c781fd59c  sent 5  errors 0 []  deal True  score 0.777  complete
+17:52:05 session 91da6007e3b3130e
+17:53:03 #4 set 2  case:D01  a0bc641a0cdf2d98  sent 4  errors 0 []  deal True  score 0.777  complete
+17:53:04 session 26cfc5cb6ea6c48a
+17:53:04 #8 probe 45d payment  case:D01  eff417edfeea6e36  sent 5  errors 0 []  deal True  score 0.905  complete
+17:53:04 #6 set 3  case:D01  b49ac4d288ea7f3f  sent 4  errors 0 []  deal True  score 0.777  complete
+17:53:04 session d98a43bdbb16502d
+17:53:04 session a511d1ab376a08f7
+17:53:33 #12 set 0  case:D01  a511d1ab376a08f7  sent 4  errors 0 []  deal True  score 0.777  complete
+17:53:34 session 012d942ac6111d82
+17:53:40 #5 probe 14d payment  case:D02  f458721eb4137ed0  sent 9  errors 0 []  deal True  score 0.323  complete
+17:53:40 session 0084e0ae0e7916a6
+17:53:46 #13 set 0  case:D02  012d942ac6111d82  sent 8  errors 1 [409]  deal True  score 0.335  complete
+17:53:46 session 2be97ee1d5d8caa3
+17:53:49 #15 set 1  case:D02  2be97ee1d5d8caa3  sent 12  errors 0 []  deal True  score 0.116  complete
+17:53:49 session 51191f701b3244cd
+17:53:51 #16 set 2  case:D01  51191f701b3244cd  sent 4  errors 0 []  deal True  score 0.777  complete
+17:53:51 session bd1bc55d87d5cd25
+17:53:59 #7 set 3  case:D02  20fcefd442f01a25  sent 10  errors 1 [409]  deal True  score 0.335  complete
+17:53:59 session c910666ba5195cec
+17:54:01 #18 set 3  case:D01  c910666ba5195cec  sent 4  errors 0 []  deal True  score 0.777  complete
+17:54:01 session 1d29b709aa99b82d
+17:54:24 #19 set 3  case:D02  1d29b709aa99b82d  sent 10  errors 0 []  deal True  score 0.335  complete
+17:54:24 session e3bbc7225d4fd6bf
+17:54:35 #10 set 5  case:D01  26cfc5cb6ea6c48a  sent 4  errors 0 []  deal True  score 0.717  complete
+17:54:35 session 2b4ce9845ed500b6
+17:54:35 #17 probe push past final + 14d payment  case:D02  bd1bc55d87d5cd25  sent 11  errors 0 []  deal True  score 0.344  complete
+17:54:36 session 49759bceb0f25ab5
+17:54:38 #22 set 5  case:D01  49759bceb0f25ab5  sent 4  errors 0 []  deal True  score 0.717  complete
+17:54:38 session 77b7ff2f0cbc6f15
+17:54:45 #9 set 4  case:D02  91da6007e3b3130e  sent 8  errors 0 []  deal True  score 0.335  complete
+17:54:45 session a38c110e56e44740
+17:54:46 #24 set 0  case:D01  a38c110e56e44740  sent 4  errors 0 []  deal True  score 0.777  complete
+17:54:46 session a9657938e30abddd
+17:54:49 #25 set 0  case:D02  a9657938e30abddd  sent 10  errors 0 []  deal True  score 0.335  complete
+17:54:49 session 634116c6d46a24f3
+17:55:06 #14 probe push past final + 30d payment  case:D01  0084e0ae0e7916a6  sent 6  errors 0 []  deal True  score 0.829  complete
+17:55:06 #21 set 4  case:D02  2b4ce9845ed500b6  sent 8  errors 0 []  deal True  score 0.335  complete
+17:55:06 session 65f28dc4e700b704
+17:55:06 session 25a5d82cbe481344
+17:55:10 #28 set 2  case:D01  25a5d82cbe481344  sent 4  errors 0 []  deal True  score 0.777  complete
+17:55:10 session 4d92034741dc6f33
+17:55:11 #26 probe 30d payment  case:D01  634116c6d46a24f3  sent 6  errors 0 []  deal True  score 0.829  complete
+17:55:11 session a342b188c302dd83
+17:55:11 #27 set 1  case:D02  65f28dc4e700b704  sent 12  errors 0 []  deal True  score 0.116  complete
+17:55:12 session 073cca7645c9239d
+17:55:14 #30 set 3  case:D01  a342b188c302dd83  sent 4  errors 0 []  deal True  score 0.777  complete
+17:55:15 session 8c182179a453817c
+17:55:16 #31 set 3  case:D02  073cca7645c9239d  sent 10  errors 0 []  deal True  score 0.335  complete
+17:55:16 session f65a0d60a6a9960c
+17:55:19 #33 set 4  case:D02  f65a0d60a6a9960c  sent 8  errors 0 []  deal True  score 0.335  complete
+17:55:19 session e43a3ac207563347
+17:55:21 #34 set 5  case:D01  e43a3ac207563347  sent 4  errors 0 []  deal True  score 0.717  complete
+17:55:21 session 1b7f7a6ab863f8d0
+17:55:39 #20 probe push past final + 60d payment  case:D01  e3bbc7225d4fd6bf  sent 5  errors 0 []  deal True  score 0.905  complete
+17:55:39 session f7bff5557be643bf
+17:55:40 #36 set 0  case:D01  f7bff5557be643bf  sent 4  errors 0 []  deal True  score 0.777  complete
+17:55:40 session 9b045c7e45467bbd
+17:55:43 #37 set 0  case:D02  9b045c7e45467bbd  sent 10  errors 0 []  deal True  score 0.335  complete
+17:55:43 session 0f3a109cefb79b67
+17:55:45 #32 probe 60d payment  case:D01  8c182179a453817c  sent 5  errors 0 []  deal True  score 0.905  complete
+17:55:45 session ca557076d8f77678
+17:55:48 #11 probe 45d payment  case:D02  d98a43bdbb16502d  sent 11  errors 0 []  deal True  score 0.356  complete
+17:55:48 session b4bc1ece469c25fa
+17:55:49 #39 set 1  case:D02  ca557076d8f77678  sent 12  errors 0 []  deal True  score 0.116  complete
+17:55:49 session 71b6b2ca86ffd765
+17:55:50 #40 set 2  case:D01  b4bc1ece469c25fa  sent 4  errors 0 []  deal True  score 0.777  complete
+17:55:51 session 19ed6906a3949312
+17:55:52 #23 probe push past final + 45d payment  case:D02  77b7ff2f0cbc6f15  sent 11  errors 0 []  deal True  score 0.356  complete
+17:55:53 session 20cdf99e49ed4686
+17:55:53 #42 set 3  case:D01  19ed6906a3949312  sent 4  errors 0 []  deal True  score 0.777  complete
+17:55:53 session 466e35c442d43732
+17:55:56 #43 set 3  case:D02  20cdf99e49ed4686  sent 10  errors 0 []  deal True  score 0.335  complete
+17:55:56 session c903590c505cf653
+17:55:58 #45 set 4  case:D02  c903590c505cf653  sent 8  errors 0 []  deal True  score 0.335  complete
+17:55:58 session 7ea00c7d6bb4ad71
+17:56:00 #46 set 5  case:D01  7ea00c7d6bb4ad71  sent 4  errors 0 []  deal True  score 0.717  complete
+17:56:00 session bb2c64a9cdce7987
+17:57:13 #38 probe push past final + 45d payment  case:D01  0f3a109cefb79b67  sent 6  errors 0 []  deal True  score 0.902  complete
+17:57:13 session 9d276b280a75ac36
+17:57:15 #48 set 0  case:D01  9d276b280a75ac36  sent 4  errors 0 []  deal True  score 0.777  complete
+17:57:15 session 855e58c36f5b8e87
+17:57:18 #49 set 0  case:D02  855e58c36f5b8e87  sent 10  errors 0 []  deal True  score 0.335  complete
+17:57:18 session c3be4ef4a4e7153a
+17:57:20 #50 probe 45d payment  case:D01  c3be4ef4a4e7153a  sent 6  errors 0 []  deal True  score 0.902  complete
+17:57:20 session 53056096e48fb945
+17:57:23 #51 set 1  case:D02  53056096e48fb945  sent 12  errors 0 []  deal True  score 0.116  complete
+17:57:23 session 2fc0dcea5acebbea
+17:57:24 #52 set 2  case:D01  2fc0dcea5acebbea  sent 4  errors 0 []  deal True  score 0.777  complete
+17:57:24 session 82ae10315e3f7948
+17:57:45 #41 probe 60d payment  case:D02  71b6b2ca86ffd765  sent 8  errors 1 [409]  deal True  score 0.335  complete
+17:57:45 session 5d8172faade8c5e5
+17:57:47 #54 set 3  case:D01  5d8172faade8c5e5  sent 4  errors 0 []  deal True  score 0.777  complete
+17:57:47 session 2e934bc8615cce4f
+17:57:50 #55 set 3  case:D02  2e934bc8615cce4f  sent 10  errors 0 []  deal True  score 0.335  complete
+17:57:50 session 0795ea5c04b110cd
+17:57:54 #35 probe 30d payment  case:D02  1b7f7a6ab863f8d0  sent 10  errors 0 []  deal True  score 0.335  complete
+17:57:54 session 1b5c3627e882821f
+17:57:56 #57 set 4  case:D02  1b5c3627e882821f  sent 8  errors 0 []  deal True  score 0.335  complete
+17:57:56 session a3c98084994b31f0
+17:57:58 #58 set 5  case:D01  a3c98084994b31f0  sent 4  errors 0 []  deal True  score 0.717  complete
+17:57:58 session 108ca6eef8377b24
+17:58:01 #44 probe push past final  case:D01  466e35c442d43732  sent 7  errors 0 []  deal True  score 0.839  complete
+17:58:01 session 2fee428c9ecde3c1
+17:58:03 #60 set 0  case:D01  2fee428c9ecde3c1  sent 4  errors 0 []  deal True  score 0.777  complete
+17:58:03 session 0c9fb927478aac0f
+17:58:06 #29 probe push past final  case:D02  4d92034741dc6f33  sent 11  errors 0 []  deal True  score 0.157  complete
+17:58:06 session 9edc0794131304a6
+17:58:07 #61 set 0  case:D02  0c9fb927478aac0f  sent 10  errors 0 []  deal True  score 0.335  complete
+17:58:07 session ceb777bbf4682d10
+17:58:10 #63 set 1  case:D02  ceb777bbf4682d10  sent 12  errors 0 []  deal True  score 0.116  complete
+17:58:10 session 42c4574bb860ca2f
+17:58:11 #64 set 2  case:D01  42c4574bb860ca2f  sent 4  errors 0 []  deal True  score 0.777  complete
+17:58:11 session 3f8e562b5a5acb87
+17:58:26 #47 probe push past final + 30d payment  case:D02  bb2c64a9cdce7987  sent 12  errors 0 []  deal True  score 0.335  complete
+17:58:26 session acd9adae0abd7818
+17:58:28 #66 set 3  case:D01  acd9adae0abd7818  sent 4  errors 0 []  deal True  score 0.777  complete
+17:58:28 session 1cdf4df255ec41e0
+17:58:31 #67 set 3  case:D02  1cdf4df255ec41e0  sent 10  errors 0 []  deal True  score 0.335  complete
+17:58:31 session fcb31b6978464c32
+17:58:45 #53 probe push past final + 60d payment  case:D02  82ae10315e3f7948  sent 12  errors 0 []  deal True  score 0.356  complete
+17:58:46 session cc178abba25b4f5a
+17:58:48 #69 set 4  case:D02  cc178abba25b4f5a  sent 8  errors 0 []  deal True  score 0.335  complete
+17:58:48 session 89226b7ee6f0675d
+17:58:50 #70 set 5  case:D01  89226b7ee6f0675d  sent 4  errors 0 []  deal True  score 0.717  complete
+17:58:50 session e8e99e7c1e72c64a
+17:58:55 #56 probe push past final + 30d payment  case:D01  0795ea5c04b110cd  sent 4  errors 0 []  deal True  score 0.905  complete
+17:58:55 session 2b8f634b6881419c
+17:58:57 #72 set 0  case:D01  2b8f634b6881419c  sent 4  errors 0 []  deal True  score 0.777  complete
+17:58:57 session 6b0a474f726ae3c8
+17:58:59 #73 set 0  case:D02  6b0a474f726ae3c8  sent 10  errors 0 []  deal True  score 0.335  complete
+17:58:59 session b2c14b63f98808ee
+17:59:16 #68 probe 30d payment  case:D01  fcb31b6978464c32  sent 5  errors 0 []  deal True  score 0.905  complete
+17:59:16 session b30c88474fa7d933
+17:59:19 #74 probe 60d payment  case:D01  b2c14b63f98808ee  sent 5  errors 0 []  deal False  score 0.0  complete
+17:59:19 session b3d0d0c06684049c
+17:59:20 #75 set 1  case:D02  b30c88474fa7d933  sent 12  errors 0 []  deal True  score 0.116  complete
+17:59:20 session 6b8fc7478349f954
+17:59:22 #62 probe push past final + 60d payment  case:D01  9edc0794131304a6  sent 5  errors 0 []  deal True  score 0.797  complete
+17:59:22 session 6f9138c6373cd82e
+17:59:23 #76 set 2  case:D01  b3d0d0c06684049c  sent 4  errors 0 []  deal True  score 0.777  complete
+17:59:23 session 960f362adcc76b7f
+17:59:25 #78 set 3  case:D01  6f9138c6373cd82e  sent 4  errors 0 []  deal True  score 0.777  complete
+17:59:26 session f7a3a7f7c1973284
+17:59:27 #79 set 3  case:D02  960f362adcc76b7f  sent 10  errors 0 []  deal True  score 0.335  complete
+17:59:28 session fab59452e39a5c67
+17:59:29 #80 probe push past final + 45d payment  case:D01  f7a3a7f7c1973284  sent 5  errors 0 []  deal True  score 0.905  complete
+17:59:30 session a71301882f99a505
+17:59:32 #81 set 4  case:D02  fab59452e39a5c67  sent 8  errors 0 []  deal True  score 0.335  complete
+17:59:32 session 6dfa9a64c223b7c5
+17:59:32 #82 set 5  case:D01  a71301882f99a505  sent 4  errors 0 []  deal True  score 0.717  complete
+17:59:32 session 9ce6493a16ffad47
+17:59:34 #84 set 0  case:D01  9ce6493a16ffad47  sent 4  errors 0 []  deal True  score 0.777  complete
+17:59:34 session 11ae5193b5884b81
+17:59:37 #85 set 0  case:D02  11ae5193b5884b81  sent 10  errors 0 []  deal True  score 0.335  complete
+17:59:37 session f8e81f3431a0c5f2
+17:59:39 #86 probe push past final  case:D01  f8e81f3431a0c5f2  sent 5  errors 0 []  deal True  score 0.777  complete
+17:59:39 session c210cd103992aa86
+17:59:42 #87 set 1  case:D02  c210cd103992aa86  sent 12  errors 0 []  deal True  score 0.116  complete
+17:59:42 session 87d214babbd3b6fa
+17:59:43 #88 set 2  case:D01  87d214babbd3b6fa  sent 4  errors 0 []  deal True  score 0.777  complete
+17:59:43 session 2c9815cbc5c1e3c3
+18:00:16 #65 probe 45d payment  case:D02  3f8e562b5a5acb87  sent 9  errors 1 [409]  deal True  score 0.335  complete
+18:00:16 session 3e3c88251d0147cb
+18:00:18 #90 set 3  case:D01  3e3c88251d0147cb  sent 4  errors 0 []  deal True  score 0.777  complete
+18:00:18 session 7cfe4477ea3ca9fe
+18:00:21 #91 set 3  case:D02  7cfe4477ea3ca9fe  sent 10  errors 0 []  deal True  score 0.335  complete
+18:00:22 session 69000ba0c11cd0c2
+18:00:23 #92 probe 45d payment  case:D01  69000ba0c11cd0c2  sent 5  errors 0 []  deal True  score 0.905  complete
+18:00:23 session eacc61904d1d522b
+18:00:26 #93 set 4  case:D02  eacc61904d1d522b  sent 8  errors 0 []  deal True  score 0.335  complete
+18:00:26 session 79860c71299c6e4d
+18:00:28 #94 set 5  case:D01  79860c71299c6e4d  sent 4  errors 0 []  deal True  score 0.717  complete
+18:00:28 session dfa03380406d18ec
+18:01:08 #59 probe 14d payment  case:D02  108ca6eef8377b24  sent 11  errors 0 []  deal True  score 0.344  complete
+18:01:09 session a358c4e68aa1f220
+18:01:10 #96 set 0  case:D01  a358c4e68aa1f220  sent 4  errors 0 []  deal True  score 0.777  complete
+18:01:10 session 9067010f9c87d855
+18:01:13 #97 set 0  case:D02  9067010f9c87d855  sent 10  errors 0 []  deal True  score 0.335  complete
+18:01:13 session 0f4171a011f190c9
+18:01:15 #98 probe push past final + 30d payment  case:D01  0f4171a011f190c9  sent 6  errors 0 []  deal True  score 0.829  complete
+18:01:16 session e4d1bc7b9e5170d7
+18:01:17 #77 probe push past final + 45d payment  case:D02  6b8fc7478349f954  sent 12  errors 0 []  deal True  score 0.356  complete
+18:01:18 session 066817733306adab
+18:01:20 #71 probe push past final + 14d payment  case:D02  e8e99e7c1e72c64a  sent 10  errors 0 []  deal True  score 0.344  complete
+18:01:20 session d4a692160f3c8963
+18:01:21 #99 set 1  case:D02  e4d1bc7b9e5170d7  sent 12  errors 0 []  deal True  score 0.116  complete
+18:01:22 session 94a741a6245ac703
+18:01:22 #100 set 2  case:D01  066817733306adab  sent 4  errors 0 []  deal True  score 0.777  complete
+18:01:23 session ba78ed3fece3a2bb
+18:01:25 #102 set 3  case:D01  94a741a6245ac703  sent 4  errors 0 []  deal True  score 0.777  complete
+18:01:26 session eb14666543c74857
+18:01:27 #103 set 3  case:D02  ba78ed3fece3a2bb  sent 10  errors 0 []  deal True  score 0.335  complete
+18:01:27 session bff8806be30239c1
+18:01:28 #104 probe push past final + 60d payment  case:D01  eb14666543c74857  sent 5  errors 0 []  deal True  score 0.905  complete
+18:01:29 session 8c1e27daea93fc36
+18:01:31 #105 set 4  case:D02  bff8806be30239c1  sent 8  errors 0 []  deal True  score 0.335  complete
+18:01:31 session 27d696f58a49ffa8
+18:01:32 #106 set 5  case:D01  8c1e27daea93fc36  sent 4  errors 0 []  deal True  score 0.717  complete
+18:01:32 session a6c05da86273aeff
+18:01:34 #108 set 0  case:D01  a6c05da86273aeff  sent 4  errors 0 []  deal True  score 0.777  complete
+18:01:34 session 8068921ff1086402
+18:01:37 #109 set 0  case:D02  8068921ff1086402  sent 10  errors 0 []  deal True  score 0.335  complete
+18:01:37 session 3bb59dcfbd5c49d7
+18:01:39 #110 probe 30d payment  case:D01  3bb59dcfbd5c49d7  sent 6  errors 0 []  deal True  score 0.829  complete
+18:01:39 session a323bc5d77c7e4b2
+18:01:42 #111 set 1  case:D02  a323bc5d77c7e4b2  sent 12  errors 0 []  deal True  score 0.116  complete
+18:01:42 session 1d676a99c5d69092
+18:01:44 #112 set 2  case:D01  1d676a99c5d69092  sent 4  errors 0 []  deal True  score 0.777  complete
+18:01:44 session f26be14e32200375
+18:01:47 #113 probe 14d payment  case:D02  f26be14e32200375  sent 9  errors 0 []  deal True  score 0.323  complete
+18:01:47 session d62affa9a1ec0ca7
+18:01:49 #114 set 3  case:D01  d62affa9a1ec0ca7  sent 4  errors 0 []  deal True  score 0.777  complete
+18:01:49 session c3236486e0ecebee
+18:01:54 #115 set 3  case:D02  c3236486e0ecebee  sent 8  errors 1 [409]  deal True  score 0.335  complete
+18:01:54 session b5eac7a2131d8a24
+18:01:55 #116 probe 60d payment  case:D01  b5eac7a2131d8a24  sent 5  errors 0 []  deal True  score 0.905  complete
+18:01:56 session 5b10b201f8e51e04
+18:01:58 #117 set 4  case:D02  5b10b201f8e51e04  sent 8  errors 0 []  deal True  score 0.335  complete
+18:01:58 session 9949cc922d54cc85
+18:02:00 #118 set 5  case:D01  9949cc922d54cc85  sent 4  errors 0 []  deal True  score 0.717  complete
+18:02:00 session f398c6c8722fefc1
+18:02:04 #119 probe 45d payment  case:D02  f398c6c8722fefc1  sent 11  errors 0 []  deal True  score 0.356  complete
+18:02:04 session 1a83016731d73df8
+18:02:05 #120 set 0  case:D01  1a83016731d73df8  sent 4  errors 0 []  deal True  score 0.777  complete
+18:02:05 session d40c1d14f933b7c7
+18:02:08 #121 set 0  case:D02  d40c1d14f933b7c7  sent 10  errors 0 []  deal True  score 0.335  complete
+18:02:08 session e6bae7b7927829c6
+18:02:10 #122 probe push past final + 45d payment  case:D01  e6bae7b7927829c6  sent 6  errors 0 []  deal True  score 0.902  complete
+18:02:10 session 4a39a1ba74f8d1a9
+18:02:13 #123 set 1  case:D02  4a39a1ba74f8d1a9  sent 12  errors 0 []  deal True  score 0.116  complete
+18:02:14 session ccefc6e8eef5beda
+18:02:15 #124 set 2  case:D01  ccefc6e8eef5beda  sent 4  errors 0 []  deal True  score 0.777  complete
+18:02:15 session 8c291229947065a1
+18:02:19 #125 probe push past final + 14d payment  case:D02  8c291229947065a1  sent 11  errors 0 []  deal True  score 0.344  complete
+18:02:19 session 92159b4cc7a0c7ab
+18:02:20 #126 set 3  case:D01  92159b4cc7a0c7ab  sent 4  errors 0 []  deal True  score 0.777  complete
+18:02:21 session e8d6fc8c8f780944
+18:02:24 #127 set 3  case:D02  e8d6fc8c8f780944  sent 10  errors 0 []  deal True  score 0.335  complete
+18:02:24 session ee776d48b2e5bead
+18:02:26 #128 probe push past final  case:D01  ee776d48b2e5bead  sent 7  errors 0 []  deal True  score 0.839  complete
+18:02:26 session 7ce7e0cee6a1df51
+18:02:28 #129 set 4  case:D02  7ce7e0cee6a1df51  sent 8  errors 0 []  deal True  score 0.335  complete
+18:02:28 session 253c0236250a5205
+18:02:30 #130 set 5  case:D01  253c0236250a5205  sent 4  errors 0 []  deal True  score 0.717  complete
+18:02:30 session fcd515f876ca964d
+18:02:32 #89 probe 30d payment  case:D02  2c9815cbc5c1e3c3  sent 9  errors 0 []  deal True  score 0.335  complete
+18:02:32 session b2301b453e51fdec
+18:02:35 #131 probe push past final + 45d payment  case:D02  fcd515f876ca964d  sent 11  errors 0 []  deal True  score 0.356  complete
+18:02:35 session 63e5fdd6b57b80cc
+18:02:36 #132 set 0  case:D01  b2301b453e51fdec  sent 4  errors 0 []  deal True  score 0.777  complete
+18:02:36 session 2355ce40b4a82739
+18:02:40 #133 set 0  case:D02  63e5fdd6b57b80cc  sent 10  errors 0 []  deal True  score 0.335  complete
+18:02:40 session 6d39627cbe7eb671
+18:02:41 #134 probe 45d payment  case:D01  2355ce40b4a82739  sent 6  errors 0 []  deal True  score 0.902  complete
+18:02:41 session 7888e26f9c7b45a1
+18:02:44 #136 set 2  case:D01  7888e26f9c7b45a1  sent 4  errors 0 []  deal True  score 0.777  complete
+18:02:44 #135 set 1  case:D02  6d39627cbe7eb671  sent 12  errors 0 []  deal True  score 0.116  complete
+18:02:45 session 40aff9c06b22af93
+18:02:45 session 0f426b89e02f1a52
+18:02:48 #138 set 3  case:D01  0f426b89e02f1a52  sent 4  errors 0 []  deal True  score 0.777  complete
+18:02:48 session aeb522e703c883dc
+18:02:50 #137 probe push past final  case:D02  40aff9c06b22af93  sent 11  errors 0 []  deal True  score 0.157  complete
+18:02:50 session 4eaeb393f1cd6fc0
+18:02:53 #139 set 3  case:D02  aeb522e703c883dc  sent 10  errors 0 []  deal True  score 0.335  complete
+18:02:53 #140 probe push past final + 30d payment  case:D01  4eaeb393f1cd6fc0  sent 4  errors 0 []  deal True  score 0.905  complete
+18:02:53 session 2b2f8ee05f1e3a05
+18:02:53 session 70dbdb124e0e93fe
+18:02:57 #142 set 5  case:D01  70dbdb124e0e93fe  sent 4  errors 0 []  deal True  score 0.717  complete
+18:02:57 session a2a5141b99095195
+18:02:57 #141 set 4  case:D02  2b2f8ee05f1e3a05  sent 8  errors 0 []  deal True  score 0.335  complete
+18:02:57 session 9bd42e49afe503a4
+18:03:01 #144 set 0  case:D01  9bd42e49afe503a4  sent 4  errors 0 []  deal True  score 0.777  complete
+18:03:01 session 1c526fa85d2ba421
+18:03:02 #143 probe 30d payment  case:D02  a2a5141b99095195  sent 12  errors 0 []  deal True  score 0.335  complete
+18:03:02 session 93c5349ca776a139
+18:03:05 #146 probe push past final + 60d payment  case:D01  93c5349ca776a139  sent 5  errors 0 []  deal False  score 0.0  complete
+18:03:05 #145 set 0  case:D02  1c526fa85d2ba421  sent 10  errors 0 []  deal True  score 0.335  complete
+18:03:06 session e632c20c2cd21810
+18:03:06 session fc5fc68e8b5b94ce
+18:04:46 #101 probe push past final + 30d payment  case:D02  d4a692160f3c8963  sent 12  errors 0 []  deal True  score 0.356  complete
+18:04:46 session 68585eee376b432c
+18:04:50 #149 probe 60d payment  case:D02  68585eee376b432c  sent 10  errors 0 []  deal True  score 0.335  complete
+18:04:51 session b4cb52df08398fb4
+18:04:52 #150 set 3  case:D01  b4cb52df08398fb4  sent 4  errors 0 []  deal True  score 0.777  complete
+18:04:52 session 1089281447a743d7
+18:05:02 case:D02: closing move refused: HTTP 422: not a standing offer in this session
+18:05:08 #83 probe push past final  case:D02  6dfa9a64c223b7c5  sent 12  errors 1 [409]  deal False  score 0.0  complete
+18:05:09 session 366fa71c7485c06d
+18:05:17 #148 set 2  case:D01  fc5fc68e8b5b94ce  sent 3  errors 0 []  deal True  score 0.737  complete
+18:05:21 session 465b9b369f55a433
+18:05:34 case:D02: closing move refused: HTTP 422: not a standing offer in this session
+18:05:36 #95 probe 60d payment  case:D02  dfa03380406d18ec  sent 13  errors 2 [409, 422]  deal False  score 0.0  complete
+18:05:36 session 4ba8231243935e69
+18:05:49 case:D02: closing move refused: HTTP 422: not a standing offer in this session
+18:05:50 #107 probe push past final + 60d payment  case:D02  27d696f58a49ffa8  sent 14  errors 2 [422]  deal False  score -  
+18:05:51 episode 155 case:D02: HTTP 429: at most 10 open sessions per key - waiting 10s
+18:06:01 episode 156 case:D01: HTTP 429: at most 10 open sessions per key - waiting 10s
+18:06:11 episode 157 case:D02: HTTP 429: at most 10 open sessions per key - waiting 10s
+18:06:12 #152 probe 30d payment  case:D01  366fa71c7485c06d  sent 4  errors 0 []  deal True  score 0.905  complete
+18:06:12 session 5f135743d745fe1a
+18:06:13 #147 set 1  case:D02  e632c20c2cd21810  sent 8  errors 0 []  deal True  score 0.074  complete
+18:06:13 session 480a14aa157b67f5
+18:06:21 session a1c260fa10f00579
+18:06:55 #154 set 5  case:D01  4ba8231243935e69  sent 4  errors 0 []  deal True  score 0.773  complete
+18:06:56 session 2d83b86d32a1d331
+18:06:59 #151 set 3  case:D02  1089281447a743d7  sent 9  errors 0 []  deal True  score 0.335  complete
+18:07:00 session ce240ca441422add
+18:07:09 #153 set 4  case:D02  465b9b369f55a433  sent 5  errors 1 [409]  deal True  score 0.314  complete
+18:07:10 session 990ad9562fc9d4d8
+18:07:13 #163 set 3  case:D02  990ad9562fc9d4d8  sent 9  errors 0 []  deal True  score 0.335  complete
+18:07:13 session 415f938ed86b2499
+18:07:25 #160 set 2  case:D01  a1c260fa10f00579  sent 4  errors 0 []  deal True  score 0.777  complete
+18:07:25 session a38ffaf7bce3f8b0
+18:07:25 stopping: the running sessions finish first (Ctrl+C again to quit now)
+18:07:37 #158 probe 60d payment  case:D01  5f135743d745fe1a  sent 5  errors 0 []  deal True  score 0.757  complete
+18:08:02 #162 set 3  case:D01  ce240ca441422add  sent 4  errors 0 []  deal True  score 0.757  complete
+18:08:17 #164 probe push past final + 45d payment  case:D01  415f938ed86b2499  sent 4  errors 0 []  deal True  score 0.889  complete
+18:08:46 #165 set 4  case:D02  a38ffaf7bce3f8b0  sent 8  errors 1 [409]  deal True  score 0.335  complete
+18:09:15 #161 probe push past final + 60d payment  case:D02  2d83b86d32a1d331  sent 9  errors 0 []  deal True  score 0.314  complete
+18:09:48 #159 set 1  case:D02  480a14aa157b67f5  sent 11  errors 0 []  deal True  score 0.356  complete
+
+163 sessions
+probe 14d payment                 case:D02  sessions    3  mean score 0.33
+probe 30d payment                 case:D01  sessions    4  mean score 0.867
+probe 30d payment                 case:D02  sessions    3  mean score 0.335
+probe 45d payment                 case:D01  sessions    4  mean score 0.904
+probe 45d payment                 case:D02  sessions    3  mean score 0.349
+probe 60d payment                 case:D01  sessions    4  mean score 0.642
+probe 60d payment                 case:D02  sessions    3  mean score 0.223
+probe push past final             case:D01  sessions    4  mean score 0.808
+probe push past final             case:D02  sessions    3  mean score 0.105
+probe push past final + 14d payment  case:D02  sessions    3  mean score 0.344
+probe push past final + 30d payment  case:D01  sessions    4  mean score 0.867
+probe push past final + 30d payment  case:D02  sessions    2  mean score 0.345
+probe push past final + 45d payment  case:D01  sessions    4  mean score 0.9
+probe push past final + 45d payment  case:D02  sessions    3  mean score 0.356
+probe push past final + 60d payment  case:D01  sessions    4  mean score 0.652
+probe push past final + 60d payment  case:D02  sessions    3  mean score 0.223
+set 0                             case:D01  sessions   13  mean score 0.777
+set 0                             case:D02  sessions   13  mean score 0.335
+set 1                             case:D02  sessions   14  mean score 0.13
+set 2                             case:D01  sessions   14  mean score 0.774
+set 3                             case:D01  sessions   14  mean score 0.775
+set 3                             case:D02  sessions   14  mean score 0.335
+set 4                             case:D02  sessions   14  mean score 0.333
+set 5                             case:D01  sessions   13  mean score 0.721
+sessions saved in /Users/thomas.turek/Documents/GitHub/alex-thomas/runs/sandbox_sessions
