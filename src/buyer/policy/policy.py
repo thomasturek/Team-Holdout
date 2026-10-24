@@ -14,6 +14,7 @@ BOUNDS = {
     "accept_gap_pct": (0.0, 5.0),
     "cash_discount_pct": (0.0, 5.0),
     "push_final": (0.0, 1.0),
+    "min_open_discount_pct": (1.0, 10.0),
 }
 DEFAULTS = {
     "open_frac": 0.3,
@@ -22,6 +23,7 @@ DEFAULTS = {
     "accept_gap_pct": 1.0,
     "cash_discount_pct": 1.5,
     "push_final": 0.0,
+    "min_open_discount_pct": 4.0,
 }
 
 
@@ -51,6 +53,7 @@ class ThreadState:
     our_prices: list = field(default_factory=list)
     their_prices: list = field(default_factory=list)
     pushed_final: bool = False
+    opening_cost: float | None = None
 
 
 def load_params(path=PARAMS_FILE):
@@ -77,6 +80,8 @@ class Policy:
         if t.status in ("walked_away", "no_bid") or theirs is None:
             return Decision("walk", sid)
         c_theirs = self.cost(case, t)
+        if t.opening_cost is None:
+            t.opening_cost = c_theirs
         acceptable = self.acceptable(case, t, c_theirs, rival_best_c)
 
         if t.status == "agreed":
@@ -88,7 +93,8 @@ class Policy:
             return self.accept(t) if acceptable else Decision("walk", sid)
         if t.rounds_left <= 1:
             return self.accept(t) if acceptable else Decision("walk", sid)
-        if t.our_prices and theirs <= t.our_prices[-1] * (1 + p["accept_gap_pct"] / 100) and acceptable:
+        close = t.our_prices and theirs <= t.our_prices[-1] * (1 + p["accept_gap_pct"] / 100)
+        if close and acceptable and c_theirs < t.opening_cost:
             return self.accept(t)
         return self.offer(case, t, self.next_price(t, theirs))
 
@@ -122,7 +128,7 @@ class Policy:
         return floor * (1 + self.p["floor_margin_pct"] / 100)
 
     def next_price(self, t, theirs, step=None):
-        low = self.floor_ask(t, theirs)
+        low = min(self.floor_ask(t, theirs), theirs * (1 - self.p["min_open_discount_pct"] / 100))
         if not t.our_prices:
             price = low + self.p["open_frac"] * (theirs - low)
         else:
@@ -146,6 +152,11 @@ class Policy:
             )
             if total_cost(case, sheet_b, t.standard) < total_cost(case, a, t.standard):
                 sheets.append(sheet_b)
+        std_days = t.standard.get("payment_days")
+        if "payment_days" in case["negotiable"] and std_days in options and len(sheets) < 3:
+            sheet_s = complete_offer(case, {**a, "payment_days": std_days})
+            if sheet_s not in sheets:
+                sheets.append(sheet_s)
         t.our_prices.append(a["unit_price"])
         return Decision("send", t.supplier_id, term_sheets=sheets, intent=intent)
 
