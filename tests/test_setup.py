@@ -19,7 +19,8 @@ def test_env_files_load_in_order_and_resolve_the_data_path(tmp_path, monkeypatch
     (root / ".env").write_text("ARENA_URL=http://root\n")
     (kit / ".env").write_text("ARENA_URL=http://kit\nARENA_DATA=../data\nARENA_API_KEY=k\n")
     for key in ("ARENA_URL", "ARENA_DATA", "ARENA_API_KEY"):
-        monkeypatch.delenv(key, raising=False)
+        monkeypatch.setenv(key, "")  # recorded, so the teardown also removes what env.load sets below
+        monkeypatch.delenv(key)
     env.load((root / ".env", kit / ".env"))
     assert os.environ["ARENA_URL"] == "http://root"  # the root file wins over starter-kit/.env
     assert os.environ["ARENA_API_KEY"] == "k"  # what the root file leaves out comes from the kit's
