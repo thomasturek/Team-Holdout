@@ -13,9 +13,13 @@ The runtime asks an agent for one supplier's next move at a time (see `threads.p
           uses its keyword rules and its template e-mail - the cheap mode for harvesting.
 
 One move of the policy agent, inside MOVE_BUDGET_S from the call (threads.py allows 25 s from the
-supplier's reply): read the reply (LLM, at most READER_BUDGET_S) -> policy (plain code, under the
-agent's lock) -> write the e-mail (LLM, the rest of the budget; else the template). The LLM calls
-run outside the lock, so the threads of an RFQ never wait for each other.
+supplier's reply): read the reply with the keyword rules (milliseconds) -> policy (plain code, under
+the agent's lock) -> write the e-mail (LLM, the rest of the budget; else the template). The LLM
+reader runs in the background at the same time as the writer (at most READER_BUDGET_S): its Signals
+replace the rules' for this reply as soon as they arrive and go into the run log. The policy does not
+wait for it - a move costs the writer's time, not reader + writer. BUYER_READER=blocking restores the
+old order (LLM reader first, then policy and writer). The LLM calls run outside the lock, so the
+threads of an RFQ never wait for each other.
 """
 
 import dataclasses
@@ -62,7 +66,9 @@ class PolicyAgent:
         self.states, self._lock = {}, threading.Lock()  # the policy is fast plain code: one at a time
         self.profiles = None  # the Scout's supplier profiles, built once per case
         self.readings = {}  # supplier -> (messages in the thread when read, Reading of its latest reply)
+        self.llm_readings = {}  # supplier -> [messages when read, LLM Reading, already in a trace?]
         self.last_sent = {}  # supplier -> our last "send" Decision (the reader maps claim results to its claims)
+        self.blocking_reader = os.environ.get("BUYER_READER", "parallel").strip().lower() == "blocking"
         self._data, self._data_tried = None, False  # the Scout's CaseData: which IDs exist (writer's known_id)
         self._init_lock = threading.Lock()  # loading profiles and data once per case, outside the policy's lock
 
@@ -105,7 +111,9 @@ class PolicyAgent:
             decision = self.policy.decide(case, t, rival_best_c=rival)
             profile = self._writer_profile(case, decision.supplier_id)
         move, email = self._message(case, threads, decision, profile, reading, deadline)
-        trace = {"decision": decision, "rival_best_c": rival, "diplomat": diplomat_trace(reading, email)}
+        diplomat = diplomat_trace(reading, email)
+        diplomat.update(self._llm_reading_trace(supplier_id, len(threads[supplier_id])))
+        trace = {"decision": decision, "rival_best_c": rival, "diplomat": diplomat}
         return {**move, "trace": trace}
 
     def closing(self, case, threads):
@@ -120,23 +128,66 @@ class PolicyAgent:
 
     # -- the Diplomat ---------------------------------------------------------------------------
     def _read(self, sid, events, deadline):
-        """The Reading of this supplier's latest reply - read once per reply, outside the lock (it may
-        call the LLM). None if the reader fails: the policy then plays on the Signals it had."""
-        from buyer.llm import read
+        """The Reading of this supplier's latest reply - read once per reply, outside the lock. In
+        parallel mode: the keyword rules now, the LLM in the background (`_read_in_background`).
+        None if the reader fails: the policy then plays on the Signals it had."""
+        from buyer.llm import get_client, read
 
+        n = len(events)
         with self._lock:
             done = self.readings.get(sid)
-            if done and done[0] == len(events):
+            if done and done[0] == n:
                 return done[1]
             last = self.last_sent.get(sid)
         try:
-            reading = read(latest(events), last_decision=last, deadline=deadline)
+            if self.blocking_reader:
+                reading = read(latest(events), last_decision=last, deadline=deadline)
+            else:
+                reading = read(latest(events), last_decision=last, use_llm=False)
         except Exception:
             log.exception("%s: reading the reply failed - playing on the earlier signals", sid)
             return None
         with self._lock:
-            self.readings[sid] = (len(events), reading)
+            self.readings[sid] = (n, reading)
+        if not self.blocking_reader and get_client("reader").enabled:
+            threading.Thread(
+                target=self._read_in_background, args=(sid, latest(events), n, last, deadline),
+                daemon=True, name=f"reader-{sid}",
+            ).start()  # fmt: skip
         return reading
+
+    def _read_in_background(self, sid, message, n, last, deadline):
+        """The LLM's Reading of one reply: replaces the rules' Reading of that reply (if the thread has
+        not moved on) and waits for the next trace. Never raises - the rules' Reading stays."""
+        from buyer.llm import read
+
+        try:
+            reading = read(message, last_decision=last, deadline=deadline)
+        except Exception:
+            log.exception("%s: the background reader failed - the keyword rules stand", sid)
+            return
+        with self._lock:
+            current = self.readings.get(sid)
+            if current and current[0] == n and reading.source != "rules":  # an LLM answer, same reply
+                self.readings[sid] = (n, reading)
+            self.llm_readings[sid] = [n, reading, False]
+
+    def _llm_reading_trace(self, sid, n):
+        """The background reader's result for the run log, once: this reply's if it has arrived,
+        else a note that it is still running (it is logged with the next move)."""
+        with self._lock:
+            entry = self.llm_readings.get(sid)
+            if entry and not entry[2]:
+                entry[2] = True
+                key = "reader_llm" if entry[0] == n else "reader_llm_previous"
+                r = entry[1]
+                return {key: {"source": r.source, "latency_s": r.latency_s, "error": r.error,
+                              "from_rules": r.from_rules, "signals": r.signals}}  # fmt: skip
+        from buyer.llm import get_client
+
+        if self.blocking_reader or not get_client("reader").enabled:
+            return {}
+        return {"reader_llm": {"pending": True}}
 
     def _message(self, case, threads, decision, profile, reading, deadline):
         move, email = message_for(
