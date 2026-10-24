@@ -1,6 +1,6 @@
 # alex-thomas
 
-Hackathon project by Alex & Thomas.
+Hackathon project by Alex & Thomas for the Certivity industrial AI challenge. Challenge instructions: [`CHALLENGE.md`](CHALLENGE.md).
 
 ## The idea
 
@@ -12,6 +12,8 @@ See [`docs/IDEA.md`](docs/IDEA.md).
 git clone <repo-url>
 cd alex-thomas
 cp .env.example .env
+pip install jsonschema
+python tools/fetch_regulations.py
 ```
 
 ## Project structure
@@ -23,6 +25,12 @@ cp .env.example .env
 ├── data/
 ├── docs/
 │   └── IDEA.md
+├── cases/
+├── subgoal/
+├── regulations/
+├── schemas/
+├── tools/
+├── CHALLENGE.md
 ├── .env.example
 └── README.md
 ```
