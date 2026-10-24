@@ -1,5 +1,7 @@
 # THE SCOUT (data and rules)
 
+**Owner: Felix**
+
 > Read [`../AGENTS.md`](../AGENTS.md) first: the idea, hard constraints, architecture, interfaces
 > (`SupplierProfile`, `Claim`, `Signals`, `Decision`), timeline and guardrails. This file is your job.
 > Start every task by saying "Acting as SCOUT".

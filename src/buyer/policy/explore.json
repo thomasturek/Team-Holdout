@@ -1,0 +1,8 @@
+[
+  {},
+  {"push_final": 1.0},
+  {"cash_discount_pct": 0.5},
+  {"cash_discount_pct": 4.0},
+  {"open_frac": 0.4, "concede": 0.3, "min_open_discount_pct": 3.0},
+  {"open_frac": 0.0, "concede": 0.05, "min_open_discount_pct": 10.0, "push_final": 1.0}
+]

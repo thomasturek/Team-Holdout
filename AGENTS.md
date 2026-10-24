@@ -178,12 +178,12 @@ class Decision:                     # ANALYST -> DIPLOMAT, OPERATOR
 Each role has its own file with its tasks, priorities and definition of done. Pick one, read it, work
 only inside its folder.
 
-| Role | File | Owns | Mission |
-|---|---|---|---|
-| THE SCOUT | [`roles/SCOUT.md`](roles/SCOUT.md) | `src/buyer/facts/` | Exact numbers, supplier profiles, claims that always verify |
-| THE ANALYST | [`roles/ANALYST.md`](roles/ANALYST.md) | `src/buyer/policy/`, `src/buyer/sim/` | Policy trained in simulation, calibrated on real runs |
-| THE DIPLOMAT | [`roles/DIPLOMAT.md`](roles/DIPLOMAT.md) | `src/buyer/llm/` | LLM reads supplier e-mails, writes ours; fast and safe |
-| THE OPERATOR | [`roles/OPERATOR.md`](roles/OPERATOR.md) | `src/buyer/runtime/`, `pyproject.toml`, `runs/` | Everything in parallel, nothing times out, everything logged |
+| Role | Person | File | Owns | Mission |
+|---|---|---|---|---|
+| THE SCOUT | Felix | [`roles/SCOUT.md`](roles/SCOUT.md) | `src/buyer/facts/` | Exact numbers, supplier profiles, claims that always verify |
+| THE ANALYST | Thomas | [`roles/ANALYST.md`](roles/ANALYST.md) | `src/buyer/policy/`, `src/buyer/sim/` | Policy trained in simulation, calibrated on real runs |
+| THE DIPLOMAT | Halichem | [`roles/DIPLOMAT.md`](roles/DIPLOMAT.md) | `src/buyer/llm/` | LLM reads supplier e-mails, writes ours; fast and safe |
+| THE OPERATOR | Alex | [`roles/OPERATOR.md`](roles/OPERATOR.md) | `src/buyer/runtime/`, `pyproject.toml`, `runs/` | Everything in parallel, nothing times out, everything logged |
 
 ### Who owns what (no overlaps - if it's not here, ask before building it)
 
