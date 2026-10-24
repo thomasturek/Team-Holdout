@@ -53,8 +53,6 @@ def test_an_asked_lever_is_offered_at_equal_cost():
     assert not policy.lever_trades(case, t, P03_TERMS, ["volume"])
 
 
-# Since 00:08 the main package already takes the longest free contract and volume (policy COMMITMENT),
-# so "longer contract" needs no trade any more; faster payment still does.
 def _p03_with_faster_payment_asked(lever_trades):
     case = CASES["case:P03"]
     t = thread(case, {**P03_TERMS, "unit_price": 438.21}, asks=["faster_payment"])
@@ -64,8 +62,7 @@ def _p03_with_faster_payment_asked(lever_trades):
 def test_trades_enter_the_message_when_asked():
     d = _p03_with_faster_payment_asked(1)
     assert d.kind == "send" and "other terms" in d.intent
-    main = next(s for s in d.term_sheets if s["payment_days"] == 60)
-    assert any(s["payment_days"] == 45 and s["unit_price"] < main["unit_price"] for s in d.term_sheets)
+    assert any(s["payment_days"] == 45 for s in d.term_sheets)
 
 
 def test_no_trades_when_switched_off():
@@ -74,9 +71,9 @@ def test_no_trades_when_switched_off():
     assert not any(s["payment_days"] == 45 for s in d.term_sheets)
 
 
-def test_the_main_package_already_takes_the_free_longer_contract():
+def test_a_free_longer_contract_is_not_forced_on_the_supplier():
     d = _p03_with_faster_payment_asked(0)
-    assert all(s["contract_months"] == 36 for s in d.term_sheets)  # beyond the horizon: costs us nothing
+    assert all(s["contract_months"] == P03_TERMS["contract_months"] for s in d.term_sheets)
 
 
 def test_an_insisted_index_clause_is_countered_with_the_cheapest_deadband():

@@ -67,6 +67,7 @@ ARCHETYPE_RATE = {"cash_short_jobshop": 0.18, "group_ladder": 0.07, "near_monopo
 MENU_SPREAD = 0.003
 MENU_COMBOS = 300
 OWN_PRICE_SLACK = 0.005
+CASH_HUNGRY_RATE = 0.15
 
 
 @dataclass
@@ -386,6 +387,7 @@ class Policy:
         theirs = t.standing_terms.get("unit_price")
         at_theirs = self.c(case, {**a, "unit_price": theirs}, t) if theirs else math.inf
         rel_case, rel_floors = relationship_case(case), {}
+        cash_hungry = model["interest_rate"] >= CASH_HUNGRY_RATE
         found = []
         for combo in itertools.product(*domains.values()):
             levers = {**a, **dict(zip(domains, combo, strict=True))}
@@ -400,16 +402,16 @@ class Policy:
             if not must_haves_ok(case, terms, t.standard):
                 continue
             if rel_case:
-                floor = rel_floors.setdefault(
-                    tuple(sorted((k, str(v)) for k, v in levers.items() if k != "unit_price")),
-                    relationship_floor(case, terms, t.standard, t.profile),
-                )
-                if floor and terms["unit_price"] < floor:
-                    terms = {**terms, "unit_price": floor}
+                key = tuple(sorted((k, str(v)) for k, v in levers.items() if k != "unit_price"))
+                if key not in rel_floors:
+                    rel_floors[key] = relationship_floor(case, terms, t.standard, t.profile)
+                if rel_floors[key] and terms["unit_price"] < rel_floors[key]:
+                    terms = {**terms, "unit_price": rel_floors[key]}
             cost = self.c(case, terms, t)
             if cost >= c_cap - 0.5:
                 continue
-            if theirs and self.c(case, {**terms, "unit_price": theirs}, t) > at_theirs * (1 + OWN_PRICE_SLACK) + 1.0:
+            if (theirs and not cash_hungry
+                    and self.c(case, {**terms, "unit_price": theirs}, t) > at_theirs * (1 + OWN_PRICE_SLACK) + 1.0):
                 continue
             changes = sum(terms.get(f) != a.get(f) for f in domains)
             found.append((cost, changes, terms))
@@ -432,6 +434,13 @@ class Policy:
                 break
         return [terms for terms, _, _ in picked]
 
+    @staticmethod
+    def above_floor(case, t, terms):
+        if not relationship_case(case):
+            return terms
+        floor = relationship_floor(case, terms, t.standard, t.profile)
+        return {**terms, "unit_price": floor} if floor and terms["unit_price"] < floor else terms
+
     def lever_trades(self, case, t, a, asks=()):
         """Packages that give the supplier a term it values at equal cost to us (costing.lever_values):
         first the terms it asked for (the cheapest version of each for us - e.g. a 5 % deadband, the
@@ -441,7 +450,7 @@ class Policy:
         for v in lever_values(case, a, t.standard, t.profile):
             if not v["must_haves_ok"]:
                 continue
-            sheet = complete_offer(case, v["sheet"])
+            sheet = self.above_floor(case, t, complete_offer(case, v["sheet"]))
             if sheet == a or (a["unit_price"] - sheet["unit_price"]) > MAX_TRADE_DROP * a["unit_price"]:
                 continue
             gain = v["supplier_gain"] or 0.0

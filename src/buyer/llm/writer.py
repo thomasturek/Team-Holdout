@@ -115,6 +115,16 @@ FORM_RE = re.compile(
     r"long |many years of |good |close )?(?:partnership|cooperation|co-operation|relationship)\b",
     re.I,
 )
+CONFIRM_RE = re.compile(
+    r"\bconfirm (?:the|this|your|an?) (?:order|award|contract|deal)\b|\b(?:straight|right) away\b|\bat once\b"
+    r"|\bimmediately\b",
+    re.I,
+)
+REVEAL_RE = re.compile(
+    r"\bas we know\b|\bwe (?:know|are aware|have heard|have learned|learned|gather|hear) (?:that|how|your)\b"
+    r"|\bwe know (?:a|the)\b|\babove your desk\b|\bnot (?:yours|your decision) (?:alone|to make)\b",
+    re.I,
+)
 UNBACKED_RE = re.compile(
     r"\b(?:our|the|these|this) (?:data|figures|numbers|analysis|records?|research|information) (?:shows?|suggests?|"
     r"indicates?|points?|paints?|gives?|tells?|confirms?)\b|\bdata (?:shows?|suggests?|indicates?|paints?)\b"
@@ -223,8 +233,13 @@ def write(
         prompt = build_prompt(decision, case, thread, profile, signals, claims, offers, questions)
         text = client.complete(SYSTEM, prompt, timeout_s=ATTEMPT_TIMEOUT_S, retries=RETRIES, total_s=TOTAL_S,
                                max_tokens=MAX_TOKENS, deadline=deadline, tag="writer")  # fmt: skip
+        single = confirm_at_once(case)
+
         def bad_prose(sentence):  # safety rules + the style rules of the model's prose
-            return bad(sentence) or bool(FORM_RE.search(sentence) or UNBACKED_RE.search(sentence))
+            return bad(sentence) or bool(
+                FORM_RE.search(sentence) or UNBACKED_RE.search(sentence) or REVEAL_RE.search(sentence)
+                or (not single and CONFIRM_RE.search(sentence))
+            )
 
         body, why = postprocess(text, claims, offers, questions, profile, known, warnings, thread_text, bad_prose,
                                 case)
@@ -242,6 +257,16 @@ def write(
 
 
 # --- prompt --------------------------------------------------------------------------------------------
+def confirm_at_once(case) -> bool:
+    return len(attr(case, "suppliers") or []) <= 1
+
+
+def balance_quotes(text: str) -> str:
+    if text.count('"') % 2 or text.count("\u201c") != text.count("\u201d"):
+        return text.replace('"', "").replace("\u201c", "").replace("\u201d", "")
+    return text
+
+
 def _as_dict(obj):
     if obj is None:
         return {}
@@ -279,6 +304,8 @@ def build_prompt(decision, case, thread, profile, signals, claims, offers, quest
     if brief:
         lines.append("DOSSIER (what we know about this supplier - choose emphasis and angle; never quote it): "
                      + re.sub(r"\s+", " ", ID_RE.sub("", str(attr(profile, "dossier")))).strip()[:900])
+    lines.append("CONFIRM AT ONCE: yes - one supplier: we accept a confirmed Option A at once" if confirm_at_once(case)
+                 else "CONFIRM AT ONCE: no - several bidders: do not promise to confirm or award at once")
     clause = any((s.get("index_clause") if isinstance(s, dict) else None) for s in attr(decision, "term_sheets") or [])
     lines.append("CLAUSE IN OPTIONS: yes - an option puts the raw-material risk on us through an index clause" if clause
                  else "CLAUSE IN OPTIONS: no")
@@ -429,6 +456,7 @@ def postprocess(text, claims, offers, questions, profile, known, warnings, threa
     t, dropped = filter_sentences(t, bad)
     if dropped:
         warnings.append(f"dropped {len(dropped)} sentence(s): {[d[:80] for d in dropped]}")
+        t = balance_quotes(t)
     words = word_count(t)
     if words > MAX_OWN_WORDS:
         return None, f"model wrote {words} words"

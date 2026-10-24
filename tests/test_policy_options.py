@@ -74,14 +74,16 @@ def test_a_chargeback_the_supplier_pays_for_is_traded_for_price():
 
 
 def test_a_floor_that_stops_our_concession_holds_instead_of_closing():
+    from buyer.runtime.agent import scout_profiles
+
     case = practice("case:P01")
-    quote = {"unit_price": 138.55, "effective_date": "2026-11-01", "payment_days": 30}
-    profile = {"floor_estimate": 135.19, "floor_source": "should_cost", "full_cost_observed": 130.04}
+    sid = "sup:70110"
+    quote = {"unit_price": 138.55, "effective_date": "2026-11-01"}
+    std = {"payment_days": 30, "ppm_commitment": 900, "chargeback_eur_per_complaint": 0.0}
     p = Policy({**load_params(), "claims_per_msg": 0})
-    t = ThreadState("sup:70110", "offer:1", quote, "open", {"payment_days": 30}, 9, profile=profile)
-    first = p.decide(case, t)
-    assert first.kind == "send"
-    t.standing_id, t.status = "offer:2", "open"
-    t.standing_terms = {**first.term_sheets[0], "unit_price": 138.6, "payment_days": 45, "effective_date": "2027-04-01"}
+    t = ThreadState(sid, "offer:70110-0", quote, "open", std, 9, profile=scout_profiles(case)[sid])
+    assert p.decide(case, t).kind == "send"
+    t.standing_id = "offer:70110-1"
+    t.standing_terms = {"unit_price": 138.6, "payment_days": 45, "effective_date": "2027-04-01"}
     t.rounds_left = 8
     assert p.decide(case, t).kind == "send"

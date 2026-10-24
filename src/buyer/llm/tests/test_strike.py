@@ -69,3 +69,27 @@ def test_form_phrases_and_unbacked_evidence_are_dropped():
 def test_the_template_is_not_touched_by_the_style_rules():
     e = write(decision(), CASE, THREAD, PROFILE, SIGNALS, client=fake_client("not an e-mail"))
     assert e.source == "template" and e.body  # the fallback still goes out
+
+
+def test_no_promise_to_confirm_at_once_with_several_bidders():
+    from buyer.llm.writer import CONFIRM_RE, confirm_at_once
+
+    assert confirm_at_once({"suppliers": ["sup:1"]})
+    assert not confirm_at_once({"suppliers": ["sup:1", "sup:2"]})
+    assert CONFIRM_RE.search("If you confirm Option A as it stands, we can confirm the order straight away.")
+
+
+def test_what_we_know_about_the_supplier_stays_private():
+    from buyer.llm.writer import REVEAL_RE
+
+    assert REVEAL_RE.search("As we know that a decision on price sits above your desk, here is a note.")
+    assert REVEAL_RE.search("We have heard that your bank is watching.")
+    assert not REVEAL_RE.search("We understand that energy and wages weigh on your costs.")
+    assert not REVEAL_RE.search("Since price changes of this size go through your pricing committee, here it is.")
+
+
+def test_a_dropped_sentence_leaves_no_open_quote():
+    from buyer.llm.writer import balance_quotes
+
+    assert '"' not in balance_quotes('Forward this: "Hollerau offers Option A.')
+    assert balance_quotes('a "b" c') == 'a "b" c'
