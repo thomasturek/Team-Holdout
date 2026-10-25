@@ -19,6 +19,14 @@ message covers an agent that raises or a message the arena refuses (422); after 
 row the worker stops playing that thread. A 409 or a network failure: the worker asks the arena
 what the thread now says and plays on from there.
 
+Network outages (`_recover`): when an e-mail fails after the client's own retries (or a 409 / 5xx),
+the worker keeps asking the arena - pauses growing from RECOVER_PAUSE_S[0] to [1] - until it
+answers, then plays on from the thread as the arena has it, with the arena's clock (`seconds_left`).
+Our e-mail arrived: its reply is taken, never sent twice. It never arrived and the thread is
+unchanged: the same e-mail is sent again, at most MAX_RESENDS times. Bounded: the worker gives up
+the thread (`drop`) if the arena stays out of reach past the wave's cap + AFTER_CAP_S (without a
+cap: RECOVER_MAX_S); every attempt waits at least the pause, so a permanent fault never spins.
+
 A walk-away while other bidders are still live only stops this worker (walking away would end the
 whole case); the last live thread's walk-away ends it.
 
@@ -67,6 +75,11 @@ INVALID = "invalid"
 CLOSE_RETRY_S = 1.0  # between closing attempts after a failed one
 MAX_CLOSE_ATTEMPTS = 5  # without a wave cap (practice, sandbox): give up supervising after this many
 AFTER_CAP_S = 30.0  # past the wave's cap the arena has ended the case: confirm it, then stop
+RECOVER_PAUSE_S = (1.0, 4.0)  # network down: first and longest pause between two attempts to reach the arena
+RECOVER_MAX_S = 300.0  # without a wave cap: give the thread up after this long out of reach (3 timeouts = 180 s)
+MAX_RESENDS = 1  # an e-mail the arena never received is sent again (thread unchanged) at most this often
+# What the arena says after a failed e-mail (`_recover`):
+LANDED, LOST, CHANGED, PENDING, ENDED_CASE, UNREACHABLE = "landed", "lost", "changed", "pending", "ended", "unreachable"
 HOLD_BODY = (
     "Thank you for your message. We are reviewing it internally and will come back to you with our "
     "position shortly.\n\nBest regards\nHollerau Pumpenwerke, Purchasing"
@@ -201,6 +214,9 @@ class CasePlayer:
             if self._cap_near():
                 if self._close_now("the wave's cap is near"):
                     return
+                if self._past_cap():  # the arena has ended the case at its cap; play() confirms it
+                    self.log("drop", supplier_id=sid, reason="the wave's cap has passed")
+                    return
                 s.ended.wait(CLOSE_RETRY_S)  # not closed (yet): the arena's state is re-read, try again
                 continue
             t0 = s.replied_at[sid]
@@ -241,13 +257,17 @@ class CasePlayer:
             if moves_left(s.case, view[sid]) <= 0:  # round limit: only an accept is left
                 self.log("drop", supplier_id=sid, reason="round limit")
                 return
-            if self._send(sid, msg, decide_s=time.monotonic() - t0) == INVALID:
+            outcome = self._send(sid, msg, decide_s=time.monotonic() - t0)
+            if outcome == INVALID:
                 # 422: nothing happened and no round was used; hold now, while the clock still allows
                 failures += 1
                 if failures >= MAX_FAILURES:
                     self.log("drop", supplier_id=sid, reason="the agent's messages were refused repeatedly")
                     return
-                self._send(sid, self._hold(view, sid, t0)["message"], decide_s=time.monotonic() - t0)
+                outcome = self._send(sid, self._hold(view, sid, t0)["message"], decide_s=time.monotonic() - t0)
+            if outcome == UNREACHABLE:  # out of reach until the cap (or RECOVER_MAX_S): nothing left to play
+                self.log("drop", supplier_id=sid, reason="the arena could not be reached")
+                return
 
     def _hold(self, view, sid, t0):
         self.log("hold", supplier_id=sid, after_s=round(time.monotonic() - t0, 1))
@@ -279,33 +299,50 @@ class CasePlayer:
         return decision
 
     def _send(self, sid, msg, decide_s):
+        """One e-mail and its reply. None, or INVALID (422), or an outcome of `_recover`."""
         s = self.state
         self.log("sent", supplier_id=sid, message=msg, decide_s=round(decide_s, 2))
         with s.lock:
             s.inflight.add(sid)
+            ours = _ours(s.threads[sid])  # our e-mails in the thread before this one
         try:
-            return self._exchange(sid, msg)
+            return self._exchange(sid, msg, ours)
         finally:  # after the reply is recorded: a resync from now on sees it
             with s.lock:
                 s.inflight.discard(sid)
 
-    def _exchange(self, sid, msg):
-        s, sent = self.state, time.monotonic()
-        try:
-            reply = self.client.send_message(self.table.session_id, sid, msg)
-        except ArenaError as e:
-            self.log("error", supplier_id=sid, status=e.status, detail=e.detail)
-            if e.status == 422:
-                log.warning("%s %s: message refused: %s", self.case_id, sid, e.detail)
-                return INVALID
-            if e.status != 409:
-                raise
-            return self._refresh(sid)  # late, round limit, thread or case ended: ask the arena
-        except Exception as e:  # the network, after the client's own retries: did the message land?
-            log.warning("%s %s: send failed (%s) - asking the arena", self.case_id, sid, e)
-            self.log("error", supplier_id=sid, detail=e, where="send")
-            return self._refresh(sid)
-        now = time.monotonic()
+    def _exchange(self, sid, msg, ours):
+        s, until = self.state, None  # until: when to stop trying to reach the arena, fixed at the first failure
+        for attempt in range(MAX_RESENDS + 1):  # a resend only after the arena said it never got the e-mail
+            sent = time.monotonic()
+            try:
+                reply = self.client.send_message(self.table.session_id, sid, msg)
+            except ArenaError as e:
+                self.log("error", supplier_id=sid, status=e.status, detail=e.detail)
+                if e.status == 422:
+                    log.warning("%s %s: message refused: %s", self.case_id, sid, e.detail)
+                    return INVALID
+                if e.status != 409 and e.status < 500:
+                    raise
+                # 409 (late, round limit, ended, busy) or 5xx after the client's retries: ask the arena
+                until = until or self._recover_until()
+                outcome = self._recover(sid, ours, until)
+                if e.status == 409:
+                    return outcome  # the arena answered: what it holds is current, decide again on it
+            except Exception as e:  # the network, after the client's own retries: did the message land?
+                log.warning("%s %s: send failed (%s) - asking the arena", self.case_id, sid, e)
+                self.log("error", supplier_id=sid, detail=e, where="send")
+                until = until or self._recover_until()
+                outcome = self._recover(sid, ours, until)
+            else:
+                return self._record(sid, msg, reply, sent)
+            if outcome != LOST or attempt == MAX_RESENDS or s.closing.is_set() or self._cap_near():
+                return outcome
+            self.log("resend", supplier_id=sid, attempt=attempt + 1)  # it never arrived: same e-mail, once more
+        return LOST
+
+    def _record(self, sid, msg, reply, sent):
+        s, now = self.state, time.monotonic()
         self.log("reply", supplier_id=sid, message=reply, wait_s=round(now - sent, 2))
         if "result" in reply:  # e.g. the last live supplier walked away
             return self._ended(reply["result"])
@@ -315,25 +352,82 @@ class CasePlayer:
             s.slowest = max(s.slowest, now - s.replied_at[sid])
             s.replied_at[sid] = now
 
-    def _refresh(self, sid):
-        """After a 409: the session's state and this thread as the arena has them."""
+    def _recover_until(self):
+        """When (monotonic) a worker stops trying to reach the arena: the wave's cap + AFTER_CAP_S (the
+        arena has ended the case by then), or RECOVER_MAX_S from now without a cap."""
+        cap = self._cap()
+        if cap:
+            return time.monotonic() + max(0.0, cap + AFTER_CAP_S - time.time())
+        return time.monotonic() + RECOVER_MAX_S
+
+    def _recover(self, sid, ours, until):
+        """Ask the arena about this thread until it answers - LANDED, LOST, CHANGED or ENDED_CASE (see
+        `_refresh`) - or UNREACHABLE once `until` (monotonic) has passed. Each failed attempt waits a
+        growing pause (or until the case ends), so this never spins and always ends."""
+        s, pause, tries = self.state, RECOVER_PAUSE_S[0], 0
+        while not s.ended.is_set():
+            tries += 1
+            try:
+                outcome = self._refresh(sid, ours)
+            except ArenaError as e:
+                if e.status < 500 and e.status not in (409, 429):  # 401, 403, 404: asking again won't help
+                    self.log("error", supplier_id=sid, status=e.status, detail=e.detail, where="recover")
+                    return UNREACHABLE
+                outcome = None  # busy, rate limit, the arena's own trouble: ask again
+            except Exception as e:  # still no network
+                if tries == 1:
+                    self.log("error", supplier_id=sid, detail=e, where="recover")
+                outcome = None
+            if outcome not in (None, PENDING):
+                if tries > 1:
+                    log.warning("%s %s: the arena answered again after %d tries", self.case_id, sid, tries)
+                return outcome
+            if time.monotonic() + pause > until:
+                log.warning("%s %s: the arena out of reach (%d tries) - giving the thread up", self.case_id, sid, tries)
+                self.log("unreachable", supplier_id=sid, tries=tries)
+                return UNREACHABLE
+            s.ended.wait(pause)
+            pause = min(2 * pause, RECOVER_PAUSE_S[1])
+        return ENDED_CASE
+
+    def _refresh(self, sid, ours=None):
+        """One look at the session and this thread as the arena has them (network errors go to the
+        caller); the thread's clock from the arena's `seconds_left`. With `ours` (our e-mails in the
+        thread before the one that failed): LANDED (it arrived, the reply is here), LOST (it never
+        arrived, the thread is open), CHANGED (closed meanwhile), PENDING (it arrived, the supplier is
+        still writing: nothing recorded yet); ENDED_CASE if the case is over."""
         s = self.state
         state = self.client.session(self.table.session_id)
         if state.get("status") == "ended":
-            return self._ended(state.get("result") or {"deal": False, "end_reason": state.get("end_reason")})
+            self._ended(state.get("result") or {"deal": False, "end_reason": state.get("end_reason")})
+            return ENDED_CASE
         t = self.client.thread(self.table.session_id, sid)
-        for m in t["messages"]:
+        msgs, th = t["messages"], (state.get("threads") or {}).get(sid) or {}
+        arrived = ours is not None and _ours(msgs) > ours
+        if arrived and msgs[-1].get("from") == "buyer":
+            return PENDING
+        for m in msgs:
             self._documents(m, sid)
+        closed = bool(t.get("closed") or th.get("closed"))
         with s.lock:
-            s.threads[sid] = t["messages"]
-            if t.get("closed"):
+            s.threads[sid] = msgs
+            if closed:
                 s.closed.add(sid)
-            s.replied_at[sid] = time.monotonic()  # the arena answered our late move just now
+            left = th.get("seconds_left")  # after a timeout or an outage our 60 s did not start just now
+            s.replied_at[sid] = time.monotonic() - (max(0.0, MOVE_LIMIT_S - left) if left is not None else 0.0)
         self.log("refresh", supplier_id=sid, thread=t)
+        return LANDED if arrived else CHANGED if closed or ours is None else LOST
 
     # -- closing --------------------------------------------------------------------------------
+    def _cap(self):
+        return self.deadline() if callable(self.deadline) else self.deadline
+
+    def _past_cap(self):
+        cap = self._cap()
+        return bool(cap) and time.time() > cap + AFTER_CAP_S
+
     def _cap_near(self):
-        cap = self.deadline() if callable(self.deadline) else self.deadline
+        cap = self._cap()
         return bool(cap) and time.time() > cap - max(CLOSE_BEFORE_CAP_S, self.state.slowest + ROUND_MARGIN_S)
 
     def _watch(self):
@@ -350,7 +444,7 @@ class CasePlayer:
         there), without one for at most MAX_CLOSE_ATTEMPTS attempts."""
         s, attempts = self.state, 0
         while not s.ended.is_set():
-            cap = self.deadline() if callable(self.deadline) else self.deadline
+            cap = self._cap()
             if cap and time.time() > cap + AFTER_CAP_S:
                 self._reconcile(None)  # past the cap: the arena has ended the case, take its result
                 break
@@ -530,6 +624,11 @@ class CasePlayer:
     def _subject(events):
         subject = next((m.get("subject") for m in events if m.get("subject")), "Your offer")
         return subject if subject.lower().startswith("re:") else f"Re: {subject}"
+
+
+def _ours(events):
+    """How many of the e-mails in a thread are ours."""
+    return sum(m.get("from") == "buyer" for m in events)
 
 
 def play_case(client, case_id, agent, *, case=None, deadline=None, log=None, hold_at=HOLD_AT_S, run=None, archive=None):
