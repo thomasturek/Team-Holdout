@@ -96,6 +96,41 @@ def test_after_a_crash_the_running_final_session_is_picked_up(sim, tmp_path):
     assert sum(e["kind"] == "sent" for e in events) >= 1  # played on from where it stood
 
 
+def test_a_final_case_whose_start_failed_is_started_again_and_picks_up_its_session(sim, tmp_path, monkeypatch):
+    import httpx
+
+    client, state, _ = sim
+    state.clock = time.time
+    state.rehearse(wait=0.3, cap=4, brk=0.3)
+    monkeypatch.setattr(runner, "RESTART_MIN_S", 0.0)  # the rehearsal wave lasts 4 s
+    client = safe(client)
+    real, opened = client.open_session, []
+
+    def open_session(case_id):  # the first open of R1-S01 reaches the arena; its answer is lost
+        opened.append(case_id)
+        out = real(case_id)
+        if opened.count(case_id) == 1 and case_id == "case:R1-S01":
+            raise httpx.ReadTimeout("the response was lost")
+        return out
+
+    monkeypatch.setattr(client, "open_session", open_session)
+    out = play_final(client, agent="naive", waves=1, poll=0.05, root=tmp_path)
+    assert opened.count("case:R1-S01") == 2
+    assert all(isinstance(r, dict) and r["ended"] for r in out.values()), out
+    assert len([s for s in state.sessions.values() if s["case"]["case_id"] == "case:R1-S01"]) == 1  # the same one
+
+
+def test_the_clients_connections_notice_a_dropped_network(sim):
+    import socket
+
+    options = runner.keepalive_options()
+    assert (socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1) in options
+    assert len(options) >= 2  # an idle time as well, on Linux, macOS and Windows
+    client = safe(sim[0])
+    assert client.http.timeout.connect == runner.CONNECT_TIMEOUT_S and client.http.timeout.read == 180
+    assert client.cases("practice")  # the keepalive transport works
+
+
 def test_the_quota_command(sim, monkeypatch, capsys):
     client = sim[0]
     monkeypatch.setenv("ARENA_URL", str(client.http.base_url).rstrip("/").removesuffix("/v1"))
