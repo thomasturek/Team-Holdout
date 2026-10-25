@@ -114,6 +114,7 @@ def test_every_session_is_saved_as_one_json_file_as_the_api_returns_it(sim, tmp_
 def test_a_push_probe_answers_a_final_offer_with_another_offer(sim, tmp_path, monkeypatch):
     monkeypatch.setattr("buyer.runtime.agent.scout_profiles", lambda case: {})  # the probe, not the floor
     monkeypatch.setattr("buyer.policy.policy.VISIBLE_STEP", 0.0)
+    monkeypatch.setattr("buyer.policy.policy.RECIPROCAL_STEP", 0.0)  # tiny steps on purpose: it must reach a final
     client, _, _ = sim
     case = next(c for c in client.cases("sandbox") if c["case_id"] == "case:S01")
     params = {"concede": 0.02, "accept_gap_pct": 0.0, "reciprocity": 0, "min_step_pct": 0}

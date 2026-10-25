@@ -114,3 +114,19 @@ def test_after_a_final_offer_its_alternative_package_goes_back_exactly_as_offere
         assert d.term_sheets[0]["unit_price"] == 5.2 and d.term_sheets[0]["payment_days"] == 45
     else:
         assert d.kind == "accept"  # or takes its standing offer - never a modified package
+
+
+def test_a_big_concession_gets_a_visible_answer_not_a_token_step():
+    # P05 25 Oct 12:20: Dralveck dropped 30.00 -> 28.00, our lead price rose 26.39 -> 26.47, it walked (0).
+    # Now our lead price answers with at least a quarter of its drop (capped at half the gap).
+    from buyer.policy.policy import RECIPROCAL_STEP
+
+    case = practice("case:P05")
+    t = ThreadState("sup:70210", "offer:70210-2", {"unit_price": 28.0, "payment_days": 14, "lead_time_days": 35},
+                    "open", {"payment_days": 30, "lead_time_days": 35}, 7)
+    t.our_prices, t.their_prices = [25.64, 26.39], [36.0, 30.0, 28.0]
+    t.last_sheet = {"unit_price": 26.39, "payment_days": 14, "lead_time_days": 35}
+    d = policy().decide(case, t)
+    assert d.kind == "send"
+    assert d.term_sheets[0]["unit_price"] >= round(26.39 + min(RECIPROCAL_STEP * 2.0, 0.5 * (28.0 - 26.39)), 2) - 0.01
+    assert d.term_sheets[0]["unit_price"] <= 28.0
