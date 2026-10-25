@@ -23,3 +23,6 @@ Rule: a change is promoted only if it beats the baseline on the same cases; one 
 - 04:10 ANTHROPIC KEY BLOCKED: 'reached your specified API usage limits, access again 2026-11-01'. Workers dead; agent reader/writer fall back to rules/templates. MORNING ACTION: new key or raise limit before the final.
 - 04:15 key unblocked by Thomas (spend limit raised); worker cap USD 90 logged (practice runs also draw on the key; keep >=25 for the final)
 - 04:07 wave 1: 8 case analyses done (USD 12.7); 6 reviews relaunched
+- 04:35 v2 committed: min step 0.75 %, hold jump 50 % (cash-short, 2 holds), monotone package prices, close vs cheapest sheet, writer: no unbacked reasons
+- 04:58 night-v2 practice: 74.2 (P01 0.616!, P18 0.630, P07 0.653 down; P11 0.71) -> pacing changes hurt; investigating
+- 05:10 P01 v2 drop = no claims in round 1 (claim bank silently empty: shared SQLite cursor across threads). Fixed: locked SQLite in kit data.py, claim bank retried and never cached empty. min_step off (P18/P07 worse, winners: slow walk better for distributors). Runtime fixes A/B/C/E from review applied.

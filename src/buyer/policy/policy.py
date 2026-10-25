@@ -1,5 +1,6 @@
 import itertools
 import json
+import logging
 import math
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -10,6 +11,7 @@ from buyer.facts.costing import asked as lever_asked
 from buyer.facts.costing import c as relationship_c
 from buyer.facts.costing import clause_wanted, lever_values, relationship_case, relationship_floor
 
+log = logging.getLogger("buyer.policy")
 PARAMS_FILE = Path(__file__).with_name("params.json")
 STRUCTURAL = ("index_clause",)
 CASH_LEVERS = ("payment_days", "incoterm", "tooling_eur")  # where our estimate of the supplier's gain holds
@@ -60,7 +62,7 @@ DEFAULTS = {
     # Practice 2026-10-25: every losing deal closed at the supplier's holding price; our sheets only ever
     # varied the payment days, while suppliers asked for volume, longer contracts, index clauses.
     "lever_trades": 1.0,  # > 0.5 = on
-    "min_step_pct": 0.75,
+    "min_step_pct": 0.0,
 }
 DEEP_OPEN_TYPES = ("raw_material", "rfq")
 ARCHETYPE_LEAD_EFFORT = {"near_monopolist": 0.005}
@@ -654,14 +656,16 @@ class Policy:
             limit = max(limit, FIRST_MESSAGE_CLAIMS)
         key = (case["case_id"], t.supplier_id)
         if key not in self.banks:
-            try:
-                from buyer.facts.claims import claims
+            from buyer.facts.claims import claims
 
-                self.banks[key] = sorted(claims(case, t.supplier_id), key=lambda c: -c.strength)
-            except Exception:
-                self.banks[key] = []
+            for attempt in range(2):
+                try:
+                    self.banks[key] = sorted(claims(case, t.supplier_id), key=lambda c: -c.strength)
+                    break
+                except Exception:  # a transient failure must not cost the whole thread its arguments
+                    log.warning("claim bank for %s %s failed (attempt %d)", *key, attempt + 1, exc_info=True)
         rejected = set((t.signals or {}).get("rejected_args") or [])
-        bank = list(self.banks[key])
+        bank = list(self.banks.get(key) or [])
         if t.case_threads and len(case.get("suppliers") or []) > 1:
             try:
                 from buyer.facts.claims import rival_claims
@@ -674,7 +678,7 @@ class Policy:
             if c.strength >= self.p["claim_min_strength"]
             and (t.supplier_id, c.key) not in self.used_keys
             and c.key not in rejected
-            and self.used_refs.isdisjoint(c.refs)
+            and (c.key.startswith("rival:") or self.used_refs.isdisjoint(c.refs))
         ]
         pool.sort(key=lambda c: -c.strength * CLAIM_WEIGHT.get(c.key.split(":", 1)[0], 0.3))
         strong = [c for c in pool if CLAIM_WEIGHT.get(c.key.split(":", 1)[0], 0.3) >= WEAK_CLAIM]
@@ -687,7 +691,8 @@ class Policy:
             if len(chosen) == limit:
                 break
         for c in chosen:
-            self.used_refs |= set(c.refs)
+            if not c.key.startswith("rival:"):  # a rival's offer may be cited to every other bidder (api.md)
+                self.used_refs |= set(c.refs)
             self.used_keys.add((t.supplier_id, c.key))
         return chosen
 

@@ -5,6 +5,7 @@ import csv
 import json
 import os
 import sqlite3
+import threading
 from functools import cached_property
 from pathlib import Path
 
@@ -31,9 +32,10 @@ class DataPackage:
             raise FileNotFoundError(f"no facts.json or .sqlite under {self.root}")
         self.db = None
         if dbs:
-            self.db = sqlite3.connect(f"file:{dbs[0]}?mode=ro", uri=True, check_same_thread=False)
-            self.db.row_factory = sqlite3.Row
-            self.db.execute("PRAGMA query_only = ON")
+            con = sqlite3.connect(f"file:{dbs[0]}?mode=ro", uri=True, check_same_thread=False)
+            con.row_factory = sqlite3.Row
+            con.execute("PRAGMA query_only = ON")
+            self.db = _LockedDB(con)
 
     def tables(self):
         """{table: {"columns": [...], "rows": n}}"""
@@ -53,11 +55,14 @@ class DataPackage:
             raise ValueError("this package has no SQLite file")
         if sql.lstrip().split(None, 1)[0].lower() not in {"select", "with"}:
             raise ValueError("read-only: SELECT or WITH statements only")
-        cur = self.db.execute(sql, params)
-        return [dict(r) for r in cur.fetchmany(limit)]
+        return [dict(r) for r in self.db.execute(sql, params)[:limit]]
 
     @cached_property
     def _ids(self):
+        with _IDS_LOCK:
+            return self._build_ids()
+
+    def _build_ids(self):
         # A table's citable ID sits in its `id` column, else in its first column.
         index = {}
         for t, meta in self.tables().items():
@@ -106,3 +111,27 @@ class DataPackage:
             if isinstance(case, dict) and "case_id" in case:
                 out[case["case_id"]] = case
         return out
+
+
+_IDS_LOCK = threading.Lock()
+
+
+class _Rows(list):
+    def fetchone(self):
+        return self[0] if self else None
+
+    def fetchall(self):
+        return list(self)
+
+
+class _LockedDB:
+    """One read-only connection shared by the agent's threads: each query runs alone and returns its rows,
+    so two cases loading the data at once never share a cursor (a shared one failed one case's claims)."""
+
+    def __init__(self, con):
+        self._con, self._lock = con, threading.Lock()
+
+    def execute(self, sql, params=()):
+        with self._lock:
+            return _Rows(self._con.execute(sql, params).fetchall())
+
