@@ -473,6 +473,10 @@ def profile(case, path=PROFILES_FILE):
                 from .dossier import dossier
 
                 p["dossier"] = dossier(p)
+                from .strategy import initial
+
+                s0 = initial(case, p)  # the opening strategy; the policy re-chooses after each reply
+                p["strategy"], p["strategy_reason"], p["strategy_params"] = s0.name, s0.reason, s0.params
             except Exception:
                 p["dossier"] = ""
     return out

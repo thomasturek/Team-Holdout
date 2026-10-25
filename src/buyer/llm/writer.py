@@ -331,6 +331,17 @@ def _clean_note(note) -> str:
     return re.sub(r"\s{2,}", " ", note).strip(" :;-")[:220]
 
 
+def _strategy(case, profile, signals, thread):
+    """The Scout's strategy for this e-mail (buyer.facts.strategy), or None - never worth a failed e-mail."""
+    try:
+        from buyer.facts.strategy import choose
+
+        return choose(case if isinstance(case, dict) else _as_dict(case), _as_dict(profile) if profile else None,
+                      signals, list(thread or []))
+    except Exception:
+        return None
+
+
 def build_prompt(decision, case, thread, profile, signals, claims, offers, questions) -> str:
     archetype = attr(profile, "archetype") or "unknown"
     name = attr(profile, "name") or "the supplier"
@@ -341,6 +352,9 @@ def build_prompt(decision, case, thread, profile, signals, claims, offers, quest
         f"CASE: {attr(case, 'title') or ''} ({attr(case, 'type') or 'negotiation'})",
         f"INTENT: {attr(decision, 'intent') or 'polite, firm, constructive'}",
     ]
+    strategy = _strategy(case, profile, signals, thread)
+    if strategy is not None:
+        lines.append(f"STRATEGY: {strategy.name} - {strategy.tone} (why: {strategy.reason})")
     if signals is not None:
         lines.append("SIGNALS FROM ITS LAST E-MAIL: " + json.dumps(_as_dict(signals), ensure_ascii=False, default=str))
     else:

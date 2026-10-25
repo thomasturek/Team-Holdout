@@ -115,3 +115,8 @@ def test_a_complaint_about_late_payment_is_recognised():
     assert complains_of_late_payment([{"from": "sup", "body": "Several invoices are overdue."}])
     assert not complains_of_late_payment([{"from": "sup", "body": "Faster payment is welcome."}])
     assert not complains_of_late_payment([{"from": "buyer", "body": "We never pay late."}])
+
+
+def test_the_strategy_reaches_the_prompt():
+    p = prompt_for({**PROFILE, "supplier_id": "sup:70110"})
+    assert "STRATEGY:" in p and "why:" in p
