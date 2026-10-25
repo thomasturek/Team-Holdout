@@ -1,0 +1,36 @@
+12:25:27 practice: 4 sessions; 105 left before, keeping 12
+12:25:31 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:25:31 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:25:32 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:25:33 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:25:33 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:25:34 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:25:37 case:P10: HTTP 429: at most 10 open sessions per key
+12:25:56 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:25:59 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:00 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:00 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:03 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:05 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:21 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:23 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:35 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:35 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:36 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:51 case:P10  870d7c5e736b8a11  sent 2  errors 0 []  deal True  score 0.686  complete
+12:26:51 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:52 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:27:10 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:27:11 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:27:16 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:27:19 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:27:38 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:27:43 case:P07  cdb7e814985deff9  sent 5  errors 0 []  deal True  score 0.646  complete
+12:27:52 case:P07  86ea19b4385d1f4d  sent 4  errors 0 []  deal True  score 0.645  complete
+log: /Users/thomas.turek/Documents/GitHub/alex-thomas/runs/runner-practice-20261025-122527.log
+case:P07  deal True  score 0.6460316185784943
+case:P10  deal True  score 0.6863220713040008
+case:P07  deal True  score 0.6449639165749952
+case:P10  ArenaError: HTTP 429: at most 10 open sessions per key
+mean score 65.9 over 3 sessions
+practice sessions left: 100

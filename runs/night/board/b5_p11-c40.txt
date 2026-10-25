@@ -1,0 +1,3 @@
+12:39:47 practice: 1 sessions; 65 left before, keeping 12
+12:39:48 LLM reader disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:48 LLM writer disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only

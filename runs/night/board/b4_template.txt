@@ -1,0 +1,26 @@
+12:36:18 practice: 10 sessions; 75 left before, keeping 12
+12:36:20 LLM reader disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:36:20 LLM writer disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:36:26 case:P02  dc33ebfb3f6fcd1f  sent 1  errors 0 []  deal True  score 0.735  complete
+12:36:28 case:P01  7e4629b2663c008c  sent 4  errors 0 []  deal True  score 0.934  complete
+12:36:28 case:P04  cdbb5de5c73f3a8e  sent 4  errors 0 []  deal True  score 0.874  complete
+12:36:29 case:P07  28d3de567faff594  sent 5  errors 0 []  deal True  score 0.725  complete
+12:36:29 case:P03  d031be75daa7d215  sent 6  errors 0 []  deal True  score 0.935  complete
+12:36:33 case:P08  6560577398048ebb  sent 5  errors 0 []  deal True  score 0.892  complete
+12:36:33 case:P10  1d4bf688f908838c  sent 2  errors 0 []  deal True  score 0.679  complete
+12:36:35 case:P11  17144fdad00c021a  sent 6  errors 0 []  deal True  score 0.71  complete
+12:36:35 case:P18  8b74d7ad0b550e83  sent 5  errors 0 []  deal True  score 0.696  complete
+12:38:37 case:P05  dfbd9bf68f167158  sent 11  errors 0 []  deal True  score 0.835  complete
+log: /Users/thomas.turek/Documents/GitHub/alex-thomas/runs/runner-practice-20261025-123618.log
+case:P01  deal True  score 0.9343660447763811
+case:P02  deal True  score 0.734527206471163
+case:P03  deal True  score 0.9351091105038049
+case:P04  deal True  score 0.8736820298574475
+case:P05  deal True  score 0.834919269529677
+case:P07  deal True  score 0.7247365091221519
+case:P08  deal True  score 0.8917574217035795
+case:P10  deal True  score 0.6785164534560958
+case:P11  deal True  score 0.7098962346486538
+case:P18  deal True  score 0.6956757649682936
+mean score 80.1 over 10 sessions
+practice sessions left: 65

@@ -1,0 +1,13 @@
+12:36:18 WARNING buyer.runner practice: 10 sessions; 75 left before, keeping 12
+12:36:20 WARNING buyer.llm LLM reader disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:36:20 WARNING buyer.llm LLM writer disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:36:26 INFO buyer.runner case:P02  dc33ebfb3f6fcd1f  sent 1  errors 0 []  deal True  score 0.735  complete
+12:36:28 INFO buyer.runner case:P01  7e4629b2663c008c  sent 4  errors 0 []  deal True  score 0.934  complete
+12:36:28 INFO buyer.runner case:P04  cdbb5de5c73f3a8e  sent 4  errors 0 []  deal True  score 0.874  complete
+12:36:29 INFO buyer.runner case:P07  28d3de567faff594  sent 5  errors 0 []  deal True  score 0.725  complete
+12:36:29 INFO buyer.runner case:P03  d031be75daa7d215  sent 6  errors 0 []  deal True  score 0.935  complete
+12:36:33 INFO buyer.runner case:P08  6560577398048ebb  sent 5  errors 0 []  deal True  score 0.892  complete
+12:36:33 INFO buyer.runner case:P10  1d4bf688f908838c  sent 2  errors 0 []  deal True  score 0.679  complete
+12:36:35 INFO buyer.runner case:P11  17144fdad00c021a  sent 6  errors 0 []  deal True  score 0.71  complete
+12:36:35 INFO buyer.runner case:P18  8b74d7ad0b550e83  sent 5  errors 0 []  deal True  score 0.696  complete
+12:38:37 INFO buyer.runner case:P05  dfbd9bf68f167158  sent 11  errors 0 []  deal True  score 0.835  complete

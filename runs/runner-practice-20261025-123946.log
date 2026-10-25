@@ -1,0 +1,23 @@
+12:39:47 WARNING buyer.runner practice: 1 sessions; 65 left before, keeping 12
+12:39:47 WARNING buyer.runner practice: 1 sessions; 65 left before, keeping 12
+12:39:47 WARNING buyer.runner practice: 1 sessions; 65 left before, keeping 12
+12:39:47 WARNING buyer.runner practice: 1 sessions; 65 left before, keeping 12
+12:39:47 WARNING buyer.runner practice: 1 sessions; 65 left before, keeping 12
+12:39:47 WARNING buyer.runner practice: 1 sessions; 65 left before, keeping 12
+12:39:48 WARNING buyer.llm LLM reader disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:48 WARNING buyer.llm LLM reader disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:48 WARNING buyer.llm LLM writer disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:48 WARNING buyer.llm LLM reader disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:48 WARNING buyer.llm LLM writer disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:48 WARNING buyer.llm LLM writer disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:48 WARNING buyer.llm LLM reader disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:48 WARNING buyer.llm LLM writer disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:48 WARNING buyer.llm LLM reader disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:48 WARNING buyer.llm LLM reader disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:48 WARNING buyer.llm LLM writer disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:48 WARNING buyer.llm LLM writer disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:49 INFO buyer.runner case:P10  b77757c776009785  sent 2  errors 0 []  deal True  score 0.679  complete
+12:39:50 INFO buyer.runner case:P07  3d493e67fe8fc0c0  sent 5  errors 0 []  deal True  score 0.679  complete
+12:39:51 INFO buyer.runner case:P11  a9c0d9680ea49f79  sent 7  errors 0 []  deal True  score 0.626  complete
+12:40:51 INFO buyer.runner case:P07  0b8c6a84752713a8  sent 5  errors 0 []  deal True  score 0.725  complete
+12:40:57 INFO buyer.runner case:P07  10648e78ce0ad9a5  sent 5  errors 0 []  deal True  score 0.705  complete

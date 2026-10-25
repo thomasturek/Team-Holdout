@@ -1,0 +1,31 @@
+12:25:27 practice: 3 sessions; 105 left before, keeping 12
+12:25:31 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:25:33 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:25:37 case:P11: HTTP 429: at most 10 open sessions per key
+12:25:39 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:25:40 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:00 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:01 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:17 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:17 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:25 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:26 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:46 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:49 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:55 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:26:56 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:27:28 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:27:30 case:P11  647c7473f802cceb  sent 4  errors 0 []  deal True  score 0.71  complete
+12:27:31 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:27:31 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:28:23 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:28:24 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:28:46 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:28:48 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+12:29:26 case:P11  6019f6fdf6b15bcf  sent 6  errors 0 []  deal True  score 0.71  complete
+log: /Users/thomas.turek/Documents/GitHub/alex-thomas/runs/runner-practice-20261025-122527.log
+case:P11  deal True  score 0.7098962346486538
+case:P11  deal True  score 0.7098962346486538
+case:P11  ArenaError: HTTP 429: at most 10 open sessions per key
+mean score 71.0 over 2 sessions
+practice sessions left: 99

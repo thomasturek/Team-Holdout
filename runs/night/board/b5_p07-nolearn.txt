@@ -1,0 +1,8 @@
+12:39:47 practice: 1 sessions; 65 left before, keeping 12
+12:39:48 LLM reader disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:48 LLM writer disabled (provider anthropic, model claude-sonnet-5-5): templates / keyword rules only
+12:39:50 case:P07  3d493e67fe8fc0c0  sent 5  errors 0 []  deal True  score 0.679  complete
+log: /Users/thomas.turek/Documents/GitHub/alex-thomas/runs/runner-practice-20261025-123946.log
+case:P07  deal True  score 0.678825322971685
+mean score 67.9 over 1 sessions
+practice sessions left: 60
