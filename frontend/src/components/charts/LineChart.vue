@@ -69,7 +69,8 @@ const ticks = computed(() => {
 });
 
 const xTicks = computed(() => {
-  const step = Math.max(1, Math.ceil(n.value / Math.max(2, Math.floor(innerW.value / 70))));
+  const longest = Math.max(1, ...props.xLabels.map((l) => l.length));
+  const step = Math.max(1, Math.ceil(n.value / Math.max(2, Math.floor(innerW.value / (longest * 6.5 + 24)))));
   return props.xLabels.map((l, i) => ({ l, i })).filter(({ i }) => i % step === 0);
 });
 
@@ -102,9 +103,12 @@ const directLabels = computed(() => {
     .filter((s) => s.label !== false && s.line !== false)
     .map((s) => ({ s, p: lastPoint(s) }))
     .filter((o) => o.p)
-    .map((o) => ({ name: o.s.name, color: o.s.color, x: x(o.p!.i) + 8, y: y(o.p!.v) }));
+    .map((o) => ({ name: o.s.name, ref: false, x: pad.l + innerW.value + 8, y: y(o.p!.v) }));
+  out.push(...props.refs.map((r) => ({ name: r.label, ref: true, x: pad.l + innerW.value + 8, y: y(r.y) })));
   out.sort((a, b) => a.y - b.y);
   for (let k = 1; k < out.length; k++) if (out[k].y - out[k - 1].y < 14) out[k].y = out[k - 1].y + 14;
+  const overflow = out.length ? out[out.length - 1].y - (pad.t + innerH.value) : 0;
+  if (overflow > 0) out.forEach((l) => (l.y -= overflow));
   return out;
 });
 
@@ -138,7 +142,6 @@ const tip = computed(() => {
       </g>
       <g v-for="r in refs" :key="r.label">
         <line :x1="pad.l" :x2="pad.l + innerW" :y1="y(r.y)" :y2="y(r.y)" stroke="#94a3b8" stroke-dasharray="4 4" stroke-width="1" />
-        <text class="label" :x="pad.l + innerW + 8" :y="y(r.y) + 3.5" style="fill: #8a94a6; font-weight: 500">{{ r.label }}</text>
       </g>
       <line v-if="tip" :x1="tip.left" :x2="tip.left" :y1="pad.t" :y2="pad.t + innerH" stroke="#cbd2dc" stroke-width="1" />
       <g v-for="s in series" :key="s.name">
@@ -154,7 +157,7 @@ const tip = computed(() => {
           <circle v-if="!s.dots && s.values[hover] !== null && s.values[hover] !== undefined" :cx="x(hover)" :cy="y(s.values[hover] as number)" r="4.5" :fill="s.color" stroke="#fff" stroke-width="2" />
         </template>
       </template>
-      <text v-for="l in directLabels" :key="'l' + l.name" class="label" :x="l.x" :y="l.y + 4">{{ l.name }}</text>
+      <text v-for="l in directLabels" :key="'l' + l.name" class="label" :x="l.x" :y="l.y + 4" :style="l.ref ? 'fill: #8a94a6; font-weight: 500' : undefined">{{ l.name }}</text>
       <rect :x="pad.l" :y="pad.t" :width="innerW" :height="innerH" fill="transparent" />
     </svg>
     <div v-if="tip" class="tooltip" :style="{ left: tip.left + 20 + 'px', top: tip.top + 8 + 'px' }">
