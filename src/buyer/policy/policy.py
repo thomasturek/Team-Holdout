@@ -703,24 +703,16 @@ class Policy:
                         intent="appreciative: we accept your price and terms; only our must-have term differs")
 
     def repair(self, case, t):
-        own = complete_offer(case, dict(t.standing_terms))
-        sheet = dict(own)
-        for m in case["buyer"].get("must_haves", []):
-            f = m["field"]
-            if f not in case["negotiable"] or must_haves_ok(case, sheet, t.standard):
-                continue
-            ok = [o for o in (case.get("term_options") or {}).get(f) or []
-                  if must_haves_ok(case, {**sheet, f: o}, t.standard)]
-            if ok:
-                cur = sheet.get(f)
-                sheet[f] = min(ok, key=lambda o: abs(o - cur)
-                               if isinstance(o, int | float) and isinstance(cur, int | float) else 0)
+        if not must_haves_ok(case, t.standing_terms, t.standard) or self.unverified_must_have(case, t):
+            return None
+        terms = closing_terms(case, t.standing_terms, t.standard)
+        sheet = complete_offer(case, {f: terms.get(f) for f in case["negotiable"]})
         if not must_haves_ok(case, sheet, t.standard):
             return None
         cap = alternative_cost(case) * (1 - self.p["accept_gap_pct"] / 100)
         c = self.c(case, sheet, t)
         if c <= cap:
-            return sheet if sheet != own else None
+            return None
         slope = self.c(case, {**sheet, "unit_price": sheet["unit_price"] + 1}, t) - c
         if slope <= 0:
             return None

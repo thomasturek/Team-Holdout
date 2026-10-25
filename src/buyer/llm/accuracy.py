@@ -18,7 +18,7 @@ from pathlib import Path
 
 FIXTURES = Path(__file__).parent / "tests" / "fixtures"
 SETS = ("supplier_emails.json", "adversarial_emails.json")  # development: tune rules and prompts on these
-LOCKED = "adversarial_locked.json"  # held out: measure only (docs/V3_ROBUSTNESS_PLAN.md, dataset discipline)
+LOCKED = "adversarial_locked.json"  # held out: measure only (dataset discipline)
 BOOLS = ("cash_pressure", "capacity_issue", "final_offer_language", "approval_pending")
 
 

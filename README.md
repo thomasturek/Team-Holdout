@@ -22,7 +22,7 @@ The work is split into four parts, and each part belongs to one person on the te
 
 The first part is the Scout, which lives in [`src/buyer/facts/`](src/buyer/facts/). It reads the data package that Tacto provides, which describes 46 suppliers, their contracts, quality records, price histories and the market indices that drive their costs. From this data the Scout builds a profile of every supplier. The profile estimates how low the supplier can go, how badly it needs cash and how it tends to negotiate. The Scout also builds a bank of facts that we can cite in our e-mails, such as a supplier's real quality record or the true change in a steel index. Each of these facts is checked against the arena's own rules before it is ever sent, so the supplier cannot dismiss it.
 
-The second part is the Analyst, which lives in [`src/buyer/policy/`](src/buyer/policy/). This is the decision maker. After every supplier reply it decides what to do next. It can send new offers, accept the best one on the table or walk away. When it makes an offer it usually sends two or three complete term sheets at once, which lets us learn which terms the supplier values most. Its behaviour is controlled by a small set of tuned parameters in [`params.json`](src/buyer/policy/params.json), such as how far below the supplier's floor to open and how quickly to concede.
+The second part is the Analyst, which lives in [`src/buyer/policy/`](src/buyer/policy/). This is the decision maker. After every supplier reply it decides what to do next. It can send new offers, accept the best one on the table or walk away. When it makes an offer it usually sends two or three complete term sheets at once, which lets us learn which terms the supplier values most. Its behaviour is controlled by a small set of tuned parameters in [`params.json`](src/buyer/policy/params.json), such as how far below the supplier's floor to open and how quickly to concede. Those parameters are tuned in a simulator, which lives in [`src/buyer/sim/`](src/buyer/sim/). The simulator models how suppliers behave, is calibrated on our real sandbox and practice sessions, and plays the policy against thousands of synthetic suppliers.
 
 The third part is the Diplomat, which lives in [`src/buyer/llm/`](src/buyer/llm/). It has two jobs. First, it reads each supplier e-mail and turns the prose into fixed signals, such as whether the supplier is short of cash or is using final offer language. Second, it writes our reply around the decision the Analyst has already made. The language model writes only the surrounding prose. Every number, term sheet and cited fact is inserted by code, and a guard checks the finished e-mail before it goes out. If the model is slow or fails, a template writer produces a safe e-mail instead.
 
@@ -110,7 +110,7 @@ uv run python -m buyer.runtime.harvest
 
 ## 6. Where the results go
 
-Every session is logged in full. Each one gets its own file at `runs/<set>/<case>/<session>.jsonl`, where every line records one event, such as an e-mail we sent, a supplier reply, a decision or the final result. A complete JSON copy of every finished session is also saved in `runs/<set>_sessions/`. The format of these logs is described in [`docs/LOGS.md`](docs/LOGS.md). The `runs/` folder is kept out of git, because it holds raw data.
+Every session is logged in full. Each one gets its own file at `runs/<set>/<case>/<session>.jsonl`, where every line records one event, such as an e-mail we sent, a supplier reply, a decision or the final result. A complete JSON copy of every finished session is also saved in `runs/<set>_sessions/`. The format of these logs is described in [`docs/LOGS.md`](docs/LOGS.md).
 
 
 ## 7. The Counterpart dashboard
@@ -159,26 +159,39 @@ Clicking a supplier opens a side panel with more detail. It shows the parts the 
 
 ### Where the code lives
 
-The data layer is a small plugin for the Vite development server in [`frontend/server/runs.ts`](frontend/server/runs.ts). It reads the logs, works out the status of each negotiation and serves the results at `/api`. The pages are written in Vue and live in [`frontend/src/views/`](frontend/src/views/), and the shared pieces, such as the chart and the conversation view, live in [`frontend/src/components/`](frontend/src/components/). The name, the icon and the refresh rate of the dashboard are set in [`frontend/src/app.ts`](frontend/src/app.ts).
+The data layer is a small plugin for the Vite development server in [`frontend/server/runs.ts`](frontend/server/runs.ts). It reads the logs, works out the status of each negotiation and serves the results at `/api`. The pages are written in Vue and live in [`frontend/src/views/`](frontend/src/views/), and the shared pieces, such as the chart and the conversation view, live in [`frontend/src/components/`](frontend/src/components/). The name, the icon and the refresh rate of the dashboard are set in [`frontend/src/app.ts`](frontend/src/app.ts). The [frontend README](frontend/README.md) explains every page, the data flow and how to extend the dashboard.
 
 
 ## 8. How the repository is organised
 
-The folder `src/buyer/` holds the agent itself, split into the four parts described in section 2. The folder `tests/` holds the tests, which you run with `uv run pytest`. The folder `frontend/` holds the Counterpart dashboard. The folder `starter-kit/` holds Tacto's starter kit, which provides the API client and the official cost formula that we use everywhere. The folders `brief/` and `data/` hold the challenge brief and the supplier data package. The folder `docs/` holds our working notes, including the log format and what we learned from replays. The folder `roles/` holds a short description of each team role, and `scripts/` holds a few helper scripts for comparing runs.
+The folder `src/buyer/` holds the agent itself. Inside it, `facts/` is the Scout, `policy/` is the Analyst, `sim/` is the simulator the Analyst tunes against, `llm/` is the Diplomat and `runtime/` is the Operator. The file `src/buyer/interfaces.py` defines the data that passes between them.
 
-The file [`AGENTS.md`](AGENTS.md) is the team's source of truth. It records the plan, the architecture, the contracts between the four parts and the rules every contributor follows.
+The folder `tests/` holds the tests for the policy and the runtime, and the Diplomat and the Scout keep further tests next to their code. Running `uv run pytest` covers the main tests and the Diplomat's, and `uv run pytest src/buyer/facts` runs the Scout's.
+
+The folder `frontend/` holds the Counterpart dashboard. The folder `docs/` holds the project documentation described in the next section. The folder `scripts/` holds a helper script for comparing two batches of practice runs.
+
+The folder `starter-kit/` holds Tacto's starter kit, which provides the API client and the official cost formula that we use everywhere. The folders `brief/` and `data/` hold the challenge brief and the supplier data package, exactly as Tacto published them. The folder `runs/` holds the logs of every session the agent has played.
+
+The file [`AGENTS.md`](AGENTS.md) is the team's working agreement. It records the architecture, the contracts between the four parts, who owns what and the rules every contributor follows, including coding assistants.
 
 
-## 9. Rules we never break
+## 9. Where to read more
+
+The [documentation folder](docs/README.md) explains the project step by step. [How scoring works](docs/SCORING.md) explains exactly how the arena prices a deal. [Architecture](docs/ARCHITECTURE.md) explains how the four parts fit together and follows one move through the system. [Running the agent](docs/RUNNING.md) is the practical guide to setup, practice, the final and troubleshooting. [Run logs](docs/LOGS.md) describes the log format.
+
+Each part of the agent also has its own README next to its code. They are [the Scout](src/buyer/facts/README.md), [the Analyst](src/buyer/policy/README.md), [the simulator](src/buyer/sim/README.md), [the Diplomat](src/buyer/llm/README.md), [the Operator](src/buyer/runtime/README.md) and [the Counterpart dashboard](frontend/README.md).
+
+
+## 10. Rules we never break
 
 A few rules protect every case, and the code enforces them. The agent never accepts a deal that breaks a must-have or costs more than our fallback. It never cites a data reference that does not exist in the data package or the case. The language model never produces a number that ends up in a term sheet. The agent never reads the arena's leaderboard, results or event feed. Secrets and API keys are never committed. Every reply goes out within 25 seconds of the supplier's message, which leaves a safe margin inside the arena's 60 second limit.
 
 
-## 10. The team
+## 11. The team
 
 | Person | Role | Focus |
 |---|---|---|
-| Thomas | [Analyst](roles/ANALYST.md) | The decision policy, its parameters and their tuning |
-| Halichem | [Diplomat](roles/DIPLOMAT.md) | Reading supplier e-mails and writing ours |
-| Felix | [Scout](roles/SCOUT.md) | Data, costing, supplier profiles and verified facts |
-| Alex | [Operator](roles/OPERATOR.md) | The API, parallel play, logging and the final runner |
+| Thomas | [Analyst](src/buyer/policy/README.md) | The decision policy, its parameters and their tuning |
+| Halichem | [Diplomat](src/buyer/llm/README.md) | Reading supplier e-mails and writing ours |
+| Felix | [Scout](src/buyer/facts/README.md) | Data, costing, supplier profiles and verified facts |
+| Alex | [Operator](src/buyer/runtime/README.md) | The API, parallel play, logging and the final runner |

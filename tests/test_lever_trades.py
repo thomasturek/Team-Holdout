@@ -161,3 +161,16 @@ def test_an_opening_without_a_price_gets_an_offer_not_a_walk():
     t = thread(case, {"volume_per_year": 23400})
     d = policy.decide(case, t)
     assert d.kind == "send" and d.term_sheets and d.term_sheets[0]["unit_price"] > 0
+
+
+def test_a_final_missing_a_must_have_field_is_countered_with_the_field_filled():
+    case = CASES["case:P11"]
+    policy = Policy({})
+    final = {"unit_price": 47.4}
+    t = thread(case, final)
+    t.standard = {"chargeback_eur_per_complaint": 0.0}
+    t.status = "final_offer"
+    t.offers = [("offer:x-1", dict(final))]
+    d = policy.decide(case, t)
+    assert d.kind == "send" and len(d.term_sheets) == 1
+    assert d.term_sheets[0]["ppm_commitment"] <= 1500 and d.term_sheets[0]["unit_price"] == 47.4

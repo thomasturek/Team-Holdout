@@ -1,5 +1,5 @@
 {
- "_about": "V3 (docs/V3_ROBUSTNESS_PLAN.md, DIPLOMAT): supplier e-mails written to mislead a reader - polite final offers, irritated non-final offers, bluffs, approval ambiguity, denied or indirect cash pressure, conflicting asks, German. Same format and semantics as supplier_emails.json; `expected` only names fields whose meaning is unambiguous, `absent` names the traps. `category` groups them for the accuracy report.",
+ "_about": "V3 (DIPLOMAT): supplier e-mails written to mislead a reader - polite final offers, irritated non-final offers, bluffs, approval ambiguity, denied or indirect cash pressure, conflicting asks, German. Same format and semantics as supplier_emails.json; `expected` only names fields whose meaning is unambiguous, `absent` names the traps. `category` groups them for the accuracy report.",
  "emails": [
   {"id": "A01-polite-final-indirect", "category": "polite_final",
    "message": {"status": "open", "claim_results": [], "body": "Dear Ms Weber,\nwe have gone through every line of our calculation again with great care, and I am afraid we have reached the end of what we can offer. We hope you understand and look forward to continuing our good cooperation.\nKind regards"},

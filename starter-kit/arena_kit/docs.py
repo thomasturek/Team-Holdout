@@ -43,6 +43,9 @@ def read_document(name, data):
     return data.decode("utf-8", "replace")
 
 
+NUMBER = re.compile(r"-?\d+(?:\.\d+)?")
+
+
 def _value(field, text):
     if field == "index_clause":
         m = CLAUSE.match(text)
@@ -57,7 +60,10 @@ def _value(field, text):
         }
     if field in ("effective_date", "incoterm"):
         return text
-    return float(text) if "eur" in field or field == "unit_price" else int(float(text))
+    m = NUMBER.search(text.replace(",", ""))
+    if not m:
+        return None
+    return float(m.group()) if "eur" in field or field == "unit_price" else int(float(m.group()))
 
 
 def quote_terms(text):
@@ -68,7 +74,10 @@ def quote_terms(text):
         section = next((key for head, key in SECTIONS.items() if line.startswith(head)), section)
         label = next((lab for lab in LABELS if line.startswith(lab + " ")), None)
         if section and label:
-            out.setdefault(section, {})[LABELS[label]] = _value(LABELS[label], line[len(label) :].strip())
+            field = LABELS[label]
+            value = _value(field, line[len(label) :].strip())
+            if value is not None or field == "index_clause":
+                out.setdefault(section, {})[field] = value
     return out
 
 
