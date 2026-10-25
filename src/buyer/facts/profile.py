@@ -470,9 +470,10 @@ def profile(case, path=PROFILES_FILE):
         out[sid] = apply_memory(p, sid, parts) if p else p
         if p:
             try:  # the writer's brief on this supplier; never worth losing a move over
-                from .dossier import dossier
+                from .dossier import angle_variant, dossier
 
                 p["dossier"] = dossier(p)
+                p["angle_variant"] = angle_variant()
                 from .strategy import initial
 
                 s0 = initial(case, p)  # the opening strategy; the policy re-chooses after each reply

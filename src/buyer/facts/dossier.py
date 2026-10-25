@@ -21,6 +21,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import os
 import re
 from functools import lru_cache
 from pathlib import Path
@@ -57,7 +58,35 @@ ANGLES = {
     "escalate": "Make it easy to escalate: respectful to our contact, with one short paragraph its decision-maker "
                 "can approve as it stands, and a clear request to take Option A to that person.",
 }
+# Angle B per profile, for A/B test batches (BUYER_ANGLE=B; default A). Hypotheses from the practice logs
+# (2026-10-25, across suppliers, so confounded - hence the test): planning-security language went with
+# bigger first moves at groups (+5.8 pp), form letters with smaller ones at family firms (-4.7 pp);
+# Kalwisz's payment term was not negotiable; Inside Sales contacts rarely decide alone.
+ANGLES_B = {
+    "family_foundry": "Steady work and fair numbers: lead with what keeps its shop busy - the contract length and "
+                      "steady call-offs in our options - and let the claim lines show why Option A is fair; "
+                      "less sentiment, more business.",
+    "group_ladder": "Planning security first: lead with the commitment our options give - contract length, volume, "
+                    "planning certainty - as the reason its committee can approve Option A.",
+    "cash_short_jobshop": "Quality as the trade: lead with what the quality commitment in our options is worth to "
+                          "both sides; speak of payment only if an option changes it.",
+    "near_monopolist": "Escalate respectfully: one short paragraph its management can approve, framing Option A as "
+                       "securing the full volume and long-term planning with us.",
+    "unknown": "Evidence first: the claim lines, then Option A as the fair consequence.",
+    "escalate": "One simple yes: make Option A the obvious choice our contact can confirm on its own - short and "
+                "clear, no paragraph for anyone else.",
+}
 GENERIC_DRIVERS = ("raw material", "raw_material")
+
+
+def angle_variant() -> str:
+    """'A' (default) or 'B' - which angle set a test batch plays (environment BUYER_ANGLE)."""
+    return "B" if os.environ.get("BUYER_ANGLE", "A").strip().upper() == "B" else "A"
+
+
+def angle(kind: str, low_authority: bool = False) -> str:
+    key = "escalate" if low_authority else kind if kind in ANGLES else "unknown"
+    return (ANGLES_B if angle_variant() == "B" else ANGLES)[key]
 
 
 def _driver_words(drivers) -> list[str]:
@@ -225,7 +254,7 @@ def dossier(profile: dict | None, obs: dict | None = None) -> str:
     move = _movement(o)
     if move:
         lines.append(move)
-    lines.append("Angle: " + ANGLES["escalate" if low_authority else kind if kind in ANGLES else "unknown"])
+    lines.append("Angle: " + angle(kind, low_authority))
     text = " ".join(lines)
     return re.sub(r"\s*\d[\d.,%]*\s*", " ", text).strip()  # never a figure, even from a note
 

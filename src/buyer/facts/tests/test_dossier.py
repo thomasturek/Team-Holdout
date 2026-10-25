@@ -45,3 +45,24 @@ def test_the_case_profile_carries_the_dossier():
 
 def test_observations_are_committed():
     assert observed("sup:70510").get("contact_role") == "Key Account Manager"
+
+
+# ------------------------------------------------------------------ A/B angles per profile
+
+def test_angle_a_is_the_default_and_b_differs_for_every_profile(monkeypatch):
+    from buyer.facts.dossier import ANGLES, ANGLES_B, angle, angle_variant
+
+    monkeypatch.delenv("BUYER_ANGLE", raising=False)
+    assert angle_variant() == "A"
+    a = {k: angle(k) for k in ANGLES}
+    monkeypatch.setenv("BUYER_ANGLE", "b")
+    assert angle_variant() == "B"
+    for k in ANGLES:
+        assert angle(k) == ANGLES_B[k] != a[k], k
+    assert angle("family_foundry", low_authority=True) == ANGLES_B["escalate"]  # the contact's authority wins
+
+
+def test_the_profile_records_which_angle_it_played(monkeypatch):
+    monkeypatch.setenv("BUYER_ANGLE", "B")
+    p = profile({"suppliers": ["sup:70510"], "parts": ["part:350011"]})["sup:70510"]
+    assert p["angle_variant"] == "B" and "Planning security first" in p["dossier"]
