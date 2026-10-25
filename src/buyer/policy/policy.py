@@ -66,6 +66,10 @@ ARCHETYPE_LEAD_EFFORT = {"near_monopolist": 0.005}
 ARCHETYPE_RATE = {"cash_short_jobshop": 0.18, "group_ladder": 0.07, "near_monopolist": 0.07}
 MENU_SPREAD = 0.003
 MENU_COMBOS = 300
+FIRST_MESSAGE_CLAIMS = 3
+WEAK_CLAIM = 0.2
+CLAIM_WEIGHT = {"notice": 1.0, "ppm": 0.75, "rival": 0.7, "cost": 0.6, "news": 0.55, "index": 0.5, "fc": 0.45,
+                "po": 0.3, "otd": 0.15}
 OWN_PRICE_SLACK = 0.005
 CASH_HUNGRY_RATE = 0.15
 
@@ -574,6 +578,8 @@ class Policy:
         limit = int(self.p["claims_per_msg"])
         if limit <= 0 or not case.get("case_id"):
             return []
+        if len(t.our_prices) <= 1:
+            limit = max(limit, FIRST_MESSAGE_CLAIMS)
         key = (case["case_id"], t.supplier_id)
         if key not in self.banks:
             try:
@@ -598,6 +604,9 @@ class Policy:
             and c.key not in rejected
             and self.used_refs.isdisjoint(c.refs)
         ]
+        pool.sort(key=lambda c: -c.strength * CLAIM_WEIGHT.get(c.key.split(":", 1)[0], 0.3))
+        strong = [c for c in pool if CLAIM_WEIGHT.get(c.key.split(":", 1)[0], 0.3) >= WEAK_CLAIM]
+        pool = strong or pool
         chosen, seen = [], set()
         for c in pool:
             if seen.isdisjoint(c.refs):

@@ -385,6 +385,54 @@ def rival_claims(case: dict, threads: dict, supplier_id: str, data: CaseData | N
     return out
 
 
+HELPFUL_NEWS = ("free_capacity", "short_time_work", "supply_normalises")
+VOLUME_CASES = ("bundling", "renewal")
+
+
+def cost_claims(data: CaseData, sid: str) -> list[Claim]:
+    """Our should-cost of a part of the case, if the price we pay today sits clearly above it."""
+    out = []
+    current = (data.case.get("buyer") or {}).get("current_unit_price")
+    for part in data.case.get("parts") or []:
+        code = part.split(":", 1)[1]
+        for ref in (f"cost:{code}-{sid.split(':', 1)[1]}", f"cost:{code}"):
+            f = data.lookup(ref) if data.citable(ref) else None
+            if not f or not f.get("unit_cost") or f.get("price_unit") not in (None, 1):
+                continue
+            gap = (current - f["unit_cost"]) / current if current else 0.0
+            if gap < 0.08:
+                break
+            sentence = f"Our cost estimate for {_part_words(data, part)} is {_eur(f['unit_cost'], 1)} per unit ({ref})."
+            out.append(Claim(f"cost:{sid}:{part}", sentence, [ref], "verified", round(min(1.0, 0.4 + 2 * gap), 3)))
+            break
+    return out
+
+
+def news_claims(data: CaseData, sid: str) -> list[Claim]:
+    """A news item about this supplier that speaks for us (it has room and wants the order)."""
+    out = []
+    for ref in sorted(k for k in data.package.facts if k.startswith("news:")):
+        f = data.lookup(ref)
+        if f and f.get("supplier") == sid and f.get("topic") in HELPFUL_NEWS:
+            out.append(Claim(f"news:{sid}:{ref}", f"{f['headline']} ({ref}).", [ref], "verified", 0.6))
+    return out[-1:]
+
+
+def forecast_claims(data: CaseData) -> list[Claim]:
+    """Growth in our forecast for a part: more business for a supplier that wants volume."""
+    if data.case.get("type") not in VOLUME_CASES:
+        return []
+    out = []
+    for part in data.case.get("parts") or []:
+        code = part.split(":", 1)[1]
+        rows = sorted((k for k in data.package.facts if k.startswith(f"fc:{code}@")), reverse=True)
+        f = data.lookup(rows[0]) if rows else None
+        if f and (f.get("change_pct") or 0) >= 5:
+            sentence = f"Our forecast for {_part_words(data, part)} rises {f['change_pct']:.1f}% ({rows[0]})."
+            out.append(Claim(f"fc:{part}", sentence, [rows[0]], "verified", 0.45))
+    return out[:1]
+
+
 def supplier_claims(supplier_id: str, part_id: str, data: CaseData | None = None) -> list[Claim]:
     """The claims about one supplier and part outside any case - for profile_all() and the hand
     review. The supplier's latest price letter stands in for the case's trigger document."""
@@ -417,6 +465,7 @@ def claims(case: dict, supplier_id: str | None = None, data: CaseData | None = N
     out = []
     for sid in suppliers:
         bank = shared + notice_claims(data, idx, sid) + scorecard_claims(data, idx, sid) + po_claims(data, idx, sid)
+        bank += cost_claims(data, sid) + news_claims(data, sid) + forecast_claims(data)
         bank = [c for c in bank if check(case, sid, c.sentence, data=data) == "verified"]
         if threads and len(case.get("suppliers") or []) > 1:
             bank += rival_claims(case, threads, sid, data=data)
@@ -515,5 +564,22 @@ def check(case: dict, supplier_id: str, sentence: str, used: set[str] = frozense
             return "irrelevant"
         stated = sorted(int(_num(s)) for s in re.findall(rf"({NUM})\s*days", sentence))
         return "verified" if stated == sorted([doc["days"], ctr["days"]]) else "contradicted"
+
+    if kinds == {"cost"} and len(ids) == 1:
+        f = facts[ids[0]]
+        if f.get("part") not in parts:
+            return "irrelevant"
+        stated = re.findall(rf"EUR\s*({NUM})", sentence)
+        return "verified" if stated and all(_rel_ok(_num(x), f["unit_cost"]) for x in stated) else "contradicted"
+
+    if kinds == {"fc"} and len(ids) == 1:
+        f = facts[ids[0]]
+        if f.get("part") not in parts:
+            return "irrelevant"
+        stated = re.findall(rf"({NUM})\s*%", sentence)
+        return "verified" if stated and all(_pct_ok(_num(x), f["change_pct"]) for x in stated) else "contradicted"
+
+    if kinds == {"news"} and len(ids) == 1:
+        return "verified" if facts[ids[0]].get("supplier") == supplier_id else "irrelevant"
 
     return "irrelevant"  # a kind we do not build (yet): never claim it
