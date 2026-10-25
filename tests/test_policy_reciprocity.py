@@ -43,7 +43,7 @@ def test_we_match_a_supplier_step_not_the_gap():
     assert d.kind == "send" and step == pytest.approx(0.8 * 0.40, abs=0.02)
 
 
-def test_a_holding_supplier_gets_a_token_step_then_a_hold_with_another_package(monkeypatch):
+def test_a_holding_supplier_gets_a_token_step_then_a_hold(monkeypatch):
     monkeypatch.setattr("buyer.policy.policy.VISIBLE_STEP", 0.0)
     policy, t = start()
     reply(policy, t, 19.6, 1)
@@ -55,7 +55,7 @@ def test_a_holding_supplier_gets_a_token_step_then_a_hold_with_another_package(m
     assert d.questions == ["cost breakdown"] and "firm on price" in d.intent
     d2, held2 = reply(policy, t, 19.6, 4)
     assert d2.kind == "send" and held2 == 0 and d2.questions == []  # asked once only
-    assert d2.term_sheets[0] != d.term_sheets[0] or len(d.term_sheets) == 1  # the lead package changes
+    assert d2.term_sheets[0]["unit_price"] == d.term_sheets[0]["unit_price"]
 
 
 def test_a_step_back_is_not_rewarded(monkeypatch):

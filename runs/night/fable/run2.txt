@@ -1,0 +1,5 @@
+fable2_hidden: done (end_turn, $2.17)
+fable2_claims: done (end_turn, $1.41)
+fable2_runtime: done (end_turn, $1.95)
+fable2_allin: done (end_turn, $1.49)
+total spend so far: $57.55 of $90

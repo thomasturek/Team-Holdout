@@ -41,6 +41,8 @@ log = logging.getLogger("buyer.runner")
 FORBIDDEN = ("/events", "/screen", "/leaderboard", "/results")  # for people, never for the agent (api.md)
 RESERVE = 20  # practice sessions kept for Sunday's pre-flight (AGENTS.md section 6)
 POLL_S = 3.0
+RESTARTS = 3
+RESTART_MIN_S = 45.0
 
 
 class SafeClient(ArenaClient):
@@ -123,7 +125,7 @@ def play_set(client, set_, cases, *, agent="policy", params=None, parallel=8, re
 def play_final(client, *, agent="policy", params=None, waves=5, parallel=10, poll=POLL_S, root=env.RUNS):
     """The Live Final: wait for each wave, play its cases in parallel within the wave's cap, until
     `waves` waves have closed and every case has finished. Returns {case_id: result or exception}."""
-    started, closed, caps = {}, set(), {}  # caps: wave -> its cap as time.time()
+    started, closed, caps, restarts = {}, set(), {}, {}  # caps: wave -> its cap as time.time()
     archive = root / "final_sessions"
 
     def one(case, deadline):
@@ -143,7 +145,7 @@ def play_final(client, *, agent="policy", params=None, waves=5, parallel=10, pol
         finally:
             lg.close()
 
-    with ThreadPoolExecutor(max_workers=parallel, thread_name_prefix="final") as pool:
+    with ThreadPoolExecutor(max_workers=3 * parallel, thread_name_prefix="final") as pool:
         while len(closed) < waves or not all(f.done() for f in started.values()):
             try:
                 cases = client.cases("final")
@@ -163,6 +165,14 @@ def play_final(client, *, agent="policy", params=None, waves=5, parallel=10, pol
                     continue
                 if case.get("seconds_left") is not None:  # each wave has its own cap; follow an extension
                     caps[wave] = time.time() + case["seconds_left"]
+                f = started.get(cid)
+                if f is not None and f.done():
+                    err = f.exception() or f.result()
+                    if (isinstance(err, BaseException) and (case.get("seconds_left") or 0) > RESTART_MIN_S
+                            and restarts.get(cid, 0) < RESTARTS):
+                        restarts[cid] = restarts.get(cid, 0) + 1
+                        log.warning("%s failed (%s) - restart %d", cid, err, restarts[cid])
+                        del started[cid]
                 if cid not in started and case.get("seconds_left"):
                     if wave not in {c.get("wave") for c in cases if c["case_id"] in started}:
                         log.warning("wave %s started: %s (%s s)", wave, case.get("theme"), case["seconds_left"])

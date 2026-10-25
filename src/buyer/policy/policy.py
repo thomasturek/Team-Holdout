@@ -5,7 +5,7 @@ import math
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from arena_kit.cost import complete_offer, must_haves_ok, supplier_value, total_cost
+from arena_kit.cost import complete_offer, must_haves_ok, snap, supplier_value, total_cost
 
 from buyer.facts.costing import asked as lever_asked
 from buyer.facts.costing import c as relationship_c
@@ -78,6 +78,7 @@ NEGOTIATES_DOWN = ("family_foundry",)
 CLAUSE_WORTH = 0.04
 FIRST_MESSAGE_CLAIMS = 3
 WEAK_CLAIM = 0.2
+FILLER_STRENGTH = 0.1
 CLAIM_WEIGHT = {"notice": 1.0, "ppm": 0.75, "rival": 0.7, "cost": 0.6, "news": 0.55, "index": 0.5, "fc": 0.45,
                 "po": 0.3, "otd": 0.15}
 OWN_PRICE_SLACK = 0.005
@@ -157,9 +158,15 @@ class Policy:
     def decide(self, case, t: ThreadState, rival_best_c=math.inf) -> Decision:
         p, sid = self.p, t.supplier_id
         theirs = t.standing_terms.get("unit_price")
-        if t.status in ("walked_away", "no_bid") or theirs is None:
+        if t.status in ("walked_away", "no_bid"):
             return Decision("walk", sid)
         t.case_type = case.get("type")
+        if theirs is None:
+            anchor = self.anchor(case, t)
+            if anchor is None or t.rounds_left <= 1:
+                return Decision("walk", sid)
+            return self.offer(case, t, anchor, intent="firm: please quote against these options",
+                              rival_best_c=rival_best_c)
         self.pick_offer(case, t)
         c_theirs = self.cost(case, t)
         if t.standing_id not in t.seen_ids:
@@ -354,9 +361,7 @@ class Policy:
         notes = " ".join(str(n) for n in (t.profile or {}).get("notes") or []).lower()
         if not t.asked_breakdown and not t.our_prices and "calculation" in notes:
             questions, t.asked_breakdown = ["cost breakdown"], True
-        if t.holding:  # same price: lead with another package, ask for its costs once
-            k = t.holds % len(sheets)
-            sheets = sheets[k:] + sheets[:k]
+        if t.holding:
             intent = "firm on price, open on the other terms"
             if not t.asked_breakdown:
                 questions, t.asked_breakdown = ["cost breakdown"], True
@@ -563,6 +568,15 @@ class Policy:
         return rate, pressure
 
     def close(self, case, t, acceptable, c_theirs, rival_best_c):
+        if (not acceptable and t.status == "final_offer" and t.rounds_left > 1 and not t.pushed_final
+                and c_theirs <= rival_best_c):
+            repaired = self.repair(case, t)
+            if repaired is not None:
+                t.pushed_final = True
+                t.our_prices.append(repaired["unit_price"])
+                t.our_costs.append(self.c(case, repaired, t))
+                return Decision("send", t.supplier_id, term_sheets=[repaired],
+                                intent="appreciative: we take your package as it stands, with one term adjusted")
         alt = t.alt
         if alt and alt[0] < c_theirs and t.rounds_left > 1 and not t.mirrored:
             if alt[0] < alternative_cost(case) and alt[0] <= rival_best_c:
@@ -583,10 +597,48 @@ class Policy:
                 own = complete_offer(case, dict(t.standing_terms))
                 t.our_prices.append(own["unit_price"])
                 t.our_costs.append(self.c(case, own, t))
-                return Decision("send", t.supplier_id, term_sheets=[*variants, own][:3],
+                return Decision("send", t.supplier_id, term_sheets=variants[:3],
                                 intent="appreciative: we can agree to your offer; we would prefer it with a wider "
                                        "index deadband")
         return self.accept(t) if acceptable else Decision("walk", t.supplier_id)
+
+    def repair(self, case, t):
+        own = complete_offer(case, dict(t.standing_terms))
+        sheet = dict(own)
+        for m in case["buyer"].get("must_haves", []):
+            f = m["field"]
+            if f not in case["negotiable"] or must_haves_ok(case, sheet, t.standard):
+                continue
+            ok = [o for o in (case.get("term_options") or {}).get(f) or []
+                  if must_haves_ok(case, {**sheet, f: o}, t.standard)]
+            if ok:
+                cur = sheet.get(f)
+                sheet[f] = min(ok, key=lambda o: abs(o - cur)
+                               if isinstance(o, int | float) and isinstance(cur, int | float) else 0)
+        if not must_haves_ok(case, sheet, t.standard):
+            return None
+        cap = alternative_cost(case) * (1 - self.p["accept_gap_pct"] / 100)
+        c = self.c(case, sheet, t)
+        if c <= cap:
+            return sheet if sheet != own else None
+        slope = self.c(case, {**sheet, "unit_price": sheet["unit_price"] + 1}, t) - c
+        if slope <= 0:
+            return None
+        price = round(sheet["unit_price"] - (c - cap) / slope, 2)
+        return {**sheet, "unit_price": price} if price > 0 else None
+
+    def anchor(self, case, t):
+        b = case["buyer"]
+        ref = (b.get("current_unit_price") or ((b.get("alternative") or {}).get("terms") or {}).get("unit_price")
+               or b.get("fallback_unit_price"))
+        if not ref:
+            return None
+        floor = (t.profile or {}).get("floor_estimate")
+        if floor:
+            low = floor * (1 + self.p["floor_margin_pct"] / 100)
+        else:
+            low = ref * (1 - self.p["min_open_discount_pct"] / 100)
+        return round(min(low, ref), 2)
 
     def clause_variants(self, case, t, sheet):
         """``sheet`` with the index clause cheapest for us (e.g. a 5 % instead of a 0 % deadband): once at
@@ -628,7 +680,7 @@ class Policy:
         if best and len(structures) > 1:
             for f in case["negotiable"]:
                 if f not in ("unit_price", "payment_days") and f in best[1]:
-                    out[f] = best[1][f]
+                    out[f] = best[1][f] if f in STRUCTURAL else snap(case, f, best[1][f])
             if out != sheet and not must_haves_ok(case, out, t.standard):
                 out = dict(sheet)
         for f in STRUCTURAL:
@@ -641,6 +693,10 @@ class Policy:
                 or [v for v in t.struct_seen.get(f) or [] if v is not None]
             if f in case["negotiable"] and insists and options:
                 out[f] = min(options, key=lambda v: self.c(case, {**out, f: v}, t))
+        for f in STRUCTURAL:
+            allowed = [v for v in (case.get("term_options") or {}).get(f) or [] if v is not None]
+            if out.get(f) is not None and allowed and out[f] not in allowed:
+                out[f] = min(allowed, key=lambda v: self.c(case, {**out, f: v}, t))
         if "index_clause" in out and self.clause_worth(case, t) < CLAUSE_WORTH:
             out["index_clause"] = sheet.get("index_clause")
         return out
@@ -681,21 +737,22 @@ class Policy:
                     log.warning("claim bank for %s %s failed (attempt %d)", *key, attempt + 1, exc_info=True)
         rejected = set((t.signals or {}).get("rejected_args") or [])
         bank = list(self.banks.get(key) or [])
-        if t.case_threads and len(case.get("suppliers") or []) > 1:
+        if t.case_threads:
             try:
                 from buyer.facts.claims import rival_claims
 
                 bank = sorted(bank + rival_claims(case, t.case_threads, t.supplier_id), key=lambda c: -c.strength)
             except Exception:
                 pass
-        pool = [
+        eligible = [
             c for c in bank
-            if c.strength >= self.p["claim_min_strength"]
+            if c.strength > 0
             and (t.supplier_id, c.key) not in self.used_keys
             and c.key not in rejected
             and (c.key.startswith("rival:") or self.used_refs.isdisjoint(c.refs))
         ]
-        pool.sort(key=lambda c: -c.strength * CLAIM_WEIGHT.get(c.key.split(":", 1)[0], 0.3))
+        eligible.sort(key=lambda c: -c.strength * CLAIM_WEIGHT.get(c.key.split(":", 1)[0], 0.3))
+        pool = [c for c in eligible if c.strength >= self.p["claim_min_strength"]]
         strong = [c for c in pool if CLAIM_WEIGHT.get(c.key.split(":", 1)[0], 0.3) >= WEAK_CLAIM]
         pool = strong or pool
         chosen, seen = [], set()
@@ -705,6 +762,13 @@ class Policy:
                 seen |= set(c.refs)
             if len(chosen) == limit:
                 break
+        if len(t.our_prices) <= 1:
+            for c in eligible:
+                if len(chosen) >= limit:
+                    break
+                if c.strength >= FILLER_STRENGTH and c not in chosen and seen.isdisjoint(c.refs):
+                    chosen.append(c)
+                    seen |= set(c.refs)
         for c in chosen:
             if not c.key.startswith("rival:"):  # a rival's offer may be cited to every other bidder (api.md)
                 self.used_refs |= set(c.refs)
