@@ -1,0 +1,635 @@
+{
+ "session_id": "sim4",
+ "case_id": "case:R2-S03",
+ "set": "final",
+ "saved_at": "2026-10-25T11:13:41+0100",
+ "run": {
+  "mode": "final",
+  "agent": "policy",
+  "params": {},
+  "wave": 2
+ },
+ "case": {
+  "case_id": "case:R2-S03",
+  "set": "hidden",
+  "type": "renewal",
+  "title": "Motor IE3 4 kW: framework renewal",
+  "briefing": "Simulator example. You buy part:350010 for Hollerau Pumpenwerke from sup:70520. Need: 8490 pc a year for 2 year(s). The supplier in the simulator is a plain script, not a real bot.",
+  "trigger_doc": null,
+  "parts": [
+   "part:350010"
+  ],
+  "suppliers": [
+   "sup:70520"
+  ],
+  "negotiable": [
+   "unit_price",
+   "payment_days",
+   "contract_months",
+   "incoterm"
+  ],
+  "fixed_terms": {
+   "lead_time_days": 35,
+   "volume_per_year": 8490,
+   "index_clause": null,
+   "tooling_eur": 0
+  },
+  "term_options": {
+   "payment_days": [
+    14,
+    30,
+    45,
+    60,
+    90
+   ],
+   "contract_months": [
+    12,
+    24
+   ],
+   "incoterm": [
+    "EXW",
+    "FCA",
+    "DAP"
+   ]
+  },
+  "buyer": {
+   "need_per_year": 8490,
+   "horizon_years": 2,
+   "current_unit_price": 217.77,
+   "fallback_unit_price": 250.44,
+   "interest_rate": 0.08,
+   "reference_payment_days": 60,
+   "need_lead_time_days": 42,
+   "category_goal": "routine",
+   "fallback_risk_pct": 5,
+   "index_risk_pct": 2,
+   "late_cost_per_day": 200,
+   "cost_per_defect": 50,
+   "freight_eur_per_unit": {
+    "EXW": 6.53,
+    "FCA": 4.36,
+    "DAP": 0.0
+   },
+   "index_paths": {},
+   "must_haves": [],
+   "alternative": {
+    "kind": "quote",
+    "ref": "quote:7100042",
+    "terms": {
+     "unit_price": 245.59,
+     "payment_days": 30,
+     "lead_time_days": 42,
+     "incoterm": "DAP"
+    }
+   }
+  },
+  "round_limit": 10,
+  "refs": [
+   "sc:70520@2026Q3",
+   "idx:CU-NOTATION@2025-08",
+   "idx:CU-NOTATION@2026-08",
+   "idx:LCI-C@2025-08",
+   "quote:7100042"
+  ],
+  "facts": {
+   "sc:70520@2026Q3": {
+    "colour": "green",
+    "otd_confirmed_pct": 83.0,
+    "otd_pct": 81.1,
+    "ppm": 764,
+    "quarter": "2026Q3",
+    "supplier": "sup:70520"
+   },
+   "idx:CU-NOTATION@2025-08": {
+    "month": "2025-08",
+    "series": "CU-NOTATION",
+    "value": 852.1524
+   },
+   "idx:CU-NOTATION@2026-08": {
+    "month": "2026-08",
+    "series": "CU-NOTATION",
+    "value": 1266.6289
+   },
+   "idx:LCI-C@2025-08": {
+    "month": "2025-08",
+    "series": "LCI-C",
+    "value": 117.0
+   },
+   "quote:7100042": {
+    "date": "2025-01-15",
+    "incoterm": "DAP",
+    "lead_time_days": 42,
+    "part": "part:350010",
+    "payment_days": 30,
+    "price_unit": 1,
+    "supplier": "sup:70510",
+    "unit_price": 245.59
+   }
+  }
+ },
+ "threads": {
+  "sup:70520": {
+   "supplier_id": "sup:70520",
+   "offer_id": "offer:70520-4",
+   "status": "agreed",
+   "closed": "accepted",
+   "messages": [
+    {
+     "thread_id": "thread:R2-S03:70520",
+     "message_id": "msg:70520-0-1",
+     "in_reply_to": null,
+     "from": "sales@70520",
+     "subject": "Re: Motor IE3 4 kW: framework renewal",
+     "body": "Simulated supplier. Our quote is attached.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70520-0",
+       "terms": {
+        "unit_price": 239.55
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [
+      "contract_months",
+      "incoterm",
+      "payment_days"
+     ],
+     "attachments": [
+      {
+       "attachment_id": "att:70520-0-quote",
+       "name": "quote.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ]
+    },
+    {
+     "subject": "Re: Motor IE3 4 kW: framework renewal",
+     "body": "Dear Sir or Madam,\n\nYour quote reached us, and we have set out our answer so that it can go straight to your pricing committee: three options, each complete and easy to compare.\n\nOption A is the package we can approve. It gives Vesmo a stable framework for the full contract term, and the volume outlook supports that.\n\nOn quality:\nYour quality was 764 ppm defective parts in the four quarters to 2026Q3 (sc:70520@2026Q3).\n\nOn volume:\nOur forecast for Motor IE3 4 kW, 4-pole rises 7.6% (fc:350010@2026-09).\n\nWe can offer you the following options:\nOption A: unit price EUR 220.69; payment 90 days net; contract term 24 months; Incoterm DAP.\nOption B: unit price EUR 219.39; payment 60 days net; contract term 24 months; Incoterm DAP.\nOption C: unit price EUR 218.75; payment 45 days net; contract term 24 months; Incoterm DAP.\n\nFor your pricing committee, here is a paragraph you can forward as it stands: Hollerau Pumpenwerke offers a renewal of the framework for the IE3 motor on three clear option terms. Option A gives Vesmo the longest payment-term structure and a clear contract term with a steady, forecast-backed volume outlook. If Option A is confirmed as it stands, Hollerau can confirm the order straight away.\n\nPlease take Option A to the approver. If your approval needs anything more from us, we will provide it promptly.\n\nWhat would you need from us to confirm Option A?\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 220.69,
+        "payment_days": 90,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 219.39,
+        "payment_days": 60,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 218.75,
+        "payment_days": 45,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      }
+     ],
+     "refs": [
+      "sc:70520@2026Q3",
+      "fc:350010@2026-09"
+     ],
+     "from": "buyer"
+    },
+    {
+     "thread_id": "thread:R2-S03:70520",
+     "message_id": "msg:70520-1-2",
+     "in_reply_to": null,
+     "from": "sales@70520",
+     "subject": "Re: Motor IE3 4 kW: framework renewal",
+     "body": "Simulated supplier. Our counter-offer.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70520-1",
+       "terms": {
+        "unit_price": 234.76
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      }
+     ],
+     "missing_fields": [
+      "contract_months",
+      "incoterm",
+      "payment_days"
+     ],
+     "attachments": []
+    },
+    {
+     "subject": "Re: Motor IE3 4 kW: framework renewal",
+     "body": "Dear Sir or Madam,\n\nThank you for your counter-offer. We have set our answer out so that it can go to your pricing committee as it stands: three complete options, easy to compare.\n\nOption A is the package we can approve. It gives Vesmo the longest payment term on our side together with a stable framework for the full contract term, and we hold to that line.\n\nWe can offer you the following options:\nOption A: unit price EUR 222.62; payment 90 days net; contract term 24 months; Incoterm DAP.\nOption B: unit price EUR 221.31; payment 60 days net; contract term 24 months; Incoterm DAP.\nOption C: unit price EUR 220.66; payment 45 days net; contract term 24 months; Incoterm DAP.\n\nFor your approver, in one paragraph: Option A gives Vesmo a renewed framework for the full contract term at a fixed unit price, on clear and simple terms, with no further price discussion during that term.\n\nPlease take Option A to your pricing committee. If you confirm Option A as it stands, we can confirm the order straight away. If the committee needs anything further from us to decide, we will provide it.\n\nWhat would you need from us to confirm Option A?\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 222.62,
+        "payment_days": 90,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 221.31,
+        "payment_days": 60,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 220.66,
+        "payment_days": 45,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      }
+     ],
+     "refs": [],
+     "from": "buyer"
+    },
+    {
+     "thread_id": "thread:R2-S03:70520",
+     "message_id": "msg:70520-2-3",
+     "in_reply_to": null,
+     "from": "sales@70520",
+     "subject": "Re: Motor IE3 4 kW: framework renewal",
+     "body": "Simulated supplier. Our counter-offer.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70520-2",
+       "terms": {
+        "unit_price": 229.97
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [
+      "contract_months",
+      "incoterm",
+      "payment_days"
+     ],
+     "attachments": []
+    },
+    {
+     "subject": "Re: Motor IE3 4 kW: framework renewal",
+     "body": "Dear Sir or Madam,\n\nYou have sent us your counter-offer again, and we have kept our answer in a form that can go to your pricing committee unchanged: three complete options, easy to compare.\n\nOption A is the package we can approve. It gives Vesmo the longest payment term on our side and a stable framework for the full contract term, and we hold to that line.\n\nWe can offer you the following options:\nOption A: unit price EUR 223.71; payment 90 days net; contract term 24 months; Incoterm DAP.\nOption B: unit price EUR 222.39; payment 60 days net; contract term 24 months; Incoterm DAP.\nOption C: unit price EUR 221.74; payment 45 days net; contract term 24 months; Incoterm DAP.\n\nIf Vesmo confirms Option A as it stands, we can confirm the order straight away.\n\nPlease take Option A to the approver. If the committee needs anything further from us to decide, tell us and we will provide it. Options B and C remain available if one of them suits Vesmo better.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 223.71,
+        "payment_days": 90,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 222.39,
+        "payment_days": 60,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 221.74,
+        "payment_days": 45,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      }
+     ],
+     "refs": [],
+     "from": "buyer"
+    },
+    {
+     "thread_id": "thread:R2-S03:70520",
+     "message_id": "msg:70520-3-4",
+     "in_reply_to": null,
+     "from": "sales@70520",
+     "subject": "Re: Motor IE3 4 kW: framework renewal",
+     "body": "Simulated supplier. Our counter-offer.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70520-3",
+       "terms": {
+        "unit_price": 225.18
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [
+      "contract_months",
+      "incoterm",
+      "payment_days"
+     ],
+     "attachments": []
+    },
+    {
+     "subject": "Re: Motor IE3 4 kW: framework renewal",
+     "body": "Dear Sir or Madam,\n\nYou have put your counter-offer to us once more, and we have read it with care. Our answer stays in a form your sales contact can take to the pricing committee as it stands: three complete options, easy to compare.\n\nWe can offer you the following options:\nOption A: unit price EUR 224.16; payment 90 days net; contract term 24 months; Incoterm DAP.\nOption B: unit price EUR 222.74; payment 60 days net; contract term 24 months; Incoterm DAP.\nOption C: unit price EUR 222.09; payment 45 days net; contract term 24 months; Incoterm DAP.\n\nOption A is the package we can approve. It gives Vesmo the longest payment term on our side and a stable framework for the full contract term. If you confirm Option A as it stands, we can confirm the order straight away.\n\nFor your pricing committee, here is a paragraph you can forward unchanged: Option A gives Vesmo a contract term that holds for the full period, with the longest payment term we offer and delivery on DAP terms. It is a complete package that can be approved in one step.\n\nCould you take Option A to the approver? If the committee needs anything further from us to decide, we will gladly provide it.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 224.16,
+        "payment_days": 90,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 222.74,
+        "payment_days": 60,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 222.09,
+        "payment_days": 45,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      }
+     ],
+     "refs": [],
+     "from": "buyer"
+    },
+    {
+     "thread_id": "thread:R2-S03:70520",
+     "message_id": "msg:70520-4-5",
+     "in_reply_to": null,
+     "from": "sales@70520",
+     "subject": "Re: Motor IE3 4 kW: framework renewal",
+     "body": "Simulated supplier. We agree.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70520-4",
+       "terms": {
+        "unit_price": 224.16,
+        "payment_days": 90,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      }
+     ],
+     "status": "agreed",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [],
+     "attachments": [
+      {
+       "attachment_id": "att:70520-4-quote",
+       "name": "quote.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ]
+    },
+    {
+     "thread_id": "thread:R2-S03:70520",
+     "message_id": "msg:70520-4-6",
+     "in_reply_to": null,
+     "from": "sales@70520",
+     "subject": "Re: Motor IE3 4 kW: framework renewal",
+     "body": "Simulated supplier. Thank you for your order.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70520-4",
+       "terms": {
+        "unit_price": 224.16,
+        "payment_days": 90,
+        "contract_months": 24,
+        "incoterm": "DAP"
+       }
+      }
+     ],
+     "status": "agreed",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [],
+     "attachments": [
+      {
+       "attachment_id": "att:70520-4-order-confirmation",
+       "name": "order-confirmation.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ]
+    }
+   ],
+   "timeouts": []
+  }
+ },
+ "result": {
+  "ended": true,
+  "deal": true,
+  "supplier_id": "sup:70520",
+  "offer_id": "offer:70520-4",
+  "terms": {
+   "volume_per_year": 8490,
+   "contract_months": 24,
+   "payment_days": 90,
+   "lead_time_days": 35,
+   "incoterm": "DAP",
+   "index_clause": null,
+   "tooling_eur": 0,
+   "unit_price": 224.16
+  },
+  "c_open": 4342556.33,
+  "c_deal": 3780861.89,
+  "c_alt": 4197918.99,
+  "c_best": 3636482.08,
+  "score": 0.7955175252461054,
+  "must_haves_ok": true,
+  "cost_breakdown": {
+   "price": 3806236.8,
+   "uncovered_need": 0.0,
+   "fallback_risk": 0.0,
+   "payment_terms": -25374.912,
+   "freight": 0.0,
+   "late_delivery": 0,
+   "quality": 0.0,
+   "tooling": 0.0,
+   "index_clause": 0.0,
+   "index_risk": 0.0,
+   "relationship": 0.0
+  },
+  "trace": [
+   {
+    "round": 1,
+    "actor": "sup:70520",
+    "move": {
+     "offer_id": "offer:70520-1",
+     "round": 1,
+     "status": "open",
+     "terms": {
+      "unit_price": 234.76
+     },
+     "missing_fields": [
+      "contract_months",
+      "incoterm",
+      "payment_days"
+     ],
+     "claims": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      }
+     ],
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "text": "Simulated supplier. Our counter-offer."
+    },
+    "reasons": [
+     "A fixed script: it concedes the same step per term sheet, down to its floor."
+    ]
+   },
+   {
+    "round": 2,
+    "actor": "sup:70520",
+    "move": {
+     "offer_id": "offer:70520-2",
+     "round": 2,
+     "status": "open",
+     "terms": {
+      "unit_price": 229.97
+     },
+     "missing_fields": [
+      "contract_months",
+      "incoterm",
+      "payment_days"
+     ],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "text": "Simulated supplier. Our counter-offer."
+    },
+    "reasons": [
+     "A fixed script: it concedes the same step per term sheet, down to its floor."
+    ]
+   },
+   {
+    "round": 3,
+    "actor": "sup:70520",
+    "move": {
+     "offer_id": "offer:70520-3",
+     "round": 3,
+     "status": "open",
+     "terms": {
+      "unit_price": 225.18
+     },
+     "missing_fields": [
+      "contract_months",
+      "incoterm",
+      "payment_days"
+     ],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "text": "Simulated supplier. Our counter-offer."
+    },
+    "reasons": [
+     "A fixed script: it concedes the same step per term sheet, down to its floor."
+    ]
+   },
+   {
+    "round": 4,
+    "actor": "sup:70520",
+    "move": {
+     "offer_id": "offer:70520-4",
+     "round": 4,
+     "status": "agreed",
+     "terms": {
+      "unit_price": 224.16,
+      "payment_days": 90,
+      "contract_months": 24,
+      "incoterm": "DAP"
+     },
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "text": "Simulated supplier. We agree."
+    },
+    "reasons": [
+     "A fixed script: it concedes the same step per term sheet, down to its floor."
+    ]
+   }
+  ]
+ },
+ "end_reason": "accepted",
+ "replay_url": "/replay/sim4"
+}

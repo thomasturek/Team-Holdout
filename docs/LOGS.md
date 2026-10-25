@@ -76,9 +76,11 @@ exactly as the API returns them (see `brief/api.md`, Messages), attachments with
 | `attachment` | an attachment of a reply finished downloading (in the background, so a thread never waits for it) | `supplier_id`, `attachment_id`, `name`, `text` |
 | `decision` | before each move of the policy | `supplier_id`, `trace`: `{decision: {kind, supplier_id, term_sheets, accept_sheet_id, claims, questions, intent}, rival_best_c}` (later also Signals) |
 | `hold` | the decision was too slow; a holding message went out instead | `supplier_id`, `after_s` |
-| `drop` | we stopped playing a thread (agent walked away from one bidder, or the round limit) | `supplier_id`, `reason` |
-| `refresh` | after a `409` (late, round limit, thread ended), or with `why: "closing"` after a failed closing attempt: the thread as the arena has it | `supplier_id`, `thread`, `why` |
-| `error` | an API error or a crash in a thread | `supplier_id`, `status`, `detail`, `where` |
+| `drop` | we stopped playing a thread (agent walked away from one bidder, the round limit, the arena out of reach until the cap / RECOVER_MAX_S, the wave's cap passed) | `supplier_id`, `reason` |
+| `refresh` | after a `409` (late, round limit, thread ended, busy) or a network failure, or with `why: "closing"` after a failed closing attempt: the thread as the arena has it | `supplier_id`, `thread`, `why` |
+| `resend` | an e-mail failed on the network and the arena said it never arrived (thread unchanged): the same e-mail went out again (at most MAX_RESENDS) | `supplier_id`, `attempt` |
+| `unreachable` | after a network failure the arena could not be reached until the cap (+30 s) or RECOVER_MAX_S: the thread is given up (`drop` follows) | `supplier_id`, `tries` |
+| `error` | an API error or a crash in a thread | `supplier_id`, `status`, `detail`, `where` (`send`: the network failed an e-mail; `recover`: the first failed attempt to reach the arena again) |
 | `closing` | one attempt to end the case (accept or walk away); there can be several if one fails | `supplier_id`, `message`, `why` (agent / cap near / no thread left) |
 | `close_failed` | the attempt was refused (422 e.g. a stale term sheet, 409) or got no answer (network) | `supplier_id`, `status`, `detail`, `unconfirmed` (true: it may have landed - the arena is asked before anything else) |
 | `closed` | the arena confirmed the end | `supplier_id`, `how` (`reply`: the result came with the answer; `reconciled`: GET session said ended), `end_reason` |

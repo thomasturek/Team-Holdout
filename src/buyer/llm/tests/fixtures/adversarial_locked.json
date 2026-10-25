@@ -1,5 +1,5 @@
 {
- "_about": "V3 LOCKED set (docs/V3_ROBUSTNESS_PLAN.md, dataset discipline): written after the reader rules were tuned on adversarial_emails.json and NEVER used to tune them. Measure with `python -m buyer.llm.accuracy --locked`; do not change reader rules or prompts because of a miss here - add the miss to adversarial_emails.json (development) instead and write a new locked set for the next cycle.",
+ "_about": "V3 LOCKED set (dataset discipline): written after the reader rules were tuned on adversarial_emails.json and NEVER used to tune them. Measure with `python -m buyer.llm.accuracy --locked`; do not change reader rules or prompts because of a miss here - add the miss to adversarial_emails.json (development) instead and write a new locked set for the next cycle.",
  "emails": [
   {"id": "L01-final-in-other-words", "category": "polite_final",
    "message": {"status": "open", "claim_results": [], "body": "We have done everything possible on our side; there is simply no more room in this price. We remain at your disposal for the order."},

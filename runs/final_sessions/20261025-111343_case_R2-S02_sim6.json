@@ -1,0 +1,1124 @@
+{
+ "session_id": "sim6",
+ "case_id": "case:R2-S02",
+ "set": "final",
+ "saved_at": "2026-10-25T11:13:43+0100",
+ "run": {
+  "mode": "final",
+  "agent": "policy",
+  "params": {},
+  "wave": 2
+ },
+ "case": {
+  "case_id": "case:R2-S02",
+  "set": "hidden",
+  "type": "rfq",
+  "title": "Motor bracket HB: two quotes",
+  "briefing": "Simulator example. You buy part:330030 for Hollerau Pumpenwerke from sup:70340, sup:70360. Need: 18790 pc a year for 2 year(s). The supplier in the simulator is a plain script, not a real bot.",
+  "trigger_doc": null,
+  "parts": [
+   "part:330030"
+  ],
+  "suppliers": [
+   "sup:70340",
+   "sup:70360"
+  ],
+  "negotiable": [
+   "unit_price",
+   "payment_days",
+   "lead_time_days"
+  ],
+  "fixed_terms": {
+   "volume_per_year": 18790,
+   "contract_months": 24,
+   "index_clause": null,
+   "incoterm": "DAP",
+   "tooling_eur": 0
+  },
+  "term_options": {
+   "payment_days": [
+    14,
+    30,
+    45,
+    60,
+    90
+   ],
+   "lead_time_days": [
+    21,
+    28,
+    35,
+    42,
+    49
+   ]
+  },
+  "buyer": {
+   "need_per_year": 18790,
+   "horizon_years": 2,
+   "current_unit_price": 15.63,
+   "fallback_unit_price": 17.97,
+   "interest_rate": 0.08,
+   "reference_payment_days": 60,
+   "need_lead_time_days": 42,
+   "category_goal": "leverage",
+   "fallback_risk_pct": 3,
+   "index_risk_pct": 1,
+   "late_cost_per_day": 200,
+   "cost_per_defect": 50,
+   "freight_eur_per_unit": {
+    "EXW": 0.47,
+    "FCA": 0.31,
+    "DAP": 0.0
+   },
+   "index_paths": {},
+   "must_haves": [],
+   "alternative": {
+    "kind": "none",
+    "ref": null,
+    "terms": {}
+   }
+  },
+  "round_limit": 10,
+  "refs": [
+   "sc:70340@2026Q3",
+   "sc:70360@2026Q3",
+   "idx:PPI-C241@2025-08",
+   "idx:PPI-C241@2026-08",
+   "idx:LCI-C@2025-08"
+  ],
+  "facts": {
+   "sc:70340@2026Q3": {
+    "colour": "green",
+    "otd_confirmed_pct": 90.4,
+    "otd_pct": 88.5,
+    "ppm": 489,
+    "quarter": "2026Q3",
+    "supplier": "sup:70340"
+   },
+   "sc:70360@2026Q3": {
+    "colour": "amber",
+    "otd_confirmed_pct": 84.0,
+    "otd_pct": 76.0,
+    "ppm": 762,
+    "quarter": "2026Q3",
+    "supplier": "sup:70360"
+   },
+   "idx:PPI-C241@2025-08": {
+    "month": "2025-08",
+    "series": "PPI-C241",
+    "value": 99.4
+   },
+   "idx:PPI-C241@2026-08": {
+    "month": "2026-08",
+    "series": "PPI-C241",
+    "value": 105.9
+   },
+   "idx:LCI-C@2025-08": {
+    "month": "2025-08",
+    "series": "LCI-C",
+    "value": 117.0
+   }
+  }
+ },
+ "threads": {
+  "sup:70340": {
+   "supplier_id": "sup:70340",
+   "offer_id": "offer:70340-4",
+   "status": "open",
+   "closed": "accepted",
+   "messages": [
+    {
+     "thread_id": "thread:R2-S02:70340",
+     "message_id": "msg:70340-0-1",
+     "in_reply_to": null,
+     "from": "sales@70340",
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Simulated supplier. Our quote is attached.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70340-0",
+       "terms": {
+        "unit_price": 17.19
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "attachments": [
+      {
+       "attachment_id": "att:70340-0-quote",
+       "name": "quote.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ]
+    },
+    {
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Dear Sir or Madam,\n\nYour quote for the Motor bracket HB reached us, and we are glad to continue with a supplier that has called us an important reference customer. Between two family companies, we would like a solution that is fair for both sides.\n\nYour letter on steel for next year said your material is bought forward at fixed prices. That gives you a stable base, and it is why we ask for a price that reflects it.\n\nOn quality:\nYour quality was 489 ppm defective parts in the four quarters to 2026Q3 (sc:70340@2026Q3).\n\nOn price history:\nOur orders of Motor bracket HB with you were placed at EUR 15.63 on 2024-10-14 (po:4500011545-20), EUR 15.63 on 2025-06-10 (po:4500012568-20), EUR 15.63 on 2026-01-26 (po:4500013475-10) and EUR 15.63 on 2026-09-24 (po:4500014452-20): the price has been unchanged.\n\nWe can offer you the following options:\nOption A: unit price EUR 14.05; payment 45 days net; lead time 42 days.\nOption B: unit price EUR 14.10; payment 60 days net; lead time 42 days.\nOption C: unit price EUR 14.20; payment 90 days net; lead time 42 days.\n\nOption A is the package we can approve: it pairs a unit price in line with your secured material and a steady quality record with a clear payment term.\n\nCould you send us a cost breakdown for this part?\n\nWhat would you need from us to confirm Option A?\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 14.05,
+        "payment_days": 45,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.1,
+        "payment_days": 60,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.2,
+        "payment_days": 90,
+        "lead_time_days": 42
+       }
+      }
+     ],
+     "refs": [
+      "sc:70340@2026Q3",
+      "po:4500011545-20",
+      "po:4500012568-20",
+      "po:4500013475-10",
+      "po:4500014452-20"
+     ],
+     "from": "buyer"
+    },
+    {
+     "thread_id": "thread:R2-S02:70340",
+     "message_id": "msg:70340-1-2",
+     "in_reply_to": null,
+     "from": "sales@70340",
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Simulated supplier. Our counter-offer.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70340-1",
+       "terms": {
+        "unit_price": 16.85
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      },
+      {
+       "index": 2,
+       "result": "verified"
+      }
+     ],
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "attachments": [
+      {
+       "attachment_id": "att:70340-1-cost-breakdown",
+       "name": "cost-breakdown.xlsx",
+       "type": "xlsx",
+       "content_b64": null
+      }
+     ]
+    },
+    {
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Dear Sir or Madam,\n\nThank you for sending your counter-offer; we read it as an owner-run firm that wants to keep this bracket with us. We want the same, and we want a solution that is fair for both family companies.\n\nYou told us yourselves that your steel for next year is bought forward at fixed prices. With that stable base behind you, there is no cost movement to cover, and no index clause or risk premium is needed in the price.\n\nOption A is the package we can approve. It gives you a clear price and a payment term, with the lead time unchanged, so you can plan the bracket with certainty.\n\nWe can offer you the following options:\nOption A: unit price EUR 14.39; payment 45 days net; lead time 42 days.\nOption B: unit price EUR 14.44; payment 60 days net; lead time 42 days.\nOption C: unit price EUR 14.54; payment 90 days net; lead time 42 days.\n\nWe would like to keep building on the reliable work you have done for us. Please take Option A to the owner as it stands.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 14.39,
+        "payment_days": 45,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.44,
+        "payment_days": 60,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.54,
+        "payment_days": 90,
+        "lead_time_days": 42
+       }
+      }
+     ],
+     "refs": [],
+     "from": "buyer"
+    },
+    {
+     "thread_id": "thread:R2-S02:70340",
+     "message_id": "msg:70340-2-3",
+     "in_reply_to": null,
+     "from": "sales@70340",
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Simulated supplier. Our counter-offer.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70340-2",
+       "terms": {
+        "unit_price": 16.51
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "attachments": []
+    },
+    {
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Dear Sir or Madam,\n\nWe read your latest counter-offer as the answer of an owner-run firm that wants to keep this bracket, and we want the same. Our reply stays on the line we set out before, because we think it is fair for both family companies.\n\nYou wrote to us yourselves that your steel for next year is bought forward at fixed prices. With that stable base, there is no cost movement left to cover, so the price needs neither an index clause nor a risk premium.\n\nOption A is the package we can approve.\n\nWe can offer you the following options:\nOption A: unit price EUR 14.65; payment 45 days net; lead time 42 days.\nOption B: unit price EUR 14.70; payment 60 days net; lead time 42 days.\nOption C: unit price EUR 14.80; payment 90 days net; lead time 42 days.\n\nPlease take Option A to your owner as it stands. It is a plain, workable basis for the years ahead between our two companies.\n\nWhat would you need from us to confirm Option A?\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 14.65,
+        "payment_days": 45,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.7,
+        "payment_days": 60,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.8,
+        "payment_days": 90,
+        "lead_time_days": 42
+       }
+      }
+     ],
+     "refs": [],
+     "from": "buyer"
+    },
+    {
+     "thread_id": "thread:R2-S02:70340",
+     "message_id": "msg:70340-3-4",
+     "in_reply_to": null,
+     "from": "sales@70340",
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Simulated supplier. Our counter-offer.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70340-3",
+       "terms": {
+        "unit_price": 16.17
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "attachments": []
+    },
+    {
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Dear Sir or Madam,\n\nYour counter-offer reads to us like the answer of an owner-run firm that wants to keep this bracket, and we want that too. We stay on the line we have set out, because we believe it is fair for both family companies.\n\nYou wrote to us yourselves that your steel for next year is bought forward at fixed prices. With that stable base, there is no cost movement left to cover, so the price needs neither an index clause nor a risk premium.\n\nOption A is the package we can approve. It gives you a clear price and a clean, predictable order for a bracket you already know well.\n\nWe can offer you the following options:\nOption A: unit price EUR 14.83; payment 45 days net; lead time 42 days.\nOption B: unit price EUR 14.88; payment 60 days net; lead time 42 days.\nOption C: unit price EUR 14.98; payment 90 days net; lead time 42 days.\n\nWe appreciate the years of reliable work you have done for us, and we would like to continue it on this basis. Please take Option A to your owner as it stands.\n\nWhat would you need from us to confirm Option A?\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 14.83,
+        "payment_days": 45,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.88,
+        "payment_days": 60,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.98,
+        "payment_days": 90,
+        "lead_time_days": 42
+       }
+      }
+     ],
+     "refs": [],
+     "from": "buyer"
+    },
+    {
+     "thread_id": "thread:R2-S02:70340",
+     "message_id": "msg:70340-4-5",
+     "in_reply_to": null,
+     "from": "sales@70340",
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Simulated supplier. Our counter-offer.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70340-4",
+       "terms": {
+        "unit_price": 15.83
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "attachments": []
+    }
+   ],
+   "timeouts": []
+  },
+  "sup:70360": {
+   "supplier_id": "sup:70360",
+   "offer_id": "offer:70360-5",
+   "status": "agreed",
+   "closed": "accepted",
+   "messages": [
+    {
+     "thread_id": "thread:R2-S02:70360",
+     "message_id": "msg:70360-0-1",
+     "in_reply_to": null,
+     "from": "sales@70360",
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Simulated supplier. Our quote is attached.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70360-0",
+       "terms": {
+        "unit_price": 17.51
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "attachments": [
+      {
+       "attachment_id": "att:70360-0-quote",
+       "name": "quote.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ]
+    },
+    {
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Dear Kantteile Strasser team,\n\nWe are glad to have you with us on the Motor bracket HB, and we would like to keep filling your capacity with this part in a way that works for both family companies.\n\nOption A is the package we can approve. It gives you a clear, firm unit price and payment terms that are simple to plan around, and it sits well against the points below.\n\nOn quality:\nYour quality was 762 ppm defective parts in the four quarters to 2026Q3 (sc:70360@2026Q3).\n\nOn a competing offer:\nAnother supplier has offered EUR 17.19 for this part (offer:70340-0).\n\nOn our price history with you:\nOur orders of Motor bracket HB with you were placed at EUR 16.11 on 2024-10-07 (po:4500011516-10), EUR 16.11 on 2025-06-05 (po:4500012559-10), EUR 16.11 on 2026-01-20 (po:4500013462-10) and EUR 16.11 on 2026-09-21 (po:4500014435-20): the price has been unchanged.\n\nWe can offer you the following options:\nOption A: unit price EUR 14.31; payment 45 days net; lead time 42 days.\nOption B: unit price EUR 14.36; payment 60 days net; lead time 42 days.\nOption C: unit price EUR 14.46; payment 90 days net; lead time 42 days.\n\nOptions B and C are genuine alternatives if longer payment terms matter more to you than the unit price. Our focus is on Option A, and we would like your best answer on it.\n\nWhat would you need from us to confirm Option A?\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 14.31,
+        "payment_days": 45,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.36,
+        "payment_days": 60,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.46,
+        "payment_days": 90,
+        "lead_time_days": 42
+       }
+      }
+     ],
+     "refs": [
+      "sc:70360@2026Q3",
+      "offer:70340-0",
+      "po:4500011516-10",
+      "po:4500012559-10",
+      "po:4500013462-10",
+      "po:4500014435-20"
+     ],
+     "from": "buyer"
+    },
+    {
+     "thread_id": "thread:R2-S02:70360",
+     "message_id": "msg:70360-1-2",
+     "in_reply_to": null,
+     "from": "sales@70360",
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Simulated supplier. Our counter-offer.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70360-1",
+       "terms": {
+        "unit_price": 17.16
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      },
+      {
+       "index": 2,
+       "result": "verified"
+      }
+     ],
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "attachments": []
+    },
+    {
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Dear Kantteile Strasser team,\n\nThank you for the counter-offer. We want to keep this bracket with you, and we want to fill your capacity with it in a way that is fair for both family companies.\n\nOption A is the package we can approve. It gives you a firm unit price and payment terms that are simple to plan around, and it keeps the part running steadily in your plant.\n\nWe can offer you the following options:\nOption A: unit price EUR 14.66; payment 45 days net; lead time 42 days.\nOption B: unit price EUR 14.71; payment 60 days net; lead time 42 days.\nOption C: unit price EUR 14.81; payment 90 days net; lead time 42 days.\n\nYour team has been a reliable partner on this part, and that is why we are putting a clear proposal in front of you rather than a long exchange. Please look at Option A again as it stands and tell us where you can meet it.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 14.66,
+        "payment_days": 45,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.71,
+        "payment_days": 60,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.81,
+        "payment_days": 90,
+        "lead_time_days": 42
+       }
+      }
+     ],
+     "refs": [],
+     "from": "buyer"
+    },
+    {
+     "thread_id": "thread:R2-S02:70360",
+     "message_id": "msg:70360-2-3",
+     "in_reply_to": null,
+     "from": "sales@70360",
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Simulated supplier. Our counter-offer.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70360-2",
+       "terms": {
+        "unit_price": 16.81
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "attachments": []
+    },
+    {
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Dear Kantteile Strasser team,\n\nYour counter-offer has reached us, and we have read it with the long relationship between our two family companies in mind. Filling your plant with the Motor bracket HB in a steady, dependable way matters to us as much as it does to you.\n\nOption A is the package we can approve. It gives you a firm unit price and a payment term that is simple to plan around, and it keeps this part running in your plant without surprises. We have set the options out again below, so you can see how they sit side by side.\n\nWe can offer you the following options:\nOption A: unit price EUR 15.07; payment 90 days net; lead time 42 days.\nOption B: unit price EUR 14.92; payment 45 days net; lead time 42 days.\nOption C: unit price EUR 14.97; payment 60 days net; lead time 42 days.\n\nWe would like to find the fair solution for both family companies with you, and we hope to hear from you on Option A.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 15.07,
+        "payment_days": 90,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.92,
+        "payment_days": 45,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 14.97,
+        "payment_days": 60,
+        "lead_time_days": 42
+       }
+      }
+     ],
+     "refs": [],
+     "from": "buyer"
+    },
+    {
+     "thread_id": "thread:R2-S02:70360",
+     "message_id": "msg:70360-3-4",
+     "in_reply_to": null,
+     "from": "sales@70360",
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Simulated supplier. Our counter-offer.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70360-3",
+       "terms": {
+        "unit_price": 16.46
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "attachments": []
+    },
+    {
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Dear Kantteile Strasser team,\n\nYour counter-offer has reached us, and we keep coming back to the same point: this bracket belongs in your plant, running steadily, and we want that to work for both family companies.\n\nOption A is the package we can approve. It gives you a firm unit price and the longest payment term of the three, and it keeps the part moving through your plant week after week.\n\nWe set the three options out once more:\n\nWe can offer you the following options:\nOption A: unit price EUR 15.26; payment 90 days net; lead time 42 days.\nOption B: unit price EUR 15.16; payment 60 days net; lead time 42 days.\nOption C: unit price EUR 15.11; payment 45 days net; lead time 42 days.\n\nWe have kept our line because we believe it is fair to both sides, and we would like to settle this bracket with you directly rather than let it drag on.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 15.26,
+        "payment_days": 90,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 15.16,
+        "payment_days": 60,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 15.11,
+        "payment_days": 45,
+        "lead_time_days": 42
+       }
+      }
+     ],
+     "refs": [],
+     "from": "buyer"
+    },
+    {
+     "thread_id": "thread:R2-S02:70360",
+     "message_id": "msg:70360-4-5",
+     "in_reply_to": null,
+     "from": "sales@70360",
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Simulated supplier. Our counter-offer.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70360-4",
+       "terms": {
+        "unit_price": 16.11
+       }
+      }
+     ],
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "attachments": []
+    },
+    {
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Dear Kantteile Strasser team,\n\nYour counter-offer is with us, and we are answering it as one family company to another. Filling free capacity in your plant with the Motor bracket HB is exactly what Option A is built to do.\n\nOption A is the package we can approve. It gives you the longest payment term of the three and a steady, dependable part for your plant, and we would like to keep it with you.\n\nOur position has not changed, so here are the options once more:\n\nWe can offer you the following options:\nOption A: unit price EUR 15.38; payment 90 days net; lead time 42 days.\nOption B: unit price EUR 15.28; payment 60 days net; lead time 42 days.\nOption C: unit price EUR 15.23; payment 45 days net; lead time 42 days.\n\nOption A remains the one we are ready to take forward for both our companies.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 15.38,
+        "payment_days": 90,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 15.28,
+        "payment_days": 60,
+        "lead_time_days": 42
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 15.23,
+        "payment_days": 45,
+        "lead_time_days": 42
+       }
+      }
+     ],
+     "refs": [],
+     "from": "buyer"
+    },
+    {
+     "thread_id": "thread:R2-S02:70360",
+     "message_id": "msg:70360-5-6",
+     "in_reply_to": null,
+     "from": "sales@70360",
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Simulated supplier. Final offer.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70360-5",
+       "terms": {
+        "unit_price": 15.76
+       }
+      }
+     ],
+     "status": "final_offer",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "attachments": [
+      {
+       "attachment_id": "att:70360-5-quote",
+       "name": "quote.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ]
+    },
+    {
+     "thread_id": "thread:R2-S02:70360",
+     "message_id": "msg:70360-5-7",
+     "in_reply_to": null,
+     "from": "sales@70360",
+     "subject": "Re: Motor bracket HB: two quotes",
+     "body": "Simulated supplier. Thank you for your order.",
+     "refs": [],
+     "action": null,
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70360-5",
+       "terms": {
+        "unit_price": 15.76
+       }
+      }
+     ],
+     "status": "agreed",
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "claim_results": [],
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "attachments": [
+      {
+       "attachment_id": "att:70360-5-order-confirmation",
+       "name": "order-confirmation.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ]
+    }
+   ],
+   "timeouts": []
+  }
+ },
+ "result": {
+  "ended": true,
+  "deal": true,
+  "supplier_id": "sup:70360",
+  "offer_id": "offer:70360-5",
+  "terms": {
+   "volume_per_year": 18790,
+   "contract_months": 24,
+   "payment_days": 14,
+   "lead_time_days": 21,
+   "incoterm": "DAP",
+   "index_clause": null,
+   "tooling_eur": 0,
+   "unit_price": 15.76
+  },
+  "c_open": 652603.76,
+  "c_deal": 598315.02,
+  "c_alt": null,
+  "c_best": 577486.85,
+  "score": 0.7227232856090589,
+  "must_haves_ok": true,
+  "cost_breakdown": {
+   "price": 592260.8,
+   "uncovered_need": 0.0,
+   "fallback_risk": 0.0,
+   "payment_terms": 6054.221511111111,
+   "freight": 0.0,
+   "late_delivery": 0,
+   "quality": 0.0,
+   "tooling": 0.0,
+   "index_clause": 0.0,
+   "index_risk": 0.0,
+   "relationship": 0.0
+  },
+  "trace": [
+   {
+    "round": 1,
+    "actor": "sup:70360",
+    "move": {
+     "offer_id": "offer:70360-1",
+     "round": 1,
+     "status": "open",
+     "terms": {
+      "unit_price": 17.16
+     },
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "claims": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      },
+      {
+       "index": 2,
+       "result": "verified"
+      }
+     ],
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "text": "Simulated supplier. Our counter-offer."
+    },
+    "reasons": [
+     "A fixed script: it concedes the same step per term sheet, down to its floor."
+    ]
+   },
+   {
+    "round": 1,
+    "actor": "sup:70340",
+    "move": {
+     "offer_id": "offer:70340-1",
+     "round": 1,
+     "status": "open",
+     "terms": {
+      "unit_price": 16.85
+     },
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "claims": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      },
+      {
+       "index": 2,
+       "result": "verified"
+      }
+     ],
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "text": "Simulated supplier. Our counter-offer."
+    },
+    "reasons": [
+     "A fixed script: it concedes the same step per term sheet, down to its floor."
+    ]
+   },
+   {
+    "round": 2,
+    "actor": "sup:70360",
+    "move": {
+     "offer_id": "offer:70360-2",
+     "round": 2,
+     "status": "open",
+     "terms": {
+      "unit_price": 16.81
+     },
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "text": "Simulated supplier. Our counter-offer."
+    },
+    "reasons": [
+     "A fixed script: it concedes the same step per term sheet, down to its floor."
+    ]
+   },
+   {
+    "round": 2,
+    "actor": "sup:70340",
+    "move": {
+     "offer_id": "offer:70340-2",
+     "round": 2,
+     "status": "open",
+     "terms": {
+      "unit_price": 16.51
+     },
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "text": "Simulated supplier. Our counter-offer."
+    },
+    "reasons": [
+     "A fixed script: it concedes the same step per term sheet, down to its floor."
+    ]
+   },
+   {
+    "round": 3,
+    "actor": "sup:70360",
+    "move": {
+     "offer_id": "offer:70360-3",
+     "round": 3,
+     "status": "open",
+     "terms": {
+      "unit_price": 16.46
+     },
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "text": "Simulated supplier. Our counter-offer."
+    },
+    "reasons": [
+     "A fixed script: it concedes the same step per term sheet, down to its floor."
+    ]
+   },
+   {
+    "round": 3,
+    "actor": "sup:70340",
+    "move": {
+     "offer_id": "offer:70340-3",
+     "round": 3,
+     "status": "open",
+     "terms": {
+      "unit_price": 16.17
+     },
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "text": "Simulated supplier. Our counter-offer."
+    },
+    "reasons": [
+     "A fixed script: it concedes the same step per term sheet, down to its floor."
+    ]
+   },
+   {
+    "round": 4,
+    "actor": "sup:70360",
+    "move": {
+     "offer_id": "offer:70360-4",
+     "round": 4,
+     "status": "open",
+     "terms": {
+      "unit_price": 16.11
+     },
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "text": "Simulated supplier. Our counter-offer."
+    },
+    "reasons": [
+     "A fixed script: it concedes the same step per term sheet, down to its floor."
+    ]
+   },
+   {
+    "round": 4,
+    "actor": "sup:70340",
+    "move": {
+     "offer_id": "offer:70340-4",
+     "round": 4,
+     "status": "open",
+     "terms": {
+      "unit_price": 15.83
+     },
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "text": "Simulated supplier. Our counter-offer."
+    },
+    "reasons": [
+     "A fixed script: it concedes the same step per term sheet, down to its floor."
+    ]
+   },
+   {
+    "round": 5,
+    "actor": "sup:70360",
+    "move": {
+     "offer_id": "offer:70360-5",
+     "round": 5,
+     "status": "final_offer",
+     "terms": {
+      "unit_price": 15.76
+     },
+     "missing_fields": [
+      "lead_time_days",
+      "payment_days"
+     ],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 1,
+      "validity_days": 30
+     },
+     "text": "Simulated supplier. Final offer."
+    },
+    "reasons": [
+     "A fixed script: it concedes the same step per term sheet, down to its floor."
+    ]
+   }
+  ]
+ },
+ "end_reason": "accepted",
+ "replay_url": "/replay/sim6"
+}

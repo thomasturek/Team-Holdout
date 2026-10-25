@@ -1,0 +1,145 @@
+nodeal case:P07-case_facts None 0.847
+nodeal case:P07-extra_levers None 0.853
+nodeal case:P07-four_bidders None 0.847
+nodeal case:P07-long_horizon None 0.539
+nodeal case:P07-new_suppliers None 0.847
+nodeal case:P07-no_current None 1.0
+nodeal case:P07-odd_type None 0.847
+nodeal case:P09-no_current None 0.989
+nodeal case:P10-four_bidders None 0
+nodeal case:P10-new_suppliers None 0
+nodeal case:P10-no_current None 0
+nodeal case:P11-extra_levers None 0
+nodeal case:P11-four_bidders None 0
+nodeal case:P11-no_current None 0
+nodeal case:P12-case_facts None 0.863
+nodeal case:P12-extra_levers None 0.88
+nodeal case:P12-long_horizon None 0.863
+nodeal case:P12-new_suppliers None 0.863
+nodeal case:P12-no_current None 1.0
+nodeal case:P12-no_options None 0.863
+nodeal case:P12-odd_type None 0.863
+nodeal case:P15-case_facts None 0.852
+nodeal case:P15-extra_levers None 0.853
+nodeal case:P15-four_bidders None 0.852
+nodeal case:P15-long_horizon None 0.541
+nodeal case:P15-new_suppliers None 0.852
+nodeal case:P15-no_current None 1.0
+nodeal case:P15-odd_type None 0.852
+
+== per mutation
+case_facts {'deal': 16, 'nodeal': 3}
+extra_levers {'deal': 15, 'nodeal': 4}
+four_bidders {'deal': 15, 'nodeal': 4}
+long_horizon {'deal': 16, 'nodeal': 3}
+new_suppliers {'deal': 15, 'nodeal': 4}
+no_alt {'deal': 19}
+no_current {'deal': 13, 'nodeal': 6}
+no_options {'deal': 18, 'nodeal': 1}
+odd_type {'deal': 16, 'nodeal': 3}
+
+== logged errors
+16 ('buyer.agent', 'sup:70210: standard terms unreadable - keeping the earlier ones')
+16 ('buyer.agent', 'sup:70240: standard terms unreadable - keeping the earlier ones')
+16 ('buyer.agent', 'sup:70250: standard terms unreadable - keeping the earlier ones')
+11 ('buyer.agent', 'sup:70120: standard terms unreadable - keeping the earlier ones')
+11 ('buyer.agent', 'sup:70150: standard terms unreadable - keeping the earlier ones')
+6 ('buyer.agent', 'sup:70610: standard terms unreadable - keeping the earlier ones')
+6 ('buyer.agent', 'sup:70410: standard terms unreadable - keeping the earlier ones')
+6 ('buyer.agent', 'sup:70430: standard terms unreadable - keeping the earlier ones')
+5 ('buyer.agent', 'sup:70620: standard terms unreadable - keeping the earlier ones')
+5 ('buyer.agent', 'sup:70220: standard terms unreadable - keeping the earlier ones')
+5 ('buyer.agent', 'sup:70140: standard terms unreadable - keeping the earlier ones')
+5 ('buyer.agent', 'sup:70310: standard terms unreadable - keeping the earlier ones')
+5 ('buyer.agent', 'sup:70230: standard terms unreadable - keeping the earlier ones')
+5 ('buyer.agent', 'sup:70560: standard terms unreadable - keeping the earlier ones')
+5 ('buyer.agent', 'sup:70640: standard terms unreadable - keeping the earlier ones')
+4 ('buyer.agent', 'sup:70510: standard terms unreadable - keeping the earlier ones')
+4 ('buyer.agent', 'sup:70530: standard terms unreadable - keeping the earlier ones')
+4 ('buyer.agent', 'sup:70550: standard terms unreadable - keeping the earlier ones')
+
+== samples
+('buyer.agent', 'sup:70510: standard terms unreadable - keeping the earlier ones') 
+ ard
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 80, in standard_terms
+    return quote_terms(att["text"]).get("standard", {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 71, in quote_terms
+    out.setdefault(section, {})[LABELS[label]] = _value(LABELS[label], line[len(label) :].strip())
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 60, in _value
+    return float(text) if "eur" in field or field == "unit_price" else int(float(text))
+                                                                           ^^^^^^^^^^^
+ValueError: could not convert string to float: 'none'
+
+('buyer.agent', 'sup:70530: standard terms unreadable - keeping the earlier ones') 
+ ard
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 80, in standard_terms
+    return quote_terms(att["text"]).get("standard", {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 71, in quote_terms
+    out.setdefault(section, {})[LABELS[label]] = _value(LABELS[label], line[len(label) :].strip())
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 60, in _value
+    return float(text) if "eur" in field or field == "unit_price" else int(float(text))
+                                                                           ^^^^^^^^^^^
+ValueError: could not convert string to float: 'none'
+
+('buyer.agent', 'sup:70620: standard terms unreadable - keeping the earlier ones') 
+ ard
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 80, in standard_terms
+    return quote_terms(att["text"]).get("standard", {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 71, in quote_terms
+    out.setdefault(section, {})[LABELS[label]] = _value(LABELS[label], line[len(label) :].strip())
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 60, in _value
+    return float(text) if "eur" in field or field == "unit_price" else int(float(text))
+                                                                           ^^^^^^^^^^^
+ValueError: could not convert string to float: 'none'
+
+('buyer.agent', 'sup:70210: standard terms unreadable - keeping the earlier ones') 
+ ard
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 80, in standard_terms
+    return quote_terms(att["text"]).get("standard", {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 71, in quote_terms
+    out.setdefault(section, {})[LABELS[label]] = _value(LABELS[label], line[len(label) :].strip())
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 60, in _value
+    return float(text) if "eur" in field or field == "unit_price" else int(float(text))
+                                                                           ^^^^^^^^^^^
+ValueError: could not convert string to float: 'none'
+
+('buyer.agent', 'sup:70240: standard terms unreadable - keeping the earlier ones') 
+ ard
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 80, in standard_terms
+    return quote_terms(att["text"]).get("standard", {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 71, in quote_terms
+    out.setdefault(section, {})[LABELS[label]] = _value(LABELS[label], line[len(label) :].strip())
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 60, in _value
+    return float(text) if "eur" in field or field == "unit_price" else int(float(text))
+                                                                           ^^^^^^^^^^^
+ValueError: could not convert string to float: 'none'
+
+('buyer.agent', 'sup:70250: standard terms unreadable - keeping the earlier ones') 
+ ard
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 80, in standard_terms
+    return quote_terms(att["text"]).get("standard", {})
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 71, in quote_terms
+    out.setdefault(section, {})[LABELS[label]] = _value(LABELS[label], line[len(label) :].strip())
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thomas.turek/Documents/GitHub/alex-thomas/starter-kit/arena_kit/docs.py", line 60, in _value
+    return float(text) if "eur" in field or field == "unit_price" else int(float(text))
+                                                                           ^^^^^^^^^^^
+ValueError: could not convert string to float: 'none'
+

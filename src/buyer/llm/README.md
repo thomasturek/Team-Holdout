@@ -138,7 +138,7 @@ material words outside a sentence about costs ("made of stainless steel").
 ## Sunday checklist (P2)
 
 1. `uv run python -m buyer.llm.review report --set practice --limit 25 --out runs/review/practice.md`;
-   read it, write findings with replay link and supplier into `docs/LEARNINGS.md`, tune `prompts/` and `vocab.py`.
+   read it, note findings with replay link and supplier, tune `prompts/` and `vocab.py`.
 2. `uv run python -m buyer.llm.review fixtures --limit 30 --out src/buyer/llm/tests/fixtures/recorded_emails.json`;
    correct `expected` by hand and merge them into `supplier_emails.json`.
 3. `LLM_LIVE_TESTS=1 uv run pytest src/buyer/llm -k live -s` - the reader model on the fixtures.

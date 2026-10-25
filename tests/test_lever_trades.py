@@ -192,3 +192,16 @@ def test_capacity_case_never_asks_for_a_faster_lead_time_than_quoted():
     out = policy.mirror_terms(case, {"unit_price": 28.5, "volume_per_year": 23400, "contract_months": 36,
                                      "lead_time_days": 42}, t)
     assert out["lead_time_days"] == 56 and t.free_levers["lead_time_days"] == 56
+
+
+def test_a_final_missing_a_must_have_field_is_countered_with_the_field_filled():
+    case = CASES["case:P11"]
+    policy = Policy({})
+    final = {"unit_price": 47.4}
+    t = thread(case, final)
+    t.standard = {"chargeback_eur_per_complaint": 0.0}
+    t.status = "final_offer"
+    t.offers = [("offer:x-1", dict(final))]
+    d = policy.decide(case, t)
+    assert d.kind == "send" and len(d.term_sheets) == 1
+    assert d.term_sheets[0]["ppm_commitment"] <= 1500 and d.term_sheets[0]["unit_price"] == 47.4
