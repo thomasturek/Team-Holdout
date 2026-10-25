@@ -1,0 +1,27 @@
+10:24:01 practice: 10 sessions; 344 left before, keeping 20
+10:24:03 LLM reader disabled (provider anthropic, model claude-opus-5-5): templates / keyword rules only
+10:24:03 LLM writer disabled (provider anthropic, model claude-opus-5-5): templates / keyword rules only
+10:24:32 case:P02  c277b8ef5b060fa7  sent 1  errors 0 []  deal True  score 0.735  complete
+10:24:53 case:P10  c9946ab93d6086ba  sent 2  errors 0 []  deal True  score 0.663  complete
+10:25:25 case:P04  a21b3b7d50ba2ddf  sent 3  errors 0 []  deal True  score 0.86  complete
+10:26:29 case:P08  029ce38a682a73a9  sent 5  errors 0 []  deal True  score 0.826  complete
+10:26:29 case:P01  20fcf07fa90d2701  sent 4  errors 0 []  deal True  score 0.934  complete
+10:26:29 case:P07  def2065710b34a88  sent 5  errors 0 []  deal True  score 0.699  complete
+10:26:57 case:P05 sup:70240: attachment delivery-schedule.xlsx: HTTP 409: busy: another call on this session is still running; retry
+10:27:21 case:P03  f968310fa69189f2  sent 6  errors 0 []  deal True  score 0.935  complete
+10:28:08 case:P18  a6536f602e5cb285  sent 5  errors 0 []  deal False  score 0.0  complete
+10:28:26 case:P11  519a52e0f5f846fe  sent 7  errors 0 []  deal True  score 0.71  complete
+10:29:43 case:P05  54f94a6d3e0b6727  sent 11  errors 1 []  deal True  score 0.805  complete
+log: C:\Users\felix\Documents\Hackathon\alex-thomas\runs\runner-practice-20261025-102400.log
+case:P01  deal True  score 0.9343660447763811
+case:P02  deal True  score 0.734527206471163
+case:P03  deal True  score 0.9351091105038049
+case:P04  deal True  score 0.8604451426623068
+case:P05  deal True  score 0.8049524365267311
+case:P07  deal True  score 0.6985015456075994
+case:P08  deal True  score 0.826157612615935
+case:P10  deal True  score 0.6629052177602854
+case:P11  deal True  score 0.7098962346486538
+case:P18  deal False  score 0.0
+mean score 71.7 over 10 sessions
+practice sessions left: 334

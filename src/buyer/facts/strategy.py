@@ -39,17 +39,18 @@ TONES = {
     "secure": "businesslike and reassuring: planning security and a reliable partnership; close, do not push",
 }
 
-# overrides of the policy's parameters (policy.DEFAULTS / params.json) - starting points to tune
-PARAMS = {
+# overrides of the policy's parameters (policy.DEFAULTS / params.json). Tested 2026-10-25 (30 practice sessions,
+# each strategy forced on all 10 hosted cases, template writer): the policy's own numbers won almost everywhere -
+# forced "aggressive" was worse with owners (P01 -0.11, P05 -0.03) and equal elsewhere; forced "secure" scored 0 on
+# P01-P04 because accept_target_pct accepted the supplier's OPENING offer (a deal at C_open scores 0). So no strategy
+# overrides the numbers until a variant beats the policy in a test; the strategies steer the writer's tone only.
+# The variants that were tried, for the next test: TESTED_PARAMS.
+PARAMS = {name: {} for name in ("aggressive", "cooperative", "patient", "escalate", "secure")}
+TESTED_PARAMS = {
     "aggressive": {"open_frac": 0.05, "min_open_discount_pct": 12.0, "concede": 0.08, "claims_per_msg": 3,
-                   "lever_trades": 1.0},
-    "cooperative": {"open_frac": 0.2, "min_open_discount_pct": 6.0, "concede": 0.15, "push_final": 0.0,
-                    "lever_trades": 1.0},
-    "patient": {"reciprocity": 1.0, "token_frac": 0.25, "stall_limit": 3, "concede": 0.1, "lever_trades": 1.0},
-    "escalate": {"open_frac": 0.15, "min_open_discount_pct": 8.0, "concede": 0.12, "push_final": 0.0,
-                 "lever_trades": 1.0},
+                   "lever_trades": 1.0},  # 0.770 vs 0.717 (0.797 without the P18 no-deal of the default run)
     "secure": {"open_frac": 0.3, "min_open_discount_pct": 4.0, "concede": 0.2, "push_final": 0.0,
-               "accept_target_pct": 3.0},
+               "accept_target_pct": 3.0},  # 0.384: never accept a target before our first counter
 }
 
 

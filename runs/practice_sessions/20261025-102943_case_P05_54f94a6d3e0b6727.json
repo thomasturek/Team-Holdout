@@ -1,0 +1,2072 @@
+{
+ "session_id": "54f94a6d3e0b6727",
+ "case_id": "case:P05",
+ "set": "practice",
+ "saved_at": "2026-10-25T10:29:43+0100",
+ "run": {
+  "mode": "practice",
+  "purpose": "strat-off",
+  "agent": "policy",
+  "params": {},
+  "repeat": 0
+ },
+ "case": {
+  "case_id": "case:P05",
+  "set": "practice",
+  "type": "rfq",
+  "title": "RFQ: pump shaft for the new HX series",
+  "briefing": "You negotiate for Hollerau Pumpenwerke with Zerspanung Dralveck GmbH, Strojírna Hrvelec s.r.o., Drehteile Fuchsreiter GmbH. RFQ: pump shaft for the new HX series. Need: 4200 pc a year. Category goal: leverage: competition and data should bring the price down. Score: the lowest total cost C as defined in the rules, valued with this case's rates (need lead time 35 days). There is no fallback supplier: without a deal the demand is bought at the fallback price. Must-haves: lead_time_days <= 42. Prepare from the data package.",
+  "trigger_doc": "doc:20260923-70210-P05",
+  "parts": [
+   "part:320070"
+  ],
+  "suppliers": [
+   "sup:70210",
+   "sup:70240",
+   "sup:70250"
+  ],
+  "negotiable": [
+   "unit_price",
+   "payment_days",
+   "lead_time_days"
+  ],
+  "fixed_terms": {
+   "volume_per_year": 4200,
+   "contract_months": 24,
+   "effective_date": "2027-01-01",
+   "index_clause": null,
+   "incoterm": "DAP",
+   "tooling_eur": 0
+  },
+  "term_options": {
+   "payment_days": [
+    14,
+    30,
+    45,
+    60,
+    90
+   ],
+   "lead_time_days": [
+    28,
+    35,
+    42,
+    56
+   ]
+  },
+  "buyer": {
+   "need_per_year": 4200,
+   "horizon_years": 2.0,
+   "current_unit_price": 36.39,
+   "fallback_unit_price": 36.39,
+   "interest_rate": 0.08,
+   "reference_payment_days": 60,
+   "need_lead_time_days": 35,
+   "category_goal": "leverage",
+   "fallback_risk_pct": 3,
+   "index_risk_pct": 1,
+   "late_cost_per_day": 200,
+   "cost_per_defect": 112,
+   "freight_eur_per_unit": {
+    "EXW": 0.31,
+    "FCA": 0.27,
+    "DAP": 0.0
+   },
+   "index_paths": {},
+   "must_haves": [
+    {
+     "field": "lead_time_days",
+     "op": "<=",
+     "value": 42
+    }
+   ],
+   "alternative": {
+    "kind": "none",
+    "ref": null,
+    "terms": {}
+   }
+  },
+  "round_limit": 10,
+  "refs": [
+   "doc:20260923-70210-P05",
+   "sc:70210@2026Q3",
+   "sc:70240@2026Q3",
+   "sc:70250@2026Q3"
+  ]
+ },
+ "threads": {
+  "sup:70210": {
+   "supplier_id": "sup:70210",
+   "offer_id": null,
+   "status": "walked_away",
+   "closed": "walked_away",
+   "messages": [
+    {
+     "thread_id": "thread:P05:70210",
+     "message_id": "msg:70210-0-0",
+     "in_reply_to": null,
+     "from": "sales@70210",
+     "from_name": "Owner, Zerspanung Dralveck GmbH",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Quote from Zerspanung Dralveck GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Hallo,\n\nThank you for your enquiry. Please find our Angebot below.\n\nIt is good to hear from you again. For this work, we can offer a price of €36.00 per unit. We have our CNC machines ready and look forward to putting this job onto the shop floor for you. \n\nLet me know if this works for you so we can get started soon.\n\nGruß\nAndreas Dralveck\nOwner, Zerspanung Dralveck GmbH",
+     "attachments": [
+      {
+       "attachment_id": "att:70210-0-quote",
+       "name": "quote-offer-70210-0.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70210-0",
+       "terms": {
+        "unit_price": 36.0
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "missing_fields": [
+      "payment_days",
+      "lead_time_days"
+     ],
+     "claim_results": []
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Zerspanung Dralveck GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Zerspanung Dralveck GmbH,\n\nThank you for your quote.\n\nYour quality was 1863 ppm defective parts in the four quarters to 2026Q3 (sc:70210@2026Q3).\nAnother supplier has offered EUR 31.50 for this part (offer:70240-0).\nGerman producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).\n\nOur proposal: unit price EUR 26.61; payment 14 days net; lead time 35 days.\n\nWe value our long cooperation and are confident we will find a fair solution together.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 26.61,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [
+      "sc:70210@2026Q3",
+      "offer:70240-0",
+      "idx:PPI-C2431@2026-05",
+      "idx:PPI-C2431@2026-08"
+     ]
+    },
+    {
+     "thread_id": "thread:P05:70210",
+     "message_id": "msg:70210-1-2",
+     "in_reply_to": null,
+     "from": "sales@70210",
+     "from_name": "Owner, Zerspanung Dralveck GmbH",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Zerspanung Dralveck GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Hallo,\n\nWe have reviewed your offer and can adjust our Angebot as follows. Moin, you did your homework with the material index and that other quote, I have to admit. We checked the index change data you cited; it holds and we took it into account. We checked the rival quote data you cited; it holds and we took it into account. We checked the quality record data you cited; it holds and we took it into account. We did not know that - a fair point. \n\nOur price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351. Our current defect rate for you is about 1200 ppm. We take the complaints seriously; our 8D report is attached. \n\nWe need to clarify this internally - we will come back to you on price. The 14 days payment is good for us, so I'm willing to meet you at €30.00 for the 35 days lead time. That beats your other guy and keeps the machines running, so let's get this done. So we offer a price of €30.00 per unit, Zahlungsziel 14 days net, Lieferzeit 35 days.\n\nGruß\nAndreas Dralveck\nOwner, Zerspanung Dralveck GmbH",
+     "attachments": [
+      {
+       "attachment_id": "att:70210-1-eight_d",
+       "name": "8d-report.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70210-1",
+       "terms": {
+        "unit_price": 30.0,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "missing_fields": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      },
+      {
+       "index": 2,
+       "result": "verified"
+      }
+     ]
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Zerspanung Dralveck GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Zerspanung Dralveck GmbH,\n\nThank you for your reply. Thank you for taking our figures into account. We understand this needs approval on your side, and we have tried to make the options easy to decide on. We have read your remarks on the cost indices carefully.\n\nOur proposal: unit price EUR 26.87; payment 14 days net; lead time 35 days.\n\nWe value our long cooperation and are confident we will find a fair solution together.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 26.87,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": []
+    },
+    {
+     "thread_id": "thread:P05:70210",
+     "message_id": "msg:70210-2-4",
+     "in_reply_to": null,
+     "from": "sales@70210",
+     "from_name": "Owner, Zerspanung Dralveck GmbH",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Zerspanung Dralveck GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Hallo,\n\nMoin, thanks for the quick reply and keeping the 14 days payment. We have reviewed your offer and can adjust our Angebot as follows. We have clarified this internally and can move further on the price. I've squeezed the calculation one more time and can do €28.00 per piece.\n\nSo our current Angebot is a price of €28.00 per unit, Zahlungsziel 14 days net, Lieferzeit 35 days. Let's shake on this and get the machines running for you.\n\nGruß\nAndreas Dralveck\nOwner, Zerspanung Dralveck GmbH",
+     "attachments": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70210-2",
+       "terms": {
+        "unit_price": 28.0,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "missing_fields": [],
+     "claim_results": []
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Zerspanung Dralveck GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Zerspanung Dralveck GmbH,\n\nThank you for your reply.\n\nOur proposal: unit price EUR 26.93; payment 14 days net; lead time 35 days.\n\nWe value our long cooperation and are confident we will find a fair solution together.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 26.93,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": []
+    },
+    {
+     "thread_id": "thread:P05:70210",
+     "message_id": "msg:70210-3-6",
+     "in_reply_to": null,
+     "from": "sales@70210",
+     "from_name": "Owner, Zerspanung Dralveck GmbH",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Zerspanung Dralveck GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Hallo,\n\nWe are withdrawing from this negotiation. \n\nGruß\nAndreas Dralveck\nOwner, Zerspanung Dralveck GmbH",
+     "attachments": [],
+     "term_sheets": [],
+     "refs": [],
+     "action": null,
+     "status": "walked_away",
+     "signals": {
+      "reply_delay_days": 5,
+      "validity_days": null
+     },
+     "missing_fields": [],
+     "claim_results": []
+    }
+   ],
+   "timeouts": []
+  },
+  "sup:70240": {
+   "supplier_id": "sup:70240",
+   "offer_id": "offer:70240-4",
+   "status": "final_offer",
+   "closed": null,
+   "messages": [
+    {
+     "thread_id": "thread:P05:70240",
+     "message_id": "msg:70240-0-0",
+     "in_reply_to": null,
+     "from": "sales@70240",
+     "from_name": "Export Manager, Strojírna Hrvelec s.r.o.",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Quote from Strojírna Hrvelec s.r.o.: RFQ: pump shaft for the new HX series",
+     "body": "Hello,\n\nThank you for your enquiry. Please find our Angebot below. We are very eager to work together with you and to prove ourselves as a reliable, long-term partner for your business!\n\nWe are happy to offer you a price of €31.50 per unit, Lieferzeit 52 days. \n\nPlease note that this offer stays valid for 30 days. We really look forward to hearing from you soon and hope we can start a great cooperation!\n\nKind regards\nJana Procházková\nExport Manager, Strojírna Hrvelec s.r.o.",
+     "attachments": [
+      {
+       "attachment_id": "att:70240-0-quote",
+       "name": "quote-offer-70240-0.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70240-0",
+       "terms": {
+        "unit_price": 31.5,
+        "lead_time_days": 52
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": 30
+     },
+     "missing_fields": [
+      "payment_days"
+     ],
+     "claim_results": []
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Strojírna Hrvelec s.r.o.: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Strojírna Hrvelec s.r.o.,\n\nThank you for your quote.\n\nYour quality was 980 ppm defective parts in the four quarters to 2026Q3 (sc:70240@2026Q3).\nThe alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).\n\nWe can offer you the following options:\nOption A: unit price EUR 25.99; payment 90 days net; lead time 35 days.\nOption B: unit price EUR 25.84; payment 60 days net; lead time 35 days.\nOption C: unit price EUR 25.76; payment 45 days net; lead time 35 days.\n\nWe are interested in a stable, long-term supply relationship with planning security for both sides.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 25.99,
+        "payment_days": 90,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 25.84,
+        "payment_days": 60,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 25.76,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [
+      "sc:70240@2026Q3",
+      "idx:AS-14404@2026-06",
+      "idx:AS-14404@2026-09"
+     ]
+    },
+    {
+     "thread_id": "thread:P05:70240",
+     "message_id": "msg:70240-1-2",
+     "in_reply_to": null,
+     "from": "sales@70240",
+     "from_name": "Export Manager, Strojírna Hrvelec s.r.o.",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Strojírna Hrvelec s.r.o.: RFQ: pump shaft for the new HX series",
+     "body": "Hello,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We checked the index change data you cited; it holds and we took it into account. We checked the quality record data you cited; it holds and we took it into account. \n\nWe looked at the alloy surcharge and quality stuff you sent, and you are right, so we can drop the price to €31.00. I had to put the lead time back to 52 days though, because rushing it to 35 days would make it way too expensive. We are good with the 45 days payment you asked for, so let's go with this!\n\nRight now, our main offer stands at a price of €34.50 per unit, Zahlungsziel 45 days net, Lieferzeit 35 days. Alternatively, at our standard terms, with Lieferzeit 52 days: €31.00 per unit, with Zahlungsziel 45 days net. \n\nOur price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351. This offer stays valid for 30 days.\n\nKind regards\nJana Procházková\nExport Manager, Strojírna Hrvelec s.r.o.\n\nQuality Manager: We take the complaints seriously; our 8D report is attached.\n\nFreight Forwarder: Our Lieferzeit is 35 days. With overtime we can deliver in 35 days, at a premium.",
+     "attachments": [
+      {
+       "attachment_id": "att:70240-1-eight_d",
+       "name": "8d-report.pdf",
+       "type": "pdf",
+       "content_b64": null
+      },
+      {
+       "attachment_id": "att:70240-1-delivery_schedule",
+       "name": "delivery-schedule.xlsx",
+       "type": "xlsx",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70240-1",
+       "terms": {
+        "unit_price": 34.5,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "term_sheet_id": "offer:70240-1-a",
+       "terms": {
+        "unit_price": 31.0,
+        "payment_days": 45,
+        "lead_time_days": 52
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": 30
+     },
+     "missing_fields": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      }
+     ]
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Strojírna Hrvelec s.r.o.: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Strojírna Hrvelec s.r.o.,\n\nThank you for your reply. Thank you for taking our figures into account. We have read your remarks on alloy surcharges carefully.\n\nAnother supplier has offered EUR 30.00 for this part (offer:70210-1).\n\nWe can offer you the following options:\nOption A: unit price EUR 27.12; payment 90 days net; lead time 35 days.\nOption B: unit price EUR 26.96; payment 60 days net; lead time 35 days.\nOption C: unit price EUR 26.88; payment 45 days net; lead time 35 days.\n\nWe are interested in a stable, long-term supply relationship with planning security for both sides.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 27.12,
+        "payment_days": 90,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 26.96,
+        "payment_days": 60,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 26.88,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [
+      "offer:70210-1"
+     ]
+    },
+    {
+     "thread_id": "thread:P05:70240",
+     "message_id": "msg:70240-2-4",
+     "in_reply_to": null,
+     "from": "sales@70240",
+     "from_name": "Export Manager, Strojírna Hrvelec s.r.o.",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Strojírna Hrvelec s.r.o.: RFQ: pump shaft for the new HX series",
+     "body": "Hello,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We checked the rival quote data you cited; it holds and we took it into account. We looked at the other offer you mentioned and we can move a bit. \n\nWe are very keen to work together and grow as your partner! For the 35 days lead time you want, we can do €34.00. So our current Angebot is a price of €34.00 per unit, Zahlungsziel 45 days net, Lieferzeit 35 days. Please note that our price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351. Also, this offer stays valid for 30 days.\n\nWe really hope this works for you and look forward to building a great long-term business relationship together!\n\nKind regards\nJana Procházková\nExport Manager, Strojírna Hrvelec s.r.o.\n\nFreight Forwarder: Our Lieferzeit is 35 days. With overtime we can deliver in 35 days, at a premium.",
+     "attachments": [
+      {
+       "attachment_id": "att:70240-2-delivery_schedule",
+       "name": "delivery-schedule.xlsx",
+       "type": "xlsx",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70240-2",
+       "terms": {
+        "unit_price": 34.0,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": 30
+     },
+     "missing_fields": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      }
+     ]
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Strojírna Hrvelec s.r.o.: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Strojírna Hrvelec s.r.o.,\n\nThank you for your reply. Thank you for taking our figures into account. We have read your remarks on the cost indices carefully.\n\nAnother supplier has offered EUR 28.00 for this part (offer:70210-2).\nAnother supplier has offered EUR 30.50 for this part (offer:70250-1).\n\nWe can offer you the following options:\nOption A: unit price EUR 28.00; payment 90 days net; lead time 35 days.\nOption B: unit price EUR 27.84; payment 60 days net; lead time 35 days.\nOption C: unit price EUR 27.76; payment 45 days net; lead time 35 days.\n\nWe are interested in a stable, long-term supply relationship with planning security for both sides.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 28.0,
+        "payment_days": 90,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 27.84,
+        "payment_days": 60,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 27.76,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [
+      "offer:70210-2",
+      "offer:70250-1"
+     ]
+    },
+    {
+     "thread_id": "thread:P05:70240",
+     "message_id": "msg:70240-3-6",
+     "in_reply_to": null,
+     "from": "sales@70240",
+     "from_name": "Export Manager, Strojírna Hrvelec s.r.o.",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Strojírna Hrvelec s.r.o.: RFQ: pump shaft for the new HX series",
+     "body": "Hello,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We checked the rival quotes you sent over and we can drop our price a bit. We really want to make this work and grow our business with you!\n\nFor the 35 days lead time and 45 days payment, we can offer €33.00. So our Angebot is a price of €33.00 per unit, Zahlungsziel 45 days net, Lieferzeit 35 days. Please note that this offer remains valid for 30 days.\n\nKind regards\nJana Procházková\nExport Manager, Strojírna Hrvelec s.r.o.",
+     "attachments": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70240-3",
+       "terms": {
+        "unit_price": 33.0,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": 30
+     },
+     "missing_fields": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      }
+     ]
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Strojírna Hrvelec s.r.o.: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Strojírna Hrvelec s.r.o.,\n\nThank you for your reply.\n\nAnother supplier has offered EUR 29.00 for this part (offer:70250-2).\n\nWe can offer you the following options:\nOption A: unit price EUR 28.65; payment 90 days net; lead time 35 days.\nOption B: unit price EUR 28.48; payment 60 days net; lead time 35 days.\nOption C: unit price EUR 28.40; payment 45 days net; lead time 35 days.\n\nWe are interested in a stable, long-term supply relationship with planning security for both sides.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 28.65,
+        "payment_days": 90,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 28.48,
+        "payment_days": 60,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 28.4,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [
+      "offer:70250-2"
+     ]
+    },
+    {
+     "thread_id": "thread:P05:70240",
+     "message_id": "msg:70240-4-8",
+     "in_reply_to": null,
+     "from": "sales@70240",
+     "from_name": "Export Manager, Strojírna Hrvelec s.r.o.",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Strojírna Hrvelec s.r.o.: RFQ: pump shaft for the new HX series",
+     "body": "Hello,\n\nWe checked the new rival quote you sent over, but it doesn't change our math for this setup. We have already gone as low as we can for the 35 days lead time and 45 days payment. Therefore, we have to stick to our offer of €33.00, which is a solid deal for the reliability you get from us. Our price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351.\n\nSo, here is our current Angebot for you: a price of €33.00 per unit, Zahlungsziel 45 days net, Lieferzeit 35 days. This is our final offer (letztes Angebot). Please decide. Please note that this offer stays valid for 7 days.\n\nWe really look forward to working together with you!\n\nKind regards\nJana Procházková\nExport Manager, Strojírna Hrvelec s.r.o.",
+     "attachments": [
+      {
+       "attachment_id": "att:70240-4-quote",
+       "name": "quote-offer-70240-4.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70240-4",
+       "terms": {
+        "unit_price": 33.0,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "final_offer",
+     "signals": {
+      "reply_delay_days": 5,
+      "validity_days": 7
+     },
+     "missing_fields": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      }
+     ]
+    }
+   ],
+   "timeouts": []
+  },
+  "sup:70250": {
+   "supplier_id": "sup:70250",
+   "offer_id": "offer:70250-4",
+   "status": "agreed",
+   "closed": null,
+   "messages": [
+    {
+     "thread_id": "thread:P05:70250",
+     "message_id": "msg:70250-0-0",
+     "in_reply_to": null,
+     "from": "sales@70250",
+     "from_name": "Owner, Drehteile Fuchsreiter GmbH",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Hallo,\nhere is our price.\nOur terms: a price of €38.50 per unit.\nJust write if something is unclear.\nGruß\nClaudia Fuchsreiter\nOwner, Drehteile Fuchsreiter GmbH",
+     "attachments": [
+      {
+       "attachment_id": "att:70250-0-quote",
+       "name": "quote-offer-70250-0.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70250-0",
+       "terms": {
+        "unit_price": 38.5
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "missing_fields": [
+      "payment_days",
+      "lead_time_days"
+     ],
+     "claim_results": []
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Drehteile Fuchsreiter GmbH,\n\nThank you for your quote.\n\nAnother supplier has offered EUR 31.50 for this part (offer:70240-0).\nAnother supplier has offered EUR 36.00 for this part (offer:70210-0).\nDrehteile Fuchsreiter GmbH looks for new customers (news:20260309-03).\n\nWe can offer you the following options:\nOption A: unit price EUR 27.97; payment 45 days net; lead time 35 days.\nOption B: unit price EUR 28.12; payment 60 days net; lead time 35 days.\n\nWe value our long cooperation and are confident we will find a fair solution together.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 27.97,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 28.12,
+        "payment_days": 60,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [
+      "offer:70240-0",
+      "offer:70210-0",
+      "news:20260309-03"
+     ]
+    },
+    {
+     "thread_id": "thread:P05:70250",
+     "message_id": "msg:70250-1-2",
+     "in_reply_to": null,
+     "from": "sales@70250",
+     "from_name": "Owner, Drehteile Fuchsreiter GmbH",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Hallo,\n\nWe have reviewed your offer and can adjust our Angebot as follows. \n\nWe checked the rival quote data you cited; it holds and we took it into account. However, we checked the rival quote data you cited; it holds, but it does not change our calculation. We checked the news data you cited; it holds and we took it into account. \n\nI looked at your other offers and sharpened our pencil to drop the price to €30.50. We need to clarify this internally - we will come back to you on price. \n\nHallo, we can do the 35 days lead time you asked for, but as a small shop we really need to keep payment at 30 days. Our standard Zahlungsziel is 30 days net. Faster payment is welcome; we can reflect it in the price. \n\nOur Lieferzeit is 35 days. With overtime we can deliver in 28 days, at a premium. We have free capacity for your parts. \n\nOur price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351. \n\nSo our offer is a price of €30.50 per unit, Zahlungsziel 30 days net, Lieferzeit 35 days. Let's agree on this so we can get the machines running.\n\nGruß\nClaudia Fuchsreiter\nOwner, Drehteile Fuchsreiter GmbH",
+     "attachments": [
+      {
+       "attachment_id": "att:70250-1-delivery_schedule",
+       "name": "delivery-schedule.xlsx",
+       "type": "xlsx",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70250-1",
+       "terms": {
+        "unit_price": 30.5,
+        "payment_days": 30,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "missing_fields": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      },
+      {
+       "index": 2,
+       "result": "verified"
+      }
+     ]
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Drehteile Fuchsreiter GmbH,\n\nThank you for your message.\n\nAnother supplier has offered EUR 30.00 for this part (offer:70210-1).\nYour quality was 318 ppm defective parts in the four quarters to 2026Q3 (sc:70250@2026Q3).\n\nWe can offer you the following options:\nOption A: unit price EUR 28.03; payment 14 days net; lead time 35 days.\nOption B: unit price EUR 28.33; payment 45 days net; lead time 35 days.\nBinding volume in every option: 4,200 units a year over 24 months.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 28.03,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 28.33,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [
+      "offer:70210-1",
+      "sc:70250@2026Q3"
+     ]
+    },
+    {
+     "thread_id": "thread:P05:70250",
+     "message_id": "msg:70250-2-4",
+     "in_reply_to": null,
+     "from": "sales@70250",
+     "from_name": "Owner, Drehteile Fuchsreiter GmbH",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Hallo,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We have clarified this internally and can move further on the price. I checked the rival quote and quality data you sent, but they don't really change our calculation. Our price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351. \n\nOur standard Zahlungsziel is 30 days net. Getting paid in 14 days is a big help for a small shop like ours, and the volume is good. Faster payment is welcome; we can reflect it in the price. A binding higher volume would help us and can improve the price. Which volume can you commit to? \n\nSo I can drop the price to €29.00 per unit for 14 days payment and 35 days lead time. We offer a price of €29.00 per unit, Zahlungsziel 14 days net, Lieferzeit 35 days.\n\nGruß\nClaudia Fuchsreiter\nOwner, Drehteile Fuchsreiter GmbH",
+     "attachments": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70250-2",
+       "terms": {
+        "unit_price": 29.0,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "missing_fields": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      }
+     ]
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Drehteile Fuchsreiter GmbH,\n\nThank you for your message.\n\nAnother supplier has offered EUR 28.00 for this part (offer:70210-2).\n\nWe can offer you the following options:\nOption A: unit price EUR 28.09; payment 14 days net; lead time 35 days.\nOption B: unit price EUR 28.33; payment 45 days net; lead time 35 days.\nBinding volume in every option: 4,200 units a year over 24 months.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 28.09,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 28.33,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [
+      "offer:70210-2"
+     ]
+    },
+    {
+     "thread_id": "thread:P05:70250",
+     "message_id": "msg:70250-3-6",
+     "in_reply_to": null,
+     "from": "sales@70250",
+     "from_name": "Owner, Drehteile Fuchsreiter GmbH",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Hallo,\n\nWe have reviewed your offer and can adjust our Angebot as follows. \n\nHallo, I checked the rival quote you sent and it holds, so I adjusted our numbers. With the 14 days payment which really helps our cash flow, I can drop the price to €28.50. \n\nSo our offer is a price of €28.50 per unit, Zahlungsziel 14 days net, Lieferzeit 35 days. \n\nLet's agree on this so we can get the machines running for your parts.\n\nGruß\nClaudia Fuchsreiter\nOwner, Drehteile Fuchsreiter GmbH",
+     "attachments": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70250-3",
+       "terms": {
+        "unit_price": 28.5,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "missing_fields": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      }
+     ]
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Drehteile Fuchsreiter GmbH,\n\nThank you for your reply. Thank you for taking our figures into account. We have taken your wishes on payment timing into account in our proposal.\n\nOur proposal: unit price EUR 28.15; payment 14 days net; lead time 35 days.\n\nWe value our long cooperation and are confident we will find a fair solution together.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 28.15,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": []
+    },
+    {
+     "thread_id": "thread:P05:70250",
+     "message_id": "msg:70250-4-8",
+     "in_reply_to": null,
+     "from": "sales@70250",
+     "from_name": "Owner, Drehteile Fuchsreiter GmbH",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Hallo,\n\nyour offer of €28.15 with 14 days payment works for us. We can accept your terms and await your order. I accept this so we can get the machines running for your parts. Our offer is a price of €28.15 per unit, Zahlungsziel 14 days net, Lieferzeit 35 days. Thanks for the fair deal.\n\nGruß\nClaudia Fuchsreiter\nOwner, Drehteile Fuchsreiter GmbH",
+     "attachments": [
+      {
+       "attachment_id": "att:70250-4-quote",
+       "name": "quote-offer-70250-4.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70250-4",
+       "terms": {
+        "unit_price": 28.15,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "agreed",
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "missing_fields": [],
+     "claim_results": []
+    },
+    {
+     "from": "buyer",
+     "action": {
+      "type": "accept",
+      "term_sheet_id": "offer:70250-4"
+     }
+    },
+    {
+     "thread_id": "thread:P05:70250",
+     "message_id": "msg:70250-4-10",
+     "in_reply_to": null,
+     "from": "sales@70250",
+     "from_name": "Owner, Drehteile Fuchsreiter GmbH",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Hallo,\n\nThank you for your order. Our order confirmation is attached.\n\nGruß\nClaudia Fuchsreiter\nOwner, Drehteile Fuchsreiter GmbH",
+     "attachments": [
+      {
+       "attachment_id": "att:70250-4-order_confirmation",
+       "name": "order-confirmation-offer-70250-4.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70250-4",
+       "terms": {
+        "unit_price": 28.15,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "agreed",
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "missing_fields": [],
+     "claim_results": []
+    }
+   ],
+   "timeouts": []
+  }
+ },
+ "result": {
+  "ended": true,
+  "deal": true,
+  "supplier_id": "sup:70250",
+  "offer_id": "offer:70250-4",
+  "terms": {
+   "payment_days": 14,
+   "lead_time_days": 35,
+   "volume_per_year": 4200,
+   "contract_months": 24,
+   "effective_date": "2027-01-01",
+   "index_clause": null,
+   "incoterm": "DAP",
+   "tooling_eur": 0.0,
+   "ppm_commitment": 600,
+   "chargeback_eur_per_complaint": 0.0,
+   "unit_price": 28.15
+  },
+  "c_open": 305544.96,
+  "c_deal": 239441.63,
+  "c_alt": null,
+  "c_best": 223424.17,
+  "score": 0.8049524365267311,
+  "must_haves_ok": true,
+  "cost_breakdown": {
+   "price": 236460.0,
+   "uncovered_need": 0.0,
+   "fallback_risk": 0.0,
+   "payment_terms": 2417.15,
+   "freight": 0.0,
+   "late_delivery": 0.0,
+   "quality": 564.48,
+   "tooling": 0.0,
+   "index_clause": 0.0,
+   "index_risk": 0.0,
+   "relationship": 0.0
+  },
+  "trace": [
+   {
+    "round": 0,
+    "actor": "sup:70210",
+    "move": {
+     "offer_id": "offer:70210-0",
+     "round": 0,
+     "status": "open",
+     "terms": {
+      "unit_price": 36.0
+     },
+     "alternatives": [],
+     "missing_fields": [
+      "payment_days",
+      "lead_time_days"
+     ],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "text": "Hallo,\n\nThank you for your enquiry. Please find our Angebot below.\n\nIt is good to hear from you again. For this work, we can offer a price of €36.00 per unit. We have our CNC machines ready and look forward to putting this job onto the shop floor for you. \n\nLet me know if this works for you so we can get started soon.\n\nGruß\nAndreas Dralveck\nOwner, Zerspanung Dralveck GmbH"
+    },
+    "reasons": []
+   },
+   {
+    "round": 0,
+    "actor": "sup:70240",
+    "move": {
+     "offer_id": "offer:70240-0",
+     "round": 0,
+     "status": "open",
+     "terms": {
+      "unit_price": 31.5,
+      "lead_time_days": 52
+     },
+     "alternatives": [],
+     "missing_fields": [
+      "payment_days"
+     ],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": 30
+     },
+     "text": "Hello,\n\nThank you for your enquiry. Please find our Angebot below. We are very eager to work together with you and to prove ourselves as a reliable, long-term partner for your business!\n\nWe are happy to offer you a price of €31.50 per unit, Lieferzeit 52 days. \n\nPlease note that this offer stays valid for 30 days. We really look forward to hearing from you soon and hope we can start a great cooperation!\n\nKind regards\nJana Procházková\nExport Manager, Strojírna Hrvelec s.r.o."
+    },
+    "reasons": []
+   },
+   {
+    "round": 0,
+    "actor": "sup:70250",
+    "move": {
+     "offer_id": "offer:70250-0",
+     "round": 0,
+     "status": "open",
+     "terms": {
+      "unit_price": 38.5
+     },
+     "alternatives": [],
+     "missing_fields": [
+      "payment_days",
+      "lead_time_days"
+     ],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "text": "Hallo,\nhere is our price.\nOur terms: a price of €38.50 per unit.\nJust write if something is unclear.\nGruß\nClaudia Fuchsreiter\nOwner, Drehteile Fuchsreiter GmbH"
+    },
+    "reasons": []
+   },
+   {
+    "round": 1,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Zerspanung Dralveck GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Zerspanung Dralveck GmbH,\n\nThank you for your quote.\n\nYour quality was 1863 ppm defective parts in the four quarters to 2026Q3 (sc:70210@2026Q3).\nAnother supplier has offered EUR 31.50 for this part (offer:70240-0).\nGerman producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).\n\nOur proposal: unit price EUR 26.61; payment 14 days net; lead time 35 days.\n\nWe value our long cooperation and are confident we will find a fair solution together.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [
+      "sc:70210@2026Q3",
+      "offer:70240-0",
+      "idx:PPI-C2431@2026-05",
+      "idx:PPI-C2431@2026-08"
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 26.61,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": [
+       {
+        "type": "index_change",
+        "refs": [
+         "idx:PPI-C2431@2026-05",
+         "idx:PPI-C2431@2026-08"
+        ],
+        "asserted": {
+         "change_pct": -2.1
+        }
+       },
+       {
+        "type": "rival_quote",
+        "refs": [
+         "offer:70240-0"
+        ],
+        "asserted": {
+         "unit_price": 31.5
+        }
+       },
+       {
+        "type": "quality_record",
+        "refs": [
+         "sc:70210@2026Q3"
+        ],
+        "asserted": {
+         "ppm": 1863.0
+        }
+       }
+      ]
+     },
+     "supplier_id": "sup:70210"
+    },
+    "reasons": []
+   },
+   {
+    "round": 1,
+    "actor": "sup:70210",
+    "move": {
+     "offer_id": "offer:70210-1",
+     "round": 1,
+     "status": "open",
+     "terms": {
+      "unit_price": 30.0,
+      "payment_days": 14,
+      "lead_time_days": 35
+     },
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      },
+      {
+       "index": 2,
+       "result": "verified"
+      }
+     ],
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "text": "Hallo,\n\nWe have reviewed your offer and can adjust our Angebot as follows. Moin, you did your homework with the material index and that other quote, I have to admit. We checked the index change data you cited; it holds and we took it into account. We checked the rival quote data you cited; it holds and we took it into account. We checked the quality record data you cited; it holds and we took it into account. We did not know that - a fair point. \n\nOur price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351. Our current defect rate for you is about 1200 ppm. We take the complaints seriously; our 8D report is attached. \n\nWe need to clarify this internally - we will come back to you on price. The 14 days payment is good for us, so I'm willing to meet you at €30.00 for the 35 days lead time. That beats your other guy and keeps the machines running, so let's get this done. So we offer a price of €30.00 per unit, Zahlungsziel 14 days net, Lieferzeit 35 days.\n\nGruß\nAndreas Dralveck\nOwner, Zerspanung Dralveck GmbH"
+    },
+    "reasons": [
+     "We checked the index change data you cited; it holds and we took it into account.",
+     "We checked the rival quote data you cited; it holds and we took it into account.",
+     "We checked the quality record data you cited; it holds and we took it into account.",
+     "We need to clarify this internally - we will come back to you on price.",
+     "We did not know that - a fair point.",
+     "Moin, you did your homework with the material index and that other quote, I have to admit.",
+     "The … days payment is good for us, so I'm willing to meet you at €… for the … days lead time.",
+     "That beats your other guy and keeps the machines running, so let's get this done.",
+     "Our price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351.",
+     "Our current defect rate for you is about … ppm.",
+     "We take the complaints seriously; our 8D report is attached."
+    ]
+   },
+   {
+    "round": 1,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Strojírna Hrvelec s.r.o.: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Strojírna Hrvelec s.r.o.,\n\nThank you for your quote.\n\nYour quality was 980 ppm defective parts in the four quarters to 2026Q3 (sc:70240@2026Q3).\nThe alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).\n\nWe can offer you the following options:\nOption A: unit price EUR 25.99; payment 90 days net; lead time 35 days.\nOption B: unit price EUR 25.84; payment 60 days net; lead time 35 days.\nOption C: unit price EUR 25.76; payment 45 days net; lead time 35 days.\n\nWe are interested in a stable, long-term supply relationship with planning security for both sides.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [
+      "sc:70240@2026Q3",
+      "idx:AS-14404@2026-06",
+      "idx:AS-14404@2026-09"
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 25.99,
+        "payment_days": 90,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 25.84,
+        "payment_days": 60,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 25.76,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": [
+       {
+        "type": "index_change",
+        "refs": [
+         "idx:AS-14404@2026-06",
+         "idx:AS-14404@2026-09"
+        ],
+        "asserted": {
+         "change_pct": -5.5
+        }
+       },
+       {
+        "type": "quality_record",
+        "refs": [
+         "sc:70240@2026Q3"
+        ],
+        "asserted": {
+         "ppm": 980.0
+        }
+       }
+      ]
+     },
+     "supplier_id": "sup:70240"
+    },
+    "reasons": []
+   },
+   {
+    "round": 1,
+    "actor": "sup:70240",
+    "move": {
+     "offer_id": "offer:70240-1",
+     "round": 1,
+     "status": "open",
+     "terms": {
+      "unit_price": 34.5,
+      "payment_days": 45,
+      "lead_time_days": 35
+     },
+     "alternatives": [
+      {
+       "offer_id": "offer:70240-1-a",
+       "terms": {
+        "unit_price": 31.0,
+        "payment_days": 45,
+        "lead_time_days": 52
+       }
+      }
+     ],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      }
+     ],
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": 30
+     },
+     "text": "Hello,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We checked the index change data you cited; it holds and we took it into account. We checked the quality record data you cited; it holds and we took it into account. \n\nWe looked at the alloy surcharge and quality stuff you sent, and you are right, so we can drop the price to €31.00. I had to put the lead time back to 52 days though, because rushing it to 35 days would make it way too expensive. We are good with the 45 days payment you asked for, so let's go with this!\n\nRight now, our main offer stands at a price of €34.50 per unit, Zahlungsziel 45 days net, Lieferzeit 35 days. Alternatively, at our standard terms, with Lieferzeit 52 days: €31.00 per unit, with Zahlungsziel 45 days net. \n\nOur price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351. This offer stays valid for 30 days.\n\nKind regards\nJana Procházková\nExport Manager, Strojírna Hrvelec s.r.o."
+    },
+    "reasons": [
+     "We checked the index change data you cited; it holds and we took it into account.",
+     "We checked the quality record data you cited; it holds and we took it into account.",
+     "We looked at the alloy surcharge and quality stuff you sent, and you are right, so we can drop the price to €….",
+     "I had to put the lead time back to … days though, because rushing it to … days would make it way too expensive.",
+     "We are good with the … days payment you asked for, so let's go with this!",
+     "Alternatively, with Lieferzeit … days: €… per unit.",
+     "Our price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351."
+    ]
+   },
+   {
+    "round": 1,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Drehteile Fuchsreiter GmbH,\n\nThank you for your quote.\n\nAnother supplier has offered EUR 31.50 for this part (offer:70240-0).\nAnother supplier has offered EUR 36.00 for this part (offer:70210-0).\nDrehteile Fuchsreiter GmbH looks for new customers (news:20260309-03).\n\nWe can offer you the following options:\nOption A: unit price EUR 27.97; payment 45 days net; lead time 35 days.\nOption B: unit price EUR 28.12; payment 60 days net; lead time 35 days.\n\nWe value our long cooperation and are confident we will find a fair solution together.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [
+      "offer:70240-0",
+      "offer:70210-0",
+      "news:20260309-03"
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 27.97,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 28.12,
+        "payment_days": 60,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": [
+       {
+        "type": "rival_quote",
+        "refs": [
+         "offer:70240-0"
+        ],
+        "asserted": {
+         "unit_price": 31.5
+        }
+       },
+       {
+        "type": "rival_quote",
+        "refs": [
+         "offer:70210-0"
+        ],
+        "asserted": {
+         "unit_price": 36.0
+        }
+       },
+       {
+        "type": "news",
+        "refs": [
+         "news:20260309-03"
+        ],
+        "asserted": {}
+       }
+      ]
+     },
+     "supplier_id": "sup:70250"
+    },
+    "reasons": []
+   },
+   {
+    "round": 1,
+    "actor": "sup:70250",
+    "move": {
+     "offer_id": "offer:70250-1",
+     "round": 1,
+     "status": "open",
+     "terms": {
+      "unit_price": 30.5,
+      "payment_days": 30,
+      "lead_time_days": 35
+     },
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      },
+      {
+       "index": 2,
+       "result": "verified"
+      }
+     ],
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "text": "Hallo,\n\nWe have reviewed your offer and can adjust our Angebot as follows. \n\nWe checked the rival quote data you cited; it holds and we took it into account. However, we checked the rival quote data you cited; it holds, but it does not change our calculation. We checked the news data you cited; it holds and we took it into account. \n\nI looked at your other offers and sharpened our pencil to drop the price to €30.50. We need to clarify this internally - we will come back to you on price. \n\nHallo, we can do the 35 days lead time you asked for, but as a small shop we really need to keep payment at 30 days. Our standard Zahlungsziel is 30 days net. Faster payment is welcome; we can reflect it in the price. \n\nOur Lieferzeit is 35 days. With overtime we can deliver in 28 days, at a premium. We have free capacity for your parts. \n\nOur price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351. \n\nSo our offer is a price of €30.50 per unit, Zahlungsziel 30 days net, Lieferzeit 35 days. Let's agree on this so we can get the machines running.\n\nGruß\nClaudia Fuchsreiter\nOwner, Drehteile Fuchsreiter GmbH"
+    },
+    "reasons": [
+     "We checked the rival quote data you cited; it holds and we took it into account.",
+     "We checked the rival quote data you cited; it holds, but it does not change our calculation.",
+     "We checked the news data you cited; it holds and we took it into account.",
+     "We need to clarify this internally - we will come back to you on price.",
+     "Hallo, we can do the … days lead time you asked for, but as a small shop we really need to keep payment at … days.",
+     "I looked at your other offers and sharpened our pencil to drop the price to €….",
+     "Let's agree on this so we can get the machines running.",
+     "Our price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351.",
+     "Our standard Zahlungsziel is … days net.",
+     "Faster payment is welcome; we can reflect it in the price.",
+     "Our Lieferzeit is … days.",
+     "With overtime we can deliver in … days, at a premium.",
+     "We have free capacity for your parts."
+    ]
+   },
+   {
+    "round": 2,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Zerspanung Dralveck GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Zerspanung Dralveck GmbH,\n\nThank you for your reply. Thank you for taking our figures into account. We understand this needs approval on your side, and we have tried to make the options easy to decide on. We have read your remarks on the cost indices carefully.\n\nOur proposal: unit price EUR 26.87; payment 14 days net; lead time 35 days.\n\nWe value our long cooperation and are confident we will find a fair solution together.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 26.87,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": []
+     },
+     "supplier_id": "sup:70210"
+    },
+    "reasons": []
+   },
+   {
+    "round": 2,
+    "actor": "sup:70210",
+    "move": {
+     "offer_id": "offer:70210-2",
+     "round": 2,
+     "status": "open",
+     "terms": {
+      "unit_price": 28.0,
+      "payment_days": 14,
+      "lead_time_days": 35
+     },
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "text": "Hallo,\n\nMoin, thanks for the quick reply and keeping the 14 days payment. We have reviewed your offer and can adjust our Angebot as follows. We have clarified this internally and can move further on the price. I've squeezed the calculation one more time and can do €28.00 per piece.\n\nSo our current Angebot is a price of €28.00 per unit, Zahlungsziel 14 days net, Lieferzeit 35 days. Let's shake on this and get the machines running for you.\n\nGruß\nAndreas Dralveck\nOwner, Zerspanung Dralveck GmbH"
+    },
+    "reasons": [
+     "We have clarified this internally and can move further on the price.",
+     "Moin, thanks for the quick reply and keeping the … days payment.",
+     "I've squeezed the calculation one more time and can do €… per piece.",
+     "Let's shake on this and get the machines running for you."
+    ]
+   },
+   {
+    "round": 2,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Strojírna Hrvelec s.r.o.: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Strojírna Hrvelec s.r.o.,\n\nThank you for your reply. Thank you for taking our figures into account. We have read your remarks on alloy surcharges carefully.\n\nAnother supplier has offered EUR 30.00 for this part (offer:70210-1).\n\nWe can offer you the following options:\nOption A: unit price EUR 27.12; payment 90 days net; lead time 35 days.\nOption B: unit price EUR 26.96; payment 60 days net; lead time 35 days.\nOption C: unit price EUR 26.88; payment 45 days net; lead time 35 days.\n\nWe are interested in a stable, long-term supply relationship with planning security for both sides.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [
+      "offer:70210-1"
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 27.12,
+        "payment_days": 90,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 26.96,
+        "payment_days": 60,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 26.88,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": [
+       {
+        "type": "rival_quote",
+        "refs": [
+         "offer:70210-1"
+        ],
+        "asserted": {
+         "unit_price": 30.0
+        }
+       }
+      ]
+     },
+     "supplier_id": "sup:70240"
+    },
+    "reasons": []
+   },
+   {
+    "round": 2,
+    "actor": "sup:70240",
+    "move": {
+     "offer_id": "offer:70240-2",
+     "round": 2,
+     "status": "open",
+     "terms": {
+      "unit_price": 34.0,
+      "payment_days": 45,
+      "lead_time_days": 35
+     },
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      }
+     ],
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": 30
+     },
+     "text": "Hello,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We checked the rival quote data you cited; it holds and we took it into account. We looked at the other offer you mentioned and we can move a bit. \n\nWe are very keen to work together and grow as your partner! For the 35 days lead time you want, we can do €34.00. So our current Angebot is a price of €34.00 per unit, Zahlungsziel 45 days net, Lieferzeit 35 days. Please note that our price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351. Also, this offer stays valid for 30 days.\n\nWe really hope this works for you and look forward to building a great long-term business relationship together!\n\nKind regards\nJana Procházková\nExport Manager, Strojírna Hrvelec s.r.o."
+    },
+    "reasons": [
+     "We checked the rival quote data you cited; it holds and we took it into account.",
+     "We looked at the other offer you mentioned and we can move a bit.",
+     "For the … days lead time you want, we can do €….",
+     "Our price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351."
+    ]
+   },
+   {
+    "round": 2,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Drehteile Fuchsreiter GmbH,\n\nThank you for your message.\n\nAnother supplier has offered EUR 30.00 for this part (offer:70210-1).\nYour quality was 318 ppm defective parts in the four quarters to 2026Q3 (sc:70250@2026Q3).\n\nWe can offer you the following options:\nOption A: unit price EUR 28.03; payment 14 days net; lead time 35 days.\nOption B: unit price EUR 28.33; payment 45 days net; lead time 35 days.\nBinding volume in every option: 4,200 units a year over 24 months.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [
+      "offer:70210-1",
+      "sc:70250@2026Q3"
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 28.03,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 28.33,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": [
+       {
+        "type": "rival_quote",
+        "refs": [
+         "offer:70210-1"
+        ],
+        "asserted": {
+         "unit_price": 30.0
+        }
+       },
+       {
+        "type": "quality_record",
+        "refs": [
+         "sc:70250@2026Q3"
+        ],
+        "asserted": {
+         "ppm": 318.0
+        }
+       }
+      ]
+     },
+     "supplier_id": "sup:70250"
+    },
+    "reasons": []
+   },
+   {
+    "round": 2,
+    "actor": "sup:70250",
+    "move": {
+     "offer_id": "offer:70250-2",
+     "round": 2,
+     "status": "open",
+     "terms": {
+      "unit_price": 29.0,
+      "payment_days": 14,
+      "lead_time_days": 35
+     },
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      }
+     ],
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "text": "Hallo,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We have clarified this internally and can move further on the price. I checked the rival quote and quality data you sent, but they don't really change our calculation. Our price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351. \n\nOur standard Zahlungsziel is 30 days net. Getting paid in 14 days is a big help for a small shop like ours, and the volume is good. Faster payment is welcome; we can reflect it in the price. A binding higher volume would help us and can improve the price. Which volume can you commit to? \n\nSo I can drop the price to €29.00 per unit for 14 days payment and 35 days lead time. We offer a price of €29.00 per unit, Zahlungsziel 14 days net, Lieferzeit 35 days.\n\nGruß\nClaudia Fuchsreiter\nOwner, Drehteile Fuchsreiter GmbH"
+    },
+    "reasons": [
+     "We have clarified this internally and can move further on the price.",
+     "Hallo, I checked the rival quote and quality data you sent, but they don't really change our calculation.",
+     "But getting paid in … days is a big help for a small shop like ours, and the volume is good.",
+     "So I can drop the price to €… per unit for … days payment and … days lead time.",
+     "Our price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351.",
+     "Our standard Zahlungsziel is … days net.",
+     "Faster payment is welcome; we can reflect it in the price.",
+     "A binding higher volume would help us and can improve the price.",
+     "Which volume can you commit to?"
+    ]
+   },
+   {
+    "round": 3,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Zerspanung Dralveck GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Zerspanung Dralveck GmbH,\n\nThank you for your reply.\n\nOur proposal: unit price EUR 26.93; payment 14 days net; lead time 35 days.\n\nWe value our long cooperation and are confident we will find a fair solution together.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 26.93,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": []
+     },
+     "supplier_id": "sup:70210"
+    },
+    "reasons": []
+   },
+   {
+    "round": 3,
+    "actor": "sup:70210",
+    "move": {
+     "offer_id": null,
+     "round": 3,
+     "status": "walked_away",
+     "terms": {},
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 5,
+      "validity_days": null
+     },
+     "text": "Hallo,\n\nWe are withdrawing from this negotiation. \n\nGruß\nAndreas Dralveck\nOwner, Zerspanung Dralveck GmbH"
+    },
+    "reasons": []
+   },
+   {
+    "round": 3,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Strojírna Hrvelec s.r.o.: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Strojírna Hrvelec s.r.o.,\n\nThank you for your reply. Thank you for taking our figures into account. We have read your remarks on the cost indices carefully.\n\nAnother supplier has offered EUR 28.00 for this part (offer:70210-2).\nAnother supplier has offered EUR 30.50 for this part (offer:70250-1).\n\nWe can offer you the following options:\nOption A: unit price EUR 28.00; payment 90 days net; lead time 35 days.\nOption B: unit price EUR 27.84; payment 60 days net; lead time 35 days.\nOption C: unit price EUR 27.76; payment 45 days net; lead time 35 days.\n\nWe are interested in a stable, long-term supply relationship with planning security for both sides.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [
+      "offer:70210-2",
+      "offer:70250-1"
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 28.0,
+        "payment_days": 90,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 27.84,
+        "payment_days": 60,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 27.76,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": [
+       {
+        "type": "rival_quote",
+        "refs": [
+         "offer:70210-2"
+        ],
+        "asserted": {
+         "unit_price": 28.0
+        }
+       },
+       {
+        "type": "rival_quote",
+        "refs": [
+         "offer:70250-1"
+        ],
+        "asserted": {
+         "unit_price": 30.5
+        }
+       }
+      ]
+     },
+     "supplier_id": "sup:70240"
+    },
+    "reasons": []
+   },
+   {
+    "round": 3,
+    "actor": "sup:70240",
+    "move": {
+     "offer_id": "offer:70240-3",
+     "round": 3,
+     "status": "open",
+     "terms": {
+      "unit_price": 33.0,
+      "payment_days": 45,
+      "lead_time_days": 35
+     },
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      }
+     ],
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": 30
+     },
+     "text": "Hello,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We checked the rival quotes you sent over and we can drop our price a bit. We really want to make this work and grow our business with you!\n\nFor the 35 days lead time and 45 days payment, we can offer €33.00. So our Angebot is a price of €33.00 per unit, Zahlungsziel 45 days net, Lieferzeit 35 days. Please note that this offer remains valid for 30 days.\n\nKind regards\nJana Procházková\nExport Manager, Strojírna Hrvelec s.r.o."
+    },
+    "reasons": [
+     "We checked the rival quotes you sent over and we can drop our price a bit.",
+     "For the … days lead time and … days payment, we can offer €….",
+     "We really want to make this work and grow our business with you!"
+    ]
+   },
+   {
+    "round": 3,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Drehteile Fuchsreiter GmbH,\n\nThank you for your message.\n\nAnother supplier has offered EUR 28.00 for this part (offer:70210-2).\n\nWe can offer you the following options:\nOption A: unit price EUR 28.09; payment 14 days net; lead time 35 days.\nOption B: unit price EUR 28.33; payment 45 days net; lead time 35 days.\nBinding volume in every option: 4,200 units a year over 24 months.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [
+      "offer:70210-2"
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 28.09,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 28.33,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": [
+       {
+        "type": "rival_quote",
+        "refs": [
+         "offer:70210-2"
+        ],
+        "asserted": {
+         "unit_price": 28.0
+        }
+       }
+      ]
+     },
+     "supplier_id": "sup:70250"
+    },
+    "reasons": []
+   },
+   {
+    "round": 3,
+    "actor": "sup:70250",
+    "move": {
+     "offer_id": "offer:70250-3",
+     "round": 3,
+     "status": "open",
+     "terms": {
+      "unit_price": 28.5,
+      "payment_days": 14,
+      "lead_time_days": 35
+     },
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      }
+     ],
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "text": "Hallo,\n\nWe have reviewed your offer and can adjust our Angebot as follows. \n\nHallo, I checked the rival quote you sent and it holds, so I adjusted our numbers. With the 14 days payment which really helps our cash flow, I can drop the price to €28.50. \n\nSo our offer is a price of €28.50 per unit, Zahlungsziel 14 days net, Lieferzeit 35 days. \n\nLet's agree on this so we can get the machines running for your parts.\n\nGruß\nClaudia Fuchsreiter\nOwner, Drehteile Fuchsreiter GmbH"
+    },
+    "reasons": [
+     "Hallo, I checked the rival quote you sent and it holds, so I adjusted our numbers.",
+     "With the … days payment which really helps our cash flow, I can drop the price to €….",
+     "Let's agree on this so we can get the machines running for your parts."
+    ]
+   },
+   {
+    "round": 4,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Strojírna Hrvelec s.r.o.: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Strojírna Hrvelec s.r.o.,\n\nThank you for your reply.\n\nAnother supplier has offered EUR 29.00 for this part (offer:70250-2).\n\nWe can offer you the following options:\nOption A: unit price EUR 28.65; payment 90 days net; lead time 35 days.\nOption B: unit price EUR 28.48; payment 60 days net; lead time 35 days.\nOption C: unit price EUR 28.40; payment 45 days net; lead time 35 days.\n\nWe are interested in a stable, long-term supply relationship with planning security for both sides.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [
+      "offer:70250-2"
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 28.65,
+        "payment_days": 90,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 28.48,
+        "payment_days": 60,
+        "lead_time_days": 35
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 28.4,
+        "payment_days": 45,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": [
+       {
+        "type": "rival_quote",
+        "refs": [
+         "offer:70250-2"
+        ],
+        "asserted": {
+         "unit_price": 29.0
+        }
+       }
+      ]
+     },
+     "supplier_id": "sup:70240"
+    },
+    "reasons": []
+   },
+   {
+    "round": 4,
+    "actor": "sup:70240",
+    "move": {
+     "offer_id": "offer:70240-4",
+     "round": 4,
+     "status": "final_offer",
+     "terms": {
+      "unit_price": 33.0,
+      "payment_days": 45,
+      "lead_time_days": 35
+     },
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      }
+     ],
+     "signals": {
+      "reply_delay_days": 5,
+      "validity_days": 7
+     },
+     "text": "Hello,\n\nWe checked the new rival quote you sent over, but it doesn't change our math for this setup. We have already gone as low as we can for the 35 days lead time and 45 days payment. Therefore, we have to stick to our offer of €33.00, which is a solid deal for the reliability you get from us. Our price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351.\n\nSo, here is our current Angebot for you: a price of €33.00 per unit, Zahlungsziel 45 days net, Lieferzeit 35 days. This is our final offer (letztes Angebot). Please decide. Please note that this offer stays valid for 7 days.\n\nWe really look forward to working together with you!\n\nKind regards\nJana Procházková\nExport Manager, Strojírna Hrvelec s.r.o."
+    },
+    "reasons": [
+     "We checked the new rival quote you sent over, but it doesn't change our math for this setup.",
+     "We have already gone as low as we can for the … days lead time and … days payment.",
+     "We have to stick to our offer of €…, which is a solid deal for the reliability you get from us.",
+     "Our price follows our main cost drivers: LCI-C, PPI-C2431, AS-14404, PPI-D351."
+    ]
+   },
+   {
+    "round": 4,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Drehteile Fuchsreiter GmbH: RFQ: pump shaft for the new HX series",
+     "body": "Dear colleagues at Drehteile Fuchsreiter GmbH,\n\nThank you for your reply. Thank you for taking our figures into account. We have taken your wishes on payment timing into account in our proposal.\n\nOur proposal: unit price EUR 28.15; payment 14 days net; lead time 35 days.\n\nWe value our long cooperation and are confident we will find a fair solution together.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 28.15,
+        "payment_days": 14,
+        "lead_time_days": 35
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": []
+     },
+     "supplier_id": "sup:70250"
+    },
+    "reasons": []
+   },
+   {
+    "round": 4,
+    "actor": "sup:70250",
+    "move": {
+     "offer_id": "offer:70250-4",
+     "round": 4,
+     "status": "agreed",
+     "terms": {
+      "unit_price": 28.15,
+      "payment_days": 14,
+      "lead_time_days": 35
+     },
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 4,
+      "validity_days": null
+     },
+     "text": "Hallo,\n\nyour offer of €28.15 with 14 days payment works for us. We can accept your terms and await your order. I accept this so we can get the machines running for your parts. Our offer is a price of €28.15 per unit, Zahlungsziel 14 days net, Lieferzeit 35 days. Thanks for the fair deal.\n\nGruß\nClaudia Fuchsreiter\nOwner, Drehteile Fuchsreiter GmbH"
+    },
+    "reasons": [
+     "Hallo, your offer of €… with … days payment works for us.",
+     "I accept this so we can get the machines running for your parts.",
+     "Thanks for the fair deal."
+    ]
+   },
+   {
+    "round": 4,
+    "actor": "buyer",
+    "move": {
+     "type": "accept",
+     "offer_id": "offer:70250-4",
+     "supplier_id": "sup:70250"
+    },
+    "reasons": []
+   }
+  ]
+ },
+ "end_reason": "accepted",
+ "replay_url": "/replay/54f94a6d3e0b6727"
+}

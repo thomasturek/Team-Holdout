@@ -1,0 +1,13 @@
+10:34:36 WARNING buyer.runner practice: 10 sessions; 324 left before, keeping 20
+10:34:39 WARNING buyer.llm LLM reader disabled (provider anthropic, model claude-opus-5-5): templates / keyword rules only
+10:34:39 WARNING buyer.llm LLM writer disabled (provider anthropic, model claude-opus-5-5): templates / keyword rules only
+10:34:41 INFO buyer.runner case:P03  046dc6bf884378a1  sent 0  errors 0 []  deal True  score 0.0  complete
+10:34:58 INFO buyer.runner case:P01  69d235d6e9ea4fd1  sent 0  errors 0 []  deal True  score 0.0  complete
+10:34:58 INFO buyer.runner case:P04  6bbc380049f66b16  sent 0  errors 0 []  deal True  score 0.0  complete
+10:34:58 INFO buyer.runner case:P02  853fdd9af81e62f8  sent 0  errors 0 []  deal True  score 0.0  complete
+10:35:55 INFO buyer.runner case:P10  48762927c835046c  sent 2  errors 0 []  deal True  score 0.663  complete
+10:36:38 INFO buyer.runner case:P07  ba371e016e7c8b04  sent 5  errors 0 []  deal True  score 0.692  complete
+10:36:46 INFO buyer.runner case:P08  56ca60dd1d6b4bbb  sent 4  errors 0 []  deal True  score 0.715  complete
+10:36:53 INFO buyer.runner case:P18  7d42faf5a34a6588  sent 4  errors 0 []  deal True  score 0.553  complete
+10:37:34 INFO buyer.runner case:P11  796fdee9f4a5eac3  sent 6  errors 0 []  deal True  score 0.543  complete
+10:38:04 INFO buyer.runner case:P05  118aa8f47a3e63b4  sent 6  errors 0 []  deal True  score 0.676  complete
