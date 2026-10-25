@@ -139,3 +139,25 @@ def test_no_counter_without_a_clause():
     policy = Policy({})
     t = thread(case, P03_TERMS)
     assert policy.close(case, t, True, policy.cost(case, t), float("inf")).kind == "accept"
+
+
+def test_a_final_that_breaks_a_must_have_gets_one_repair_counter_not_a_walk():
+    case = CASES["case:P10"]
+    policy = Policy({})
+    final = {"unit_price": 31.7, "volume_per_year": 16379, "contract_months": 36, "lead_time_days": 56}
+    t = thread(case, final)
+    t.status = "final_offer"
+    t.offers = [("offer:x-1", dict(final))]
+    d = policy.decide(case, t)
+    assert d.kind == "send" and len(d.term_sheets) == 1
+    assert d.term_sheets[0]["volume_per_year"] >= 22230 and d.term_sheets[0]["unit_price"] == 31.7
+    t.standing_id = "offer:x-2"
+    assert policy.decide(case, t).kind == "walk"
+
+
+def test_an_opening_without_a_price_gets_an_offer_not_a_walk():
+    case = CASES["case:P10"]
+    policy = Policy({})
+    t = thread(case, {"volume_per_year": 23400})
+    d = policy.decide(case, t)
+    assert d.kind == "send" and d.term_sheets and d.term_sheets[0]["unit_price"] > 0
