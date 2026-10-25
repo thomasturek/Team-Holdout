@@ -5,7 +5,7 @@ import math
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from arena_kit.cost import complete_offer, must_haves_ok, snap, supplier_value, total_cost
+from arena_kit.cost import OPS, closing_terms, complete_offer, must_haves_ok, snap, supplier_value, total_cost
 
 from buyer.facts.costing import asked as lever_asked
 from buyer.facts.costing import c as relationship_c
@@ -190,7 +190,7 @@ class Policy:
                 return self.offer(case, t, self.next_price(t, theirs, step=0.5, case=case), intent="final push")
             return self.close(case, t, acceptable, c_theirs, rival_best_c)
         if t.rounds_left <= 1:
-            return self.accept(t) if acceptable else Decision("walk", sid)
+            return self.accept(t) if acceptable else self.rescue(case, t, rival_best_c)
         gap = 1 + p["accept_gap_pct"] / 100
         close = t.our_costs and self.c_track(case, t.standing_terms, t) <= t.our_costs[-1] * gap
         if close and acceptable and c_theirs < t.opening_cost:
@@ -240,6 +240,8 @@ class Policy:
             return None
         if not must_haves_ok(case, t.standing_terms, t.standard):
             return None
+        if self.unverified_must_have(case, t):
+            return None  # its quote PDF unread: a must-have field it left out closes on standard terms we don't know
         c = self.cost(case, t)
         return c if c < alternative_cost(case) else None
 
@@ -639,7 +641,47 @@ class Policy:
                 return Decision("send", t.supplier_id, term_sheets=[*variants, own][:3],
                                 intent="appreciative: we can agree to your offer; we would prefer it with a wider "
                                        "index deadband")
-        return self.accept(t) if acceptable else Decision("walk", t.supplier_id)
+        return self.accept(t) if acceptable else self.rescue(case, t, rival_best_c)
+
+    @staticmethod
+    def unverified_must_have(case, t):
+        """Its quote PDF is unread (no standard terms) and its offer leaves out a must-have field: that
+        field closes on standard terms we do not know, so the must-have cannot be checked (the buyer's plan
+        would fill it in and pass it - a deal that may break it scores 0)."""
+        fixed = case.get("fixed_terms") or {}
+        return not t.standard and any(m["field"] not in t.standing_terms and m["field"] not in fixed
+                                      for m in case["buyer"].get("must_haves") or [])
+
+    def rescue(self, case, t, rival_best_c):
+        """Its offer breaks a must-have and no other bidder has an eligible one. Walking away scores the
+        alternative - and so does a counter it walks away from - so with a message left, send its own
+        terms (its standard terms for what it left out) with only the must-have fields fixed, at its
+        price; an accept stays possible after the round limit. Else, or if that still loses to the
+        alternative: walk, as before."""
+        walk = Decision("walk", t.supplier_id)
+        broken = not must_haves_ok(case, t.standing_terms, t.standard) or self.unverified_must_have(case, t)
+        if t.rounds_left < 1 or rival_best_c < math.inf or t.standing_terms.get("unit_price") is None or not broken:
+            return walk
+        terms = closing_terms(case, t.standing_terms, t.standard)
+        sheet = complete_offer(case, {f: terms.get(f) for f in case["negotiable"]})
+        for m in case["buyer"].get("must_haves") or []:
+            f, ok = m["field"], OPS[m["op"]]
+            if f not in case["negotiable"] or (sheet.get(f) is not None and ok(sheet[f], m["value"])):
+                continue
+            fits = [o for o in (case.get("term_options") or {}).get(f) or [m["value"]] if o is not None
+                    and ok(o, m["value"])]
+            if not fits:
+                return walk
+            cur = sheet.get(f)
+            numeric = isinstance(cur, int | float) and all(isinstance(o, int | float) for o in fits)
+            sheet[f] = min(fits, key=lambda o: abs(o - cur)) if numeric else fits[0]
+        if not must_haves_ok(case, sheet, t.standard) or self.c(case, sheet, t) >= alternative_cost(case):
+            return walk
+        t.our_prices.append(sheet["unit_price"])
+        t.our_costs.append(self.c(case, sheet, t))
+        t.last_sheet = sheet
+        return Decision("send", t.supplier_id, term_sheets=[sheet],
+                        intent="appreciative: we accept your price and terms; only our must-have term differs")
 
     def clause_variants(self, case, t, sheet):
         """``sheet`` with the index clause cheapest for us (e.g. a 5 % instead of a 0 % deadband): once at

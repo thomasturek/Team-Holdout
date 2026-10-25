@@ -84,7 +84,9 @@ class PolicyAgent:
         t.standing_id, t.standing_terms = sheet_id, terms
         t.offers = [(ts["term_sheet_id"], ts["terms"]) for ts in latest(events).get("term_sheets") or [] if ts.get("term_sheet_id")]
         t.status = latest(events).get("status") or "open"
-        t.standard = standard_terms(events) or t.standard
+        # a quote PDF can print a term as "none" (effective_date none: 614 times in D02); as a value it makes
+        # total_cost raise in every decide and in closing() - drop it, the case's own terms fill the gap
+        t.standard = {k: v for k, v in (standard_terms(events) or {}).items() if v != "none"} or t.standard
         t.rounds_left = moves_left(case, events)
         t.their_prices = [
             m["term_sheets"][0]["terms"].get("unit_price")
