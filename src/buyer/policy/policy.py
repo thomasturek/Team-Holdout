@@ -67,7 +67,6 @@ ARCHETYPE_RATE = {"cash_short_jobshop": 0.18, "group_ladder": 0.07, "near_monopo
 MENU_SPREAD = 0.003
 MENU_COMBOS = 300
 CLAUSE_WORTH = 0.04
-TRADE_SLACK = 0.002
 FIRST_MESSAGE_CLAIMS = 3
 WEAK_CLAIM = 0.2
 CLAIM_WEIGHT = {"notice": 1.0, "ppm": 0.75, "rival": 0.7, "cost": 0.6, "news": 0.55, "index": 0.5, "fc": 0.45,
@@ -456,7 +455,6 @@ class Policy:
         theirs = t.standing_terms.get("unit_price")
         hungry = self.supplier_model(case, t)["interest_rate"] >= CASH_HUNGRY_RATE
         at_theirs = self.c(case, {**a, "unit_price": theirs}, t) if theirs else math.inf
-        c_a = self.c(case, a, t)
         for v in lever_values(case, a, t.standard, t.profile):
             if not v["must_haves_ok"]:
                 continue
@@ -469,8 +467,6 @@ class Policy:
                 sheet = self.cheap_money_term(case, t, sheet)
             if (theirs and not hungry and v["field"] == "payment_days"
                     and self.c(case, {**sheet, "unit_price": theirs}, t) > at_theirs * (1 + OWN_PRICE_SLACK) + 1.0):
-                continue
-            if self.c(case, sheet, t) > c_a * (1 + TRADE_SLACK) + 1.0:
                 continue
             gain = v["supplier_gain"] or 0.0
             if lever_asked(v, a, asks):

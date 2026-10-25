@@ -104,7 +104,7 @@ def test_a_lever_trade_never_costs_us_more_at_the_suppliers_own_price():
     assert all(s["payment_days"] >= 45 for s in p.decide(case, t).term_sheets)
 
 
-def test_no_trade_sheet_costs_us_more_than_our_own_sheet():
+def test_the_index_clause_trade_survives_with_the_long_payment_term():
     from buyer.runtime.agent import scout_profiles
 
     case = practice("case:P02")
@@ -113,5 +113,5 @@ def test_no_trade_sheet_costs_us_more_than_our_own_sheet():
     p = Policy({**load_params(), "claims_per_msg": 0})
     t = ThreadState(sid, "offer:1", quote, "open", {"payment_days": 30}, 9, profile=scout_profiles(case)[sid])
     t.signals = {"cost_drivers_claimed": ["CU-NOTATION", "LCI-C", "PPI-C241"]}
-    sheets = p.decide(case, t).term_sheets
-    assert all(p.c(case, s, t) <= p.c(case, sheets[0], t) * 1.002 + 1.0 for s in sheets)
+    clause_sheets = [s for s in p.decide(case, t).term_sheets if s.get("index_clause")]
+    assert clause_sheets and clause_sheets[0]["payment_days"] == 90
