@@ -5,7 +5,7 @@ import math
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from arena_kit.cost import complete_offer, must_haves_ok, supplier_value, total_cost
+from arena_kit.cost import complete_offer, must_haves_ok, snap, supplier_value, total_cost
 
 from buyer.facts.costing import asked as lever_asked
 from buyer.facts.costing import c as relationship_c
@@ -63,7 +63,12 @@ DEFAULTS = {
     # varied the payment days, while suppliers asked for volume, longer contracts, index clauses.
     "lever_trades": 1.0,  # > 0.5 = on
     "min_step_pct": 0.0,
+    # mirroring suppliers (runs/night/out/fable_ceiling.md, Finding 1): Brandlhuber and Kalwisz answer our
+    # step with 0.5-0.95 of it and land where our ascent lets them before their fixed final offer - a
+    # small step leaves the gap on the table. 0 = off.
+    "mirror_frac": 0.3,  # then our step is at least this share of the remaining gap
 }
+MIRROR_RATIO = (0.4, 1.2)  # its step / our step, in each of the last two rounds; fixed steppers fall outside
 DEEP_OPEN_TYPES = ("raw_material", "rfq")
 ARCHETYPE_LEAD_EFFORT = {"near_monopolist": 0.005}
 ARCHETYPE_RATE = {"cash_short_jobshop": 0.18, "group_ladder": 0.07, "near_monopolist": 0.07}
@@ -193,7 +198,11 @@ class Policy:
             return self.close(case, t, acceptable, c_theirs, rival_best_c)
         prev = t.last_sheet
         decision = self.offer(case, t, self.next_price(t, theirs, case=case), rival_best_c=rival_best_c)
-        if prev is not None and decision.term_sheets[0] == prev and acceptable and not t.holding:
+        lead = decision.term_sheets[0] if decision.term_sheets else None
+        # it already stands at our lead price: an identical resend reads as "your options remain unchanged"
+        # and makes it walk (P08 769d64: 0 vs 0.826 for accepting the same offer) - close instead
+        matched = lead is not None and lead.get("unit_price") is not None and theirs <= lead["unit_price"]
+        if prev is not None and lead == prev and acceptable and (matched or not t.holding):
             return self.close(case, t, acceptable, c_theirs, rival_best_c)
         return decision
 
@@ -289,11 +298,35 @@ class Policy:
                     step = p["token_frac"] * default  # first hold, or a hold past the stall limit
             if t.rounds_left <= round(p["endgame_moves"]) + 1:
                 step, t.holding = max(step, p["endgame_frac"] * gap), False
+        if case is not None and not t.holding and gap > 0:
+            step = self.mirror_step(t, theirs, gap, step)
         if case is not None and not t.jumped and self.cash(t)[1] >= 0.5 and self.flat_replies(t) >= 2:
             step, t.holding, t.jumped = max(step, HOLD_JUMP * gap), False, True
         if not t.holding and gap > 0 and p["reciprocity"] <= 0:
             step = max(step, min(p["min_step_pct"] / 100 * theirs, MIN_STEP_GAP * gap))
         return step
+
+    def mirror_step(self, t, theirs, gap, step):
+        """A supplier that mirrors our steps lands where our ascent lets it before its final offer:
+        walk faster (at least `mirror_frac` of the gap), never slower than `step`, and stay below where its
+        next step lands (or it agrees at our price and the rest of the gap is lost). Mirroring = its last
+        two steps were each MIRROR_RATIO of the step of ours they answered. A fixed stepper (Werdenfels
+        0.10 per reply whatever we do) or a supplier that ignores us falls outside the band."""
+        frac, (lo, hi) = self.p.get("mirror_frac", 0.0), MIRROR_RATIO
+        ours, tp = t.our_prices, t.their_prices
+        if frac <= 0 or len(ours) < 3 or len(tp) != len(ours) + 1:  # tp[k] answers ours[k-1]
+            return step
+        tol = 0.0005 * theirs
+        ratios = []
+        for k in (1, 2):  # the latest reply, then the one before
+            our_step, its_step = ours[-k] - ours[-k - 1], tp[-k - 1] - tp[-k]
+            if our_step <= tol or its_step <= tol:
+                return step
+            ratios.append(its_step / our_step)
+        if not all(lo <= r <= hi for r in ratios):
+            return step
+        last_move = tp[-2] - tp[-1]
+        return max(step, min(frac * gap, max(0.0, gap - 1.5 * last_move)))
 
     @staticmethod
     def flat_replies(t, tol=1.0):
@@ -339,6 +372,9 @@ class Policy:
                 a = {**a, "unit_price": cap}
         c_cap = self.c(case, t.standing_terms, t) if t.standing_terms.get("unit_price") is not None else math.inf
         sheets = self.menu(case, t, a, c_cap) or [a]
+        own_lead = self.own_lead_sheet(case, t, a)
+        if own_lead is not None and own_lead not in sheets:
+            sheets = [sheets[0], own_lead, *sheets[1:]]
         if t.last_sheet is not None and sheets[0] == t.last_sheet:
             t.holding = True
         asks = list((t.signals or {}).get("asks") or [])
@@ -496,6 +532,22 @@ class Policy:
 
     def c_track(self, case, terms, t):
         return self.c(case, terms, t) if floor_binds(t) else total_cost(case, terms, t.standard)
+
+    def own_lead_sheet(self, case, t, a):
+        """`a` at the supplier's own (longer) lead time, priced so our C stays the same - or None. A full
+        supplier charges for speed (Ravensteiner 1.9/unit for 42 vs 56 days, P10: 0.663 vs 0.617) and
+        does not always volunteer its slower alternative; with only a fast sheet on the table the cheaper
+        structure vanishes (runs/night/out/fable_ceiling.md, Finding 3). Must-haves are respected."""
+        if "lead_time_days" not in case["negotiable"] or a.get("unit_price") is None:
+            return None
+        std_lead = t.standing_terms.get("lead_time_days") or (t.standard or {}).get("lead_time_days")
+        if not std_lead or std_lead <= (a.get("lead_time_days") or 0):
+            return None
+        sheet = complete_offer(case, {**a, "lead_time_days": snap(case, "lead_time_days", std_lead)})
+        if sheet.get("lead_time_days") == a.get("lead_time_days"):
+            return None
+        sheet = self.above_floor(case, t, self.same_cost(case, sheet, a, t.standard))
+        return sheet if must_haves_ok(case, sheet, t.standard) else None
 
     @staticmethod
     def above_floor(case, t, terms):
