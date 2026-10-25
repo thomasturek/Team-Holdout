@@ -1,4 +1,4 @@
-"""Three fixes from the night's ceiling analysis (runs/night/out/fable_ceiling.md): walk faster against
+﻿"""Three fixes from the night's ceiling analysis (runs/night/out/fable_ceiling.md): walk faster against
 mirroring suppliers, close instead of an identical resend, and keep the supplier's own lead time on the
 table."""
 
@@ -14,6 +14,7 @@ from buyer.policy.policy import Decision, Policy, ThreadState
 KIT = Path(__file__).resolve().parents[1] / "starter-kit" / "arena_kit" / "sim_cases"
 S01 = json.loads((KIT / "S01.json").read_text(encoding="utf-8"))  # unit_price + payment_days, no alternative
 S02 = json.loads((KIT / "S02.json").read_text(encoding="utf-8"))  # + lead_time_days options 21..49
+ON = Policy({"mirror_frac": 0.3})  # the mirror rule is off by default
 
 
 def thread(case, terms, ours=(), theirs=(), rounds=6):
@@ -28,7 +29,7 @@ def test_a_mirroring_supplier_gets_a_bigger_step():
     # ours +1.0, +0.8 -> its -0.8, -0.7 (ratios 0.8, 0.875): it mirrors
     t = thread(S01, {"unit_price": 134.8}, ours=[128.0, 129.0, 129.8], theirs=[140.0, 136.3, 135.5, 134.8])
     gap, default = 134.8 - 129.8, 0.1
-    step = Policy().mirror_step(t, 134.8, gap, default)
+    step = ON.mirror_step(t, 134.8, gap, default)
     assert step == pytest.approx(0.3 * gap)  # at least mirror_frac of the gap
     assert step <= gap - 1.5 * 0.7  # and below where its next mirrored step lands
 
@@ -36,19 +37,19 @@ def test_a_mirroring_supplier_gets_a_bigger_step():
 def test_a_fixed_stepper_or_a_silent_supplier_keeps_the_normal_step():
     # Werdenfels: -0.10 per reply whatever we do; ours +0.10 then +0.06 -> ratios 1.0 and 1.67
     t = thread(S01, {"unit_price": 5.10}, ours=[4.80, 4.90, 4.96], theirs=[5.40, 5.30, 5.20, 5.10])
-    assert Policy().mirror_step(t, 5.10, 0.14, 0.02) == 0.02
+    assert ON.mirror_step(t, 5.10, 0.14, 0.02) == 0.02
     held = thread(S01, {"unit_price": 46.0}, ours=[44.0, 44.2, 44.4], theirs=[47.0, 46.0, 46.0, 46.0])
-    assert Policy().mirror_step(held, 46.0, 1.6, 0.2) == 0.2  # it held: no mirroring
+    assert ON.mirror_step(held, 46.0, 1.6, 0.2) == 0.2  # it held: no mirroring
     short = thread(S01, {"unit_price": 134.8}, ours=[128.0, 129.0], theirs=[140.0, 136.3, 135.5])
-    assert Policy().mirror_step(short, 134.8, 5.8, 0.7) == 0.7  # one ratio is not enough
+    assert ON.mirror_step(short, 134.8, 5.8, 0.7) == 0.7  # one ratio is not enough
 
 
 def test_the_mirror_step_never_shrinks_our_step_and_can_be_switched_off():
     t = thread(S01, {"unit_price": 134.8}, ours=[128.0, 129.0, 129.8], theirs=[140.0, 136.3, 135.5, 134.8])
-    assert Policy().mirror_step(t, 134.8, 5.0, 4.0) == 4.0
-    assert Policy({"mirror_frac": 0.0}).mirror_step(t, 134.8, 5.0, 0.1) == 0.1
+    assert ON.mirror_step(t, 134.8, 5.0, 4.0) == 4.0
+    assert Policy().mirror_step(t, 134.8, 5.0, 0.1) == 0.1  # off by default
     misaligned = thread(S01, {"unit_price": 134.8}, ours=[128.0, 129.0, 129.8], theirs=[140.0, 134.8])
-    assert Policy().mirror_step(misaligned, 134.8, 5.0, 0.1) == 0.1
+    assert ON.mirror_step(misaligned, 134.8, 5.0, 0.1) == 0.1
 
 
 def test_decide_walks_faster_against_a_mirroring_supplier_end_to_end():
@@ -66,8 +67,8 @@ def test_decide_walks_faster_against_a_mirroring_supplier_end_to_end():
                 break
         return t.our_prices
 
-    fast, slow = play(Policy()), play(Policy({"mirror_frac": 0.0}))
-    assert fast[-1] - fast[-2] > slow[-1] - slow[-2]  # the last step is bigger with the mirror rule
+    fast, slow = play(Policy({"mirror_frac": 0.3})), play(Policy())
+    assert fast[-1] > slow[-1] + 0.5  # with the mirror rule we have walked clearly further towards it
 
 
 # --- no identical resend ---------------------------------------------------------------------------------

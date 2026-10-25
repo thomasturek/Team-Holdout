@@ -65,8 +65,9 @@ DEFAULTS = {
     "min_step_pct": 0.0,
     # mirroring suppliers (runs/night/out/fable_ceiling.md, Finding 1): Brandlhuber and Kalwisz answer our
     # step with 0.5-0.95 of it and land where our ascent lets them before their fixed final offer - a
-    # small step leaves the gap on the table. 0 = off.
-    "mirror_frac": 0.3,  # then our step is at least this share of the remaining gap
+    # small step leaves the gap on the table. Off by default: evidence is two practice suppliers and the
+    # simulator population is slightly worse with it; switch on (0.3) only if a practice check confirms.
+    "mirror_frac": 0.0,  # > 0: our step is at least this share of the remaining gap
 }
 MIRROR_RATIO = (0.4, 1.2)  # its step / our step, in each of the last two rounds; fixed steppers fall outside
 DEEP_OPEN_TYPES = ("raw_material", "rfq")
