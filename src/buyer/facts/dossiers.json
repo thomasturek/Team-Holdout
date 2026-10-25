@@ -1,23 +1,25 @@
 {
  "suppliers": {
   "sup:70110": {
-   "sessions": 4,
+   "sessions": 25,
    "contact_role": "Owner",
    "drivers": [
     "LCI-C",
     "PPI-C241",
-    "raw_material"
+    "PPI-D351"
    ],
    "asks": [
-    "earlier_effective_date"
+    "faster_payment",
+    "earlier_effective_date",
+    "volume"
    ],
    "said": [],
    "first_move": 0.03221644713421156,
-   "later_move": 0.003070180917418828,
+   "later_move": 0.0017331001767986597,
    "replies_to_final": 4
   },
   "sup:70140": {
-   "sessions": 5,
+   "sessions": 30,
    "contact_role": "Export Manager",
    "drivers": [
     "LCI-C",
@@ -30,15 +32,16 @@
     "other: lower chargeback per complaint"
    ],
    "said": [
+    "asks_for_proof",
     "needs_cash",
     "wants_volume"
    ],
-   "first_move": 0.017113963438350838,
+   "first_move": 0.05338389731621937,
    "later_move": 0.0,
-   "replies_to_final": 7
+   "replies_to_final": 6
   },
   "sup:70210": {
-   "sessions": 5,
+   "sessions": 26,
    "contact_role": "Owner",
    "drivers": [
     "LCI-C",
@@ -46,29 +49,32 @@
     "AS-14404"
    ],
    "asks": [
-    "faster_payment"
+    "faster_payment",
+    "volume"
    ],
    "said": [],
-   "first_move": 0.11720925925925932,
+   "first_move": 0.144117294973545,
    "later_move": 0.0,
    "replies_to_final": 3
   },
   "sup:70240": {
-   "sessions": 5,
+   "sessions": 26,
    "contact_role": "Export Manager",
    "drivers": [
     "LCI-C",
     "PPI-C2431",
     "AS-14404"
    ],
-   "asks": [],
+   "asks": [
+    "faster_payment"
+   ],
    "said": [],
-   "first_move": -0.06922388059701493,
+   "first_move": -0.08494776119402984,
    "later_move": 0.014492753623188406,
    "replies_to_final": 4
   },
   "sup:70250": {
-   "sessions": 5,
+   "sessions": 26,
    "contact_role": "Owner",
    "drivers": [
     "LCI-C",
@@ -76,56 +82,54 @@
     "AS-14404"
    ],
    "asks": [
-    "volume",
     "faster_payment",
+    "volume",
     "other: decision on final offer"
    ],
-   "said": [
-    "free_capacity",
-    "needs_cash"
-   ],
-   "first_move": 0.1632900432900433,
-   "later_move": 0.011249999999999906,
-   "replies_to_final": 4
+   "said": [],
+   "first_move": 0.2025108225108225,
+   "later_move": 0.015873015873015872,
+   "replies_to_final": 3
   },
   "sup:70410": {
-   "sessions": 5,
+   "sessions": 31,
    "contact_role": "Segment Manager",
    "drivers": [],
    "asks": [
     "volume",
     "longer_lead_time",
-    "longer_contract"
+    "forecast"
    ],
    "said": [
+    "asks_for_proof",
     "wants_volume"
    ],
-   "first_move": 0.17014429283653562,
+   "first_move": 0.17990730115610581,
    "later_move": 0.0,
    "replies_to_final": 1
   },
   "sup:70510": {
-   "sessions": 4,
+   "sessions": 26,
    "contact_role": "Key Account Manager",
    "drivers": [
-    "raw_material",
     "CU-NOTATION",
-    "LCI-C"
+    "LCI-C",
+    "PPI-C241"
    ],
    "asks": [
-    "faster_payment"
+    "index_clause",
+    "faster_payment",
+    "volume"
    ],
    "said": [
-    "asks_for_proof",
-    "prefers_standard_payment",
     "wants_clause"
    ],
-   "first_move": 0.00236472658931898,
-   "later_move": 0.0006716818914562063,
+   "first_move": 0.03007439653878307,
+   "later_move": 0.0,
    "replies_to_final": 4
   },
   "sup:70530": {
-   "sessions": 4,
+   "sessions": 25,
    "contact_role": "Key Account Manager",
    "drivers": [
     "CU-NOTATION",
@@ -142,12 +146,12 @@
     "committee",
     "wants_volume"
    ],
-   "first_move": 0.07153161530169588,
+   "first_move": 0.07489226444099689,
    "later_move": 0.0,
    "replies_to_final": 6
   },
   "sup:70610": {
-   "sessions": 4,
+   "sessions": 30,
    "contact_role": "Inside Sales",
    "drivers": [
     "PPI-C2594",
@@ -155,37 +159,38 @@
    ],
    "asks": [
     "volume",
-    "longer_contract",
-    "faster_payment"
+    "forecast",
+    "longer_contract"
    ],
    "said": [
-    "free_capacity"
+    "asks_for_proof",
+    "free_capacity",
+    "wants_volume"
    ],
    "first_move": 0.14577776186469504,
-   "later_move": 0.0030298312635474176,
+   "later_move": 0.0035778175313059034,
    "replies_to_final": 4
   },
   "sup:70620": {
-   "sessions": 4,
+   "sessions": 27,
    "contact_role": "Inside Sales",
    "drivers": [
     "LCI-C",
-    "PPI-C2815"
+    "PPI-C2815",
+    "raw_material"
    ],
    "asks": [
     "volume",
     "forecast",
-    "faster_payment"
+    "longer_contract"
    ],
-   "said": [
-    "free_capacity"
-   ],
-   "first_move": 0.01088494924968516,
+   "said": [],
+   "first_move": 0.011475849804188835,
    "later_move": 0.0,
    "replies_to_final": 3
   },
   "sup:70710": {
-   "sessions": 5,
+   "sessions": 27,
    "contact_role": "Inside Sales",
    "drivers": [
     "AS-14404",
@@ -194,17 +199,18 @@
    ],
    "asks": [
     "index_clause",
-    "longer_contract"
+    "longer_contract",
+    "faster_payment"
    ],
    "said": [
     "wants_clause"
    ],
-   "first_move": 0.07025021003844682,
-   "later_move": 0.0,
-   "replies_to_final": 3
+   "first_move": 0.09091131824277494,
+   "later_move": 0.00802807635207143,
+   "replies_to_final": 4
   },
   "sup:70740": {
-   "sessions": 5,
+   "sessions": 32,
    "contact_role": "Inside Sales",
    "drivers": [
     "AS-14404",
@@ -214,15 +220,16 @@
    "asks": [
     "index_clause",
     "volume",
-    "longer_contract"
+    "forecast"
    ],
    "said": [
     "free_capacity",
-    "wants_clause"
+    "wants_clause",
+    "wants_volume"
    ],
-   "first_move": 0.055840294189279965,
-   "later_move": 0.0,
-   "replies_to_final": 3
+   "first_move": 0.09485677275002206,
+   "later_move": 0.0175438596491228,
+   "replies_to_final": 4
   }
  }
 }

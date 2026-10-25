@@ -55,6 +55,8 @@ def observation(doc: dict) -> dict | None:
     case, r = doc.get("case") or {}, doc.get("result") or {}
     if not (r.get("deal") and r.get("c_best") and r.get("terms", {}).get("unit_price") and case.get("buyer")):
         return None
+    if not r.get("score"):  # a deal at the opening offer (e.g. a forced-strategy test) says nothing about a floor
+        return None
     sid = r["supplier_id"]
     thread = (doc.get("threads") or {}).get(sid) or {}
     theirs = [ts["terms"].get("unit_price") for m in thread.get("messages") or []
@@ -150,7 +152,7 @@ def observations(folder: Path = SESSIONS) -> list[dict]:
 
 
 def build(folder: Path = SESSIONS, path: Path = MEMORY_FILE, write: bool = True) -> dict:
-    """Memory per supplier and parts (the median over its sessions) and the RFQ caps per part."""
+    """Memory per supplier and parts (the lowest best price over its sessions) and the RFQ caps per part."""
     from .profile import lookup_profile  # the estimate we would use without memory
 
     grouped: dict[str, list[dict]] = {}
@@ -159,7 +161,7 @@ def build(folder: Path = SESSIONS, path: Path = MEMORY_FILE, write: bool = True)
     entries, caps = {}, {}
     for k, obs in sorted(grouped.items()):
         o = obs[-1]
-        best = round(statistics.median(x["best_price"] for x in obs), 4)
+        best = round(min(x["best_price"] for x in obs), 4)  # the lowest price a session showed it reaches
         rfq = len(o["bidders"]) > 1
         estimate, p = None, {}
         if len(o["parts"]) == 1:  # the data-only estimate, before any memory

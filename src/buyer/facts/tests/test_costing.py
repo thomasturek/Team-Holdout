@@ -19,7 +19,10 @@ def _session(case_id):
     for path in sorted((REPO_ROOT / "runs" / "practice_sessions").glob(f"*_{case_id.replace(':', '_')}_*.json"),
                        reverse=True):
         doc = json.loads(path.read_text(encoding="utf-8"))
-        if (doc.get("result") or {}).get("deal"):
+        purpose = str((doc.get("run") or {}).get("purpose") or "")
+        if purpose.startswith(("strat-", "bet-")):  # forced-strategy experiments end at unusual terms
+            continue
+        if (doc.get("result") or {}).get("deal") and (doc.get("result") or {}).get("score"):
             return doc
     return None
 

@@ -62,6 +62,7 @@ class PolicyAgent:
         from buyer.policy.policy import Policy, load_params
 
         self.policy = Policy({**load_params(), **(params or {})})  # a partial set changes only what it names
+        self.base_p = dict(self.policy.p)  # the policy's own parameters; a strategy only overrides them per move
         self.states, self._lock = {}, threading.Lock()  # the policy is fast plain code: one at a time
         self.profiles = None  # the Scout's supplier profiles, built once per case
         self.readings = {}  # supplier -> (messages in the thread when read, Reading of its latest reply)
@@ -106,16 +107,43 @@ class PolicyAgent:
             for st in states.values():
                 st.case_threads = threads
             t = states[supplier_id]
-            rival = self.policy.rival_best(case, states, t)  # eligible offers only (Policy.eligible_cost)
-            decision = self.policy.decide(case, t, rival_best_c=rival)
+            strategy = self._strategy(case, t, threads[supplier_id])
+            self.policy.p = {**self.base_p, **(strategy.params if strategy else {})}
+            try:
+                rival = self.policy.rival_best(case, states, t)  # eligible offers only (Policy.eligible_cost)
+                decision = self.policy.decide(case, t, rival_best_c=rival)
+            finally:
+                self.policy.p = dict(self.base_p)
             if decision.kind == "walk":  # the runtime stops this thread (or ends the case): no longer a rival
                 t.dropped = True
             profile = self._writer_profile(case, decision.supplier_id)
         move, email = self._message(case, threads, decision, profile, reading, deadline)
         diplomat = diplomat_trace(reading, email)
         diplomat.update(self._llm_reading_trace(supplier_id, len(threads[supplier_id])))
-        trace = {"decision": decision, "rival_best_c": rival, "diplomat": diplomat}
+        trace = {"decision": decision, "rival_best_c": rival, "diplomat": diplomat,
+                 "strategy": {"name": strategy.name, "reason": strategy.reason} if strategy else None}
         return {**move, "trace": trace}
+
+    @staticmethod
+    def _strategy(case, t, events):
+        """The Scout's strategy for this move (buyer.facts.strategy), per environment BUYER_STRATEGY:
+        off (default: the policy's own parameters), auto (chosen from the profile, switched by the
+        replies), or a strategy's name to force it on every supplier (for A/B tests)."""
+        mode = os.environ.get("BUYER_STRATEGY", "off").strip().lower()
+        if mode in ("", "off"):
+            return None
+        try:
+            from buyer.facts.strategy import PARAMS, _make, choose
+
+            if mode in PARAMS:
+                s = _make(mode, f"forced by BUYER_STRATEGY={mode}")
+            else:
+                s = choose(case, t.profile, t.signals, list(events or []), current=getattr(t, "strategy", None))
+            t.strategy = s
+            return s
+        except Exception:
+            log.exception("strategy failed - the policy's own parameters")
+            return None
 
     def closing(self, case, threads):
         start = time.monotonic()
