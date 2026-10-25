@@ -29,6 +29,9 @@ export const useLoadingStore = defineStore('loading', () => {
     if (pending.value === 0 && seenRequest) finishBoot();
   }
 
+  setTimeout(() => {
+    if (!seenRequest) finishBoot();
+  }, MIN_SPLASH_MS);
   setTimeout(() => (booted.value = true), MAX_SPLASH_MS);
 
   return { pending, booted, busy, start, stop };
