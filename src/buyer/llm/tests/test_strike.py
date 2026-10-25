@@ -93,3 +93,25 @@ def test_a_dropped_sentence_leaves_no_open_quote():
 
     assert '"' not in balance_quotes('Forward this: "Hollerau offers Option A.')
     assert balance_quotes('a "b" c') == 'a "b" c'
+
+
+def test_the_volume_is_stated_in_figures_when_asked_or_in_a_bundle():
+    from buyer.llm.writer import volume_line
+
+    class D:
+        term_sheets = [{"unit_price": 5.2, "payment_days": 60}]
+
+    bundle = {"type": "bundling", "fixed_terms": {"volume_per_year": 30000, "contract_months": 24}}
+    plain = {"type": "price_increase", "fixed_terms": {"volume_per_year": 6110, "contract_months": 12}}
+    assert volume_line(bundle, D(), None, []) == "Binding volume in every option: 30,000 units a year over 24 months."
+    assert "6,110" in volume_line(plain, D(), None, [{"from": "sup", "body": "Which volume can you commit to?"}])
+    assert volume_line(plain, D(), None, [{"from": "sup", "body": "Our price stands."}]) == ""
+
+
+def test_a_complaint_about_late_payment_is_recognised():
+    from buyer.llm.writer import complains_of_late_payment
+
+    assert complains_of_late_payment([{"from": "sup", "body": "Since your payments are often late, we cannot."}])
+    assert complains_of_late_payment([{"from": "sup", "body": "Several invoices are overdue."}])
+    assert not complains_of_late_payment([{"from": "sup", "body": "Faster payment is welcome."}])
+    assert not complains_of_late_payment([{"from": "buyer", "body": "We never pay late."}])

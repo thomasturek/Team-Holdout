@@ -208,6 +208,9 @@ def write(
     except Exception:  # odd case or thread: a plain subject
         subject = "Re: your offer"
     offers = offers_block(attr(decision, "term_sheets"))
+    vline = volume_line(case, decision, signals, thread)
+    if offers and vline:
+        offers = f"{offers}\n{vline}"
     questions = questions_block(attr(decision, "questions"))
     allowed = allowed_tokens(decision, case, profile)
     injected = [*sentences, offers, questions, sign_off()]
@@ -257,6 +260,51 @@ def write(
 
 
 # --- prompt --------------------------------------------------------------------------------------------
+VOLUME_TYPES = ("bundling", "capacity")
+PLAYBOOK = {
+    "capacity": "The supplier is short of capacity or a sole source: it gives its best price to customers with "
+    "firm, long-term commitments and planning security. Present Option A as exactly that commitment (the volume "
+    "line under the options states it), take its own lead time where an option does, and stay calm and businesslike.",
+    "bundling": "This is a bundle: the options move more of our parts to this supplier. Its gain is volume and steady "
+    "load for its plant - say that the bundle is business on top of what it supplies today (the volume line under the "
+    "options states it) and that Option A secures it.",
+    "quality": "Payment terms and volume are fixed in this enquiry: never offer, mention or imply faster payment or a "
+    "different volume. The trade is in the quality terms: a lower chargeback for a better price.",
+    "raw_material": "It blames raw-material costs: answer with the falling cost lines in the claims and, if an option "
+    "has an index clause, with the clause - never argue that its costs did not rise in general.",
+    "rfq": "Several bidders compete: state plainly that the award goes to the best package, without promising it.",
+}
+
+
+def volume_line(case, decision, signals=None, thread=()) -> str:
+    sheets = [s for s in (attr(decision, "term_sheets") or []) if isinstance(s, dict)]
+    fixed = attr(case, "fixed_terms") or {}
+    lead = sheets[0] if sheets else {}
+    volume = lead.get("volume_per_year") or fixed.get("volume_per_year")
+    months = lead.get("contract_months") or fixed.get("contract_months")
+    if not volume:
+        return ""
+    asked = "volume" in " ".join(str(a) for a in (attr(signals, "asks") or [])).lower()
+    last = next((str(m.get("body") or "") for m in reversed(list(thread or [])) if m.get("from") != "buyer"), "")
+    asked = asked or bool(re.search(r"\bvolume|\bquantit|\bhow many\b", last, re.I))
+    first = not any(m.get("from") == "buyer" for m in (thread or []))
+    if not (asked or (first and attr(case, "type") in VOLUME_TYPES)):
+        return ""
+    term = f" over {months} months" if months else ""
+    return f"Binding volume in every option: {volume:,} units a year{term}."
+
+
+LATE_PAY_RE = re.compile(
+    r"\b(?:late|overdue|delayed|slow)\b[^.]{0,40}\b(?:pay|paid|payments?|invoices?)\b"
+    r"|\b(?:pay|paid|payments?|invoices?)\b[^.]{0,40}\b(?:late|overdue|delayed|slow)\b",
+    re.I,
+)
+
+
+def complains_of_late_payment(thread) -> bool:
+    return any(LATE_PAY_RE.search(str(m.get("body") or "")) for m in (thread or []) if m.get("from") != "buyer")
+
+
 def confirm_at_once(case) -> bool:
     return len(attr(case, "suppliers") or []) <= 1
 
@@ -304,6 +352,11 @@ def build_prompt(decision, case, thread, profile, signals, claims, offers, quest
     if brief:
         lines.append("DOSSIER (what we know about this supplier - choose emphasis and angle; never quote it): "
                      + re.sub(r"\s+", " ", ID_RE.sub("", str(attr(profile, "dossier")))).strip()[:900])
+    if complains_of_late_payment(thread):
+        lines.append("ITS PAYMENT COMPLAINT: it says we pay its invoices late. Acknowledge it plainly and commit that "
+                     "we will pay every invoice on its agreed due date under Option A - no new term, no figures.")
+    if attr(case, "type") in PLAYBOOK:
+        lines.append(f"PLAYBOOK FOR THIS SITUATION: {PLAYBOOK[attr(case, 'type')]}")
     lines.append("CONFIRM AT ONCE: yes - one supplier: we accept a confirmed Option A at once" if confirm_at_once(case)
                  else "CONFIRM AT ONCE: no - several bidders: do not promise to confirm or award at once")
     clause = any((s.get("index_clause") if isinstance(s, dict) else None) for s in attr(decision, "term_sheets") or [])
