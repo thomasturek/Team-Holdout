@@ -87,3 +87,31 @@ def test_a_floor_that_stops_our_concession_holds_instead_of_closing():
     t.standing_terms = {"unit_price": 138.6, "payment_days": 45, "effective_date": "2027-04-01"}
     t.rounds_left = 8
     assert p.decide(case, t).kind == "send"
+
+
+def test_a_lever_trade_never_costs_us_more_at_the_suppliers_own_price():
+    case = practice("case:P03")
+    quote = {"unit_price": 438.21, "payment_days": 30, "contract_months": 12, "volume_per_year": 4580}
+    p = Policy({**load_params(), "claims_per_msg": 0})
+    from buyer.runtime.agent import scout_profiles
+
+    std = {"payment_days": 30, "incoterm": "DAP"}
+    t = ThreadState("sup:70530", "offer:1", quote, "open", std, 9, profile=scout_profiles(case)["sup:70530"])
+    first = p.decide(case, t)
+    t.standing_id = "offer:2"
+    t.standing_terms = {**first.term_sheets[0], "unit_price": 431.63, "payment_days": 90}
+    t.rounds_left, t.signals = 8, {"asks": ["volume", "forecast"]}
+    assert all(s["payment_days"] >= 45 for s in p.decide(case, t).term_sheets)
+
+
+def test_no_trade_sheet_costs_us_more_than_our_own_sheet():
+    from buyer.runtime.agent import scout_profiles
+
+    case = practice("case:P02")
+    sid = "sup:70510"
+    quote = {"unit_price": 370.96, "payment_days": 30, "index_clause": None}
+    p = Policy({**load_params(), "claims_per_msg": 0})
+    t = ThreadState(sid, "offer:1", quote, "open", {"payment_days": 30}, 9, profile=scout_profiles(case)[sid])
+    t.signals = {"cost_drivers_claimed": ["CU-NOTATION", "LCI-C", "PPI-C241"]}
+    sheets = p.decide(case, t).term_sheets
+    assert all(p.c(case, s, t) <= p.c(case, sheets[0], t) * 1.002 + 1.0 for s in sheets)

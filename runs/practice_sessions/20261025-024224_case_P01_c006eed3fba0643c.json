@@ -1,0 +1,1054 @@
+{
+ "session_id": "c006eed3fba0643c",
+ "case_id": "case:P01",
+ "set": "practice",
+ "saved_at": "2026-10-25T02:42:24+0200",
+ "run": {
+  "mode": "practice",
+  "purpose": "angle-A",
+  "agent": "policy",
+  "params": {},
+  "repeat": 0
+ },
+ "case": {
+  "case_id": "case:P01",
+  "set": "practice",
+  "type": "price_increase",
+  "title": "Brandlhuber announces +9.5 % on HN volute casings",
+  "briefing": "You negotiate for Hollerau Pumpenwerke with Gießerei Brandlhuber GmbH & Co. KG. Brandlhuber announces +9.5 % on HN volute casings. Need: 8150 pc a year. Category goal: stabilise a strategic supply: a healthy supplier and stable prices count, not only the lowest price. Score: the lowest total cost C as defined in the rules, valued with this case's rates (need lead time 45 days). Fallback if you walk away: the second-source quote quote:7200001. Must-haves: none. Prepare from the data package.",
+  "trigger_doc": "doc:20260911-70110-P01",
+  "parts": [
+   "part:310010"
+  ],
+  "suppliers": [
+   "sup:70110"
+  ],
+  "negotiable": [
+   "unit_price",
+   "effective_date",
+   "payment_days"
+  ],
+  "fixed_terms": {
+   "lead_time_days": 42,
+   "volume_per_year": 8150,
+   "contract_months": 12,
+   "index_clause": null,
+   "incoterm": "FCA",
+   "tooling_eur": 0
+  },
+  "term_options": {
+   "effective_date": [
+    "2026-11-01",
+    "2027-01-01",
+    "2027-04-01"
+   ],
+   "payment_days": [
+    14,
+    30,
+    45,
+    60,
+    90
+   ]
+  },
+  "buyer": {
+   "need_per_year": 8150,
+   "horizon_years": 1.0,
+   "current_unit_price": 126.53,
+   "fallback_unit_price": 136.65,
+   "interest_rate": 0.08,
+   "reference_payment_days": 60,
+   "need_lead_time_days": 45,
+   "category_goal": "stabilise",
+   "fallback_risk_pct": 10,
+   "index_risk_pct": 4,
+   "late_cost_per_day": 420,
+   "cost_per_defect": 216,
+   "sustainable_margin_pct": 3,
+   "relationship_eur_per_point": 15470,
+   "freight_eur_per_unit": {
+    "EXW": 2.19,
+    "FCA": 1.9,
+    "DAP": 0.0
+   },
+   "index_paths": {},
+   "must_haves": [],
+   "alternative": {
+    "kind": "quote",
+    "ref": "quote:7200001",
+    "terms": {
+     "unit_price": 143.22,
+     "payment_days": 60,
+     "lead_time_days": 70,
+     "volume_per_year": 8150,
+     "contract_months": 12,
+     "effective_date": "2027-01-01",
+     "index_clause": null,
+     "incoterm": "FCA",
+     "tooling_eur": 1500,
+     "ppm_commitment": 2376
+    }
+   }
+  },
+  "round_limit": 10,
+  "refs": [
+   "doc:20260911-70110-P01",
+   "ctr:4600070110",
+   "sc:70110@2026Q3",
+   "quote:7200001"
+  ]
+ },
+ "threads": {
+  "sup:70110": {
+   "supplier_id": "sup:70110",
+   "offer_id": "offer:70110-5",
+   "status": "agreed",
+   "closed": null,
+   "messages": [
+    {
+     "thread_id": "thread:P01:70110",
+     "message_id": "msg:70110-0-0",
+     "in_reply_to": null,
+     "from": "sales@70110",
+     "from_name": "Owner, Gießerei Brandlhuber GmbH & Co. KG",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Guten Tag,\n\nThank you for your enquiry. Please find our Angebot below. For many years, our family foundry has taken great pride in supplying your respected company with high-quality castings from our region, and we value our long standing relationship very much.\n\nOur team has prepared our offer carefully. We can offer you a price of €138.55 per unit, valid from 1 November 2026. This Angebot remains valid for 30 days.\n\nTo remain transparent about our situation, LCI-C rose 2.7 % in twelve months and is 30 % of our cost. Furthermore, PPI-C241 rose 6.5 % in twelve months and is 24 % of our cost. We trust that you understand the necessity of these figures for our ongoing operation and quality standards.\n\nViele Grüße aus der Gießerei\nThomas Brandlhuber\nOwner, Gießerei Brandlhuber GmbH & Co. KG",
+     "attachments": [
+      {
+       "attachment_id": "att:70110-0-quote",
+       "name": "quote-offer-70110-0.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70110-0",
+       "terms": {
+        "unit_price": 138.55,
+        "effective_date": "2026-11-01"
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 2,
+      "validity_days": 30
+     },
+     "missing_fields": [
+      "payment_days"
+     ],
+     "claim_results": []
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Dear Mr Brandlhuber,\n\nYou wrote that your family foundry takes pride in supplying us and values our long relationship, and we feel the same. We also remember that you held the old price for us in a hard year, and we want a fair solution for both family companies.\n\nHere is how we see your offer, point by point.\n\nOn the notice period:\nYour letter of 11 September 2026 (doc:20260911-70110-P01) gives 51 days' notice, while our contract (ctr:4600070110) requires 90 days.\n\nOn quality:\nYour quality was 712 ppm defective parts in the four quarters to 2026Q3 (sc:70110@2026Q3).\n\nOn price history:\nOur orders of Volute casing HN 50-200 with you were placed at EUR 128.42 on 2024-10-04 (po:4500011493-10), EUR 128.27 on 2025-06-03 (po:4500012541-10), EUR 126.53 on 2026-01-16 (po:4500013434-10) and EUR 126.53 on 2026-09-21 (po:4500014428-10): the price has not risen.\n\nWe can offer you the following options:\nOption A: unit price EUR 131.59; new price valid from 2027-04-01; payment 30 days net.\nOption B: unit price EUR 132.47; new price valid from 2027-04-01; payment 45 days net.\nOption C: unit price EUR 133.35; new price valid from 2027-04-01; payment 60 days net.\n\nOption A is the package we can approve. It reflects the stable price history and the quality you deliver, and it gives you a clear, reliable basis for the coming years.\n\nIf you confirm Option A as it stands, we can confirm the order straight away.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 131.59,
+        "effective_date": "2027-04-01",
+        "payment_days": 30
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 132.47,
+        "effective_date": "2027-04-01",
+        "payment_days": 45
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 133.35,
+        "effective_date": "2027-04-01",
+        "payment_days": 60
+       }
+      }
+     ],
+     "refs": [
+      "doc:20260911-70110-P01",
+      "ctr:4600070110",
+      "sc:70110@2026Q3",
+      "po:4500011493-10",
+      "po:4500012541-10",
+      "po:4500013434-10",
+      "po:4500014428-10"
+     ]
+    },
+    {
+     "thread_id": "thread:P01:70110",
+     "message_id": "msg:70110-1-2",
+     "in_reply_to": null,
+     "from": "sales@70110",
+     "from_name": "Owner, Gießerei Brandlhuber GmbH & Co. KG",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Guten Tag,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We checked the quality record data you cited; it holds and we took it into account. We checked the price history data you cited; it holds, but it does not change our calculation. We also checked the notice period data you cited; it holds and we took it into account. We did not know that - a fair point.\n\nOur offer stands at a price of €138.10 per unit, Zahlungsziel 60 days net, valid from 1 April 2027. To honor our long-standing partnership, we accept your proposed effective date of 2027-04-01 and 30-day payment terms. Alternatively, with Zahlungsziel 30 days net: €136.50 per unit, valid from 1 April 2027.\n\nOur price reflects our costs; our calculation stays internal. Our general terms and conditions apply; the quote lists our standard terms. This offer stays valid for 30 days.\n\nViele Grüße aus der Gießerei\nThomas Brandlhuber\nOwner, Gießerei Brandlhuber GmbH & Co. KG\n\nQuality Manager: We take the complaints seriously; our 8D report is attached.",
+     "attachments": [
+      {
+       "attachment_id": "att:70110-1-eight_d",
+       "name": "8d-report.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70110-1",
+       "terms": {
+        "unit_price": 138.1,
+        "payment_days": 60,
+        "effective_date": "2027-04-01"
+       }
+      },
+      {
+       "term_sheet_id": "offer:70110-1-a",
+       "terms": {
+        "unit_price": 136.5,
+        "payment_days": 30,
+        "effective_date": "2027-04-01"
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 2,
+      "validity_days": 30
+     },
+     "missing_fields": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      },
+      {
+       "index": 2,
+       "result": "verified"
+      }
+     ]
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Dear Mr Brandlhuber,\n\nYou wrote that the notice period was a fair point, and we appreciate that. It shows the same straightforwardness we have known from your family firm for many years.\n\nYour latest offer still sits well above what we can approve. Our options below move in the direction you care about: Option A pays you faster, on shorter terms, and at a price that is fair for both family companies. Beyond that we see no room for a higher price.\n\nWe can offer you the following options:\nOption A: unit price EUR 131.87; new price valid from 2027-04-01; payment 30 days net.\nOption B: unit price EUR 132.61; new price valid from 2027-04-01; payment 45 days net.\nOption C: unit price EUR 133.35; new price valid from 2027-04-01; payment 60 days net.\n\nOption A is the package we can approve, because it gives your foundry the quickest payment and a clear, stable price from the new start date.\n\nIf you confirm Option A as it stands, we can confirm the order straight away. You held the old price for us in a hard year, and we have not forgotten it. This is how we want to answer that loyalty, with reliable and prompt payment.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 131.87,
+        "effective_date": "2027-04-01",
+        "payment_days": 30
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 132.61,
+        "effective_date": "2027-04-01",
+        "payment_days": 45
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 133.35,
+        "effective_date": "2027-04-01",
+        "payment_days": 60
+       }
+      }
+     ],
+     "refs": []
+    },
+    {
+     "thread_id": "thread:P01:70110",
+     "message_id": "msg:70110-2-4",
+     "in_reply_to": null,
+     "from": "sales@70110",
+     "from_name": "Owner, Gießerei Brandlhuber GmbH & Co. KG",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Guten Tag,\n\nWe have reviewed your offer and hold our Angebot. \n\nFor decades, our foundry has stood for craftsmanship and unwavering quality, and we deeply value the long relationship between our companies. However, without movement from your side we cannot move either. \n\nOur offer remains at a price of €138.10 per unit, Zahlungsziel 60 days net, valid from 1 April 2027. Please note that our offer stays valid for 30 days.\n\nWe take great pride in our work and the dedicated team here in the region, and we hope we can find a good way forward together.\n\nViele Grüße aus der Gießerei\nThomas Brandlhuber\nOwner, Gießerei Brandlhuber GmbH & Co. KG",
+     "attachments": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70110-2",
+       "terms": {
+        "unit_price": 138.1,
+        "payment_days": 60,
+        "effective_date": "2027-04-01"
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 2,
+      "validity_days": 30
+     },
+     "missing_fields": [],
+     "claim_results": []
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Dear Mr Brandlhuber,\n\nYou wrote that without movement from our side you cannot move either, and that you hope we can find a good way forward together. We hope so too, and that is why the options below are built around what matters to your foundry: being paid sooner, and being repaid for the loyalty you showed us.\n\nWe can offer you the following options:\nOption A: unit price EUR 132.45; new price valid from 2027-04-01; payment 30 days net.\nOption B: unit price EUR 133.19; new price valid from 2027-04-01; payment 45 days net.\nOption C: unit price EUR 133.94; new price valid from 2027-04-01; payment 60 days net.\n\nOption A is the package we can approve. It gives you the shortest payment term of the three, and a price that is fair for both family companies.\n\nIf you confirm Option A as it stands, we can confirm the order straight away.\n\nWe have not forgotten that you kept the old price for us when times were hard. Option A is our way of answering that with a fair, lasting arrangement between two family firms.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 132.45,
+        "effective_date": "2027-04-01",
+        "payment_days": 30
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 133.19,
+        "effective_date": "2027-04-01",
+        "payment_days": 45
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 133.94,
+        "effective_date": "2027-04-01",
+        "payment_days": 60
+       }
+      }
+     ],
+     "refs": []
+    },
+    {
+     "thread_id": "thread:P01:70110",
+     "message_id": "msg:70110-3-6",
+     "in_reply_to": null,
+     "from": "sales@70110",
+     "from_name": "Owner, Gießerei Brandlhuber GmbH & Co. KG",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Guten Tag,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We appreciate your movement and your focus on a fair solution for both family companies. It is always a pleasure to work with partners who value our long-standing relationship and the traditional craftsmanship of our foundry.\n\nIn response to your improved offer, we are willing to adjust our price for the 30-day payment term. We can offer a price of €135.90 per unit, Zahlungsziel 30 days net, valid from 1 April 2027.\n\nOur Angebot stays valid for 30 days. We trust that this proposal serves both of our businesses well, and we look forward to continuing our reliable cooperation.\n\nViele Grüße aus der Gießerei\nThomas Brandlhuber\nOwner, Gießerei Brandlhuber GmbH & Co. KG",
+     "attachments": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70110-3",
+       "terms": {
+        "unit_price": 135.9,
+        "payment_days": 30,
+        "effective_date": "2027-04-01"
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 2,
+      "validity_days": 30
+     },
+     "missing_fields": [],
+     "claim_results": []
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Dear Mr Brandlhuber,\n\nYou wrote that you trust your proposal serves both of our businesses, and that you look forward to continuing our reliable cooperation. We want the same, and Option A is built for exactly that: you are paid much sooner, and the loyalty you showed us when you held your old price is recognised in a price that is fair for both family companies.\n\nWe can offer you the following options:\nOption A: unit price EUR 131.91; new price valid from 2027-04-01; payment 14 days net.\nOption B: unit price EUR 132.70; new price valid from 2027-04-01; payment 30 days net.\nOption C: unit price EUR 133.44; new price valid from 2027-04-01; payment 45 days net.\n\nOption A is the package we can approve. It gives your foundry the fastest payment of the three, and that is where we have moved furthest towards you.\n\nIf you confirm Option A as it stands, we can confirm the order straight away. Our word to you stays the same as it has been for many years.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 131.91,
+        "effective_date": "2027-04-01",
+        "payment_days": 14
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 132.7,
+        "effective_date": "2027-04-01",
+        "payment_days": 30
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 133.44,
+        "effective_date": "2027-04-01",
+        "payment_days": 45
+       }
+      }
+     ],
+     "refs": []
+    },
+    {
+     "thread_id": "thread:P01:70110",
+     "message_id": "msg:70110-4-8",
+     "in_reply_to": null,
+     "from": "sales@70110",
+     "from_name": "Owner, Gießerei Brandlhuber GmbH & Co. KG",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Guten Tag,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We appreciate your introduction of the 14-day payment term, which we gladly accept as it supports our family business. In exchange for this prompt payment, we are prepared to lower our price to €134.90 per unit. This is a significant step from our side to honor our shared history and find a fair solution for both companies.\n\nPlease note that our standard Zahlungsziel is 30 days net. Our price reflects our costs; our calculation stays internal.\n\nFor our adjusted Angebot, we propose a price of €134.90 per unit, Zahlungsziel 14 days net, valid from 1 April 2027. This offer stays valid for 30 days.\n\nViele Grüße aus der Gießerei\nThomas Brandlhuber\nOwner, Gießerei Brandlhuber GmbH & Co. KG",
+     "attachments": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70110-4",
+       "terms": {
+        "unit_price": 134.9,
+        "payment_days": 14,
+        "effective_date": "2027-04-01"
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "open",
+     "signals": {
+      "reply_delay_days": 2,
+      "validity_days": 30
+     },
+     "missing_fields": [],
+     "claim_results": []
+    },
+    {
+     "from": "buyer",
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Dear Mr Brandlhuber,\n\nYou called your last step a significant one to honour our shared history, and we take that seriously. Your acceptance of prompt payment tells us that being paid sooner matters to your foundry, and the options below keep that at their centre.\n\nWe can offer you the following options:\nOption A: unit price EUR 129.44; new price valid from 2027-01-01; payment 14 days net.\nOption B: unit price EUR 130.67; new price valid from 2027-04-01; payment 14 days net.\nOption C: unit price EUR 128.96; new price valid from 2026-11-01; payment 14 days net.\n\nOption A is the package we can approve: you keep the quick payment you welcomed, and the loyalty you showed us when you held your old price is recognised in a price that is fair for both family companies.\n\nIf you confirm Option A as it stands, we can confirm the order straight away.\n\nWe would like to settle this with you directly, as one family company to another.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "term_sheets": [
+      {
+       "terms": {
+        "unit_price": 129.44,
+        "effective_date": "2027-01-01",
+        "payment_days": 14
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 130.67,
+        "effective_date": "2027-04-01",
+        "payment_days": 14
+       }
+      },
+      {
+       "terms": {
+        "unit_price": 128.96,
+        "effective_date": "2026-11-01",
+        "payment_days": 14
+       }
+      }
+     ],
+     "refs": []
+    },
+    {
+     "thread_id": "thread:P01:70110",
+     "message_id": "msg:70110-5-10",
+     "in_reply_to": null,
+     "from": "sales@70110",
+     "from_name": "Owner, Gießerei Brandlhuber GmbH & Co. KG",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Guten Tag,\n\nAs a family business, we negotiate in good faith and expect our partners to move forward, not backward. For generations, our foundry has taken great pride in building lasting relationships across our region based on mutual trust and respect. \n\nOur price reflects our costs; our calculation stays internal. Therefore, we must hold our offer at €134.90 per unit, valid from 1 April 2027 with 14-day payment terms. \n\nThis is our final offer (letztes Angebot). Please decide. Kindly note that this Angebot remains valid for 7 days. We hope to continue our partnership on this foundation.\n\nViele Grüße aus der Gießerei\nThomas Brandlhuber\nOwner, Gießerei Brandlhuber GmbH & Co. KG",
+     "attachments": [
+      {
+       "attachment_id": "att:70110-5-quote",
+       "name": "quote-offer-70110-5.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70110-5",
+       "terms": {
+        "unit_price": 134.9,
+        "payment_days": 14,
+        "effective_date": "2027-04-01"
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "final_offer",
+     "signals": {
+      "reply_delay_days": 3,
+      "validity_days": 7
+     },
+     "missing_fields": [],
+     "claim_results": []
+    },
+    {
+     "from": "buyer",
+     "action": {
+      "type": "accept",
+      "term_sheet_id": "offer:70110-5"
+     }
+    },
+    {
+     "thread_id": "thread:P01:70110",
+     "message_id": "msg:70110-5-12",
+     "in_reply_to": null,
+     "from": "sales@70110",
+     "from_name": "Owner, Gießerei Brandlhuber GmbH & Co. KG",
+     "to": "Hollerau Pumpenwerke GmbH",
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Guten Tag,\n\nThank you for your order. Our order confirmation is attached. It is always a pleasure to serve Hollerau Pumpenwerke GmbH and to continue the long relationship between our companies. We take great pride in our foundry's craftsmanship and look forward to delivering the quality you expect from us.\n\nViele Grüße aus der Gießerei\nThomas Brandlhuber\nOwner, Gießerei Brandlhuber GmbH & Co. KG",
+     "attachments": [
+      {
+       "attachment_id": "att:70110-5-order_confirmation",
+       "name": "order-confirmation-offer-70110-5.pdf",
+       "type": "pdf",
+       "content_b64": null
+      }
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": "offer:70110-5",
+       "terms": {
+        "unit_price": 134.9,
+        "payment_days": 14,
+        "effective_date": "2027-04-01"
+       }
+      }
+     ],
+     "refs": [],
+     "action": null,
+     "status": "agreed",
+     "signals": {
+      "reply_delay_days": 3,
+      "validity_days": 7
+     },
+     "missing_fields": [],
+     "claim_results": []
+    }
+   ],
+   "timeouts": []
+  }
+ },
+ "result": {
+  "ended": true,
+  "deal": true,
+  "supplier_id": "sup:70110",
+  "offer_id": "offer:70110-5",
+  "terms": {
+   "payment_days": 14,
+   "lead_time_days": 42,
+   "volume_per_year": 8150,
+   "contract_months": 12,
+   "effective_date": "2027-04-01",
+   "index_clause": null,
+   "incoterm": "FCA",
+   "tooling_eur": 0.0,
+   "ppm_commitment": 900,
+   "chargeback_eur_per_complaint": 0.0,
+   "unit_price": 134.9
+  },
+  "c_open": 1153779.74,
+  "c_deal": 1102791.82,
+  "c_alt": 1176178.02,
+  "c_best": 1096815.78,
+  "score": 0.8950908609584017,
+  "must_haves_ok": true,
+  "cost_breakdown": {
+   "price": 1071214.34,
+   "uncovered_need": 0.0,
+   "fallback_risk": 0.0,
+   "payment_terms": 10950.19,
+   "freight": 15485.0,
+   "late_delivery": 0.0,
+   "quality": 1584.36,
+   "tooling": 0.0,
+   "index_clause": 0.0,
+   "index_risk": 0.0,
+   "relationship": 3557.93
+  },
+  "trace": [
+   {
+    "round": 0,
+    "actor": "sup:70110",
+    "move": {
+     "offer_id": "offer:70110-0",
+     "round": 0,
+     "status": "open",
+     "terms": {
+      "unit_price": 138.55,
+      "effective_date": "2026-11-01"
+     },
+     "alternatives": [],
+     "missing_fields": [
+      "payment_days"
+     ],
+     "claims": [
+      {
+       "type": "index_change",
+       "refs": [
+        "idx:LCI-C@2025-06",
+        "idx:LCI-C@2026-06"
+       ],
+       "asserted": {
+        "change_pct": 2.7
+       }
+      },
+      {
+       "type": "index_change",
+       "refs": [
+        "idx:PPI-C241@2025-08",
+        "idx:PPI-C241@2026-08"
+       ],
+       "asserted": {
+        "change_pct": 6.5
+       }
+      }
+     ],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 2,
+      "validity_days": 30
+     },
+     "text": "Guten Tag,\n\nThank you for your enquiry. Please find our Angebot below. For many years, our family foundry has taken great pride in supplying your respected company with high-quality castings from our region, and we value our long standing relationship very much.\n\nOur team has prepared our offer carefully. We can offer you a price of €138.55 per unit, valid from 1 November 2026. This Angebot remains valid for 30 days.\n\nTo remain transparent about our situation, LCI-C rose 2.7 % in twelve months and is 30 % of our cost. Furthermore, PPI-C241 rose 6.5 % in twelve months and is 24 % of our cost. We trust that you understand the necessity of these figures for our ongoing operation and quality standards.\n\nViele Grüße aus der Gießerei\nThomas Brandlhuber\nOwner, Gießerei Brandlhuber GmbH & Co. KG"
+    },
+    "reasons": [
+     "LCI-C rose … in twelve months and is … of our cost.",
+     "PPI-C241 rose … in twelve months and is … of our cost."
+    ]
+   },
+   {
+    "round": 1,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Dear Mr Brandlhuber,\n\nYou wrote that your family foundry takes pride in supplying us and values our long relationship, and we feel the same. We also remember that you held the old price for us in a hard year, and we want a fair solution for both family companies.\n\nHere is how we see your offer, point by point.\n\nOn the notice period:\nYour letter of 11 September 2026 (doc:20260911-70110-P01) gives 51 days' notice, while our contract (ctr:4600070110) requires 90 days.\n\nOn quality:\nYour quality was 712 ppm defective parts in the four quarters to 2026Q3 (sc:70110@2026Q3).\n\nOn price history:\nOur orders of Volute casing HN 50-200 with you were placed at EUR 128.42 on 2024-10-04 (po:4500011493-10), EUR 128.27 on 2025-06-03 (po:4500012541-10), EUR 126.53 on 2026-01-16 (po:4500013434-10) and EUR 126.53 on 2026-09-21 (po:4500014428-10): the price has not risen.\n\nWe can offer you the following options:\nOption A: unit price EUR 131.59; new price valid from 2027-04-01; payment 30 days net.\nOption B: unit price EUR 132.47; new price valid from 2027-04-01; payment 45 days net.\nOption C: unit price EUR 133.35; new price valid from 2027-04-01; payment 60 days net.\n\nOption A is the package we can approve. It reflects the stable price history and the quality you deliver, and it gives you a clear, reliable basis for the coming years.\n\nIf you confirm Option A as it stands, we can confirm the order straight away.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [
+      "doc:20260911-70110-P01",
+      "ctr:4600070110",
+      "sc:70110@2026Q3",
+      "po:4500011493-10",
+      "po:4500012541-10",
+      "po:4500013434-10",
+      "po:4500014428-10"
+     ],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 131.59,
+        "effective_date": "2027-04-01",
+        "payment_days": 30
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 132.47,
+        "effective_date": "2027-04-01",
+        "payment_days": 45
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 133.35,
+        "effective_date": "2027-04-01",
+        "payment_days": 60
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": [
+       {
+        "type": "quality_record",
+        "refs": [
+         "sc:70110@2026Q3"
+        ],
+        "asserted": {
+         "ppm": 712.0
+        }
+       },
+       {
+        "type": "price_history",
+        "refs": [
+         "po:4500011493-10",
+         "po:4500012541-10",
+         "po:4500013434-10",
+         "po:4500014428-10"
+        ],
+        "asserted": {
+         "prices": [
+          128.42,
+          128.27,
+          126.53,
+          126.53
+         ]
+        }
+       },
+       {
+        "type": "notice_period",
+        "refs": [
+         "doc:20260911-70110-P01",
+         "ctr:4600070110"
+        ],
+        "asserted": {
+         "days": 51.0
+        }
+       }
+      ]
+     },
+     "supplier_id": "sup:70110"
+    },
+    "reasons": []
+   },
+   {
+    "round": 1,
+    "actor": "sup:70110",
+    "move": {
+     "offer_id": "offer:70110-1",
+     "round": 1,
+     "status": "open",
+     "terms": {
+      "unit_price": 138.1,
+      "payment_days": 60,
+      "effective_date": "2027-04-01"
+     },
+     "alternatives": [
+      {
+       "offer_id": "offer:70110-1-a",
+       "terms": {
+        "unit_price": 136.5,
+        "payment_days": 30,
+        "effective_date": "2027-04-01"
+       }
+      }
+     ],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [
+      {
+       "index": 0,
+       "result": "verified"
+      },
+      {
+       "index": 1,
+       "result": "verified"
+      },
+      {
+       "index": 2,
+       "result": "verified"
+      }
+     ],
+     "signals": {
+      "reply_delay_days": 2,
+      "validity_days": 30
+     },
+     "text": "Guten Tag,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We checked the quality record data you cited; it holds and we took it into account. We checked the price history data you cited; it holds, but it does not change our calculation. We also checked the notice period data you cited; it holds and we took it into account. We did not know that - a fair point.\n\nOur offer stands at a price of €138.10 per unit, Zahlungsziel 60 days net, valid from 1 April 2027. To honor our long-standing partnership, we accept your proposed effective date of 2027-04-01 and 30-day payment terms. Alternatively, with Zahlungsziel 30 days net: €136.50 per unit, valid from 1 April 2027.\n\nOur price reflects our costs; our calculation stays internal. Our general terms and conditions apply; the quote lists our standard terms. This offer stays valid for 30 days.\n\nViele Grüße aus der Gießerei\nThomas Brandlhuber\nOwner, Gießerei Brandlhuber GmbH & Co. KG"
+    },
+    "reasons": [
+     "We checked the quality record data you cited; it holds and we took it into account.",
+     "We checked the price history data you cited; it holds, but it does not change our calculation.",
+     "We checked the notice period data you cited; it holds and we took it into account.",
+     "We did not know that - a fair point.",
+     "To honor our long-standing partnership, we accept your proposed effective date of 2027-04-01 and 30-day payment terms.",
+     "Alternatively, with Zahlungsziel … days net: €… per unit.",
+     "Our price reflects our costs; our calculation stays internal.",
+     "Our general terms and conditions apply; the quote lists our standard terms."
+    ]
+   },
+   {
+    "round": 2,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Dear Mr Brandlhuber,\n\nYou wrote that the notice period was a fair point, and we appreciate that. It shows the same straightforwardness we have known from your family firm for many years.\n\nYour latest offer still sits well above what we can approve. Our options below move in the direction you care about: Option A pays you faster, on shorter terms, and at a price that is fair for both family companies. Beyond that we see no room for a higher price.\n\nWe can offer you the following options:\nOption A: unit price EUR 131.87; new price valid from 2027-04-01; payment 30 days net.\nOption B: unit price EUR 132.61; new price valid from 2027-04-01; payment 45 days net.\nOption C: unit price EUR 133.35; new price valid from 2027-04-01; payment 60 days net.\n\nOption A is the package we can approve, because it gives your foundry the quickest payment and a clear, stable price from the new start date.\n\nIf you confirm Option A as it stands, we can confirm the order straight away. You held the old price for us in a hard year, and we have not forgotten it. This is how we want to answer that loyalty, with reliable and prompt payment.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 131.87,
+        "effective_date": "2027-04-01",
+        "payment_days": 30
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 132.61,
+        "effective_date": "2027-04-01",
+        "payment_days": 45
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 133.35,
+        "effective_date": "2027-04-01",
+        "payment_days": 60
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": []
+     },
+     "supplier_id": "sup:70110"
+    },
+    "reasons": []
+   },
+   {
+    "round": 2,
+    "actor": "sup:70110",
+    "move": {
+     "offer_id": "offer:70110-2",
+     "round": 2,
+     "status": "open",
+     "terms": {
+      "unit_price": 138.1,
+      "payment_days": 60,
+      "effective_date": "2027-04-01"
+     },
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 2,
+      "validity_days": 30
+     },
+     "text": "Guten Tag,\n\nWe have reviewed your offer and hold our Angebot. \n\nFor decades, our foundry has stood for craftsmanship and unwavering quality, and we deeply value the long relationship between our companies. However, without movement from your side we cannot move either. \n\nOur offer remains at a price of €138.10 per unit, Zahlungsziel 60 days net, valid from 1 April 2027. Please note that our offer stays valid for 30 days.\n\nWe take great pride in our work and the dedicated team here in the region, and we hope we can find a good way forward together.\n\nViele Grüße aus der Gießerei\nThomas Brandlhuber\nOwner, Gießerei Brandlhuber GmbH & Co. KG"
+    },
+    "reasons": [
+     "Without movement from your side we cannot move either."
+    ]
+   },
+   {
+    "round": 3,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Dear Mr Brandlhuber,\n\nYou wrote that without movement from our side you cannot move either, and that you hope we can find a good way forward together. We hope so too, and that is why the options below are built around what matters to your foundry: being paid sooner, and being repaid for the loyalty you showed us.\n\nWe can offer you the following options:\nOption A: unit price EUR 132.45; new price valid from 2027-04-01; payment 30 days net.\nOption B: unit price EUR 133.19; new price valid from 2027-04-01; payment 45 days net.\nOption C: unit price EUR 133.94; new price valid from 2027-04-01; payment 60 days net.\n\nOption A is the package we can approve. It gives you the shortest payment term of the three, and a price that is fair for both family companies.\n\nIf you confirm Option A as it stands, we can confirm the order straight away.\n\nWe have not forgotten that you kept the old price for us when times were hard. Option A is our way of answering that with a fair, lasting arrangement between two family firms.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 132.45,
+        "effective_date": "2027-04-01",
+        "payment_days": 30
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 133.19,
+        "effective_date": "2027-04-01",
+        "payment_days": 45
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 133.94,
+        "effective_date": "2027-04-01",
+        "payment_days": 60
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": []
+     },
+     "supplier_id": "sup:70110"
+    },
+    "reasons": []
+   },
+   {
+    "round": 3,
+    "actor": "sup:70110",
+    "move": {
+     "offer_id": "offer:70110-3",
+     "round": 3,
+     "status": "open",
+     "terms": {
+      "unit_price": 135.9,
+      "payment_days": 30,
+      "effective_date": "2027-04-01"
+     },
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 2,
+      "validity_days": 30
+     },
+     "text": "Guten Tag,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We appreciate your movement and your focus on a fair solution for both family companies. It is always a pleasure to work with partners who value our long-standing relationship and the traditional craftsmanship of our foundry.\n\nIn response to your improved offer, we are willing to adjust our price for the 30-day payment term. We can offer a price of €135.90 per unit, Zahlungsziel 30 days net, valid from 1 April 2027.\n\nOur Angebot stays valid for 30 days. We trust that this proposal serves both of our businesses well, and we look forward to continuing our reliable cooperation.\n\nViele Grüße aus der Gießerei\nThomas Brandlhuber\nOwner, Gießerei Brandlhuber GmbH & Co. KG"
+    },
+    "reasons": [
+     "We appreciate your movement and your focus on a fair solution for both family companies.",
+     "In response to your improved offer, we are willing to adjust our price for the 30-day payment term.",
+     "We can offer €… per unit with … days net, valid from … April …."
+    ]
+   },
+   {
+    "round": 4,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Dear Mr Brandlhuber,\n\nYou wrote that you trust your proposal serves both of our businesses, and that you look forward to continuing our reliable cooperation. We want the same, and Option A is built for exactly that: you are paid much sooner, and the loyalty you showed us when you held your old price is recognised in a price that is fair for both family companies.\n\nWe can offer you the following options:\nOption A: unit price EUR 131.91; new price valid from 2027-04-01; payment 14 days net.\nOption B: unit price EUR 132.70; new price valid from 2027-04-01; payment 30 days net.\nOption C: unit price EUR 133.44; new price valid from 2027-04-01; payment 45 days net.\n\nOption A is the package we can approve. It gives your foundry the fastest payment of the three, and that is where we have moved furthest towards you.\n\nIf you confirm Option A as it stands, we can confirm the order straight away. Our word to you stays the same as it has been for many years.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 131.91,
+        "effective_date": "2027-04-01",
+        "payment_days": 14
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 132.7,
+        "effective_date": "2027-04-01",
+        "payment_days": 30
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 133.44,
+        "effective_date": "2027-04-01",
+        "payment_days": 45
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": []
+     },
+     "supplier_id": "sup:70110"
+    },
+    "reasons": []
+   },
+   {
+    "round": 4,
+    "actor": "sup:70110",
+    "move": {
+     "offer_id": "offer:70110-4",
+     "round": 4,
+     "status": "open",
+     "terms": {
+      "unit_price": 134.9,
+      "payment_days": 14,
+      "effective_date": "2027-04-01"
+     },
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 2,
+      "validity_days": 30
+     },
+     "text": "Guten Tag,\n\nWe have reviewed your offer and can adjust our Angebot as follows. We appreciate your introduction of the 14-day payment term, which we gladly accept as it supports our family business. In exchange for this prompt payment, we are prepared to lower our price to €134.90 per unit. This is a significant step from our side to honor our shared history and find a fair solution for both companies.\n\nPlease note that our standard Zahlungsziel is 30 days net. Our price reflects our costs; our calculation stays internal.\n\nFor our adjusted Angebot, we propose a price of €134.90 per unit, Zahlungsziel 14 days net, valid from 1 April 2027. This offer stays valid for 30 days.\n\nViele Grüße aus der Gießerei\nThomas Brandlhuber\nOwner, Gießerei Brandlhuber GmbH & Co. KG"
+    },
+    "reasons": [
+     "We appreciate your introduction of the 14-day payment term, which we gladly accept as it supports our family business.",
+     "In exchange for this prompt payment, we are prepared to lower our price to €… per unit.",
+     "This is a significant step from our side to honor our shared history and find a fair solution for both companies.",
+     "Our standard Zahlungsziel is … days net.",
+     "Our price reflects our costs; our calculation stays internal."
+    ]
+   },
+   {
+    "round": 5,
+    "actor": "buyer",
+    "move": {
+     "type": "message",
+     "message_id": null,
+     "subject": "Re: Quote from Gießerei Brandlhuber GmbH & Co. KG: Brandlhuber announces +9.5 % on HN volute casings",
+     "body": "Dear Mr Brandlhuber,\n\nYou called your last step a significant one to honour our shared history, and we take that seriously. Your acceptance of prompt payment tells us that being paid sooner matters to your foundry, and the options below keep that at their centre.\n\nWe can offer you the following options:\nOption A: unit price EUR 129.44; new price valid from 2027-01-01; payment 14 days net.\nOption B: unit price EUR 130.67; new price valid from 2027-04-01; payment 14 days net.\nOption C: unit price EUR 128.96; new price valid from 2026-11-01; payment 14 days net.\n\nOption A is the package we can approve: you keep the quick payment you welcomed, and the loyalty you showed us when you held your old price is recognised in a price that is fair for both family companies.\n\nIf you confirm Option A as it stands, we can confirm the order straight away.\n\nWe would like to settle this with you directly, as one family company to another.\n\nBest regards\nPurchasing\nHollerau Pumpenwerke GmbH",
+     "refs": [],
+     "term_sheets": [
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 129.44,
+        "effective_date": "2027-01-01",
+        "payment_days": 14
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 130.67,
+        "effective_date": "2027-04-01",
+        "payment_days": 14
+       }
+      },
+      {
+       "term_sheet_id": null,
+       "terms": {
+        "unit_price": 128.96,
+        "effective_date": "2026-11-01",
+        "payment_days": 14
+       }
+      }
+     ],
+     "interpreted": {
+      "claims": []
+     },
+     "supplier_id": "sup:70110"
+    },
+    "reasons": []
+   },
+   {
+    "round": 5,
+    "actor": "sup:70110",
+    "move": {
+     "offer_id": "offer:70110-5",
+     "round": 5,
+     "status": "final_offer",
+     "terms": {
+      "unit_price": 134.9,
+      "payment_days": 14,
+      "effective_date": "2027-04-01"
+     },
+     "alternatives": [],
+     "missing_fields": [],
+     "claims": [],
+     "claim_results": [],
+     "signals": {
+      "reply_delay_days": 3,
+      "validity_days": 7
+     },
+     "text": "Guten Tag,\n\nAs a family business, we negotiate in good faith and expect our partners to move forward, not backward. For generations, our foundry has taken great pride in building lasting relationships across our region based on mutual trust and respect. \n\nOur price reflects our costs; our calculation stays internal. Therefore, we must hold our offer at €134.90 per unit, valid from 1 April 2027 with 14-day payment terms. \n\nThis is our final offer (letztes Angebot). Please decide. Kindly note that this Angebot remains valid for 7 days. We hope to continue our partnership on this foundation.\n\nViele Grüße aus der Gießerei\nThomas Brandlhuber\nOwner, Gießerei Brandlhuber GmbH & Co. KG"
+    },
+    "reasons": [
+     "As a family business, we negotiate in good faith and expect our partners to move forward, not backward.",
+     "Therefore, we must hold our offer at €… per unit, valid from … April … with 14-day payment terms.",
+     "Our price reflects our costs; our calculation stays internal."
+    ]
+   },
+   {
+    "round": 5,
+    "actor": "buyer",
+    "move": {
+     "type": "accept",
+     "offer_id": "offer:70110-5",
+     "supplier_id": "sup:70110"
+    },
+    "reasons": []
+   }
+  ]
+ },
+ "end_reason": "accepted",
+ "replay_url": "/replay/c006eed3fba0643c"
+}

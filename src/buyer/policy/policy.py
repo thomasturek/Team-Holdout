@@ -66,6 +66,8 @@ ARCHETYPE_LEAD_EFFORT = {"near_monopolist": 0.005}
 ARCHETYPE_RATE = {"cash_short_jobshop": 0.18, "group_ladder": 0.07, "near_monopolist": 0.07}
 MENU_SPREAD = 0.003
 MENU_COMBOS = 300
+CLAUSE_WORTH = 0.04
+TRADE_SLACK = 0.002
 FIRST_MESSAGE_CLAIMS = 3
 WEAK_CLAIM = 0.2
 CLAIM_WEIGHT = {"notice": 1.0, "ppm": 0.75, "rival": 0.7, "cost": 0.6, "news": 0.55, "index": 0.5, "fc": 0.45,
@@ -307,7 +309,7 @@ class Policy:
         if t.last_sheet is not None and sheets[0] == t.last_sheet:
             t.holding = True
         asks = list((t.signals or {}).get("asks") or [])
-        if clause_wanted(case, t.signals) and "index_clause" not in asks:
+        if clause_wanted(case, t.signals) and "index_clause" not in asks and self.clause_worth(case, t) >= CLAUSE_WORTH:
             asks.append("index_clause")  # it blames the driver a clause would follow: offer the clause
         if self.p["lever_trades"] > 0.5 and (t.holding or asks):
             trades = [x for x in self.lever_trades(case, t, a, asks) if x not in sheets]
@@ -451,11 +453,24 @@ class Policy:
         smallest volume step, a contract beyond the horizon that costs nothing), then cash terms our
         estimate says it gains on. None that would cut the price by more than MAX_TRADE_DROP."""
         picks = {}
+        theirs = t.standing_terms.get("unit_price")
+        hungry = self.supplier_model(case, t)["interest_rate"] >= CASH_HUNGRY_RATE
+        at_theirs = self.c(case, {**a, "unit_price": theirs}, t) if theirs else math.inf
+        c_a = self.c(case, a, t)
         for v in lever_values(case, a, t.standard, t.profile):
             if not v["must_haves_ok"]:
                 continue
             sheet = self.above_floor(case, t, complete_offer(case, v["sheet"]))
             if sheet == a or (a["unit_price"] - sheet["unit_price"]) > MAX_TRADE_DROP * a["unit_price"]:
+                continue
+            if v["field"] == "index_clause" and self.clause_worth(case, t) < CLAUSE_WORTH:
+                continue
+            if v["field"] == "index_clause" and v["sheet"]:
+                sheet = self.cheap_money_term(case, t, sheet)
+            if (theirs and not hungry and v["field"] == "payment_days"
+                    and self.c(case, {**sheet, "unit_price": theirs}, t) > at_theirs * (1 + OWN_PRICE_SLACK) + 1.0):
+                continue
+            if self.c(case, sheet, t) > c_a * (1 + TRADE_SLACK) + 1.0:
                 continue
             gain = v["supplier_gain"] or 0.0
             if lever_asked(v, a, asks):
@@ -572,7 +587,27 @@ class Policy:
                 or [v for v in t.struct_seen.get(f) or [] if v is not None]
             if f in case["negotiable"] and insists and options:
                 out[f] = min(options, key=lambda v: self.c(case, {**out, f: v}, t))
+        if "index_clause" in out and self.clause_worth(case, t) < CLAUSE_WORTH:
+            out["index_clause"] = sheet.get("index_clause")
         return out
+
+    @staticmethod
+    def clause_worth(case, t):
+        drivers = {d.get("series"): d.get("change_12m_pct") or 0.0 for d in (t.profile or {}).get("cost_drivers") or []}
+        options = [o for o in (case.get("term_options") or {}).get("index_clause") or [] if o]
+        return max((o.get("material_share", 0) * (drivers.get(o.get("series"), 0.0) - o.get("deadband_pct", 0)) / 100
+                    for o in options), default=0.0)
+
+    def cheap_money_term(self, case, t, sheet):
+        options = (case.get("term_options") or {}).get("payment_days") or []
+        if "payment_days" not in case["negotiable"] or not options:
+            return sheet
+        if self.supplier_model(case, t)["interest_rate"] >= case["buyer"]["interest_rate"]:
+            return sheet
+        longest = complete_offer(case, {**sheet, "payment_days": max(options)})
+        if longest == sheet:
+            return sheet
+        return self.above_floor(case, t, self.same_cost(case, longest, sheet, t.standard))
 
     def pick_claims(self, case, t):
         limit = int(self.p["claims_per_msg"])

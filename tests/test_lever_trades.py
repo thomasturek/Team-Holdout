@@ -76,14 +76,27 @@ def test_a_free_longer_contract_is_not_forced_on_the_supplier():
     assert all(s["contract_months"] == P03_TERMS["contract_months"] for s in d.term_sheets)
 
 
-def test_an_insisted_index_clause_is_countered_with_the_cheapest_deadband():
+def test_a_clause_worth_little_to_the_supplier_is_not_adopted():
+    """Distributors value their alloy clause at 0.4-2.7 % of the price; keeping our fixed sheet closed
+    P18 at 5.00 against 5.10 when the clause was taken (EHL 2026 winners' log, 15 runs)."""
     case = CASES["case:P18"]
     policy = Policy({})
     t = thread(case, P18_TERMS)
     t.offers = [("offer:x-1", dict(P18_TERMS))]  # it insists on the clause with 0 % deadband
     d = policy.decide(case, t)
     assert d.kind == "send"
-    assert d.term_sheets[0]["index_clause"]["deadband_pct"] == 5  # cheapest for us, not its 0 %
+    assert all(not s.get("index_clause") for s in d.term_sheets)
+
+
+def test_an_insisted_clause_worth_a_lot_is_countered_with_the_cheapest_deadband():
+    case = CASES["case:P02"]
+    clause = {"series": "CU-NOTATION", "material_share": 0.2, "deadband_pct": 0, "base_month": "2026-08"}
+    terms = {"unit_price": 370.96, "payment_days": 30, "index_clause": clause}
+    t = thread(case, terms, profile={"cost_drivers": [{"series": "CU-NOTATION", "change_12m_pct": 47.73}]})
+    t.offers = [("offer:x-1", dict(terms))]
+    d = Policy({}).decide(case, t)
+    assert d.kind == "send"
+    assert any((s.get("index_clause") or {}).get("deadband_pct") == 5 for s in d.term_sheets)
 
 
 def test_no_trade_cuts_the_price_by_more_than_the_limit():
