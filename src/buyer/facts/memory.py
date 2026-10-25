@@ -77,7 +77,7 @@ def observation(doc: dict) -> dict | None:
     }
 
 
-def implied_full_cost(o: dict, profile: dict) -> float | None:
+def implied_full_cost(o: dict, profile: dict, rate: float | None = None) -> float | None:
     """The supplier full cost at which the arena's relationship charge for this deal is what we paid
     (bisection; our estimate of its cash rate and standard terms). None without a charge."""
     from .costing import relationship_case, supplier_estimate
@@ -87,6 +87,8 @@ def implied_full_cost(o: dict, profile: dict) -> float | None:
     base = supplier_estimate(o["case"], {**profile, "full_cost_observed": 1.0}, o["standard"])
     if base is None:
         return None
+    if rate is not None:
+        base["interest_rate"] = rate
 
     def charge(full_cost):
         return relationship_cost(o["case"], o["terms"], o["standard"], {**base, "full_cost": full_cost})
@@ -99,6 +101,40 @@ def implied_full_cost(o: dict, profile: dict) -> float | None:
         else:
             hi = mid
     return round((lo + hi) / 2, 4)
+
+
+RATE_GRID = [round(0.005 * i, 4) for i in range(0, 81)]  # 0 % .. 40 % a year
+
+
+def fit_relationship(obs: list[dict], profile: dict) -> tuple[float, float] | None:
+    """(full cost, interest rate) of the supplier that reproduce the relationship charges the arena
+    billed in our sessions with it - each session at its own payment term. The charge depends on what
+    money is worth to the supplier once the payment term differs from its standard (P01/P03 at 14, 45
+    and 90 days, 2026-10-25), so one charge fixes the full cost, several fix the rate as well.
+    Sessions without a charge count too: the fit must not bill them. None without any charge."""
+    from .costing import relationship_case, supplier_estimate
+
+    charged = [o for o in obs if o["relationship"] > 1.0 and relationship_case(o["case"])]
+    if not charged:
+        return None
+    usable = [o for o in obs if relationship_case(o["case"])]
+    best = None
+    for rate in RATE_GRID:
+        prof = {**profile, "full_cost_observed": 1.0, "cash_rate_estimate": rate}
+        full = implied_full_cost(charged[0], prof, rate=rate)
+        if full is None:
+            continue
+        err = 0.0
+        for o in usable:
+            base = supplier_estimate(o["case"], {**prof, "full_cost_observed": full}, o["standard"])
+            if base is None:
+                continue
+            base["interest_rate"] = rate
+            pred = relationship_cost(o["case"], o["terms"], o["standard"], base)
+            err += ((pred - o["relationship"]) / max(o["relationship"], 200.0)) ** 2
+        if best is None or err < best[0] - 1e-12:
+            best = (err, full, rate)
+    return (best[1], best[2]) if best else None
 
 
 def observations(folder: Path = SESSIONS) -> list[dict]:
@@ -129,13 +165,14 @@ def build(folder: Path = SESSIONS, path: Path = MEMORY_FILE, write: bool = True)
         if len(o["parts"]) == 1:  # the data-only estimate, before any memory
             p = lookup_profile(o["supplier_id"], o["parts"][0]) or {}
             estimate = p.get("floor_computed") or p.get("floor_estimate")
-        implied = [f for f in (implied_full_cost(x, p) for x in obs if not rfq) if f]
+        fitted = None if rfq else fit_relationship(obs, p)
         entries[k] = {
             "supplier_id": o["supplier_id"], "parts": o["parts"], "type": o["type"], "rfq": rfq,
             "best_price": best, "deal_price": o["deal_price"], "opening_price": o["opening_price"],
             "estimate": estimate, "sessions": [x["session_id"] for x in obs],
             "cases": sorted({x["case_id"] for x in obs}), "scores": [x["score"] for x in obs],
-            "full_cost_observed": round(statistics.median(implied), 4) if implied else None,
+            "full_cost_observed": round(fitted[0], 4) if fitted else None,
+            "interest_rate_observed": fitted[1] if fitted else None,
         }
         if rfq:
             part = "+".join(o["parts"])
@@ -184,6 +221,8 @@ def apply_memory(p: dict, supplier_id: str, parts, memory: dict | None = None) -
         p["memory"] = {k: seen[k] for k in ("best_price", "deal_price", "opening_price", "cases", "scores")}
         if seen.get("full_cost_observed"):
             p["full_cost_observed"] = seen["full_cost_observed"]
+        if seen.get("interest_rate_observed") is not None:
+            p["interest_rate_observed"] = seen["interest_rate_observed"]
     else:
         bias = supplier_bias(supplier_id, memory)
         if bias is not None and floor is not None:

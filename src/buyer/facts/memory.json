@@ -1,5 +1,5 @@
 {
- "built_from": 53,
+ "built_from": 91,
  "entries": {
   "sup:70110|part:310010": {
    "supplier_id": "sup:70110",
@@ -9,7 +9,7 @@
    "type": "price_increase",
    "rfq": false,
    "best_price": 135.1891,
-   "deal_price": 135.2,
+   "deal_price": 135.5,
    "opening_price": 138.55,
    "estimate": 132.64,
    "sessions": [
@@ -17,7 +17,11 @@
     "1e8873242578819a",
     "d5066cc6096c56b0",
     "36af37afc740c44a",
-    "a37615af18aa4080"
+    "a37615af18aa4080",
+    "2c6e9cc0ab147f3b",
+    "df366f6a1c8207e9",
+    "478e95da3063aa1d",
+    "cac09d93ac824edc"
    ],
    "cases": [
     "case:P01"
@@ -27,9 +31,14 @@
     0.9262781239225645,
     0.9690850144547528,
     0.9262781239225645,
-    0.9106338463828725
+    0.9106338463828725,
+    0.9136401331649009,
+    0.7615599407063695,
+    0.9091660762348682,
+    0.8640289404037227
    ],
-   "full_cost_observed": 130.04
+   "full_cost_observed": 130.04,
+   "interest_rate_observed": 0.095
   },
   "sup:70140|part:310020": {
    "supplier_id": "sup:70140",
@@ -38,7 +47,7 @@
    ],
    "type": "quality",
    "rfq": false,
-   "best_price": 43.4503,
+   "best_price": 43.7653,
    "deal_price": 46.0,
    "opening_price": 47.0,
    "estimate": 45.15,
@@ -47,7 +56,11 @@
     "63790d86bf6ed9cd",
     "901d44ee44a2b719",
     "e64718a7e72075f3",
-    "940188058ebc9ac8"
+    "940188058ebc9ac8",
+    "bc683f288408c600",
+    "a77bf2afc39ffdc8",
+    "9775604d66428cbd",
+    "a1275e31658d1c0c"
    ],
    "cases": [
     "case:P11"
@@ -57,9 +70,14 @@
     0.3980101386251581,
     0.5736028468421396,
     0.5736028468421396,
-    0.5736028468421396
+    0.5736028468421396,
+    0.6338060610879618,
+    0.7098962346486538,
+    0.6262806593072341,
+    0.6262806593072341
    ],
-   "full_cost_observed": null
+   "full_cost_observed": null,
+   "interest_rate_observed": null
   },
   "sup:70210|part:320070": {
    "supplier_id": "sup:70210",
@@ -69,14 +87,17 @@
    "type": "rfq",
    "rfq": true,
    "best_price": 26.2885,
-   "deal_price": 28.05,
+   "deal_price": 28.0,
    "opening_price": 36.0,
    "estimate": 36.87,
    "sessions": [
     "e3d74883d943335c",
     "f08d345be23034e7",
     "a89a4dadb8349e0d",
-    "891fdbdf85fd1192"
+    "891fdbdf85fd1192",
+    "0af6f2eee5ec780f",
+    "e1e9c3b94e4340c5",
+    "f25cb509ed443fac"
    ],
    "cases": [
     "case:P05"
@@ -85,9 +106,13 @@
     0.45615830047421624,
     0.8175839516400172,
     0.8186136543498912,
-    0.8186136543498912
+    0.8186136543498912,
+    0.8135787539306429,
+    0.772277032405558,
+    0.8135787539306429
    ],
-   "full_cost_observed": null
+   "full_cost_observed": null,
+   "interest_rate_observed": null
   },
   "sup:70250|part:320070": {
    "supplier_id": "sup:70250",
@@ -97,21 +122,24 @@
    "type": "rfq",
    "rfq": true,
    "best_price": 26.3552,
-   "deal_price": 31.64,
+   "deal_price": 30.5,
    "opening_price": 38.5,
    "estimate": 36.87,
    "sessions": [
     "42fd7e08f8173890",
-    "25a2dfb27dd01504"
+    "25a2dfb27dd01504",
+    "61d079bea3d592ea"
    ],
    "cases": [
     "case:P05"
    ],
    "scores": [
     0.418754860979784,
-    0.45582415853525043
+    0.45582415853525043,
+    0.5732102674608952
    ],
-   "full_cost_observed": null
+   "full_cost_observed": null,
+   "interest_rate_observed": null
   },
   "sup:70410|part:340010": {
    "supplier_id": "sup:70410",
@@ -121,7 +149,7 @@
    "type": "capacity",
    "rfq": false,
    "best_price": 27.3814,
-   "deal_price": 31.8,
+   "deal_price": 31.9,
    "opening_price": 32.2,
    "estimate": 24.31,
    "sessions": [
@@ -129,7 +157,12 @@
     "60ecd6410c112727",
     "1ac5d4979d01125f",
     "e74ede01046b6f55",
-    "ccb1025c37286693"
+    "ccb1025c37286693",
+    "9031109a3267c104",
+    "7b7e34239f80e6b5",
+    "43f6a74c1bf956b1",
+    "a288ff3c32ff4ccb",
+    "9e05bbcc3df80284"
    ],
    "cases": [
     "case:P10"
@@ -139,9 +172,15 @@
     0.6316827463686654,
     0.6472939820644754,
     0.6472939820644754,
-    0.6550995999123804
+    0.6550995999123804,
+    0.6472939820644754,
+    0.6472939820644754,
+    0.6472939820644754,
+    0.6472939820644754,
+    0.6472939820644754
    ],
-   "full_cost_observed": null
+   "full_cost_observed": null,
+   "interest_rate_observed": null
   },
   "sup:70510|part:350011": {
    "supplier_id": "sup:70510",
@@ -151,7 +190,7 @@
    "type": "price_increase",
    "rfq": false,
    "best_price": 365.6829,
-   "deal_price": 372.2,
+   "deal_price": 359.59,
    "opening_price": 370.96,
    "estimate": 374.95,
    "sessions": [
@@ -159,7 +198,11 @@
     "1782088abe444a5f",
     "c75e3d16d0fa9d2a",
     "24bac3e39c80cb8c",
-    "e36d2ea9361a51f7"
+    "e36d2ea9361a51f7",
+    "cda592789aa6af4f",
+    "20cb611ee5bafaf9",
+    "fe77cf7f9170a1f1",
+    "f73f076aaaedced6"
    ],
    "cases": [
     "case:P02"
@@ -169,9 +212,14 @@
     0.22361712264198644,
     0.2391006862437053,
     0.1591022743015074,
-    0.1591022743015074
+    0.1591022743015074,
+    0.6105220655563788,
+    0.6105220655563788,
+    0.6840677255971298,
+    0.6840677255971298
    ],
-   "full_cost_observed": null
+   "full_cost_observed": 368.7089,
+   "interest_rate_observed": 0.03
   },
   "sup:70530|part:350020": {
    "supplier_id": "sup:70530",
@@ -181,7 +229,7 @@
    "type": "renewal",
    "rfq": false,
    "best_price": 426.533,
-   "deal_price": 430.31,
+   "deal_price": 431.78,
    "opening_price": 438.21,
    "estimate": 403.21,
    "sessions": [
@@ -189,7 +237,10 @@
     "c7762690d89610e8",
     "fb6a4ee46f0e8edf",
     "212327f9ca2cf7b8",
-    "538599b0ff47d37b"
+    "538599b0ff47d37b",
+    "41f78141ad4b6103",
+    "13f44efb39450014",
+    "f14cd7a9b3d103ce"
    ],
    "cases": [
     "case:P03"
@@ -199,9 +250,13 @@
     0.8955516532525242,
     0.8955516532525242,
     0.8955516532525242,
-    0.8955516532525242
+    0.8955516532525242,
+    0.8639660662116968,
+    0.9318455027192981,
+    0.9316112103587233
    ],
-   "full_cost_observed": 394.6709
+   "full_cost_observed": 395.3331,
+   "interest_rate_observed": 0.06
   },
   "sup:70610|part:360010+part:360011+part:360012+part:360030": {
    "supplier_id": "sup:70610",
@@ -214,7 +269,7 @@
    "type": "bundling",
    "rfq": false,
    "best_price": 4.9539,
-   "deal_price": 5.44,
+   "deal_price": 5.42,
    "opening_price": 5.74,
    "estimate": null,
    "sessions": [
@@ -222,7 +277,11 @@
     "4a101a1b0bf6e4ae",
     "75710688c65ba899",
     "151d1659f66d458f",
-    "ab0314a34471a73a"
+    "ab0314a34471a73a",
+    "442ead104436af5e",
+    "4cc177b419f62443",
+    "c7d454b782dd8576",
+    "bdeae9d4d054a2f2"
    ],
    "cases": [
     "case:P07"
@@ -232,9 +291,14 @@
     0.6471864799292181,
     0.6603475413601065,
     0.6932501949373276,
-    0.6800891335064392
+    0.6800891335064392,
+    0.673508602790995,
+    0.678825322971685,
+    0.6657078412144087,
+    0.7050602864862375
    ],
-   "full_cost_observed": null
+   "full_cost_observed": null,
+   "interest_rate_observed": null
   },
   "sup:70620|part:360020": {
    "supplier_id": "sup:70620",
@@ -244,7 +308,7 @@
    "type": "renewal",
    "rfq": false,
    "best_price": 4.899,
-   "deal_price": 4.91,
+   "deal_price": 4.94,
    "opening_price": 4.96,
    "estimate": 4.3492,
    "sessions": [
@@ -252,7 +316,11 @@
     "825bd3432fb1ed24",
     "77e392bc962cc1c7",
     "8c1c2a1adb111a81",
-    "f4eb92bbdeeb2ad5"
+    "f4eb92bbdeeb2ad5",
+    "fa67836fb940ef68",
+    "1661d29f5e229092",
+    "491b443f26351846",
+    "65d5bd4dbf7266da"
    ],
    "cases": [
     "case:P04"
@@ -262,9 +330,14 @@
     0.8098066042011054,
     0.8098066042011054,
     0.8098066042011054,
-    0.8098066042011054
+    0.8098066042011054,
+    0.8604451426623068,
+    0.8604451426623068,
+    0.8604451426623068,
+    0.8604451426623068
    ],
-   "full_cost_observed": null
+   "full_cost_observed": null,
+   "interest_rate_observed": null
   },
   "sup:70710|part:370010": {
    "supplier_id": "sup:70710",
@@ -274,7 +347,7 @@
    "type": "raw_material",
    "rfq": false,
    "best_price": 4.9102,
-   "deal_price": 5.39,
+   "deal_price": 5.35,
    "opening_price": 6.05,
    "estimate": 5.3994,
    "sessions": [
@@ -283,7 +356,10 @@
     "e7fe5b7e575ac033",
     "9b159f074f616be9",
     "ff799fbc2333c242",
-    "fbbf38c9f6c8d4d4"
+    "fbbf38c9f6c8d4d4",
+    "557c4428e01751ff",
+    "66c34341ade83265",
+    "201eeaab5eb8ff8c"
    ],
    "cases": [
     "case:P08"
@@ -294,9 +370,13 @@
     0.4544780252873441,
     0.6772536073009168,
     0.5881433858864394,
-    0.4656167816061186
+    0.4656167816061186,
+    0.6510561263529955,
+    0.6292645517275941,
+    0.6786754259290533
    ],
-   "full_cost_observed": null
+   "full_cost_observed": null,
+   "interest_rate_observed": null
   },
   "sup:70740|part:370010": {
    "supplier_id": "sup:70740",
@@ -306,7 +386,7 @@
    "type": "raw_material",
    "rfq": false,
    "best_price": 4.5538,
-   "deal_price": 5.6,
+   "deal_price": 5.3,
    "opening_price": 6.1,
    "estimate": 5.7858,
    "sessions": [
@@ -315,7 +395,10 @@
     "21b6e032d2621e98",
     "76dd99484423384e",
     "6a0c945575cb572d",
-    "5a09e68bf894891f"
+    "5a09e68bf894891f",
+    "521717f902426863",
+    "ab179a29ddaea26c",
+    "990f4f5bc9ef1b3a"
    ],
    "cases": [
     "case:P18"
@@ -326,9 +409,13 @@
     0.22727681380922413,
     0.3621134894864948,
     0.3621134894864948,
-    0.37704813824667677
+    0.37704813824667677,
+    0.43101330962373324,
+    0.4771789124287317,
+    0.5633445372960133
    ],
-   "full_cost_observed": null
+   "full_cost_observed": null,
+   "interest_rate_observed": null
   }
  },
  "rfq_caps": {

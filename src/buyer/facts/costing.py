@@ -81,7 +81,10 @@ def supplier_estimate(case: dict, profile: dict | None, standard: dict | None = 
     std.setdefault("payment_days", b["reference_payment_days"])
     if std.get("incoterm") not in freight:  # an unknown Incoterm: the case's fixed one, else the dearest
         std["incoterm"] = (case.get("fixed_terms") or {}).get("incoterm") or max(freight, key=freight.get)
-    return {"full_cost": full_cost, "interest_rate": profile.get("cash_rate_estimate") or DEFAULT_RATE,
+    rate = profile.get("interest_rate_observed")  # fitted from the charges we paid (supplier memory)
+    if rate is None:
+        rate = profile.get("cash_rate_estimate") or DEFAULT_RATE
+    return {"full_cost": full_cost, "interest_rate": rate,
             "standard": std}
 
 
