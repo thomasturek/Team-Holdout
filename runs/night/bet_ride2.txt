@@ -1,0 +1,61 @@
+08:15:55 practice: 6 sessions; 200 left before, keeping 12
+08:15:59 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:15:59 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:15:59 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:15:59 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:15:59 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:01 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:01 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:01 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:01 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:01 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:01 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:03 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:17 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:18 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:31 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:31 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:32 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:32 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:32 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:33 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:43 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:44 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:45 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:45 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:47 case:P02  18c3df892642efc9  sent 1  errors 0 []  deal True  score 0.735  complete
+08:16:48 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:49 case:P10  d50f2735406bb960  sent 2  errors 0 []  deal True  score 0.663  complete
+08:16:52 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:52 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:53 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:57 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:16:59 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:02 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:03 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:09 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:10 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:14 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:15 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:26 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:29 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:31 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:31 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:32 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:37 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:38 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:47 case:P07  065b4789121b92fe  sent 4  errors 0 []  deal True  score 0.646  complete
+08:17:47 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:17:48 case:P11  52716f4921d4e915  sent 5  errors 0 []  deal True  score 0.543  complete
+08:17:48 case:P18  4fc01445e0d256f1  sent 4  errors 0 []  deal True  score 0.63  complete
+08:17:49 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+08:18:11 case:P08  3b553d9a35f93a78  sent 4  errors 0 []  deal True  score 0.737  complete
+log: /Users/thomas.turek/Documents/GitHub/alex-thomas/runs/runner-practice-20261025-081555.log
+case:P02  deal True  score 0.734527206471163
+case:P07  deal True  score 0.6460316185784943
+case:P08  deal True  score 0.7367594279349999
+case:P10  deal True  score 0.6629052177602854
+case:P11  deal True  score 0.5426650839658143
+case:P18  deal True  score 0.6295101511321533
+mean score 65.9 over 6 sessions
+practice sessions left: 194

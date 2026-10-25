@@ -1,0 +1,15 @@
+case_P01: cached
+case_P02: cached
+case_P05: cached
+case_P07: cached
+case_P08: cached
+case_P10: cached
+case_P11: cached
+case_P18: cached
+rev_policy: done (end_turn, $1.15)
+rev_writer: done (end_turn, $0.80)
+rev_reader: done (end_turn, $0.73)
+rev_facts: done (end_turn, $1.03)
+rev_runtime: done (end_turn, $0.93)
+plan_46: done (end_turn, $0.86)
+total spend so far: $18.21 of $90

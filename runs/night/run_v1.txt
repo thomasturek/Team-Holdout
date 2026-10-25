@@ -1,0 +1,24 @@
+03:36:47 practice: 10 sessions; 262 left before, keeping 20
+03:38:12 case:P02  3ca6545ceda86699  sent 1  errors 0 []  deal True  score 0.735  complete
+03:38:22 case:P10  9fcceab31916e044  sent 2  errors 0 []  deal True  score 0.663  complete
+03:38:23 case:P04  3e9bfb9c707ad208  sent 4  errors 0 []  deal True  score 0.874  complete
+03:39:20 case:P01  9c0ba9cd1f167864  sent 4  errors 0 []  deal True  score 0.909  complete
+03:39:29 case:P07  547c1d530d2d1bfa  sent 5  errors 0 []  deal True  score 0.692  complete
+03:39:30 case:P08  15119de0e5fa9a15  sent 5  errors 0 []  deal True  score 0.815  complete
+03:39:52 case:P05 sup:70240: attachment 8d-report.pdf: HTTP 409: busy: another call on this session is still running; retry
+03:40:06 case:P03  9891fe48d8cbca8e  sent 6  errors 0 []  deal True  score 0.935  complete
+03:40:30 case:P05  25a4b54b37ded16a  sent 9  errors 1 []  deal True  score 0.814  complete
+03:40:35 case:P18  783dd48d113f00c7  sent 5  errors 0 []  deal True  score 0.696  complete
+03:41:27 case:P11  e1e70f92779acf79  sent 6  errors 0 []  deal True  score 0.626  complete
+case:P01  deal True  score 0.9091660762348682
+case:P02  deal True  score 0.734527206471163
+case:P03  deal True  score 0.9351091105038049
+case:P04  deal True  score 0.8736820298574475
+case:P05  deal True  score 0.8135787539306429
+case:P07  deal True  score 0.6919428047289613
+case:P08  deal True  score 0.8149828608888529
+case:P10  deal True  score 0.6629052177602854
+case:P11  deal True  score 0.6262806593072341
+case:P18  deal True  score 0.6956757649682936
+mean score 77.6 over 10 sessions
+practice sessions left: 252

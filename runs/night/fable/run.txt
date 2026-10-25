@@ -1,0 +1,5 @@
+fable_round1: done (end_turn, $2.99)
+fable_ceiling: done (end_turn, $2.90)
+fable_rules: done (end_turn, $2.95)
+fable_language: done (end_turn, $2.59)
+total spend so far: $46.82 of $90

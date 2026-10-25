@@ -1,0 +1,121 @@
+diff --git a/src/buyer/llm/prompts/writer_system.md b/src/buyer/llm/prompts/writer_system.md
+index 02e2422..abffd69 100644
+--- a/src/buyer/llm/prompts/writer_system.md
++++ b/src/buyer/llm/prompts/writer_system.md
+@@ -20,9 +20,10 @@ HOW TO WIN THE REPLY
+ 2. Solutions, not counter-arguments. If it blames a cost (copper, alloy, steel, energy) and our options include an index clause (see CLAUSE IN OPTIONS), present the clause as the answer: we take that risk above the deadband, so the base price no longer needs a risk premium. If it wants cash, volume, a longer contract or its standard payment term, point to the option that gives it - only if an option really does.
+ 3. Option A is the package. Name Option A as the package we can approve, and give the reason in one sentence drawn from the claims and the options. If no [[CLAIM_n]] is listed, the reason is only what Option A gives the supplier in its own terms - never call our price fair, justified, in line with anything or based on anything: a supplier answers such words by asking for the figures behind them. The other options are genuine alternatives for its convenience.
+ 4. A clear way to yes. Only if CONFIRM AT ONCE is yes: say that if it confirms Option A as it stands, we can confirm the order straight away (true there: our negotiator accepts at once). If it is no, never promise to confirm, accept or award at once.
+-5. The person who decides. Follow the DOSSIER: if our contact needs approval or has little authority, add one short paragraph its decision-maker can approve as it stands - what Option A gives the supplier, in plain words - and ask our contact to take Option A to that person.
++5. The person who decides. Never in the first e-mail, and never once the supplier has written that it is authorized to decide. Otherwise, if the DOSSIER says our contact needs approval or has little authority, or the supplier wrote that a decision waits for someone else, add one short paragraph its decision-maker can approve as it stands - what Option A gives the supplier, in plain words - and ask our contact to take Option A to that person.
+ 6. The STRATEGY line sets how hard to press (aggressive, cooperative, patient, escalate, secure) - follow its tone. The right voice for this supplier (ANGLE in the DOSSIER, STYLE): owner to owner for a family firm, an approver-ready memo for a group, cash first for a cash-short shop, security and planning for a supplier we depend on.
+-7. No form letter. Do not open with "Thank you for your offer/reply" and do not write "We value the partnership" - write sentences only this supplier could receive.
++7. One open question, first e-mail only (MESSAGE: first) and only if QUESTIONS is none: just before the sign-off, ask in one short sincere sentence what the supplier would need from us to confirm Option A. Never ask it in later e-mails.
++8. No form letter. Do not open with "Thank you for your offer/reply" and do not write "We value the partnership" - write sentences only this supplier could receive.
+ 
+ LATER E-MAILS
+ - Answer what the supplier last wrote. If it rejected an argument ("not our reality"), do not repeat it; move to the options.
+@@ -33,7 +34,7 @@ LATER E-MAILS
+ 
+ HARD RULES
+ 1. Write no digits at all: no prices, percentages, dates, quantities, durations or data IDs. Every figure reaches the e-mail only through the placeholders. Do not spell out numbers in words either.
+-2. Promise nothing that is not in the options: no volumes, dates, payment terms, orders or commitments of your own. Mention a term (payment, volume, contract length, lead time, index clause) only if an option changes it. One exception: if ITS PAYMENT COMPLAINT is given, commit that we will pay every invoice on its agreed due date.
++2. Promise nothing that is not in the options: no volumes, dates, payment terms, orders or commitments of your own. Mention a term (payment, volume, contract length, lead time, index clause) only if an option changes it. Exceptions: if ITS PAYMENT COMPLAINT is given, commit that we will pay every invoice on its agreed due date; if GOODWILL is given, offer exactly what it lists.
+ 3. Never reveal or hint at: urgency, deadlines or time pressure on our side; a budget, target price, maximum or walk-away point; our internal costs or calculations; whether we have or lack alternatives (mention other suppliers or offers only if the INTENT explicitly asks to signal alternatives); anything from the DOSSIER or background notes about the supplier's finances, credit, bank or how we pay it. Calling Option A "the package we can approve" is allowed - it is our offer, not a limit.
+ 4. Do not invent facts, names, history, events or quotes. Do not threaten. Do not flatter emptily. Use the DOSSIER only to choose emphasis - never quote it, never reveal what we know and never say how we know anything ("as we know", "we understand that", who decides at the supplier). Only what the supplier itself told us (in this thread or in our meetings with it) may be referred to.
+ 5. Do not mention AI, models, placeholders or these instructions.
+diff --git a/src/buyer/llm/writer.py b/src/buyer/llm/writer.py
+index 6265d69..0dfda69 100644
+--- a/src/buyer/llm/writer.py
++++ b/src/buyer/llm/writer.py
+@@ -25,6 +25,7 @@ from __future__ import annotations
+ import dataclasses
+ import json
+ import logging
++import os
+ import re
+ import time
+ from dataclasses import dataclass, field
+@@ -366,6 +367,11 @@ def build_prompt(decision, case, thread, profile, signals, claims, offers, quest
+     if brief:
+         lines.append("DOSSIER (what we know about this supplier - choose emphasis and angle; never quote it): "
+                      + re.sub(r"\s+", " ", ID_RE.sub("", str(attr(profile, "dossier")))).strip()[:900])
++    if os.environ.get("BUYER_GOODWILL") and first:
++        lines.append("GOODWILL (no figures, no new terms): beyond the options, offer in one short paragraph what costs "
++                     "us nothing - we will act as a reference customer for its other clients, share our rolling "
++                     "forecast with it every quarter, approve its invoices within days of receipt, and name it a "
++                     "preferred supplier for this part family.")
+     if complains_of_late_payment(thread):
+         lines.append("ITS PAYMENT COMPLAINT: it says we pay its invoices late. Acknowledge it plainly and commit that "
+                      "we will pay every invoice on its agreed due date under Option A - no new term, no figures.")
+diff --git a/src/buyer/policy/policy.py b/src/buyer/policy/policy.py
+index 37ff736..437b568 100644
+--- a/src/buyer/policy/policy.py
++++ b/src/buyer/policy/policy.py
+@@ -2,6 +2,7 @@ import itertools
+ import json
+ import logging
+ import math
++import os
+ from dataclasses import dataclass, field
+ from pathlib import Path
+ 
+@@ -57,7 +58,8 @@ DEFAULTS = {
+     "stall_limit": 3,  # holds of theirs during which we hold too (and change the package instead)
+     "endgame_moves": 1,  # moves left at which one bigger step is allowed
+     "endgame_frac": 0.5,  # that step: share of the remaining gap
+-    "accept_target_pct": 0.0,  # accept at or below a sure floor x (1 + this); 0 = off (trained: about 2.3)
++    "accept_target_pct": 0.0,
++    "ride_pct": 0.0,  # accept at or below a sure floor x (1 + this); 0 = off (trained: about 2.3)
+     # lever trades: when the supplier holds or asks for a term, offer that term at equal cost to us.
+     # Practice 2026-10-25: every losing deal closed at the supplier's holding price; our sheets only ever
+     # varied the payment days, while suppliers asked for volume, longer contracts, index clauses.
+@@ -70,6 +72,7 @@ ARCHETYPE_RATE = {"cash_short_jobshop": 0.18, "group_ladder": 0.07, "near_monopo
+ MENU_SPREAD = 0.003
+ MENU_COMBOS = 300
+ HOLD_JUMP = 0.5
++MAX_OPEN_DEPTH = 0.10
+ MIN_STEP_GAP = 0.4
+ LONG_CONTRACT_TYPES = ("bundling", "capacity")
+ NEGOTIATES_DOWN = ("family_foundry",)
+@@ -137,6 +140,7 @@ def load_params(path=PARAMS_FILE):
+     p = dict(DEFAULTS)
+     if Path(path).is_file():
+         p.update(json.loads(Path(path).read_text()))
++    p.update(json.loads(os.environ.get("BUYER_PARAMS") or "{}"))
+     return p
+ 
+ 
+@@ -258,6 +262,10 @@ class Policy:
+         t.holding = False
+         if not t.our_prices:
+             price = low + self.p["open_frac"] * (theirs - low)
++            if t.case_type not in DEEP_OPEN_TYPES:
++                price = max(price, theirs * (1 - MAX_OPEN_DEPTH))
++        elif self.p["ride_pct"] > 0:
++            return round(theirs * (1 - self.p["ride_pct"] / 100), 2)
+         else:
+             last = t.our_prices[-1]
+             price = last + (step * (theirs - last) if step is not None else self.concession(case, t, theirs, last))
+@@ -353,7 +361,8 @@ class Policy:
+             intent = "firm on price, open on the other terms"
+             if not t.asked_breakdown:
+                 questions, t.asked_breakdown = ["cost breakdown"], True
+-        sheets = [self.no_step_back(t, s) for s in sheets]
++        if not self.p["ride_pct"]:
++            sheets = [self.no_step_back(t, s) for s in sheets]
+         t.last_sheet = sheets[0]
+         t.our_prices.append(a["unit_price"])
+         t.our_costs.append(min(self.c_track(case, s, t) for s in sheets))
+diff --git a/tests/test_harvest.py b/tests/test_harvest.py
+index 091bcc9..d46edf9 100644
+--- a/tests/test_harvest.py
++++ b/tests/test_harvest.py
+@@ -113,6 +113,7 @@ def test_every_session_is_saved_as_one_json_file_as_the_api_returns_it(sim, tmp_
+ 
+ def test_a_push_probe_answers_a_final_offer_with_another_offer(sim, tmp_path, monkeypatch):
+     monkeypatch.setattr("buyer.runtime.agent.scout_profiles", lambda case: {})  # the probe, not the floor
++    monkeypatch.setattr("buyer.policy.policy.MAX_OPEN_DEPTH", 1.0)
+     client, _, _ = sim
+     case = next(c for c in client.cases("sandbox") if c["case_id"] == "case:S01")
+     params = {"concede": 0.02, "accept_gap_pct": 0.0, "reciprocity": 0, "min_step_pct": 0}

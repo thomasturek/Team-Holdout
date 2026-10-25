@@ -1,0 +1,160 @@
+{
+ "contexts": {
+  "core": [
+   "brief/brief.md",
+   "brief/api.md",
+   "docs/NIGHT_CONTEXT.md",
+   "../ehl-final-procurecabana/docs/learnings.md",
+   "../ehl-final-procurecabana/docs/design.md",
+   "../munich-ehl-2026-final/starter-kit/EVALUATION.md",
+   "src/buyer/policy/policy.py",
+   "src/buyer/llm/prompts/writer_system.md",
+   "starter-kit/arena_kit/cost.py"
+  ]
+ },
+ "tasks": [
+  {
+   "id": "case_P01",
+   "context": "core",
+   "prompt": "You get every logged negotiation of practice case P01 (ours oldest first, then the EHL 2026 winners' probes) in the attached digest, plus the shared context (rules, what we know, the winners' learnings, our policy.py and writer prompt). Task: (1) Reconstruct this supplier's response behaviour precisely: first counter as a function of our first message (anchor, sheets, claims), per-round steps, what triggers 'agreed'/'final_offer', which levers it values, what it says it wants. (2) Identify the best deal ever reached in the logs and exactly what led to it. (3) Explain where our CURRENT agent (latest sessions) leaves value vs. the best and vs. the record in NIGHT_CONTEXT. (4) Propose 1-3 concrete changes, GENERAL (keyed to supplier archetype / case type / observable signals, never to case or supplier ids), each as a minimal unified diff against src/buyer/policy/policy.py or src/buyer/llm/prompts/writer_system.md, with the expected effect on this case and the risk to other cases. Be skeptical: separate evidence from inference; note run-to-run noise. Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "runs/night/digest/P01.md"
+   ],
+   "max_tokens": 64000
+  },
+  {
+   "id": "case_P02",
+   "context": "core",
+   "prompt": "You get every logged negotiation of practice case P02 (ours oldest first, then the EHL 2026 winners' probes) in the attached digest, plus the shared context (rules, what we know, the winners' learnings, our policy.py and writer prompt). Task: (1) Reconstruct this supplier's response behaviour precisely: first counter as a function of our first message (anchor, sheets, claims), per-round steps, what triggers 'agreed'/'final_offer', which levers it values, what it says it wants. (2) Identify the best deal ever reached in the logs and exactly what led to it. (3) Explain where our CURRENT agent (latest sessions) leaves value vs. the best and vs. the record in NIGHT_CONTEXT. (4) Propose 1-3 concrete changes, GENERAL (keyed to supplier archetype / case type / observable signals, never to case or supplier ids), each as a minimal unified diff against src/buyer/policy/policy.py or src/buyer/llm/prompts/writer_system.md, with the expected effect on this case and the risk to other cases. Be skeptical: separate evidence from inference; note run-to-run noise. Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "runs/night/digest/P02.md"
+   ],
+   "max_tokens": 64000
+  },
+  {
+   "id": "case_P05",
+   "context": "core",
+   "prompt": "You get every logged negotiation of practice case P05 (ours oldest first, then the EHL 2026 winners' probes) in the attached digest, plus the shared context (rules, what we know, the winners' learnings, our policy.py and writer prompt). Task: (1) Reconstruct this supplier's response behaviour precisely: first counter as a function of our first message (anchor, sheets, claims), per-round steps, what triggers 'agreed'/'final_offer', which levers it values, what it says it wants. (2) Identify the best deal ever reached in the logs and exactly what led to it. (3) Explain where our CURRENT agent (latest sessions) leaves value vs. the best and vs. the record in NIGHT_CONTEXT. (4) Propose 1-3 concrete changes, GENERAL (keyed to supplier archetype / case type / observable signals, never to case or supplier ids), each as a minimal unified diff against src/buyer/policy/policy.py or src/buyer/llm/prompts/writer_system.md, with the expected effect on this case and the risk to other cases. Be skeptical: separate evidence from inference; note run-to-run noise. Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "runs/night/digest/P05.md"
+   ],
+   "max_tokens": 64000
+  },
+  {
+   "id": "case_P07",
+   "context": "core",
+   "prompt": "You get every logged negotiation of practice case P07 (ours oldest first, then the EHL 2026 winners' probes) in the attached digest, plus the shared context (rules, what we know, the winners' learnings, our policy.py and writer prompt). Task: (1) Reconstruct this supplier's response behaviour precisely: first counter as a function of our first message (anchor, sheets, claims), per-round steps, what triggers 'agreed'/'final_offer', which levers it values, what it says it wants. (2) Identify the best deal ever reached in the logs and exactly what led to it. (3) Explain where our CURRENT agent (latest sessions) leaves value vs. the best and vs. the record in NIGHT_CONTEXT. (4) Propose 1-3 concrete changes, GENERAL (keyed to supplier archetype / case type / observable signals, never to case or supplier ids), each as a minimal unified diff against src/buyer/policy/policy.py or src/buyer/llm/prompts/writer_system.md, with the expected effect on this case and the risk to other cases. Be skeptical: separate evidence from inference; note run-to-run noise. Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "runs/night/digest/P07.md"
+   ],
+   "max_tokens": 64000
+  },
+  {
+   "id": "case_P08",
+   "context": "core",
+   "prompt": "You get every logged negotiation of practice case P08 (ours oldest first, then the EHL 2026 winners' probes) in the attached digest, plus the shared context (rules, what we know, the winners' learnings, our policy.py and writer prompt). Task: (1) Reconstruct this supplier's response behaviour precisely: first counter as a function of our first message (anchor, sheets, claims), per-round steps, what triggers 'agreed'/'final_offer', which levers it values, what it says it wants. (2) Identify the best deal ever reached in the logs and exactly what led to it. (3) Explain where our CURRENT agent (latest sessions) leaves value vs. the best and vs. the record in NIGHT_CONTEXT. (4) Propose 1-3 concrete changes, GENERAL (keyed to supplier archetype / case type / observable signals, never to case or supplier ids), each as a minimal unified diff against src/buyer/policy/policy.py or src/buyer/llm/prompts/writer_system.md, with the expected effect on this case and the risk to other cases. Be skeptical: separate evidence from inference; note run-to-run noise. Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "runs/night/digest/P08.md"
+   ],
+   "max_tokens": 64000
+  },
+  {
+   "id": "case_P10",
+   "context": "core",
+   "prompt": "You get every logged negotiation of practice case P10 (ours oldest first, then the EHL 2026 winners' probes) in the attached digest, plus the shared context (rules, what we know, the winners' learnings, our policy.py and writer prompt). Task: (1) Reconstruct this supplier's response behaviour precisely: first counter as a function of our first message (anchor, sheets, claims), per-round steps, what triggers 'agreed'/'final_offer', which levers it values, what it says it wants. (2) Identify the best deal ever reached in the logs and exactly what led to it. (3) Explain where our CURRENT agent (latest sessions) leaves value vs. the best and vs. the record in NIGHT_CONTEXT. (4) Propose 1-3 concrete changes, GENERAL (keyed to supplier archetype / case type / observable signals, never to case or supplier ids), each as a minimal unified diff against src/buyer/policy/policy.py or src/buyer/llm/prompts/writer_system.md, with the expected effect on this case and the risk to other cases. Be skeptical: separate evidence from inference; note run-to-run noise. Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "runs/night/digest/P10.md"
+   ],
+   "max_tokens": 64000
+  },
+  {
+   "id": "case_P11",
+   "context": "core",
+   "prompt": "You get every logged negotiation of practice case P11 (ours oldest first, then the EHL 2026 winners' probes) in the attached digest, plus the shared context (rules, what we know, the winners' learnings, our policy.py and writer prompt). Task: (1) Reconstruct this supplier's response behaviour precisely: first counter as a function of our first message (anchor, sheets, claims), per-round steps, what triggers 'agreed'/'final_offer', which levers it values, what it says it wants. (2) Identify the best deal ever reached in the logs and exactly what led to it. (3) Explain where our CURRENT agent (latest sessions) leaves value vs. the best and vs. the record in NIGHT_CONTEXT. (4) Propose 1-3 concrete changes, GENERAL (keyed to supplier archetype / case type / observable signals, never to case or supplier ids), each as a minimal unified diff against src/buyer/policy/policy.py or src/buyer/llm/prompts/writer_system.md, with the expected effect on this case and the risk to other cases. Be skeptical: separate evidence from inference; note run-to-run noise. Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "runs/night/digest/P11.md"
+   ],
+   "max_tokens": 64000
+  },
+  {
+   "id": "case_P18",
+   "context": "core",
+   "prompt": "You get every logged negotiation of practice case P18 (ours oldest first, then the EHL 2026 winners' probes) in the attached digest, plus the shared context (rules, what we know, the winners' learnings, our policy.py and writer prompt). Task: (1) Reconstruct this supplier's response behaviour precisely: first counter as a function of our first message (anchor, sheets, claims), per-round steps, what triggers 'agreed'/'final_offer', which levers it values, what it says it wants. (2) Identify the best deal ever reached in the logs and exactly what led to it. (3) Explain where our CURRENT agent (latest sessions) leaves value vs. the best and vs. the record in NIGHT_CONTEXT. (4) Propose 1-3 concrete changes, GENERAL (keyed to supplier archetype / case type / observable signals, never to case or supplier ids), each as a minimal unified diff against src/buyer/policy/policy.py or src/buyer/llm/prompts/writer_system.md, with the expected effect on this case and the risk to other cases. Be skeptical: separate evidence from inference; note run-to-run noise. Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "runs/night/digest/P18.md"
+   ],
+   "max_tokens": 64000
+  },
+  {
+   "id": "rev_policy",
+   "context": "core",
+   "prompt": "Review the attached code thoroughly as part of our buyer agent (shared context explains the game and what we learned). Find: (a) bugs and value leaks that cost score (cite file:line and a concrete scenario), (b) missed opportunities given the rules and the winners' learnings, (c) risks for the Live Final on hidden cases (unknown suppliers from the pool of 46, other case types, timeouts). Rank findings by expected points. For the top findings give minimal unified diffs. Do not propose rewrites; respect the architecture (code decides figures, LLM writes words within guards). Focus: negotiation policy and economics. Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "src/buyer/facts/costing.py",
+    "src/buyer/interfaces.py",
+    "src/buyer/policy/params.json"
+   ],
+   "max_tokens": 64000
+  },
+  {
+   "id": "rev_writer",
+   "context": "core",
+   "prompt": "Review the attached code thoroughly as part of our buyer agent (shared context explains the game and what we learned). Find: (a) bugs and value leaks that cost score (cite file:line and a concrete scenario), (b) missed opportunities given the rules and the winners' learnings, (c) risks for the Live Final on hidden cases (unknown suppliers from the pool of 46, other case types, timeouts). Rank findings by expected points. For the top findings give minimal unified diffs. Do not propose rewrites; respect the architecture (code decides figures, LLM writes words within guards). Focus: the writer, its prompt and guards - does every e-mail maximise the supplier's concession while staying truthful? Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "src/buyer/llm/writer.py",
+    "src/buyer/llm/vocab.py",
+    "src/buyer/llm/guard.py",
+    "src/buyer/llm/compose.py",
+    "src/buyer/llm/template.py",
+    "src/buyer/facts/dossier.py"
+   ],
+   "max_tokens": 64000
+  },
+  {
+   "id": "rev_reader",
+   "context": "core",
+   "prompt": "Review the attached code thoroughly as part of our buyer agent (shared context explains the game and what we learned). Find: (a) bugs and value leaks that cost score (cite file:line and a concrete scenario), (b) missed opportunities given the rules and the winners' learnings, (c) risks for the Live Final on hidden cases (unknown suppliers from the pool of 46, other case types, timeouts). Rank findings by expected points. For the top findings give minimal unified diffs. Do not propose rewrites; respect the architecture (code decides figures, LLM writes words within guards). Focus: the reader (supplier e-mail -> signals) and how signals feed the policy. Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "src/buyer/llm/reader.py",
+    "src/buyer/llm/prompts/reader_system.md",
+    "src/buyer/llm/vocab.py",
+    "src/buyer/runtime/agent.py"
+   ],
+   "max_tokens": 64000
+  },
+  {
+   "id": "rev_facts",
+   "context": "core",
+   "prompt": "Review the attached code thoroughly as part of our buyer agent (shared context explains the game and what we learned). Find: (a) bugs and value leaks that cost score (cite file:line and a concrete scenario), (b) missed opportunities given the rules and the winners' learnings, (c) risks for the Live Final on hidden cases (unknown suppliers from the pool of 46, other case types, timeouts). Rank findings by expected points. For the top findings give minimal unified diffs. Do not propose rewrites; respect the architecture (code decides figures, LLM writes words within guards). Focus: claims bank, supplier profiles, memory - which arguments and estimates are wrong or missing. Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "src/buyer/facts/claims.py",
+    "src/buyer/facts/profile.py",
+    "src/buyer/facts/memory.py"
+   ],
+   "max_tokens": 64000
+  },
+  {
+   "id": "rev_runtime",
+   "context": "core",
+   "prompt": "Review the attached code thoroughly as part of our buyer agent (shared context explains the game and what we learned). Find: (a) bugs and value leaks that cost score (cite file:line and a concrete scenario), (b) missed opportunities given the rules and the winners' learnings, (c) risks for the Live Final on hidden cases (unknown suppliers from the pool of 46, other case types, timeouts). Rank findings by expected points. For the top findings give minimal unified diffs. Do not propose rewrites; respect the architecture (code decides figures, LLM writes words within guards). Focus: runtime robustness for the Live Final: network drops (we lost 5 cases to a 3-minute Wi-Fi outage: requests hung ~180 s, arena recorded our move as timeout, supplier walked), timeouts, retries, closing, RFQ concurrency, restarts. Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "src/buyer/runtime/agent.py",
+    "src/buyer/runtime/threads.py",
+    "src/buyer/runtime/runner.py",
+    "starter-kit/arena_kit/client.py"
+   ],
+   "max_tokens": 64000
+  },
+  {
+   "id": "plan_46",
+   "context": "core",
+   "prompt": "The Live Final draws hidden cases from the same pool of 46 profiled suppliers. Using the dossiers and the dossier/profile code attached, produce for EVERY persona trait and archetype in the pool (including those never seen in practice: hedged, approval_2pct, partnership_2022, reference_customer, deprioritising_us, complains_late_pay, open_book, stale_costing, spare_capacity, capacity_full, cash_need, price_frozen, not_strategic) the best general tactic: opening depth, which claims, which trades (payment, contract, volume, lead time, clause), tone, what never to say - grounded in the evidence in the shared context. Then propose minimal diffs to src/buyer/facts/dossier.py and/or policy.py that make the agent apply them, keyed to detectable traits. Keep your written answer under about 3,500 words: findings first, ranked, then diffs.",
+   "files": [
+    "src/buyer/facts/dossiers.json",
+    "src/buyer/facts/dossier.py",
+    "src/buyer/facts/profile.py"
+   ],
+   "max_tokens": 64000
+  }
+ ]
+}

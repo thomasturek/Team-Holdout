@@ -1,0 +1,23 @@
+04:14:10 practice: 10 sessions; 252 left before, keeping 20
+04:14:42 case:P02  a632c5d6f162dc29  sent 1  errors 0 []  deal True  score 0.735  complete
+04:14:59 case:P10  6c2bdb516139b0bc  sent 2  errors 0 []  deal True  score 0.663  complete
+04:15:16 case:P04  f37d2d2313e19c27  sent 3  errors 0 []  deal True  score 0.86  complete
+04:16:08 case:P07  121a69f65dc2b249  sent 5  errors 0 []  deal True  score 0.653  complete
+04:16:12 case:P01  b4535c944f34f58c  sent 4  errors 0 []  deal True  score 0.616  complete
+04:16:48 case:P08  7349e03dd6c7a356  sent 5  errors 0 []  deal True  score 0.804  complete
+04:16:48 case:P05  45a8c2e4336d78ac  sent 6  errors 0 []  deal True  score 0.814  complete
+04:17:07 case:P18  ea76e6674cbacadc  sent 5  errors 0 []  deal True  score 0.63  complete
+04:17:08 case:P03  ae66ab51b06b9965  sent 5  errors 0 []  deal True  score 0.935  complete
+04:17:13 case:P11  54e20687af3a1b08  sent 6  errors 0 []  deal True  score 0.71  complete
+case:P01  deal True  score 0.6157811008925661
+case:P02  deal True  score 0.734527206471163
+case:P03  deal True  score 0.9351091105038049
+case:P04  deal True  score 0.8604451426623068
+case:P05  deal True  score 0.8135787539306429
+case:P07  deal True  score 0.6525903594571325
+case:P08  deal True  score 0.8038080522070107
+case:P10  deal True  score 0.6629052177602854
+case:P11  deal True  score 0.7098962346486538
+case:P18  deal True  score 0.6295101511321533
+mean score 74.2 over 10 sessions
+practice sessions left: 242
