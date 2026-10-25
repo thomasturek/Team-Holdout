@@ -1,0 +1,39 @@
+nodeal case:P07-case_facts None 0.847
+nodeal case:P07-extra_levers None 0.853
+nodeal case:P07-four_bidders None 0.847
+nodeal case:P07-long_horizon None 0.539
+nodeal case:P07-new_suppliers None 0.847
+nodeal case:P07-no_current None 1.0
+nodeal case:P07-no_options None 0.881
+nodeal case:P07-odd_type None 0.847
+nodeal case:P09-no_current None 0.989
+nodeal case:P12-case_facts None 0.863
+nodeal case:P12-extra_levers None 0.88
+nodeal case:P12-long_horizon None 0.863
+nodeal case:P12-new_suppliers None 0.863
+nodeal case:P12-no_current None 1.0
+nodeal case:P12-no_options None 0.863
+nodeal case:P12-odd_type None 0.863
+nodeal case:P15-case_facts None 0.852
+nodeal case:P15-extra_levers None 0.853
+nodeal case:P15-four_bidders None 0.852
+nodeal case:P15-long_horizon None 0.541
+nodeal case:P15-new_suppliers None 0.852
+nodeal case:P15-no_current None 1.0
+nodeal case:P15-no_options None 0.887
+nodeal case:P15-odd_type None 0.852
+
+== per mutation
+case_facts {'deal': 16, 'nodeal': 3}
+extra_levers {'deal': 16, 'nodeal': 3}
+four_bidders {'deal': 17, 'nodeal': 2}
+long_horizon {'deal': 16, 'nodeal': 3}
+new_suppliers {'deal': 16, 'nodeal': 3}
+no_alt {'deal': 19}
+no_current {'deal': 15, 'nodeal': 4}
+no_options {'deal': 16, 'nodeal': 3}
+odd_type {'deal': 16, 'nodeal': 3}
+
+== logged errors
+
+== samples
