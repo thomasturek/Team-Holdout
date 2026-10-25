@@ -1,4 +1,4 @@
-"""V3 (docs/V3_ROBUSTNESS_PLAN.md, DIPLOMAT): misleading supplier e-mails, and language that can never
+"""V3 (DIPLOMAT): misleading supplier e-mails, and language that can never
 change a decision. Language failures may cost strategy quality, never create an invalid action."""
 
 import json

@@ -5,7 +5,7 @@ never the leaderboard, the screen, the results or the event feed - and writes a 
 per session every exchange (our e-mail -> the supplier's reply, status, claim results, the reader's
 signals), flags where it went badly (irritated, "not our reality", final offer, walked away, a
 contradicted claim) and the supplier's reasons from the trace. Read it, then write the findings into
-docs/LEARNINGS.md (replay link + supplier, as AGENTS.md asks) and tune prompts/ and vocab.py.
+the team notes (replay link + supplier) and tune prompts/ and vocab.py.
 
     uv run python -m buyer.llm.review report --set practice --limit 25 --out runs/review/practice.md
     uv run python -m buyer.llm.review fixtures --set practice --limit 30 \

@@ -1,0 +1,21 @@
+11:30:13 practice: 1 sessions; 260 left before, keeping 12
+11:30:18 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:18 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:18 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:19 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:20 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:20 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:58 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:59 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:31:36 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:31:37 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:32:22 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:32:23 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:32:41 case:P05 sup:70210: attachment 8d-report.pdf: HTTP 409: busy: another call on this session is still running; retry
+11:33:28 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:34:04 case:P05 sup:70240: attachment delivery-schedule.xlsx: HTTP 409: busy: another call on this session is still running; retry
+11:34:13 case:P05  d9ce10c6b56cb582  sent 6  errors 3 [409]  deal True  score 0.814  complete
+log: /Users/thomas.turek/Documents/GitHub/alex-thomas/runs/runner-practice-20261025-113012.log
+case:P05  deal True  score 0.8135787539306429
+mean score 81.4 over 1 sessions
+practice sessions left: 259

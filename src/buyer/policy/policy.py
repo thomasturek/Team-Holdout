@@ -620,7 +620,7 @@ class Policy:
         cap = alternative_cost(case) * (1 - self.p["accept_gap_pct"] / 100)
         c = self.c(case, sheet, t)
         if c <= cap:
-            return sheet if sheet != own else None
+            return sheet if sheet != own or not must_haves_ok(case, t.standing_terms, t.standard) else None
         slope = self.c(case, {**sheet, "unit_price": sheet["unit_price"] + 1}, t) - c
         if slope <= 0:
             return None

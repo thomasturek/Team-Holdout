@@ -94,15 +94,14 @@ values of the `Signals` lists are in [`src/buyer/llm/README.md`](src/buyer/llm/R
 
 ## 4. The roles
 
-Each role has its own file with its tasks, priorities and definition of done. Pick one, read it, work
-only inside its folder.
+Each role owns one folder. Pick one and work only inside it.
 
-| Role | Person | File | Owns | Mission |
-|---|---|---|---|---|
-| THE SCOUT | Felix | [`roles/SCOUT.md`](roles/SCOUT.md) | `src/buyer/facts/` | Exact numbers, supplier profiles, claims that always verify |
-| THE ANALYST | Thomas | [`roles/ANALYST.md`](roles/ANALYST.md) | `src/buyer/policy/`, `src/buyer/sim/` | Policy trained in simulation, calibrated on real runs |
-| THE DIPLOMAT | Halichem | [`roles/DIPLOMAT.md`](roles/DIPLOMAT.md) | `src/buyer/llm/` | LLM reads supplier e-mails, writes ours; fast and safe |
-| THE OPERATOR | Alex | [`roles/OPERATOR.md`](roles/OPERATOR.md) | `src/buyer/runtime/`, `pyproject.toml`, `runs/` | Everything in parallel, nothing times out, everything logged |
+| Role | Person | Owns | Mission |
+|---|---|---|---|
+| THE SCOUT | Felix | `src/buyer/facts/` | Exact numbers, supplier profiles, claims that always verify |
+| THE ANALYST | Thomas | `src/buyer/policy/`, `src/buyer/sim/` | Policy trained in simulation, calibrated on real runs |
+| THE DIPLOMAT | Halichem | `src/buyer/llm/` | LLM reads supplier e-mails, writes ours; fast and safe |
+| THE OPERATOR | Alex | `src/buyer/runtime/`, `pyproject.toml`, `runs/` | Everything in parallel, nothing times out, everything logged |
 
 ### Who owns what (no overlaps - if it's not here, ask before building it)
 
@@ -124,8 +123,6 @@ only inside its folder.
 
 ---
 
-Timeline, practice-quota budget and open questions for Tacto: skill `hackathon-plan`
-(`.claude/skills/hackathon-plan/SKILL.md`).
 
 ## 7. Guardrails (every role, always)
 
@@ -145,5 +142,4 @@ Timeline, practice-quota budget and open questions for Tacto: skill `hackathon-p
 - State your role at the start of a task. Stay inside your folder unless the task says otherwise.
 - Interface changes (section 3) need both sides' agreement and an update to this file.
 - Write tests for your module; `uv run pytest` must stay green.
-- Log learnings from replays in `docs/LEARNINGS.md` with the replay link and the supplier.
 - When in doubt, protect the submittable agent first (section 5, last line).

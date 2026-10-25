@@ -1,0 +1,17 @@
+11:30:13 WARNING buyer.runner practice: 1 sessions; 260 left before, keeping 12
+11:30:18 INFO httpx2 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:18 INFO httpx2 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:18 INFO httpx2 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:19 INFO httpx2 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:20 INFO httpx2 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:20 INFO httpx2 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:58 INFO httpx2 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:30:59 INFO httpx2 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:31:36 INFO httpx2 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:31:37 INFO httpx2 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:32:22 INFO httpx2 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:32:23 INFO httpx2 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:32:41 WARNING buyer.threads case:P05 sup:70210: attachment 8d-report.pdf: HTTP 409: busy: another call on this session is still running; retry
+11:33:28 INFO httpx2 HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 200 OK"
+11:34:04 WARNING buyer.threads case:P05 sup:70240: attachment delivery-schedule.xlsx: HTTP 409: busy: another call on this session is still running; retry
+11:34:13 INFO buyer.runner case:P05  d9ce10c6b56cb582  sent 6  errors 3 [409]  deal True  score 0.814  complete
