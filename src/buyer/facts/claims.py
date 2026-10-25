@@ -385,7 +385,7 @@ def rival_claims(case: dict, threads: dict, supplier_id: str, data: CaseData | N
     return out
 
 
-HELPFUL_NEWS = ("free_capacity", "short_time_work", "supply_normalises")
+HELPFUL_NEWS = ("free_capacity", "short_time_work", "supply_normalises", "customer_loss")
 VOLUME_CASES = ("bundling", "renewal")
 
 

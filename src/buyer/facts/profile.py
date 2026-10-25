@@ -20,6 +20,7 @@ both, by category - never above that price. Archetype: rules over supplier_intel
 and our payment record, corrected by hand in overrides.json.
 """
 
+import csv
 import json
 import re
 import sqlite3
@@ -35,7 +36,10 @@ AS_OF = "2026-09-30"
 COUNTRY_FACTOR = {"DE": 1.0, "AT": 1.05, "CH": 1.05, "CZ": 0.82, "PL": 0.82, "HU": 0.82, "TR": 0.75, "CN": 0.7}
 BASE_RATE = 0.08
 MARKET_CONFIDENCE = 0.15          # floor from a price, not a cost estimate
-CASH_NEWS = {"credit_watch": 0.35, "credit_downgrade": 0.35, "short_time_work": 0.3, "restructuring": 0.3}
+CASH_NEWS = {"credit_watch": 0.35, "credit_downgrade": 0.35, "short_time_work": 0.3, "restructuring": 0.3,
+             "customer_loss": 0.25, "asks_fast_payment": 0.35}
+RELEASE = Path(__file__).resolve().parents[3] / "data" / "release-sunday" / "data"
+CASH_LETTER_RE = re.compile(r"payment|liquidity", re.I)
 CAPACITY_NEWS = {"allocation", "full_order_book", "chip_shortage"}
 BIG_TURNOVER = 50e6
 NOTE_CHARS = 220
@@ -76,7 +80,24 @@ def _news():
     for r in _rows("SELECT id, date, supplier_id, topic, headline FROM news "
                    "WHERE supplier_id IS NOT NULL ORDER BY date"):
         out.setdefault(r["supplier_id"], []).append(r)
+    for r in _release_rows("news.csv"):
+        if r.get("supplier_id"):
+            row = {k: r.get(k) for k in ("id", "date", "supplier_id", "topic", "headline")}
+            out.setdefault(r["supplier_id"], []).append(row)
+    for r in _release_rows("documents.csv"):
+        if r.get("supplier_id") and CASH_LETTER_RE.search(r.get("subject") or ""):
+            row = {"id": r["id"], "date": r["date"], "supplier_id": r["supplier_id"], "topic": "asks_fast_payment",
+                   "headline": r["subject"]}
+            out.setdefault(r["supplier_id"], []).append(row)
     return out
+
+
+def _release_rows(name):
+    path = RELEASE / name
+    if not path.is_file():
+        return []
+    with path.open(encoding="utf-8") as f:
+        return list(csv.DictReader(f))
 
 
 @lru_cache(maxsize=1)

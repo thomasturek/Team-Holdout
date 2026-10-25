@@ -110,15 +110,25 @@
     "floor_computed_source": "should_cost",
     "memory": {
      "best_price": 135.1891,
-     "deal_price": 137.9,
+     "deal_price": 135.5,
      "opening_price": 138.55,
      "cases": [
       "case:P01"
      ],
      "scores": [
-      0.7602917704457346
+      0.7602917704457346,
+      0.9262781239225645,
+      0.9690850144547528,
+      0.9262781239225645,
+      0.9106338463828725,
+      0.9136401331649009,
+      0.7615599407063695,
+      0.9091660762348682,
+      0.8640289404037227
      ]
     },
+    "full_cost_observed": 130.04,
+    "interest_rate_observed": 0.095,
     "claims": [
      {
       "key": "notice:sup:70110",
@@ -161,6 +171,16 @@
       "strength": 0.49
      },
      {
+      "key": "index:PPI-D351",
+      "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
+      "refs": [
+       "idx:PPI-D351@2025-08",
+       "idx:PPI-D351@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.12
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
@@ -168,7 +188,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.461
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -178,17 +198,7 @@
        "idx:PPI-C241@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.162
-     },
-     {
-      "key": "index:PPI-D351",
-      "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
-      "refs": [
-       "idx:PPI-D351@2025-08",
-       "idx:PPI-D351@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.12
+      "strength": 0.0
      }
     ]
    },
@@ -340,16 +350,6 @@
       "strength": 0.49
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.446
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -360,6 +360,16 @@
       "strength": 0.2
      },
      {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:PPI-C241",
       "sentence": "German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).",
       "refs": [
@@ -367,7 +377,7 @@
        "idx:PPI-C241@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.168
+      "strength": 0.0
      }
     ]
    }
@@ -507,16 +517,6 @@
       "strength": 0.6466781708369298
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.309
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -525,6 +525,16 @@
       ],
       "expected": "verified",
       "strength": 0.18
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -672,16 +682,6 @@
       "strength": 0.5
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.281
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -690,6 +690,16 @@
       ],
       "expected": "verified",
       "strength": 0.22
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -845,16 +855,6 @@
       "strength": 0.63
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.29
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -863,6 +863,16 @@
       ],
       "expected": "verified",
       "strength": 0.2
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -1016,16 +1026,6 @@
       "strength": 0.63
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.29
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -1034,6 +1034,16 @@
       ],
       "expected": "verified",
       "strength": 0.2
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -1056,7 +1066,7 @@
     "country": "PL",
     "owner_type": "private",
     "archetype": "cash_short_jobshop",
-    "floor_estimate": 105.7543,
+    "floor_estimate": 105.4291,
     "floor_confidence": 0.1,
     "floor_source": "should_cost_country+observed_bias",
     "cash_rate_estimate": 0.176,
@@ -1176,16 +1186,6 @@
       "strength": 1.0
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.299
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -1194,6 +1194,16 @@
       ],
       "expected": "verified",
       "strength": 0.12
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -1214,7 +1224,7 @@
     "country": "PL",
     "owner_type": "private",
     "archetype": "cash_short_jobshop",
-    "floor_estimate": 43.9003,
+    "floor_estimate": 43.7653,
     "floor_confidence": 0.03,
     "floor_source": "observed_best",
     "cash_rate_estimate": 0.176,
@@ -1315,14 +1325,22 @@
     "floor_computed": 45.15,
     "floor_computed_source": "own_price",
     "memory": {
-     "best_price": 43.9003,
-     "deal_price": 48.5,
+     "best_price": 43.7653,
+     "deal_price": 46.0,
      "opening_price": 47.0,
      "cases": [
       "case:P11"
      ],
      "scores": [
-      0.23077898794231855
+      0.23077898794231855,
+      0.3980101386251581,
+      0.5736028468421396,
+      0.5736028468421396,
+      0.5736028468421396,
+      0.6338060610879618,
+      0.7098962346486538,
+      0.6262806593072341,
+      0.6262806593072341
      ]
     },
     "claims": [
@@ -1357,16 +1375,6 @@
       "strength": 0.7546945823440534
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.29
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -1375,6 +1383,16 @@
       ],
       "expected": "verified",
       "strength": 0.12
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -1395,7 +1413,7 @@
     "country": "PL",
     "owner_type": "private",
     "archetype": "cash_short_jobshop",
-    "floor_estimate": 28.687,
+    "floor_estimate": 28.5988,
     "floor_confidence": 0.1,
     "floor_source": "should_cost_country+observed_bias",
     "cash_rate_estimate": 0.176,
@@ -1527,16 +1545,6 @@
       "strength": 0.5
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.309
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -1545,6 +1553,16 @@
       ],
       "expected": "verified",
       "strength": 0.18
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -1700,16 +1718,6 @@
       "strength": 0.6916641314268316
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.29
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -1718,6 +1726,16 @@
       ],
       "expected": "verified",
       "strength": 0.12
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -1861,14 +1879,14 @@
       "strength": 0.55
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
       ],
       "expected": "verified",
-      "strength": 0.271
+      "strength": 0.48
      },
      {
       "key": "index:PPI-D351",
@@ -1881,11 +1899,11 @@
       "strength": 0.18
      },
      {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -1909,13 +1927,16 @@
     "name": "Slévárna Vrbenský s.r.o.",
     "country": "CZ",
     "owner_type": "family",
-    "archetype": "family_foundry",
+    "archetype": "cash_short_jobshop",
     "floor_estimate": 559.61,
     "floor_confidence": 0.15,
     "floor_source": "own_price",
-    "cash_rate_estimate": 0.08,
-    "cash_pressure": 0.0,
-    "cash_reasons": [],
+    "cash_rate_estimate": 0.192,
+    "cash_pressure": 0.7,
+    "cash_reasons": [
+     "Bank tightens credit line for Slévárna Vrbenský s.r.o. (news:20261014-S11)",
+     "Payment terms for stainless castings (doc:20261016-70170-S12)"
+    ],
     "approval_style": "flat",
     "cost_drivers": [
      {
@@ -1994,6 +2015,8 @@
     },
     "notes": [
      "2026-04-20 Slévárna Vrbenský s.r.o. opens a new moulding line (news:20260420-09)",
+     "2026-10-14 Bank tightens credit line for Slévárna Vrbenský s.r.o. (news:20261014-S11)",
+     "2026-10-16 Payment terms for stainless castings (doc:20261016-70170-S12)",
      "2026-02-10 Payment of invoices: Could you pay our invoices within 10 days? In return we would grant a cash discount. (doc:20260210-70170-M1)",
      "2026-05-12 Supplier day: At our supplier day Slévárna Vrbenský s.r.o. said Hollerau is an important reference customer for them. (doc:20260512-70170-M2)"
     ],
@@ -2028,14 +2051,14 @@
       "strength": 0.6719353705655069
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
       ],
       "expected": "verified",
-      "strength": 0.243
+      "strength": 0.48
      },
      {
       "key": "otd:sup:70170",
@@ -2057,11 +2080,11 @@
       "strength": 0.12
      },
      {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -2202,14 +2225,14 @@
       "strength": 0.526
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
       ],
       "expected": "verified",
-      "strength": 0.243
+      "strength": 0.48
      },
      {
       "key": "index:PPI-D351",
@@ -2222,11 +2245,11 @@
       "strength": 0.12
      },
      {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -2365,14 +2388,14 @@
       "strength": 0.526
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
       ],
       "expected": "verified",
-      "strength": 0.271
+      "strength": 0.48
      },
      {
       "key": "index:PPI-D351",
@@ -2385,11 +2408,11 @@
       "strength": 0.18
      },
      {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -2404,13 +2427,16 @@
     "name": "Gießerei Pfaffenreuth GmbH",
     "country": "DE",
     "owner_type": "family",
-    "archetype": "family_foundry",
+    "archetype": "cash_short_jobshop",
     "floor_estimate": 180.19,
     "floor_confidence": 0.1,
     "floor_source": "should_cost_country",
-    "cash_rate_estimate": 0.08,
-    "cash_pressure": 0.0,
-    "cash_reasons": [],
+    "cash_rate_estimate": 0.176,
+    "cash_pressure": 0.6,
+    "cash_reasons": [
+     "Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14)",
+     "Our liquidity and your call-offs (doc:20261019-70190-S13)"
+    ],
     "approval_style": "flat",
     "cost_drivers": [
      {
@@ -2489,6 +2515,8 @@
     },
     "notes": [
      "2026-04-26 Gießerei Pfaffenreuth GmbH secures power prices (news:20260426-10)",
+     "2026-10-15 Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14)",
+     "2026-10-19 Our liquidity and your call-offs (doc:20261019-70190-S13)",
      "2026-06-23 Material purchasing: Call with Gießerei Pfaffenreuth GmbH: they bought their electricity forward until December 2028 and said the market price is 'not our reality' before then. (doc:20260623-70190-M1)"
     ],
     "standard_terms": {},
@@ -2510,6 +2538,15 @@
       "strength": 0.715
      },
      {
+      "key": "news:sup:70190:news:20261015-S14",
+      "sentence": "Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14).",
+      "refs": [
+       "news:20261015-S14"
+      ],
+      "expected": "verified",
+      "strength": 0.6
+     },
+     {
       "key": "otd:sup:70190",
       "sentence": "Your on-time delivery was 85.1% in the four quarters to 2026Q3 (sc:70190@2026Q3).",
       "refs": [
@@ -2517,16 +2554,6 @@
       ],
       "expected": "verified",
       "strength": 0.495
-     },
-     {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.29
      },
      {
       "key": "index:PPI-D351",
@@ -2537,6 +2564,16 @@
       ],
       "expected": "verified",
       "strength": 0.2
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -2556,13 +2593,16 @@
     "name": "Gießerei Pfaffenreuth GmbH",
     "country": "DE",
     "owner_type": "family",
-    "archetype": "family_foundry",
+    "archetype": "cash_short_jobshop",
     "floor_estimate": 45.15,
     "floor_confidence": 0.15,
     "floor_source": "market_price",
-    "cash_rate_estimate": 0.08,
-    "cash_pressure": 0.0,
-    "cash_reasons": [],
+    "cash_rate_estimate": 0.176,
+    "cash_pressure": 0.6,
+    "cash_reasons": [
+     "Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14)",
+     "Our liquidity and your call-offs (doc:20261019-70190-S13)"
+    ],
     "approval_style": "flat",
     "cost_drivers": [
      {
@@ -2641,6 +2681,8 @@
     },
     "notes": [
      "2026-04-26 Gießerei Pfaffenreuth GmbH secures power prices (news:20260426-10)",
+     "2026-10-15 Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14)",
+     "2026-10-19 Our liquidity and your call-offs (doc:20261019-70190-S13)",
      "2026-06-23 Material purchasing: Call with Gießerei Pfaffenreuth GmbH: they bought their electricity forward until December 2028 and said the market price is 'not our reality' before then. (doc:20260623-70190-M1)"
     ],
     "standard_terms": {},
@@ -2662,6 +2704,15 @@
       "strength": 0.715
      },
      {
+      "key": "news:sup:70190:news:20261015-S14",
+      "sentence": "Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14).",
+      "refs": [
+       "news:20261015-S14"
+      ],
+      "expected": "verified",
+      "strength": 0.6
+     },
+     {
       "key": "otd:sup:70190",
       "sentence": "Your on-time delivery was 85.1% in the four quarters to 2026Q3 (sc:70190@2026Q3).",
       "refs": [
@@ -2669,16 +2720,6 @@
       ],
       "expected": "verified",
       "strength": 0.495
-     },
-     {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.29
      },
      {
       "key": "index:PPI-D351",
@@ -2689,6 +2730,16 @@
       ],
       "expected": "verified",
       "strength": 0.12
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -2708,13 +2759,16 @@
     "name": "Gießerei Pfaffenreuth GmbH",
     "country": "DE",
     "owner_type": "family",
-    "archetype": "family_foundry",
+    "archetype": "cash_short_jobshop",
     "floor_estimate": 35.98,
     "floor_confidence": 0.1,
     "floor_source": "should_cost_country",
-    "cash_rate_estimate": 0.08,
-    "cash_pressure": 0.0,
-    "cash_reasons": [],
+    "cash_rate_estimate": 0.176,
+    "cash_pressure": 0.6,
+    "cash_reasons": [
+     "Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14)",
+     "Our liquidity and your call-offs (doc:20261019-70190-S13)"
+    ],
     "approval_style": "flat",
     "cost_drivers": [
      {
@@ -2793,6 +2847,8 @@
     },
     "notes": [
      "2026-04-26 Gießerei Pfaffenreuth GmbH secures power prices (news:20260426-10)",
+     "2026-10-15 Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14)",
+     "2026-10-19 Our liquidity and your call-offs (doc:20261019-70190-S13)",
      "2026-06-23 Material purchasing: Call with Gießerei Pfaffenreuth GmbH: they bought their electricity forward until December 2028 and said the market price is 'not our reality' before then. (doc:20260623-70190-M1)"
     ],
     "standard_terms": {},
@@ -2814,6 +2870,15 @@
       "strength": 0.715
      },
      {
+      "key": "news:sup:70190:news:20261015-S14",
+      "sentence": "Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14).",
+      "refs": [
+       "news:20261015-S14"
+      ],
+      "expected": "verified",
+      "strength": 0.6
+     },
+     {
       "key": "otd:sup:70190",
       "sentence": "Your on-time delivery was 85.1% in the four quarters to 2026Q3 (sc:70190@2026Q3).",
       "refs": [
@@ -2821,16 +2886,6 @@
       ],
       "expected": "verified",
       "strength": 0.495
-     },
-     {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.309
      },
      {
       "key": "index:PPI-D351",
@@ -2841,6 +2896,16 @@
       ],
       "expected": "verified",
       "strength": 0.18
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -2860,13 +2925,16 @@
     "name": "Gießerei Pfaffenreuth GmbH",
     "country": "DE",
     "owner_type": "family",
-    "archetype": "family_foundry",
+    "archetype": "cash_short_jobshop",
     "floor_estimate": 33.93,
     "floor_confidence": 0.05,
     "floor_source": "should_cost",
-    "cash_rate_estimate": 0.08,
-    "cash_pressure": 0.0,
-    "cash_reasons": [],
+    "cash_rate_estimate": 0.176,
+    "cash_pressure": 0.6,
+    "cash_reasons": [
+     "Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14)",
+     "Our liquidity and your call-offs (doc:20261019-70190-S13)"
+    ],
     "approval_style": "flat",
     "cost_drivers": [
      {
@@ -2945,6 +3013,8 @@
     },
     "notes": [
      "2026-04-26 Gießerei Pfaffenreuth GmbH secures power prices (news:20260426-10)",
+     "2026-10-15 Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14)",
+     "2026-10-19 Our liquidity and your call-offs (doc:20261019-70190-S13)",
      "2026-06-23 Material purchasing: Call with Gießerei Pfaffenreuth GmbH: they bought their electricity forward until December 2028 and said the market price is 'not our reality' before then. (doc:20260623-70190-M1)"
     ],
     "standard_terms": {},
@@ -2978,6 +3048,15 @@
       "strength": 0.715
      },
      {
+      "key": "news:sup:70190:news:20261015-S14",
+      "sentence": "Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14).",
+      "refs": [
+       "news:20261015-S14"
+      ],
+      "expected": "verified",
+      "strength": 0.6
+     },
+     {
       "key": "otd:sup:70190",
       "sentence": "Your on-time delivery was 85.1% in the four quarters to 2026Q3 (sc:70190@2026Q3).",
       "refs": [
@@ -2985,16 +3064,6 @@
       ],
       "expected": "verified",
       "strength": 0.495
-     },
-     {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.29
      },
      {
       "key": "index:PPI-D351",
@@ -3005,6 +3074,16 @@
       ],
       "expected": "verified",
       "strength": 0.2
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -3024,13 +3103,16 @@
     "name": "Gießerei Pfaffenreuth GmbH",
     "country": "DE",
     "owner_type": "family",
-    "archetype": "family_foundry",
+    "archetype": "cash_short_jobshop",
     "floor_estimate": 39.82,
     "floor_confidence": 0.12,
     "floor_source": "should_cost_country",
-    "cash_rate_estimate": 0.08,
-    "cash_pressure": 0.0,
-    "cash_reasons": [],
+    "cash_rate_estimate": 0.176,
+    "cash_pressure": 0.6,
+    "cash_reasons": [
+     "Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14)",
+     "Our liquidity and your call-offs (doc:20261019-70190-S13)"
+    ],
     "approval_style": "flat",
     "cost_drivers": [
      {
@@ -3109,6 +3191,8 @@
     },
     "notes": [
      "2026-04-26 Gießerei Pfaffenreuth GmbH secures power prices (news:20260426-10)",
+     "2026-10-15 Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14)",
+     "2026-10-19 Our liquidity and your call-offs (doc:20261019-70190-S13)",
      "2026-06-23 Material purchasing: Call with Gießerei Pfaffenreuth GmbH: they bought their electricity forward until December 2028 and said the market price is 'not our reality' before then. (doc:20260623-70190-M1)"
     ],
     "standard_terms": {},
@@ -3128,6 +3212,15 @@
       ],
       "expected": "verified",
       "strength": 0.715
+     },
+     {
+      "key": "news:sup:70190:news:20261015-S14",
+      "sentence": "Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14).",
+      "refs": [
+       "news:20261015-S14"
+      ],
+      "expected": "verified",
+      "strength": 0.6
      },
      {
       "key": "po:sup:70190:part:310060",
@@ -3151,16 +3244,6 @@
       "strength": 0.495
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.29
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -3169,6 +3252,16 @@
       ],
       "expected": "verified",
       "strength": 0.12
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -3333,14 +3426,24 @@
       "strength": 0.71
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.309
+      "strength": 0.38
+     },
+     {
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
+      "refs": [
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.24
      },
      {
       "key": "index:PPI-D351",
@@ -3353,21 +3456,11 @@
       "strength": 0.02
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.0
-     },
-     {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
-      "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -3511,14 +3604,24 @@
       "strength": 0.71
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.29
+      "strength": 0.36
+     },
+     {
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
+      "refs": [
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.22
      },
      {
       "key": "index:PPI-D351",
@@ -3531,21 +3634,11 @@
       "strength": 0.1
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.0
-     },
-     {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
-      "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -3679,6 +3772,16 @@
       "strength": 0.71
      },
      {
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
+      "refs": [
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.56
+     },
+     {
       "key": "po:sup:70210:part:320080",
       "sentence": "Our orders of Lantern (motor stool) HN with you were placed at EUR 41.63 on 2024-10-04 (po:4500011498-20), EUR 41.63 on 2025-06-02 (po:4500012532-10), EUR 41.63 on 2026-01-19 (po:4500013445-10) and EUR 41.63 on 2026-09-17 (po:4500014420-10): the price has been unchanged.",
       "refs": [
@@ -3691,16 +3794,6 @@
       "strength": 0.5
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.346
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -3711,11 +3804,11 @@
       "strength": 0.06
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -3846,6 +3939,16 @@
       "strength": 0.731
      },
      {
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
+      "refs": [
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.64
+     },
+     {
       "key": "po:sup:70220:part:320030",
       "sentence": "Our orders of Flange DN 65 PN 16, machined with you were placed at EUR 16.02 on 2024-09-30 (po:4500011479-10), EUR 16.02 on 2025-05-28 (po:4500012517-10), EUR 16.02 on 2026-01-13 (po:4500013427-10) and EUR 16.02 on 2026-09-10 (po:4500014399-10): the price has been unchanged.",
       "refs": [
@@ -3858,16 +3961,6 @@
       "strength": 0.5
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.309
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -3878,11 +3971,11 @@
       "strength": 0.04
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -4049,14 +4142,24 @@
       "strength": 0.5
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.422
+      "strength": 0.38
+     },
+     {
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
+      "refs": [
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.28
      },
      {
       "key": "index:PPI-D351",
@@ -4069,21 +4172,11 @@
       "strength": 0.08
      },
      {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
-      ],
-      "expected": "verified",
-      "strength": 0.043
-     },
-     {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
-      "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -4217,6 +4310,16 @@
       "strength": 0.645
      },
      {
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
+      "refs": [
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.58
+     },
+     {
       "key": "ppm:sup:70230",
       "sentence": "Your quality was 544 ppm defective parts in the four quarters to 2026Q3 (sc:70230@2026Q3).",
       "refs": [
@@ -4238,16 +4341,6 @@
       "strength": 0.5
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.434
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -4258,11 +4351,11 @@
       "strength": 0.02
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -4396,6 +4489,16 @@
       "strength": 0.645
      },
      {
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
+      "refs": [
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.64
+     },
+     {
       "key": "ppm:sup:70230",
       "sentence": "Your quality was 544 ppm defective parts in the four quarters to 2026Q3 (sc:70230@2026Q3).",
       "refs": [
@@ -4403,16 +4506,6 @@
       ],
       "expected": "verified",
       "strength": 0.544
-     },
-     {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.422
      },
      {
       "key": "index:PPI-D351",
@@ -4425,11 +4518,11 @@
       "strength": 0.1
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -4559,14 +4652,14 @@
       "strength": 0.98
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.309
+      "strength": 0.64
      },
      {
       "key": "index:PPI-D351",
@@ -4579,11 +4672,11 @@
       "strength": 0.04
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -4723,14 +4816,14 @@
       "strength": 0.8
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.327
+      "strength": 0.58
      },
      {
       "key": "index:PPI-D351",
@@ -4743,11 +4836,11 @@
       "strength": 0.02
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -4866,6 +4959,25 @@
     "floor_computed_source": "market_price",
     "claims": [
      {
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
+      "refs": [
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.64
+     },
+     {
+      "key": "news:sup:70250:news:20260309-03",
+      "sentence": "Drehteile Fuchsreiter GmbH looks for new customers (news:20260309-03).",
+      "refs": [
+       "news:20260309-03"
+      ],
+      "expected": "verified",
+      "strength": 0.6
+     },
+     {
       "key": "otd:sup:70250",
       "sentence": "Your on-time delivery was 88.0% in the four quarters to 2026Q3 (sc:70250@2026Q3).",
       "refs": [
@@ -4873,16 +4985,6 @@
       ],
       "expected": "verified",
       "strength": 0.35
-     },
-     {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.318
      },
      {
       "key": "ppm:sup:70250",
@@ -4904,11 +5006,11 @@
       "strength": 0.1
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -5047,6 +5149,25 @@
       "strength": 0.7109704641350222
      },
      {
+      "key": "news:sup:70250:news:20260309-03",
+      "sentence": "Drehteile Fuchsreiter GmbH looks for new customers (news:20260309-03).",
+      "refs": [
+       "news:20260309-03"
+      ],
+      "expected": "verified",
+      "strength": 0.6
+     },
+     {
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
+      "refs": [
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.38
+     },
+     {
       "key": "otd:sup:70250",
       "sentence": "Your on-time delivery was 88.0% in the four quarters to 2026Q3 (sc:70250@2026Q3).",
       "refs": [
@@ -5056,16 +5177,6 @@
       "strength": 0.35
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.327
-     },
-     {
       "key": "ppm:sup:70250",
       "sentence": "Your quality was 318 ppm defective parts in the four quarters to 2026Q3 (sc:70250@2026Q3).",
       "refs": [
@@ -5073,6 +5184,16 @@
       ],
       "expected": "verified",
       "strength": 0.318
+     },
+     {
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
+      "refs": [
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.3
      },
      {
       "key": "index:PPI-D351",
@@ -5085,21 +5206,11 @@
       "strength": 0.1
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.0
-     },
-     {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
-      "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -5235,14 +5346,24 @@
       "strength": 0.6369480156512017
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.299
+      "strength": 0.4
+     },
+     {
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
+      "refs": [
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.32
      },
      {
       "key": "otd:sup:70260",
@@ -5264,21 +5385,11 @@
       "strength": 0.02
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.0
-     },
-     {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
-      "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -5306,9 +5417,11 @@
     "floor_estimate": 15.7325,
     "floor_confidence": 0.15,
     "floor_source": "own_price",
-    "cash_rate_estimate": 0.08,
-    "cash_pressure": 0.0,
-    "cash_reasons": [],
+    "cash_rate_estimate": 0.128,
+    "cash_pressure": 0.3,
+    "cash_reasons": [
+     "Obrábění Kraslin s.r.o. puts its turning shop on short-time work (news:20261020-S16)"
+    ],
     "approval_style": "flat",
     "cost_drivers": [
      {
@@ -5386,6 +5499,7 @@
      ]
     },
     "notes": [
+     "2026-10-20 Obrábění Kraslin s.r.o. puts its turning shop on short-time work (news:20261020-S16)",
      "2026-02-23 Customer portfolio: The sales director of Obrábění Kraslin s.r.o. said they are reviewing small accounts and will focus on customers with volume. (doc:20260223-70270-M2)",
      "2026-03-18 Visit by the owner: Visit by the owner of Obrábění Kraslin s.r.o.. He reminded us that in 2022 they kept supplying at the old price for a quarter and said he expects partnership in return. (doc:20260318-70270-M3)",
      "2026-08-09 Price discussion: Call with the owner of Obrábění Kraslin s.r.o.: he asked where we get our index figures from - he works from his own spreadsheet, last updated two years ago. (doc:20260809-70270-M1)"
@@ -5409,6 +5523,25 @@
       "strength": 1.0
      },
      {
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
+      "refs": [
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.62
+     },
+     {
+      "key": "news:sup:70270:news:20261020-S16",
+      "sentence": "Obrábění Kraslin s.r.o. puts its turning shop on short-time work (news:20261020-S16).",
+      "refs": [
+       "news:20261020-S16"
+      ],
+      "expected": "verified",
+      "strength": 0.6
+     },
+     {
       "key": "otd:sup:70270",
       "sentence": "Your on-time delivery was 84.6% in the four quarters to 2026Q3 (sc:70270@2026Q3).",
       "refs": [
@@ -5416,16 +5549,6 @@
       ],
       "expected": "verified",
       "strength": 0.52
-     },
-     {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.337
      },
      {
       "key": "index:PPI-D351",
@@ -5438,11 +5561,11 @@
       "strength": 0.06
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -5588,6 +5711,15 @@
       "strength": 0.796448488406222
      },
      {
+      "key": "news:sup:70280:news:20260926-38",
+      "sentence": "Wälzhammer Präzision GmbH introduces short-time work (news:20260926-38).",
+      "refs": [
+       "news:20260926-38"
+      ],
+      "expected": "verified",
+      "strength": 0.6
+     },
+     {
       "key": "ppm:sup:70280",
       "sentence": "Your quality was 425 ppm defective parts in the four quarters to 2026Q3 (sc:70280@2026Q3).",
       "refs": [
@@ -5595,6 +5727,16 @@
       ],
       "expected": "verified",
       "strength": 0.425
+     },
+     {
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
+      "refs": [
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.36
      },
      {
       "key": "otd:sup:70280",
@@ -5606,14 +5748,14 @@
       "strength": 0.305
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
       ],
       "expected": "verified",
-      "strength": 0.29
+      "strength": 0.22
      },
      {
       "key": "index:PPI-D351",
@@ -5626,21 +5768,11 @@
       "strength": 0.1
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.0
-     },
-     {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
-      "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -5796,14 +5928,24 @@
       "strength": 0.792169848071679
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.309
+      "strength": 0.38
+     },
+     {
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
+      "refs": [
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.24
      },
      {
       "key": "index:PPI-D351",
@@ -5816,21 +5958,11 @@
       "strength": 0.02
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.0
-     },
-     {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
-      "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -5969,6 +6101,15 @@
       "strength": 1.0
      },
      {
+      "key": "news:sup:70295:news:20260514-12",
+      "sentence": "Drehzentrum Ilzauer GmbH looks for new customers (news:20260514-12).",
+      "refs": [
+       "news:20260514-12"
+      ],
+      "expected": "verified",
+      "strength": 0.6
+     },
+     {
       "key": "otd:sup:70295",
       "sentence": "Your on-time delivery was 84.4% in the four quarters to 2026Q3 (sc:70295@2026Q3).",
       "refs": [
@@ -5990,14 +6131,24 @@
       "strength": 0.5
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.318
+      "strength": 0.38
+     },
+     {
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
+      "refs": [
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.28
      },
      {
       "key": "index:PPI-D351",
@@ -6010,21 +6161,11 @@
       "strength": 0.08
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.0
-     },
-     {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
-      "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -6141,6 +6282,15 @@
       "strength": 1.0
      },
      {
+      "key": "news:sup:70295:news:20260514-12",
+      "sentence": "Drehzentrum Ilzauer GmbH looks for new customers (news:20260514-12).",
+      "refs": [
+       "news:20260514-12"
+      ],
+      "expected": "verified",
+      "strength": 0.6
+     },
+     {
       "key": "otd:sup:70295",
       "sentence": "Your on-time delivery was 84.4% in the four quarters to 2026Q3 (sc:70295@2026Q3).",
       "refs": [
@@ -6157,7 +6307,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.299
+      "strength": 0.0
      },
      {
       "key": "index:CU-NOTATION",
@@ -6313,6 +6463,15 @@
       "strength": 0.6709401709401711
      },
      {
+      "key": "news:sup:70295:news:20260514-12",
+      "sentence": "Drehzentrum Ilzauer GmbH looks for new customers (news:20260514-12).",
+      "refs": [
+       "news:20260514-12"
+      ],
+      "expected": "verified",
+      "strength": 0.6
+     },
+     {
       "key": "otd:sup:70295",
       "sentence": "Your on-time delivery was 84.4% in the four quarters to 2026Q3 (sc:70295@2026Q3).",
       "refs": [
@@ -6322,14 +6481,24 @@
       "strength": 0.53
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
       "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.327
+      "strength": 0.38
+     },
+     {
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
+      "refs": [
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.3
      },
      {
       "key": "index:PPI-D351",
@@ -6342,21 +6511,11 @@
       "strength": 0.1
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.0
-     },
-     {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
-      "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -6497,16 +6656,6 @@
       "strength": 0.5
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.271
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -6522,6 +6671,16 @@
       "refs": [
        "idx:PPI-C241@2025-08",
        "idx:PPI-C241@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -6662,16 +6821,6 @@
       "strength": 0.35
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.253
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -6687,6 +6836,16 @@
       "refs": [
        "idx:PPI-C241@2025-08",
        "idx:PPI-C241@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -6831,21 +6990,21 @@
       "strength": 0.7480759783854594
      },
      {
+      "key": "index:AS-14301",
+      "sentence": "The alloy surcharge for stainless grade 304 changed -7.6% from 2026-06 to 2026-09 (idx:AS-14301@2026-06, idx:AS-14301@2026-09).",
+      "refs": [
+       "idx:AS-14301@2026-06",
+       "idx:AS-14301@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.46
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
        "idx:LCI-C@2025-06",
        "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.271
-     },
-     {
-      "key": "index:AS-14301",
-      "sentence": "The alloy surcharge for stainless grade 304 changed +8.6% from 2025-09 to 2026-09 (idx:AS-14301@2025-09, idx:AS-14301@2026-09).",
-      "refs": [
-       "idx:AS-14301@2025-09",
-       "idx:AS-14301@2026-09"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -6998,16 +7157,6 @@
       "strength": 0.325
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.29
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -7023,6 +7172,16 @@
       "refs": [
        "idx:PPI-C241@2025-08",
        "idx:PPI-C241@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -7163,16 +7322,6 @@
       "strength": 0.325
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.234
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -7188,6 +7337,16 @@
       "refs": [
        "idx:PPI-C241@2025-08",
        "idx:PPI-C241@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -7337,16 +7496,6 @@
       "strength": 0.5
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.318
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -7355,6 +7504,16 @@
       ],
       "expected": "verified",
       "strength": 0.14
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C241",
@@ -7492,16 +7651,6 @@
       "strength": 0.762
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.29
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -7517,6 +7666,16 @@
       "refs": [
        "idx:PPI-C241@2025-08",
        "idx:PPI-C241@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -7657,16 +7816,6 @@
       "strength": 0.5
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.234
-     },
-     {
       "key": "index:PPI-D351",
       "sentence": "German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).",
       "refs": [
@@ -7685,6 +7834,16 @@
       ],
       "expected": "verified",
       "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      }
     ]
    }
@@ -7697,7 +7856,7 @@
     "country": "DE",
     "owner_type": "group",
     "archetype": "near_monopolist",
-    "floor_estimate": 28.0946,
+    "floor_estimate": 27.3814,
     "floor_confidence": 0.03,
     "floor_source": "observed_best",
     "cash_rate_estimate": 0.08,
@@ -7783,14 +7942,23 @@
     "floor_computed": 24.31,
     "floor_computed_source": "should_cost",
     "memory": {
-     "best_price": 28.0946,
-     "deal_price": 34.0,
+     "best_price": 27.3814,
+     "deal_price": 31.9,
      "opening_price": 32.2,
      "cases": [
       "case:P10"
      ],
      "scores": [
-      0.5390452124905989
+      0.5390452124905989,
+      0.6316827463686654,
+      0.6472939820644754,
+      0.6472939820644754,
+      0.6550995999123804,
+      0.6472939820644754,
+      0.6472939820644754,
+      0.6472939820644754,
+      0.6472939820644754,
+      0.6472939820644754
      ]
     },
     "claims": [
@@ -7832,7 +8000,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.262
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C2219",
@@ -7842,7 +8010,7 @@
        "idx:PPI-C2219@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.061
+      "strength": 0.0
      }
     ]
    },
@@ -7853,7 +8021,7 @@
     "country": "DE",
     "owner_type": "group",
     "archetype": "group_ladder",
-    "floor_estimate": 39.951,
+    "floor_estimate": 39.1292,
     "floor_confidence": 0.1,
     "floor_source": "should_cost_country+observed_bias",
     "cash_rate_estimate": 0.08,
@@ -7949,16 +8117,6 @@
       "strength": 0.775
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.309
-     },
-     {
       "key": "ppm:sup:70410",
       "sentence": "Your quality was 270 ppm defective parts in the four quarters to 2026Q3 (sc:70410@2026Q3).",
       "refs": [
@@ -7968,6 +8126,16 @@
       "strength": 0.27
      },
      {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:PPI-C2219",
       "sentence": "German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).",
       "refs": [
@@ -7975,7 +8143,7 @@
        "idx:PPI-C2219@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.074
+      "strength": 0.0
      }
     ]
    },
@@ -7986,7 +8154,7 @@
     "country": "DE",
     "owner_type": "group",
     "archetype": "group_ladder",
-    "floor_estimate": 2.1997,
+    "floor_estimate": 2.1545,
     "floor_confidence": 0.15,
     "floor_source": "own_price+observed_bias",
     "cash_rate_estimate": 0.08,
@@ -8098,7 +8266,7 @@
        "idx:PPI-C2219@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.219
+      "strength": 0.0
      },
      {
       "key": "index:LCI-C",
@@ -8108,7 +8276,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.103
+      "strength": 0.0
      }
     ]
    }
@@ -8227,7 +8395,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.29
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C2219",
@@ -8237,7 +8405,7 @@
        "idx:PPI-C2219@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.048
+      "strength": 0.0
      },
      {
       "key": "otd:sup:70420",
@@ -8375,16 +8543,6 @@
       "strength": 0.291
      },
      {
-      "key": "index:PPI-C2219",
-      "sentence": "German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).",
-      "refs": [
-       "idx:PPI-C2219@2025-08",
-       "idx:PPI-C2219@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.219
-     },
-     {
       "key": "otd:sup:70430",
       "sentence": "Your on-time delivery was 91.8% in the four quarters to 2026Q3 (sc:70430@2026Q3).",
       "refs": [
@@ -8394,6 +8552,16 @@
       "strength": 0.16
      },
      {
+      "key": "index:PPI-C2219",
+      "sentence": "German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).",
+      "refs": [
+       "idx:PPI-C2219@2025-08",
+       "idx:PPI-C2219@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
@@ -8401,7 +8569,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.131
+      "strength": 0.0
      }
     ]
    },
@@ -8507,16 +8675,6 @@
       "strength": 0.291
      },
      {
-      "key": "index:PPI-C2219",
-      "sentence": "German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).",
-      "refs": [
-       "idx:PPI-C2219@2025-08",
-       "idx:PPI-C2219@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.219
-     },
-     {
       "key": "otd:sup:70430",
       "sentence": "Your on-time delivery was 91.8% in the four quarters to 2026Q3 (sc:70430@2026Q3).",
       "refs": [
@@ -8526,6 +8684,16 @@
       "strength": 0.16
      },
      {
+      "key": "index:PPI-C2219",
+      "sentence": "German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).",
+      "refs": [
+       "idx:PPI-C2219@2025-08",
+       "idx:PPI-C2219@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
@@ -8533,7 +8701,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.103
+      "strength": 0.0
      }
     ]
    },
@@ -8639,16 +8807,6 @@
       "strength": 0.291
      },
      {
-      "key": "index:PPI-C2219",
-      "sentence": "German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).",
-      "refs": [
-       "idx:PPI-C2219@2025-08",
-       "idx:PPI-C2219@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.219
-     },
-     {
       "key": "otd:sup:70430",
       "sentence": "Your on-time delivery was 91.8% in the four quarters to 2026Q3 (sc:70430@2026Q3).",
       "refs": [
@@ -8658,6 +8816,16 @@
       "strength": 0.16
      },
      {
+      "key": "index:PPI-C2219",
+      "sentence": "German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).",
+      "refs": [
+       "idx:PPI-C2219@2025-08",
+       "idx:PPI-C2219@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
@@ -8665,7 +8833,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.112
+      "strength": 0.0
      }
     ]
    }
@@ -8790,7 +8958,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.309
+      "strength": 0.0
      },
      {
       "key": "index:PPI-C2219",
@@ -8800,7 +8968,7 @@
        "idx:PPI-C2219@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.074
+      "strength": 0.0
      }
     ]
    },
@@ -8923,7 +9091,7 @@
        "idx:PPI-C2219@2026-08"
       ],
       "expected": "verified",
-      "strength": 0.219
+      "strength": 0.0
      },
      {
       "key": "index:LCI-C",
@@ -8933,7 +9101,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.112
+      "strength": 0.0
      }
     ]
    }
@@ -9060,21 +9228,21 @@
       "strength": 0.23
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.224
-     },
-     {
       "key": "index:CU-NOTATION",
       "sentence": "The copper notation changed +47.7% from 2025-09 to 2026-09 (idx:CU-NOTATION@2025-09, idx:CU-NOTATION@2026-09).",
       "refs": [
        "idx:CU-NOTATION@2025-09",
        "idx:CU-NOTATION@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -9194,15 +9362,25 @@
     "floor_computed_source": "should_cost",
     "memory": {
      "best_price": 365.6829,
-     "deal_price": 371.6,
+     "deal_price": 359.59,
      "opening_price": 370.96,
      "cases": [
       "case:P02"
      ],
      "scores": [
-      0.23652009231008223
+      0.23652009231008223,
+      0.22361712264198644,
+      0.2391006862437053,
+      0.1591022743015074,
+      0.1591022743015074,
+      0.6105220655563788,
+      0.6105220655563788,
+      0.6840677255971298,
+      0.6840677255971298
      ]
     },
+    "full_cost_observed": 368.7089,
+    "interest_rate_observed": 0.03,
     "claims": [
      {
       "key": "ppm:sup:70510",
@@ -9214,16 +9392,6 @@
       "strength": 0.273
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.248
-     },
-     {
       "key": "otd:sup:70510",
       "sentence": "Your on-time delivery was 90.4% in the four quarters to 2026Q3 (sc:70510@2026Q3).",
       "refs": [
@@ -9231,6 +9399,16 @@
       ],
       "expected": "verified",
       "strength": 0.23
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:CU-NOTATION",
@@ -9375,21 +9553,21 @@
       "strength": 0.23
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.224
-     },
-     {
       "key": "index:CU-NOTATION",
       "sentence": "The copper notation changed +47.7% from 2025-09 to 2026-09 (idx:CU-NOTATION@2025-09, idx:CU-NOTATION@2026-09).",
       "refs": [
        "idx:CU-NOTATION@2025-09",
        "idx:CU-NOTATION@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -9518,16 +9696,6 @@
       "strength": 0.273
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.26
-     },
-     {
       "key": "otd:sup:70510",
       "sentence": "Your on-time delivery was 90.4% in the four quarters to 2026Q3 (sc:70510@2026Q3).",
       "refs": [
@@ -9535,6 +9703,16 @@
       ],
       "expected": "verified",
       "strength": 0.23
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      },
      {
       "key": "index:CU-NOTATION",
@@ -9684,21 +9862,21 @@
       "strength": 0.695
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.178
-     },
-     {
       "key": "index:CU-NOTATION",
       "sentence": "The copper notation changed +47.7% from 2025-09 to 2026-09 (idx:CU-NOTATION@2025-09, idx:CU-NOTATION@2026-09).",
       "refs": [
        "idx:CU-NOTATION@2025-09",
        "idx:CU-NOTATION@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -9839,21 +10017,21 @@
       "strength": 0.695
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.178
-     },
-     {
       "key": "index:CU-NOTATION",
       "sentence": "The copper notation changed +47.7% from 2025-09 to 2026-09 (idx:CU-NOTATION@2025-09, idx:CU-NOTATION@2026-09).",
       "refs": [
        "idx:CU-NOTATION@2025-09",
        "idx:CU-NOTATION@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -9975,15 +10153,24 @@
     "floor_computed_source": "should_cost",
     "memory": {
      "best_price": 426.533,
-     "deal_price": 430.31,
+     "deal_price": 431.78,
      "opening_price": 438.21,
      "cases": [
       "case:P03"
      ],
      "scores": [
-      0.8955516532525242
+      0.8955516532525242,
+      0.8955516532525242,
+      0.8955516532525242,
+      0.8955516532525242,
+      0.8955516532525242,
+      0.8639660662116968,
+      0.9318455027192981,
+      0.9316112103587233
      ]
     },
+    "full_cost_observed": 395.3331,
+    "interest_rate_observed": 0.06,
     "claims": [
      {
       "key": "po:sup:70530:part:350020",
@@ -10007,21 +10194,21 @@
       "strength": 0.52
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.131
-     },
-     {
       "key": "index:PPI-C2611",
       "sentence": "German producer prices for electronic components changed +13.5% from 2025-08 to 2026-08 (idx:PPI-C2611@2025-08, idx:PPI-C2611@2026-08).",
       "refs": [
        "idx:PPI-C2611@2025-08",
        "idx:PPI-C2611@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -10159,21 +10346,21 @@
       "strength": 0.52
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.14
-     },
-     {
       "key": "index:PPI-C2611",
       "sentence": "German producer prices for electronic components changed +13.5% from 2025-08 to 2026-08 (idx:PPI-C2611@2025-08, idx:PPI-C2611@2026-08).",
       "refs": [
        "idx:PPI-C2611@2025-08",
        "idx:PPI-C2611@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -10315,21 +10502,21 @@
       "strength": 0.675
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.131
-     },
-     {
       "key": "index:PPI-C2611",
       "sentence": "German producer prices for electronic components changed +13.5% from 2025-08 to 2026-08 (idx:PPI-C2611@2025-08, idx:PPI-C2611@2026-08).",
       "refs": [
        "idx:PPI-C2611@2025-08",
        "idx:PPI-C2611@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -10481,21 +10668,21 @@
       "strength": 0.5
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.14
-     },
-     {
       "key": "index:PPI-C2611",
       "sentence": "German producer prices for electronic components changed +13.5% from 2025-08 to 2026-08 (idx:PPI-C2611@2025-08, idx:PPI-C2611@2026-08).",
       "refs": [
        "idx:PPI-C2611@2025-08",
        "idx:PPI-C2611@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -10647,21 +10834,21 @@
       "strength": 0.465
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.267
-     },
-     {
       "key": "index:PPI-C2611",
       "sentence": "German producer prices for electronic components changed +13.5% from 2025-08 to 2026-08 (idx:PPI-C2611@2025-08, idx:PPI-C2611@2026-08).",
       "refs": [
        "idx:PPI-C2611@2025-08",
        "idx:PPI-C2611@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -10781,21 +10968,21 @@
       "strength": 0.111
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.103
-     },
-     {
       "key": "index:CU-NOTATION",
       "sentence": "The copper notation changed +47.7% from 2025-09 to 2026-09 (idx:CU-NOTATION@2025-09, idx:CU-NOTATION@2026-09).",
       "refs": [
        "idx:CU-NOTATION@2025-09",
        "idx:CU-NOTATION@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -10919,21 +11106,21 @@
       "strength": 0.271
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.262
-     },
-     {
       "key": "index:PPI-C2611",
       "sentence": "German producer prices for electronic components changed +13.5% from 2025-08 to 2026-08 (idx:PPI-C2611@2025-08, idx:PPI-C2611@2026-08).",
       "refs": [
        "idx:PPI-C2611@2025-08",
        "idx:PPI-C2611@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -11057,7 +11244,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.196
+      "strength": 0.0
      },
      {
       "key": "index:CU-NOTATION",
@@ -11214,7 +11401,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.206
+      "strength": 0.0
      },
      {
       "key": "index:CU-NOTATION",
@@ -11352,16 +11539,6 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
-      "key": "index:PPI-C2594",
-      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
-      "refs": [
-       "idx:PPI-C2594@2025-08",
-       "idx:PPI-C2594@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.668
-     },
-     {
       "key": "po:sup:70610:part:360010",
       "sentence": "Our orders of Hex bolt ISO 4017 M12x40 8.8, zinc with you were placed at EUR 12.46 per 100 units on 2024-09-30 (po:4500011486-10), EUR 12.46 per 100 units on 2025-05-26 (po:4500012506-10), EUR 12.46 per 100 units on 2026-01-26 (po:4500013479-10) and EUR 12.46 per 100 units on 2026-09-30 (po:4500014475-10): the price has been unchanged.",
       "refs": [
@@ -11383,16 +11560,6 @@
       "strength": 0.32
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.075
-     },
-     {
       "key": "ppm:sup:70610",
       "sentence": "Your quality was 68 ppm defective parts in the four quarters to 2026Q3 (sc:70610@2026Q3).",
       "refs": [
@@ -11400,6 +11567,26 @@
       ],
       "expected": "verified",
       "strength": 0.068
+     },
+     {
+      "key": "index:PPI-C2594",
+      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
+      "refs": [
+       "idx:PPI-C2594@2025-08",
+       "idx:PPI-C2594@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      }
     ]
    },
@@ -11497,16 +11684,6 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
-      "key": "index:PPI-C2594",
-      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
-      "refs": [
-       "idx:PPI-C2594@2025-08",
-       "idx:PPI-C2594@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.668
-     },
-     {
       "key": "po:sup:70610:part:360012",
       "sentence": "Our orders of Hex nut ISO 4032 M12 8, zinc with you were placed at EUR 4.91 per 100 units on 2024-09-30 (po:4500011486-20), EUR 4.91 per 100 units on 2025-06-02 (po:4500012538-10), EUR 4.91 per 100 units on 2026-01-30 (po:4500013504-10) and EUR 4.91 per 100 units on 2026-09-28 (po:4500014466-10): the price has been unchanged.",
       "refs": [
@@ -11528,16 +11705,6 @@
       "strength": 0.32
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.122
-     },
-     {
       "key": "ppm:sup:70610",
       "sentence": "Your quality was 68 ppm defective parts in the four quarters to 2026Q3 (sc:70610@2026Q3).",
       "refs": [
@@ -11545,6 +11712,26 @@
       ],
       "expected": "verified",
       "strength": 0.068
+     },
+     {
+      "key": "index:PPI-C2594",
+      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
+      "refs": [
+       "idx:PPI-C2594@2025-08",
+       "idx:PPI-C2594@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      }
     ]
    },
@@ -11642,16 +11829,6 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
-      "key": "index:PPI-C2594",
-      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
-      "refs": [
-       "idx:PPI-C2594@2025-08",
-       "idx:PPI-C2594@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.668
-     },
-     {
       "key": "po:sup:70610:part:360030",
       "sentence": "Our orders of Washer ISO 7089 M12, zinc with you were placed at EUR 12.78 per 1,000 units on 2024-10-10 (po:4500011536-10), EUR 12.78 per 1,000 units on 2025-06-11 (po:4500012581-10), EUR 12.78 per 1,000 units on 2026-01-29 (po:4500013501-10) and EUR 12.78 per 1,000 units on 2026-09-28 (po:4500014466-20): the price has been unchanged.",
       "refs": [
@@ -11673,16 +11850,6 @@
       "strength": 0.32
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.075
-     },
-     {
       "key": "ppm:sup:70610",
       "sentence": "Your quality was 68 ppm defective parts in the four quarters to 2026Q3 (sc:70610@2026Q3).",
       "refs": [
@@ -11690,6 +11857,26 @@
       ],
       "expected": "verified",
       "strength": 0.068
+     },
+     {
+      "key": "index:PPI-C2594",
+      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
+      "refs": [
+       "idx:PPI-C2594@2025-08",
+       "idx:PPI-C2594@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
+      ],
+      "expected": "verified",
+      "strength": 0.0
      }
     ]
    }
@@ -11793,26 +11980,24 @@
     "floor_computed_source": "own_price",
     "memory": {
      "best_price": 4.899,
-     "deal_price": 4.91,
+     "deal_price": 4.94,
      "opening_price": 4.96,
      "cases": [
       "case:P04"
      ],
      "scores": [
-      0.8098066042011054
+      0.8098066042011054,
+      0.8098066042011054,
+      0.8098066042011054,
+      0.8098066042011054,
+      0.8098066042011054,
+      0.8604451426623068,
+      0.8604451426623068,
+      0.8604451426623068,
+      0.8604451426623068
      ]
     },
     "claims": [
-     {
-      "key": "index:PPI-C2815",
-      "sentence": "German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).",
-      "refs": [
-       "idx:PPI-C2815@2025-08",
-       "idx:PPI-C2815@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.832
-     },
      {
       "key": "otd:sup:70620",
       "sentence": "Your on-time delivery was 85.0% in the four quarters to 2026Q3 (sc:70620@2026Q3).",
@@ -11832,6 +12017,16 @@
       "strength": 0.302
      },
      {
+      "key": "index:PPI-C2815",
+      "sentence": "German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).",
+      "refs": [
+       "idx:PPI-C2815@2025-08",
+       "idx:PPI-C2815@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
@@ -11839,7 +12034,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.084
+      "strength": 0.0
      }
     ]
    },
@@ -11941,16 +12136,6 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
-      "key": "index:PPI-C2815",
-      "sentence": "German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).",
-      "refs": [
-       "idx:PPI-C2815@2025-08",
-       "idx:PPI-C2815@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.832
-     },
-     {
       "key": "otd:sup:70620",
       "sentence": "Your on-time delivery was 85.0% in the four quarters to 2026Q3 (sc:70620@2026Q3).",
       "refs": [
@@ -11969,6 +12154,16 @@
       "strength": 0.302
      },
      {
+      "key": "index:PPI-C2815",
+      "sentence": "German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).",
+      "refs": [
+       "idx:PPI-C2815@2025-08",
+       "idx:PPI-C2815@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
@@ -11976,7 +12171,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.112
+      "strength": 0.0
      }
     ]
    },
@@ -12078,16 +12273,6 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
-      "key": "index:PPI-C2815",
-      "sentence": "German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).",
-      "refs": [
-       "idx:PPI-C2815@2025-08",
-       "idx:PPI-C2815@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.832
-     },
-     {
       "key": "otd:sup:70620",
       "sentence": "Your on-time delivery was 85.0% in the four quarters to 2026Q3 (sc:70620@2026Q3).",
       "refs": [
@@ -12106,6 +12291,16 @@
       "strength": 0.302
      },
      {
+      "key": "index:PPI-C2815",
+      "sentence": "German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).",
+      "refs": [
+       "idx:PPI-C2815@2025-08",
+       "idx:PPI-C2815@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
@@ -12113,7 +12308,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.112
+      "strength": 0.0
      }
     ]
    }
@@ -12236,14 +12431,14 @@
       "strength": 0.8
      },
      {
-      "key": "index:PPI-C2594",
-      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
+      "key": "index:AS-14301",
+      "sentence": "The alloy surcharge for stainless grade 304 changed -7.6% from 2026-06 to 2026-09 (idx:AS-14301@2026-06, idx:AS-14301@2026-09).",
       "refs": [
-       "idx:PPI-C2594@2025-08",
-       "idx:PPI-C2594@2026-08"
+       "idx:AS-14301@2026-06",
+       "idx:AS-14301@2026-09"
       ],
       "expected": "verified",
-      "strength": 0.427
+      "strength": 0.56
      },
      {
       "key": "otd:sup:70630",
@@ -12264,21 +12459,21 @@
       "strength": 0.257
      },
      {
+      "key": "index:PPI-C2594",
+      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
+      "refs": [
+       "idx:PPI-C2594@2025-08",
+       "idx:PPI-C2594@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
        "idx:LCI-C@2025-06",
        "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.094
-     },
-     {
-      "key": "index:AS-14301",
-      "sentence": "The alloy surcharge for stainless grade 304 changed +8.6% from 2025-09 to 2026-09 (idx:AS-14301@2025-09, idx:AS-14301@2026-09).",
-      "refs": [
-       "idx:AS-14301@2025-09",
-       "idx:AS-14301@2026-09"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -12380,16 +12575,6 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
-      "key": "index:PPI-C2594",
-      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
-      "refs": [
-       "idx:PPI-C2594@2025-08",
-       "idx:PPI-C2594@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.668
-     },
-     {
       "key": "po:sup:70630:part:360030",
       "sentence": "Our orders of Washer ISO 7089 M12, zinc with you were placed at EUR 12.64 per 1,000 units on 2024-10-07 (po:4500011521-10), EUR 12.64 per 1,000 units on 2025-06-10 (po:4500012575-20), EUR 12.64 per 1,000 units on 2026-01-23 (po:4500013470-10) and EUR 12.64 per 1,000 units on 2026-09-28 (po:4500014468-20): the price has been unchanged.",
       "refs": [
@@ -12420,6 +12605,16 @@
       "strength": 0.257
      },
      {
+      "key": "index:PPI-C2594",
+      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
+      "refs": [
+       "idx:PPI-C2594@2025-08",
+       "idx:PPI-C2594@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
@@ -12427,7 +12622,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.075
+      "strength": 0.0
      }
     ]
    }
@@ -12513,6 +12708,7 @@
      ]
     },
     "notes": [
+     "2026-10-17 Kugellager-Vertrieb Inntal GmbH loses a large distribution contract (news:20261017-S19)",
      "2026-02-01 Capacity: Call with sales at Kugellager-Vertrieb Inntal GmbH: they could take additional parts at short notice; the second shift has been on hold since spring. (doc:20260201-70640-M5)",
      "2026-02-28 Annual review: Annual review with Kugellager-Vertrieb Inntal GmbH. Their key account manager explained that price changes above 2 % need the approval of their pricing committee, which meets every two weeks. (doc:20260228-70640-M3)",
      "2026-05-12 Annual review: Annual review with Kugellager-Vertrieb Inntal GmbH. Their key account manager explained that price changes above 2 % need the approval of their pricing committee, which meets every two weeks. (doc:20260512-70640-M2)",
@@ -12529,14 +12725,13 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
-      "key": "index:PPI-C2815",
-      "sentence": "German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).",
+      "key": "news:sup:70640:news:20261017-S19",
+      "sentence": "Kugellager-Vertrieb Inntal GmbH loses a large distribution contract (news:20261017-S19).",
       "refs": [
-       "idx:PPI-C2815@2025-08",
-       "idx:PPI-C2815@2026-08"
+       "news:20261017-S19"
       ],
       "expected": "verified",
-      "strength": 0.832
+      "strength": 0.6
      },
      {
       "key": "otd:sup:70640",
@@ -12548,6 +12743,16 @@
       "strength": 0.425
      },
      {
+      "key": "index:PPI-C2815",
+      "sentence": "German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).",
+      "refs": [
+       "idx:PPI-C2815@2025-08",
+       "idx:PPI-C2815@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
@@ -12555,7 +12760,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.084
+      "strength": 0.0
      },
      {
       "key": "ppm:sup:70640",
@@ -12648,6 +12853,7 @@
      ]
     },
     "notes": [
+     "2026-10-17 Kugellager-Vertrieb Inntal GmbH loses a large distribution contract (news:20261017-S19)",
      "2026-02-01 Capacity: Call with sales at Kugellager-Vertrieb Inntal GmbH: they could take additional parts at short notice; the second shift has been on hold since spring. (doc:20260201-70640-M5)",
      "2026-02-28 Annual review: Annual review with Kugellager-Vertrieb Inntal GmbH. Their key account manager explained that price changes above 2 % need the approval of their pricing committee, which meets every two weeks. (doc:20260228-70640-M3)",
      "2026-05-12 Annual review: Annual review with Kugellager-Vertrieb Inntal GmbH. Their key account manager explained that price changes above 2 % need the approval of their pricing committee, which meets every two weeks. (doc:20260512-70640-M2)",
@@ -12664,14 +12870,13 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
-      "key": "index:PPI-C2815",
-      "sentence": "German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).",
+      "key": "news:sup:70640:news:20261017-S19",
+      "sentence": "Kugellager-Vertrieb Inntal GmbH loses a large distribution contract (news:20261017-S19).",
       "refs": [
-       "idx:PPI-C2815@2025-08",
-       "idx:PPI-C2815@2026-08"
+       "news:20261017-S19"
       ],
       "expected": "verified",
-      "strength": 0.832
+      "strength": 0.6
      },
      {
       "key": "otd:sup:70640",
@@ -12683,6 +12888,16 @@
       "strength": 0.425
      },
      {
+      "key": "index:PPI-C2815",
+      "sentence": "German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).",
+      "refs": [
+       "idx:PPI-C2815@2025-08",
+       "idx:PPI-C2815@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
@@ -12690,7 +12905,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.112
+      "strength": 0.0
      },
      {
       "key": "ppm:sup:70640",
@@ -12803,16 +13018,6 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
-      "key": "index:PPI-C2594",
-      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
-      "refs": [
-       "idx:PPI-C2594@2025-08",
-       "idx:PPI-C2594@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.668
-     },
-     {
       "key": "otd:sup:70650",
       "sentence": "Your on-time delivery was 84.1% in the four quarters to 2026Q3 (sc:70650@2026Q3).",
       "refs": [
@@ -12843,6 +13048,16 @@
       "strength": 0.296
      },
      {
+      "key": "index:PPI-C2594",
+      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
+      "refs": [
+       "idx:PPI-C2594@2025-08",
+       "idx:PPI-C2594@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
@@ -12850,7 +13065,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.075
+      "strength": 0.0
      }
     ]
    },
@@ -12952,16 +13167,6 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
-      "key": "index:PPI-C2594",
-      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
-      "refs": [
-       "idx:PPI-C2594@2025-08",
-       "idx:PPI-C2594@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.668
-     },
-     {
       "key": "otd:sup:70650",
       "sentence": "Your on-time delivery was 84.1% in the four quarters to 2026Q3 (sc:70650@2026Q3).",
       "refs": [
@@ -12992,6 +13197,16 @@
       "strength": 0.296
      },
      {
+      "key": "index:PPI-C2594",
+      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
+      "refs": [
+       "idx:PPI-C2594@2025-08",
+       "idx:PPI-C2594@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
@@ -12999,7 +13214,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.112
+      "strength": 0.0
      }
     ]
    },
@@ -13113,16 +13328,6 @@
       "strength": 0.8
      },
      {
-      "key": "index:PPI-C2594",
-      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
-      "refs": [
-       "idx:PPI-C2594@2025-08",
-       "idx:PPI-C2594@2026-08"
-      ],
-      "expected": "verified",
-      "strength": 0.668
-     },
-     {
       "key": "otd:sup:70650",
       "sentence": "Your on-time delivery was 84.1% in the four quarters to 2026Q3 (sc:70650@2026Q3).",
       "refs": [
@@ -13141,6 +13346,16 @@
       "strength": 0.296
      },
      {
+      "key": "index:PPI-C2594",
+      "sentence": "German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).",
+      "refs": [
+       "idx:PPI-C2594@2025-08",
+       "idx:PPI-C2594@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
       "key": "index:LCI-C",
       "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
@@ -13148,7 +13363,7 @@
        "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
-      "strength": 0.122
+      "strength": 0.0
      }
     ]
    }
@@ -13257,17 +13472,44 @@
     "floor_computed_source": "own_price",
     "memory": {
      "best_price": 4.9102,
-     "deal_price": 5.4,
+     "deal_price": 5.35,
      "opening_price": 6.05,
      "cases": [
       "case:P08"
      ],
      "scores": [
       0.4544780252873441,
-      0.4544780252873441
+      0.4544780252873441,
+      0.4544780252873441,
+      0.6772536073009168,
+      0.5881433858864394,
+      0.4656167816061186,
+      0.6510561263529955,
+      0.6292645517275941,
+      0.6786754259290533
      ]
     },
     "claims": [
+     {
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
+      "refs": [
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.86
+     },
+     {
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
+      "refs": [
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.72
+     },
      {
       "key": "po:sup:70710:part:370010",
       "sentence": "Our orders of Round bar 1.4404 dia 30 mm, peeled with you were placed at EUR 5.45 on 2024-10-07 (po:4500011523-10), EUR 5.33 on 2025-06-05 (po:4500012560-10), EUR 5.24 on 2026-01-26 (po:4500013482-10) and EUR 5.45 on 2026-09-24 (po:4500014455-10): the price has not risen.",
@@ -13304,26 +13546,6 @@
       "refs": [
        "idx:LCI-C@2025-06",
        "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.028
-     },
-     {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
-      "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
-      ],
-      "expected": "verified",
-      "strength": 0.0
-     },
-     {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
-      "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -13433,6 +13655,16 @@
     "floor_computed_source": "market_price",
     "claims": [
      {
+      "key": "index:AS-14301",
+      "sentence": "The alloy surcharge for stainless grade 304 changed -7.6% from 2026-06 to 2026-09 (idx:AS-14301@2026-06, idx:AS-14301@2026-09).",
+      "refs": [
+       "idx:AS-14301@2026-06",
+       "idx:AS-14301@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.92
+     },
+     {
       "key": "otd:sup:70710",
       "sentence": "Your on-time delivery was 88.0% in the four quarters to 2026Q3 (sc:70710@2026Q3).",
       "refs": [
@@ -13451,31 +13683,21 @@
       "strength": 0.075
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.037
-     },
-     {
-      "key": "index:AS-14301",
-      "sentence": "The alloy surcharge for stainless grade 304 changed +8.6% from 2025-09 to 2026-09 (idx:AS-14301@2025-09, idx:AS-14301@2026-09).",
-      "refs": [
-       "idx:AS-14301@2025-09",
-       "idx:AS-14301@2026-09"
-      ],
-      "expected": "verified",
-      "strength": 0.0
-     },
-     {
       "key": "index:PPI-C241",
       "sentence": "German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).",
       "refs": [
        "idx:PPI-C241@2025-08",
        "idx:PPI-C241@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -13579,6 +13801,16 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
+      "refs": [
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 1.0
+     },
+     {
       "key": "po:sup:70720:part:370012",
       "sentence": "Our orders of Round bar C45 dia 50 mm, cold drawn with you were placed at EUR 129.00 per 100 units on 2024-10-10 (po:4500011538-10), EUR 129.00 per 100 units on 2025-06-10 (po:4500012578-10), EUR 126.05 per 100 units on 2026-01-23 (po:4500013472-10) and EUR 126.05 per 100 units on 2026-09-24 (po:4500014456-10): the price has not risen.",
       "refs": [
@@ -13600,16 +13832,6 @@
       "strength": 0.14
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.056
-     },
-     {
       "key": "ppm:sup:70720",
       "sentence": "Your quality was 44 ppm defective parts in the four quarters to 2026Q3 (sc:70720@2026Q3).",
       "refs": [
@@ -13619,11 +13841,11 @@
       "strength": 0.044
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -13746,16 +13968,6 @@
       "strength": 0.14
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.065
-     },
-     {
       "key": "ppm:sup:70720",
       "sentence": "Your quality was 44 ppm defective parts in the four quarters to 2026Q3 (sc:70720@2026Q3).",
       "refs": [
@@ -13770,6 +13982,16 @@
       "refs": [
        "idx:PPI-C241@2025-08",
        "idx:PPI-C241@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -13885,6 +14107,16 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
+      "key": "index:AS-14301",
+      "sentence": "The alloy surcharge for stainless grade 304 changed -7.6% from 2026-06 to 2026-09 (idx:AS-14301@2026-06, idx:AS-14301@2026-09).",
+      "refs": [
+       "idx:AS-14301@2026-06",
+       "idx:AS-14301@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.92
+     },
+     {
       "key": "po:sup:70730:part:370021",
       "sentence": "Our orders of Sheet 1.4301 2 mm, 2B, cut to size with you were placed at EUR 4.21 on 2024-10-04 (po:4500011505-10), EUR 4.11 on 2025-06-02 (po:4500012540-10), EUR 3.83 on 2026-01-19 (po:4500013455-10) and EUR 4.05 on 2026-09-21 (po:4500014440-10): the price has not risen.",
       "refs": [
@@ -13906,31 +14138,21 @@
       "strength": 0.089
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.037
-     },
-     {
-      "key": "index:AS-14301",
-      "sentence": "The alloy surcharge for stainless grade 304 changed +8.6% from 2025-09 to 2026-09 (idx:AS-14301@2025-09, idx:AS-14301@2026-09).",
-      "refs": [
-       "idx:AS-14301@2025-09",
-       "idx:AS-14301@2026-09"
-      ],
-      "expected": "verified",
-      "strength": 0.0
-     },
-     {
       "key": "index:PPI-C241",
       "sentence": "German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).",
       "refs": [
        "idx:PPI-C241@2025-08",
        "idx:PPI-C241@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -14055,17 +14277,44 @@
     "floor_computed_source": "own_price",
     "memory": {
      "best_price": 4.5538,
-     "deal_price": 5.6,
+     "deal_price": 5.3,
      "opening_price": 6.1,
      "cases": [
       "case:P18"
      ],
      "scores": [
       0.2946951516478595,
-      0.2946951516478595
+      0.2946951516478595,
+      0.22727681380922413,
+      0.3621134894864948,
+      0.3621134894864948,
+      0.37704813824667677,
+      0.43101330962373324,
+      0.4771789124287317,
+      0.5633445372960133
      ]
     },
     "claims": [
+     {
+      "key": "index:AS-14404",
+      "sentence": "The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).",
+      "refs": [
+       "idx:AS-14404@2026-06",
+       "idx:AS-14404@2026-09"
+      ],
+      "expected": "verified",
+      "strength": 0.86
+     },
+     {
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
+      "refs": [
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.72
+     },
      {
       "key": "otd:sup:70740",
       "sentence": "Your on-time delivery was 81.0% in the four quarters to 2026Q3 (sc:70740@2026Q3).",
@@ -14090,26 +14339,6 @@
       "refs": [
        "idx:LCI-C@2025-06",
        "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.028
-     },
-     {
-      "key": "index:AS-14404",
-      "sentence": "The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).",
-      "refs": [
-       "idx:AS-14404@2025-09",
-       "idx:AS-14404@2026-09"
-      ],
-      "expected": "verified",
-      "strength": 0.0
-     },
-     {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
-      "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -14213,6 +14442,16 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
+      "refs": [
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 1.0
+     },
+     {
       "key": "otd:sup:70740",
       "sentence": "Your on-time delivery was 81.0% in the four quarters to 2026Q3 (sc:70740@2026Q3).",
       "refs": [
@@ -14220,16 +14459,6 @@
       ],
       "expected": "verified",
       "strength": 0.7
-     },
-     {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.056
      },
      {
       "key": "ppm:sup:70740",
@@ -14241,11 +14470,11 @@
       "strength": 0.032
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -14349,6 +14578,16 @@
     "floor_computed_source": "own_price",
     "claims": [
      {
+      "key": "index:PPI-C2431",
+      "sentence": "German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).",
+      "refs": [
+       "idx:PPI-C2431@2026-05",
+       "idx:PPI-C2431@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 1.0
+     },
+     {
       "key": "otd:sup:70740",
       "sentence": "Your on-time delivery was 81.0% in the four quarters to 2026Q3 (sc:70740@2026Q3).",
       "refs": [
@@ -14356,16 +14595,6 @@
       ],
       "expected": "verified",
       "strength": 0.7
-     },
-     {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.056
      },
      {
       "key": "ppm:sup:70740",
@@ -14377,11 +14606,11 @@
       "strength": 0.032
      },
      {
-      "key": "index:PPI-C2431",
-      "sentence": "German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).",
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
       "refs": [
-       "idx:PPI-C2431@2025-08",
-       "idx:PPI-C2431@2026-08"
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
@@ -14494,16 +14723,6 @@
       "strength": 0.7
      },
      {
-      "key": "index:LCI-C",
-      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
-      "refs": [
-       "idx:LCI-C@2025-06",
-       "idx:LCI-C@2026-06"
-      ],
-      "expected": "verified",
-      "strength": 0.065
-     },
-     {
       "key": "ppm:sup:70740",
       "sentence": "Your quality was 32 ppm defective parts in the four quarters to 2026Q3 (sc:70740@2026Q3).",
       "refs": [
@@ -14518,6 +14737,16 @@
       "refs": [
        "idx:PPI-C241@2025-08",
        "idx:PPI-C241@2026-08"
+      ],
+      "expected": "verified",
+      "strength": 0.0
+     },
+     {
+      "key": "index:LCI-C",
+      "sentence": "German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).",
+      "refs": [
+       "idx:LCI-C@2025-06",
+       "idx:LCI-C@2026-06"
       ],
       "expected": "verified",
       "strength": 0.0
