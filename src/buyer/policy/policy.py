@@ -130,6 +130,8 @@ class ThreadState:
     holding: bool = False  # this move we hold our price and change the package instead
     asked_breakdown: bool = False
     clause_countered: bool = False  # we offered its package with a wider index deadband once before closing
+    opening_lead: int | None = None  # the lead time of its opening quote (capacity: never ask for faster)
+    free_levers: dict = field(default_factory=dict)  # terms fixed for the menu: its own, or cheaper for us
 
 
 def floor_binds(t):
@@ -175,6 +177,7 @@ class Policy:
         if t.opening_cost is None:
             t.opening_cost = c_theirs
             t.opening_payment_days = t.standing_terms.get("payment_days")
+            t.opening_lead = t.standing_terms.get("lead_time_days")
         acceptable = self.acceptable(case, t, c_theirs, rival_best_c)
 
         if t.status == "agreed":
@@ -328,6 +331,7 @@ class Policy:
             base["payment_days"] = b["reference_payment_days"]
         a = self.best_options(case, complete_offer(case, base), t.standard, skip={"payment_days"})
         a = self.adopt_structure(case, a, t)
+        a = self.mirror_terms(case, a, t)
         if rival_best_c < math.inf:
             c_a = self.c(case, a, t)
             target = rival_best_c * (1 - self.p["rival_undercut_pct"] / 100)
@@ -382,6 +386,24 @@ class Policy:
             intent = f"{intent}, competition: another offer is on the table"
         return Decision("send", t.supplier_id, term_sheets=sheets, claims=chosen, questions=questions, intent=intent)
 
+    def mirror_terms(self, case, a, t):
+        """In capacity cases (or with a near-monopolist) never ask for a faster lead time than the supplier
+        quoted (P10 2026-10-25: our 42 days against its 54 drew a final offer in round one, every run; with
+        its own lead time the first reply moved 20.9 % instead of 18.0 %, score 0.67 instead of 0.66).
+        Mirroring every term cheaper for us was tried and dropped: fixing those terms shrank the package
+        menu and lost the variants that had closed the deal (P18 -0.08, P01 -0.06)."""
+        out = dict(a)
+        opts = case.get("term_options") or {}
+        capacity = case.get("type") == "capacity" or (t.profile or {}).get("archetype") == "near_monopolist"
+        lead = out.get("lead_time_days")
+        if capacity and "lead_time_days" in case.get("negotiable", ()) and t.opening_lead and lead is not None \
+                and lead < t.opening_lead:
+            options = sorted(opts.get("lead_time_days") or [t.opening_lead])
+            slower = [o for o in options if o >= t.opening_lead]
+            out["lead_time_days"] = slower[0] if slower else options[-1]
+            t.free_levers["lead_time_days"] = out["lead_time_days"]
+        return out
+
     def supplier_model(self, case, t):
         b = case["buyer"]
         std = {k: v for k, v in (t.standard or {}).items() if v is not None}
@@ -425,7 +447,7 @@ class Policy:
         domains = {}
         for f in case["negotiable"]:
             options = list((case.get("term_options") or {}).get(f) or [])
-            if f == "unit_price" or f in STRUCTURAL or not options:
+            if f == "unit_price" or f in STRUCTURAL or not options or f in t.free_levers:
                 continue
             if a.get(f) not in options:
                 options.append(a.get(f))
@@ -582,7 +604,11 @@ class Policy:
             if alt[0] < alternative_cost(case) and alt[0] <= rival_best_c:
                 t.mirrored = True
                 sheet = complete_offer(case, dict(alt[2]))
-                variants = self.clause_variants(case, t, sheet)  # its package, but our cheapest deadband first
+                # after its FINAL offer we take its package exactly as offered: any changed term is a push past
+                # the final offer, and every such push in practice ended in a walk-out (P18 2026-10-25: we sent
+                # its package with a wider deadband, the supplier walked away, score 0; bet-pushfinal: 4 of 4)
+                final = t.status == "final_offer"
+                variants = [] if final else self.clause_variants(case, t, sheet)  # else our cheapest deadband first
                 t.clause_countered = t.clause_countered or bool(variants)
                 t.our_prices.append(sheet["unit_price"])
                 t.our_costs.append(self.c(case, sheet, t))

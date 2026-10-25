@@ -105,6 +105,7 @@ def test_a_lever_trade_never_costs_us_more_at_the_suppliers_own_price():
 
 
 def test_the_index_clause_trade_survives_with_the_long_payment_term():
+    """P02: the clause package is what makes Nordmark agree - dropping it (2026-10-25) cost 0.73 -> 0.29."""
     from buyer.runtime.agent import scout_profiles
 
     case = practice("case:P02")

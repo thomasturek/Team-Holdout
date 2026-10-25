@@ -53,6 +53,20 @@ class PerThread:
             return self.kit_agent.decide(case, {supplier_id: threads[supplier_id]})
 
 
+def env_params() -> dict:
+    """Policy parameter overrides for test batches: environment BUYER_PARAMS as a JSON object, e.g.
+    BUYER_PARAMS='{"concede": 0.25}'. Unset or invalid: none (the policy's own parameters)."""
+    raw = os.environ.get("BUYER_PARAMS", "").strip()
+    if not raw:
+        return {}
+    try:
+        value = json.loads(raw)
+    except ValueError:
+        log.warning("BUYER_PARAMS is not valid JSON - ignored")
+        return {}
+    return {k: v for k, v in value.items() if isinstance(k, str) and isinstance(v, int | float)}         if isinstance(value, dict) else {}
+
+
 class PolicyAgent:
     """The Analyst's Policy over the runtime's threads: keeps one ThreadState per supplier, updated
     from the messages before every decision (the Diplomat's Signals included); turns its Decision
@@ -61,7 +75,8 @@ class PolicyAgent:
     def __init__(self, params=None):
         from buyer.policy.policy import Policy, load_params
 
-        self.policy = Policy({**load_params(), **(params or {})})  # a partial set changes only what it names
+        # a partial set changes only what it names; BUYER_PARAMS: overrides for test batches
+        self.policy = Policy({**load_params(), **env_params(), **(params or {})})
         self.base_p = dict(self.policy.p)  # the policy's own parameters; a strategy only overrides them per move
         self.states, self._lock = {}, threading.Lock()  # the policy is fast plain code: one at a time
         self.profiles = None  # the Scout's supplier profiles, built once per case
@@ -116,7 +131,8 @@ class PolicyAgent:
                 st.case_threads = threads
             t = states[supplier_id]
             strategy = self._strategy(case, t, threads[supplier_id])
-            self.policy.p = {**self.base_p, **(strategy.params if strategy else {})}
+            learned = self._learned(case, t)
+            self.policy.p = {**self.base_p, **learned, **(strategy.params if strategy else {})}
             try:
                 rival = self.policy.rival_best(case, states, t)  # eligible offers only (Policy.eligible_cost)
                 decision = self.policy.decide(case, t, rival_best_c=rival)
@@ -131,6 +147,23 @@ class PolicyAgent:
         trace = {"decision": decision, "rival_best_c": rival, "diplomat": diplomat,
                  "strategy": {"name": strategy.name, "reason": strategy.reason} if strategy else None}
         return {**move, "trace": trace}
+
+    @staticmethod
+    def _learned(case, t):
+        """Policy parameters learned per case type and supplier type from practice runs
+        (buyer.facts.strategy.learned_params), per environment BUYER_LEARNED: on (default; validated in
+        practice 2026-10-25: 0.772 -> 0.796 on the ten hosted cases) / off."""
+        if os.environ.get("BUYER_LEARNED", "on").strip().lower() in ("0", "off", "no", "false"):
+            return {}
+        try:
+            from buyer.facts.strategy import learned_params
+
+            label, params = learned_params(case, t.profile)
+            t.learned = label
+            return params
+        except Exception:
+            log.exception("learned params failed - the policy's own parameters")
+            return {}
 
     @staticmethod
     def _strategy(case, t, events):

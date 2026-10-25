@@ -137,3 +137,29 @@ def choose(case: dict, profile: dict | None, signals=None, thread=None, current:
     if _holds(thread) >= 2 and base.name in ("aggressive", "cooperative"):
         return _make("patient", "it held twice: stop conceding, trade other terms instead")
     return base
+
+
+# ------------------------------------------------------------------ learned from practice runs
+# Round 1, 2026-10-25 (50 sessions: five policy variants x the ten hosted cases, one run each - the arena
+# answers our numbers deterministically): per case type the best variant, mean 0.772 -> 0.798 (template
+# writer). Removing the trade packages broke P02 (0.29): trades stay on everywhere.
+DEEP = {"open_frac": 0.0, "min_open_discount_pct": 15.0}   # P07 +0.046, P11 +0.084, P18 +0.033
+SLOW = {"concede": 0.06}                                  # P08 +0.066, P05 +0.010, P04 +0.014
+FAST = {"concede": 0.25}                                  # P10 +0.016
+DEEP_FAST = {**DEEP, **FAST}                              # P05 (RFQ) 0.835 - round 2, deep + bigger steps
+LEARNED_BY_TYPE = {"bundling": DEEP, "quality": DEEP, "renewal": SLOW, "rfq": DEEP_FAST, "capacity": FAST}
+
+
+def learned_params(case: dict, profile: dict | None) -> tuple[str, dict]:
+    """(label, policy parameter overrides) learned per case type and supplier type; ("policy", {}) where
+    the policy's own numbers won (price increases)."""
+    kind = case.get("type")
+    if kind == "raw_material":  # groups: hold with small steps (P08); family firms: anchor deep (P18)
+        group = _get(profile, "archetype") in ("group_ladder", "near_monopolist") \
+            or _get(profile, "approval_style") == "ladder"
+        return ("raw-group-slow", dict(SLOW)) if group else ("raw-family-deep", dict(DEEP))
+    if kind in LEARNED_BY_TYPE:
+        name = {id(DEEP): "deep", id(SLOW): "slow", id(FAST): "fast", id(DEEP_FAST): "deep-fast"}[
+            id(LEARNED_BY_TYPE[kind])]
+        return f"{kind}-{name}", dict(LEARNED_BY_TYPE[kind])
+    return "policy", {}

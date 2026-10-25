@@ -161,3 +161,34 @@ def test_an_opening_without_a_price_gets_an_offer_not_a_walk():
     t = thread(case, {"volume_per_year": 23400})
     d = policy.decide(case, t)
     assert d.kind == "send" and d.term_sheets and d.term_sheets[0]["unit_price"] > 0
+
+
+def test_after_a_final_offer_its_package_goes_back_unchanged():
+    """P18 2026-10-25: after its final offer we sent its package with a wider deadband; it walked away (0)."""
+    case = CASES["case:P18"]
+    policy = Policy({})
+    final_a = {**P18_TERMS, "unit_price": 5.2, "payment_days": 90}
+    final_b = {**P18_TERMS, "unit_price": 5.1, "payment_days": 45}
+    t = thread(case, final_a)
+    t.status = "final_offer"
+    t.offers = [("offer:x-4", dict(final_a)), ("offer:x-4-a", dict(final_b))]
+    policy.pick_offer(case, t)
+    d = policy.close(case, t, True, policy.cost(case, t), float("inf"))
+    if d.kind == "send":  # it mirrors its cheaper alternative - exactly as offered
+        assert len(d.term_sheets) == 1
+        assert d.term_sheets[0]["index_clause"] == final_b["index_clause"]
+        assert d.term_sheets[0]["unit_price"] == final_b["unit_price"]
+        assert "wider index deadband" not in d.intent
+    else:
+        assert d.kind == "accept"
+
+
+def test_capacity_case_never_asks_for_a_faster_lead_time_than_quoted():
+    """P10: our 42 days against its quoted 54 drew a final offer in round one, every run."""
+    case = CASES["case:P10"]
+    policy = Policy({})
+    t = thread(case, {"unit_price": 32.2, "volume_per_year": 19890, "contract_months": 12, "lead_time_days": 54})
+    t.opening_lead = 54
+    out = policy.mirror_terms(case, {"unit_price": 28.5, "volume_per_year": 23400, "contract_months": 36,
+                                     "lead_time_days": 42}, t)
+    assert out["lead_time_days"] == 56 and t.free_levers["lead_time_days"] == 56

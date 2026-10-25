@@ -50,3 +50,14 @@ def test_final_offer_in_an_rfq_does_not_force_secure():
     case = CASES["case:P05"]
     p = profile(case)[case["suppliers"][0]]
     assert choose(case, p, {"final_offer_language": True}, [], initial(case, p)).name == "aggressive"
+
+
+def test_learned_params_per_case_type_and_supplier_type():
+    from buyer.facts.strategy import DEEP, DEEP_FAST, FAST, learned_params
+
+    assert learned_params({"type": "price_increase"}, {}) == ("policy", {})
+    assert learned_params({"type": "quality"}, {})[1] == DEEP
+    assert learned_params({"type": "capacity"}, {})[1] == FAST
+    assert learned_params({"type": "rfq"}, {})[1] == DEEP_FAST
+    assert learned_params({"type": "raw_material"}, {"archetype": "group_ladder"})[1] == {"concede": 0.06}
+    assert learned_params({"type": "raw_material"}, {"archetype": "family_foundry"})[1] == DEEP

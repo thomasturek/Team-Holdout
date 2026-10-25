@@ -100,7 +100,8 @@ def test_relationship_floor_sits_between_full_cost_and_the_best_price():
         p = profile(case)[sid]
         floor = relationship_floor(case, r["terms"], std, p)
         best = mem.observation(doc)["best_price"]
-        assert supplier_estimate(case, p, std)["full_cost"] < floor <= best * 1.01, (case_id, floor, best)
+        full = supplier_estimate(case, p, std)["full_cost"]
+        assert full * 0.995 < floor <= best * 1.01, (case_id, floor, best)  # the knee can sit at the full cost
 
 
 @needs_cases
