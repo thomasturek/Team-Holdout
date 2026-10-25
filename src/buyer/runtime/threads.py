@@ -59,7 +59,7 @@ from .log import NullLog, archive_session
 log = logging.getLogger("buyer.threads")
 
 DECIDE_BUDGET_S = 25  # AGENTS.md: every move inside 25 s of the supplier's reply
-HOLD_AT_S = 48  # still no decision: send the holding message (the arena's limit is 60 s)
+HOLD_AT_S = 40  # still no decision: send the holding message (the arena's limit is 60 s)
 WATCH_EVERY_S = 1.0
 DOWNLOADS = 4  # attachment downloads at once per case
 MAX_FAILURES = 2  # the agent failing (or its messages refused) this often in a row: stop playing the thread
@@ -118,6 +118,12 @@ class CasePlayer:
 
     # -- the case -------------------------------------------------------------------------------
     def play(self):
+        warm = getattr(self.agent, "_warm", None)
+        if warm is not None and self.case_file:
+            try:
+                warm(self.case_file)
+            except Exception:
+                log.exception("%s: warming the agent failed", self.case_id)
         case, threads = self.table.open(self.case_id)
         self.case_file = case or self.case_file
         self.log.bind(self.table.session_id)
@@ -241,7 +247,18 @@ class CasePlayer:
             if moves_left(s.case, view[sid]) <= 0:  # round limit: only an accept is left
                 self.log("drop", supplier_id=sid, reason="round limit")
                 return
-            if self._send(sid, msg, decide_s=time.monotonic() - t0) == INVALID:
+            try:
+                sent = self._send(sid, msg, decide_s=time.monotonic() - t0)
+            except Exception as e:
+                failures += 1
+                log.exception("%s %s: sending failed (%d in a row)", self.case_id, sid, failures)
+                self.log("error", supplier_id=sid, detail=e, where="send")
+                if failures >= MAX_FAILURES:
+                    self.log("drop", supplier_id=sid, reason="sending failed repeatedly")
+                    return
+                s.ended.wait(CLOSE_RETRY_S)
+                continue
+            if sent == INVALID:
                 # 422: nothing happened and no round was used; hold now, while the clock still allows
                 failures += 1
                 if failures >= MAX_FAILURES:

@@ -26,3 +26,8 @@
 {"id": "fable_ceiling", "usd": 2.9004, "s": 804.5, "stop": "end_turn", "input_tokens": 952, "output_tokens": 53522, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 859034}
 {"id": "fable_round1", "usd": 2.9945, "s": 806.3, "stop": "end_turn", "input_tokens": 956, "output_tokens": 55404, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 859034}
 {"id": "fable_rules", "usd": 2.9454, "s": 840.3, "stop": "end_turn", "input_tokens": 921, "output_tokens": 54429, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 859034}
+{"id": "fable2_warm", "usd": 3.7079, "s": 2.7, "stop": "end_turn", "input_tokens": 16, "output_tokens": 4, "cache_creation_input_tokens": 185379, "cache_read_input_tokens": 0}
+{"id": "fable2_claims", "usd": 1.4101, "s": 369.3, "stop": "end_turn", "input_tokens": 744, "output_tokens": 27127, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 185379}
+{"id": "fable2_allin", "usd": 1.494, "s": 383.2, "stop": "end_turn", "input_tokens": 713, "output_tokens": 28811, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 185379}
+{"id": "fable2_runtime", "usd": 1.9549, "s": 543.9, "stop": "end_turn", "input_tokens": 714, "output_tokens": 38029, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 185379}
+{"id": "fable2_hidden", "usd": 2.1658, "s": 590.5, "stop": "end_turn", "input_tokens": 726, "output_tokens": 42243, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 185379}

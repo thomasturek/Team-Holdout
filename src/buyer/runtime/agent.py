@@ -74,7 +74,12 @@ class PolicyAgent:
     def _state(self, case, sid, events):
         from buyer.policy.policy import ThreadState
 
-        sheet_id, terms = standing(events)
+        try:
+            sheet_id, terms = standing(events)
+        except Exception:
+            log.exception("%s: standing offer unreadable", sid)
+            sheet_id, terms = None, {}
+        terms = terms or {}
         t = self.states.get(sid)
         if t is None:
             if self.profiles is None:
@@ -84,7 +89,10 @@ class PolicyAgent:
         t.standing_id, t.standing_terms = sheet_id, terms
         t.offers = [(ts["term_sheet_id"], ts["terms"]) for ts in latest(events).get("term_sheets") or [] if ts.get("term_sheet_id")]
         t.status = latest(events).get("status") or "open"
-        t.standard = standard_terms(events) or t.standard
+        try:
+            t.standard = standard_terms(events) or t.standard
+        except Exception:
+            log.exception("%s: standard terms unreadable - keeping the earlier ones", sid)
         t.rounds_left = moves_left(case, events)
         t.their_prices = [
             m["term_sheets"][0]["terms"].get("unit_price")
@@ -315,7 +323,19 @@ def message_for(decision, case, events, profile=None, signals=None, known_id=Non
     template; accept and walk-away are actions without an e-mail."""
     from buyer.llm import to_message
 
-    message, email = to_message(decision, case, events, profile, signals, known_id=known_id, deadline=deadline)
+    try:
+        message, email = to_message(decision, case, events, profile, signals, known_id=known_id, deadline=deadline)
+    except Exception:
+        if decision.kind != "send":
+            raise
+        log.exception("%s: the writer raised - sending a bare e-mail", decision.supplier_id)
+        subject = next((m.get("subject") for m in events or [] if m.get("subject")), "your offer")
+        subject = subject if subject.lower().startswith("re:") else f"Re: {subject}"
+        sentences = [c.sentence for c in decision.claims or [] if getattr(c, "sentence", None)][:3]
+        body = "\n\n".join(["Dear colleagues,", "Thank you for your message. Our options are in the term sheets.",
+                             *sentences, "Best regards\nHollerau Pumpenwerke, Purchasing"])
+        sheets = [{"terms": dict(x)} for x in decision.term_sheets[:3] if isinstance(x, dict)]
+        message, email = {"subject": subject, "body": body, "term_sheets": sheets, "refs": []}, None
     return {"supplier_id": decision.supplier_id, "message": message}, email
 
 
