@@ -127,6 +127,16 @@ def _meeting_notes():
                         and not META_RE.match(ln.strip()))
         text = body if len(body) <= NOTE_CHARS else body[:NOTE_CHARS].rsplit(" ", 1)[0] + " ..."
         out.setdefault(r["supplier_id"], []).append(f"{r['date']} {r['subject']}: {text} ({r['id']})")
+    for r in _release_rows("documents.csv"):
+        if not r.get("supplier_id") or r.get("kind") != "letter":
+            continue
+        try:
+            lines = (RELEASE.parent / r["file"]).read_text(encoding="utf-8").splitlines()
+        except (OSError, TypeError):
+            continue
+        body = " ".join(ln.strip() for ln in lines if ln.strip() and not ln.startswith("#")
+                        and not META_RE.match(ln.strip()))
+        out.setdefault(r["supplier_id"], []).append(f"{r['date']} {r['subject']}: {body} ({r['id']})")
     return out
 
 

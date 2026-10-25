@@ -22,9 +22,9 @@ Claims:
 - `ppm:sup:70110` (0.71) Your quality was 712 ppm defective parts in the four quarters to 2026Q3 (sc:70110@2026Q3).
 - `po:sup:70110:part:310010` (0.65) Our orders of Volute casing HN 50-200 with you were placed at EUR 128.42 on 2024-10-04 (po:4500011493-10), EUR 128.27 on 2025-06-03 (po:4500012541-10), EUR 126.53 on 2026-01-16 (po:4500013434-10) and EUR 126.53 on 2026-09-21 (po:4500014428-10): the price has not risen.
 - `otd:sup:70110` (0.49) Your on-time delivery was 85.2% in the four quarters to 2026Q3 (sc:70110@2026Q3).
-- `index:LCI-C` (0.46) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
-- `index:PPI-C241` (0.16) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 - `index:PPI-D351` (0.12) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 - `po:sup:70110:part:310012` (0.65) Our orders of Volute casing HN 100-315 with you were placed at EUR 388.80 on 2024-10-07 (po:4500011507-10), EUR 388.31 on 2025-06-10 (po:4500012563-10), EUR 383.06 on 2026-01-19 (po:4500013439-10) and EUR 383.06 on 2026-09-23 (po:4500014449-10): the price has not risen.
 
 ## Eisengießerei Velkenreith GmbH (sup:70120)
@@ -42,8 +42,8 @@ Claims:
 - `otd:sup:70120` (1.00) Your on-time delivery was 74.5% in the four quarters to 2026Q3 (sc:70120@2026Q3).
 - `ppm:sup:70120` (0.73) Your quality was 734 ppm defective parts in the four quarters to 2026Q3 (sc:70120@2026Q3).
 - `po:sup:70120:part:310030` (0.65) Our orders of Impeller HN 200 with you were placed at EUR 34.77 on 2024-09-30 (po:4500011477-10), EUR 34.73 on 2025-05-30 (po:4500012521-10), EUR 34.26 on 2026-01-26 (po:4500013473-10) and EUR 34.26 on 2026-09-28 (po:4500014459-10): the price has not risen.
-- `index:LCI-C` (0.31) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-D351` (0.18) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 - `po:sup:70120:part:310031` (0.50) Our orders of Impeller HN 250 with you were placed at EUR 54.42 on 2024-09-30 (po:4500011477-20), EUR 54.42 on 2025-05-30 (po:4500012521-20), EUR 54.42 on 2026-01-27 (po:4500013483-10) and EUR 54.42 on 2026-09-28 (po:4500014459-20): the price has been unchanged.
 
@@ -68,8 +68,8 @@ Claims:
 - `ppm:sup:70130` (0.65) Your quality was 651 ppm defective parts in the four quarters to 2026Q3 (sc:70130@2026Q3).
 - `po:sup:70130:part:310011` (0.65) Our orders of Volute casing HN 65-250 with you were placed at EUR 183.22 on 2024-09-30 (po:4500011478-10), EUR 183.00 on 2025-05-16 (po:4500012459-10), EUR 180.52 on 2026-01-14 (po:4500013430-10) and EUR 180.52 on 2026-09-16 (po:4500014418-10): the price has not risen.
 - `otd:sup:70130` (0.63) Your on-time delivery was 82.4% in the four quarters to 2026Q3 (sc:70130@2026Q3).
-- `index:LCI-C` (0.29) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-D351` (0.20) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 - `po:sup:70130:part:310012` (0.65) Our orders of Volute casing HN 100-315 with you were placed at EUR 364.55 on 2024-10-01 (po:4500011490-10), EUR 364.10 on 2025-06-02 (po:4500012531-20), EUR 359.17 on 2026-01-19 (po:4500013440-10) and EUR 359.17 on 2026-09-17 (po:4500014419-10): the price has not risen.
 
@@ -80,9 +80,9 @@ Claims:
   - override: MD: 'the bank is watching every month', asked twice to pay earlier, won't sign anything that lowers margin (doc:20260715-70140-M1); asks for payment in 10 days (doc:20260710-70140-M2); restructures (news:20260911-28); red scorecard (sc:70140@2026Q3)
 - history: 8 renewals, asked -0.18 % on average, settled -2.37 %
 - quality 2026Q3: OTD 63.5 %, 2376 ppm, red
-- part:310010: floor 105.75 (should_cost_country+observed_bias, +-10%)
-- part:310020: floor 43.90 (observed_best, +-3%)
-- part:310030: floor 28.69 (should_cost_country+observed_bias, +-10%)
+- part:310010: floor 105.43 (should_cost_country+observed_bias, +-10%)
+- part:310020: floor 43.77 (observed_best, +-3%)
+- part:310030: floor 28.60 (should_cost_country+observed_bias, +-10%)
 
 Notes:
 - 2026-09-11 Odlewnia Kalwisz Sp. z o.o. restructures (news:20260911-28)
@@ -92,8 +92,8 @@ Notes:
 Claims:
 - `otd:sup:70140` (1.00) Your on-time delivery was 63.5% in the four quarters to 2026Q3 (sc:70140@2026Q3).
 - `ppm:sup:70140` (1.00) Your quality was 2376 ppm defective parts in the four quarters to 2026Q3 (sc:70140@2026Q3).
-- `index:LCI-C` (0.30) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-D351` (0.12) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 - `po:sup:70140:part:310020` (0.75) Our orders of Bearing bracket HN with you were placed at EUR 46.33 on 2024-10-18 (po:4500011561-10), EUR 46.33 on 2025-06-20 (po:4500012598-10), EUR 45.15 on 2026-01-19 (po:4500013441-20) and EUR 45.15 on 2026-09-21 (po:4500014429-10): the price has not risen.
 - `po:sup:70140:part:310030` (0.50) Our orders of Impeller HN 200 with you were placed at EUR 30.14 on 2024-10-04 (po:4500011494-10), EUR 30.14 on 2025-06-20 (po:4500012598-20), EUR 30.14 on 2026-01-20 (po:4500013457-10) and EUR 30.14 on 2026-09-21 (po:4500014429-20): the price has been unchanged.
@@ -119,8 +119,8 @@ Claims:
 - `otd:sup:70150` (1.00) Your on-time delivery was 52.0% in the four quarters to 2026Q3 (sc:70150@2026Q3).
 - `ppm:sup:70150` (1.00) Your quality was 2652 ppm defective parts in the four quarters to 2026Q3 (sc:70150@2026Q3).
 - `po:sup:70150:part:310060` (0.69) Our orders of Pump housing HB 40 with you were placed at EUR 32.87 on 2024-10-07 (po:4500011509-10), EUR 32.87 on 2025-06-10 (po:4500012564-20), EUR 32.87 on 2026-01-27 (po:4500013484-10) and EUR 32.24 on 2026-09-23 (po:4500014450-10): the price has not risen.
-- `index:LCI-C` (0.29) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-D351` (0.12) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 
 ## Meridune Precision Castings Co., Ltd. (sup:70160)
@@ -137,30 +137,35 @@ Notes:
 Claims:
 - `po:sup:70160:part:310051` (0.76) Our orders of Impeller HI 250 with you were placed at EUR 81.60 on 2024-10-04 (po:4500011495-10), EUR 81.34 on 2025-06-25 (po:4500012619-10), EUR 79.44 on 2026-01-30 (po:4500013502-10) and EUR 79.44 on 2026-09-21 (po:4500014430-10): the price has not risen.
 - `otd:sup:70160` (0.55) Your on-time delivery was 84.0% in the four quarters to 2026Q3 (sc:70160@2026Q3).
-- `index:LCI-C` (0.27) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:AS-14404` (0.48) The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).
 - `index:PPI-D351` (0.18) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
-- `index:AS-14404` (0.00) The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `ppm:sup:70160` (0.00) Your quality was 0 ppm defective parts in the four quarters to 2026Q3 (sc:70160@2026Q3).
 
 ## Slévárna Vrbenský s.r.o. (sup:70170)
 
-- CZ, family; **family_foundry**, approval flat; cash pressure 0.0 (rate 8%)
+- CZ, family; **cash_short_jobshop**, approval flat; cash pressure 0.7 (rate 19%)
+  - cash: Bank tightens credit line for Slévárna Vrbenský s.r.o. (news:20261014-S11)
+  - cash: Payment terms for stainless castings (doc:20261016-70170-S12)
 - history: 4 renewals, asked -0.23 % on average, settled -2.53 %
 - quality 2026Q3: OTD 91.7 %, 5682 ppm, red
 - part:310050: floor 559.61 (own_price, +-15%)
 
 Notes:
 - 2026-04-20 Slévárna Vrbenský s.r.o. opens a new moulding line (news:20260420-09)
+- 2026-10-14 Bank tightens credit line for Slévárna Vrbenský s.r.o. (news:20261014-S11)
+- 2026-10-16 Payment terms for stainless castings (doc:20261016-70170-S12)
 - 2026-02-10 Payment of invoices: Could you pay our invoices within 10 days? In return we would grant a cash discount. (doc:20260210-70170-M1)
 - 2026-05-12 Supplier day: At our supplier day Slévárna Vrbenský s.r.o. said Hollerau is an important reference customer for them. (doc:20260512-70170-M2)
+- 2026-10-16 Payment terms for stainless castings: Dear Sir or Madam, the start-up of our new moulding line has tied up more cash than we planned, and our bank is watching our figures closely. To keep alloy material flowing we kindly ask our customers to pay within 10 days from November. We are working hard on the porosity issue and will report on our corrective actions. Yours faithfully, Slévárna Vrbenský s.r.o. (doc:20261016-70170-S12)
 
 Claims:
 - `ppm:sup:70170` (1.00) Your quality was 5682 ppm defective parts in the four quarters to 2026Q3 (sc:70170@2026Q3).
 - `po:sup:70170:part:310050` (0.67) Our orders of Volute casing HI 80-250 with you were placed at EUR 569.40 on 2024-10-04 (po:4500011496-10), EUR 569.40 on 2025-05-20 (po:4500012476-10), EUR 559.61 on 2026-01-19 (po:4500013443-10) and EUR 559.61 on 2026-09-21 (po:4500014431-10): the price has not risen.
-- `index:LCI-C` (0.24) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:AS-14404` (0.48) The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).
 - `otd:sup:70170` (0.17) Your on-time delivery was 91.7% in the four quarters to 2026Q3 (sc:70170@2026Q3).
 - `index:PPI-D351` (0.12) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
-- `index:AS-14404` (0.00) The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 
 ## Feinguss Allgäu-Reiter GmbH (sup:70180)
 
@@ -177,14 +182,16 @@ Claims:
 - `otd:sup:70180` (1.00) Your on-time delivery was 73.1% in the four quarters to 2026Q3 (sc:70180@2026Q3).
 - `po:sup:70180:part:310050` (0.71) Our orders of Volute casing HI 80-250 with you were placed at EUR 668.32 on 2024-10-15 (po:4500011554-10), EUR 668.32 on 2025-05-30 (po:4500012523-10), EUR 654.52 on 2026-01-27 (po:4500013485-10) and EUR 654.52 on 2026-09-29 (po:4500014470-10): the price has not risen.
 - `ppm:sup:70180` (0.53) Your quality was 526 ppm defective parts in the four quarters to 2026Q3 (sc:70180@2026Q3).
-- `index:LCI-C` (0.24) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:AS-14404` (0.48) The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).
 - `index:PPI-D351` (0.12) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
-- `index:AS-14404` (0.00) The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `po:sup:70180:part:310051` (0.80) Our orders of Impeller HI 250 with you were placed at EUR 122.45 on 2024-10-15 (po:4500011554-20), EUR 122.45 on 2025-06-30 (po:4500012633-20), EUR 118.73 on 2026-01-28 (po:4500013494-10) and EUR 118.73 on 2026-09-28 (po:4500014460-10): the price has not risen.
 
 ## Gießerei Pfaffenreuth GmbH (sup:70190)
 
-- DE, family; **family_foundry**, approval flat; cash pressure 0.0 (rate 8%)
+- DE, family; **cash_short_jobshop**, approval flat; cash pressure 0.6 (rate 18%)
+  - cash: Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14)
+  - cash: Our liquidity and your call-offs (doc:20261019-70190-S13)
 - history: 8 renewals, asked 0.5 % on average, settled -1.87 %
 - quality 2026Q3: OTD 85.1 %, 715 ppm, amber
 - part:310011: floor 180.19 (should_cost_country, +-10%)
@@ -195,13 +202,17 @@ Claims:
 
 Notes:
 - 2026-04-26 Gießerei Pfaffenreuth GmbH secures power prices (news:20260426-10)
+- 2026-10-15 Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14)
+- 2026-10-19 Our liquidity and your call-offs (doc:20261019-70190-S13)
 - 2026-06-23 Material purchasing: Call with Gießerei Pfaffenreuth GmbH: they bought their electricity forward until December 2028 and said the market price is 'not our reality' before then. (doc:20260623-70190-M1)
+- 2026-10-19 Our liquidity and your call-offs: Dear Sir or Madam, a large customer from the heating industry has cancelled its orders for 2027, and our bank is watching our liquidity closely. We would be very grateful if you could pay our invoices within 10 days from November and confirm firm call-offs for the first quarter. Yours faithfully, Gießerei Pfaffenreuth GmbH (doc:20261019-70190-S13)
 
 Claims:
 - `ppm:sup:70190` (0.71) Your quality was 715 ppm defective parts in the four quarters to 2026Q3 (sc:70190@2026Q3).
+- `news:sup:70190:news:20261015-S14` (0.60) Heating maker cancels foundry orders at Gießerei Pfaffenreuth GmbH (news:20261015-S14).
 - `otd:sup:70190` (0.49) Your on-time delivery was 85.1% in the four quarters to 2026Q3 (sc:70190@2026Q3).
-- `index:LCI-C` (0.29) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-D351` (0.20) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 - `po:sup:70190:part:310040` (0.75) Our orders of Casing cover HB with you were placed at EUR 34.82 on 2024-10-07 (po:4500011511-10), EUR 34.82 on 2025-05-19 (po:4500012463-10), EUR 33.94 on 2026-01-19 (po:4500013444-10) and EUR 33.94 on 2026-09-07 (po:4500014376-10): the price has not risen.
 - `po:sup:70190:part:310060` (0.50) Our orders of Pump housing HB 40 with you were placed at EUR 43.39 on 2024-10-04 (po:4500011497-10), EUR 43.39 on 2025-05-22 (po:4500012488-10), EUR 43.39 on 2026-01-20 (po:4500013458-10) and EUR 43.39 on 2026-09-03 (po:4500014361-10): the price has been unchanged.
@@ -228,10 +239,10 @@ Claims:
 - `ppm:sup:70210` (1.00) Your quality was 1863 ppm defective parts in the four quarters to 2026Q3 (sc:70210@2026Q3).
 - `po:sup:70210:part:320010` (0.80) Our orders of Pump shaft HN 24 mm with you were placed at EUR 26.31 on 2024-10-04 (po:4500011498-10), EUR 25.13 on 2025-05-16 (po:4500012460-10), EUR 24.37 on 2026-01-20 (po:4500013459-10) and EUR 24.37 on 2026-09-03 (po:4500014362-10): the price has not risen.
 - `otd:sup:70210` (0.71) Your on-time delivery was 80.8% in the four quarters to 2026Q3 (sc:70210@2026Q3).
-- `index:LCI-C` (0.31) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C2431` (0.38) German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).
+- `index:AS-14404` (0.24) The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).
 - `index:PPI-D351` (0.02) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
-- `index:PPI-C2431` (0.00) German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).
-- `index:AS-14404` (0.00) The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `po:sup:70210:part:320080` (0.50) Our orders of Lantern (motor stool) HN with you were placed at EUR 41.63 on 2024-10-04 (po:4500011498-20), EUR 41.63 on 2025-06-02 (po:4500012532-10), EUR 41.63 on 2026-01-19 (po:4500013445-10) and EUR 41.63 on 2026-09-17 (po:4500014420-10): the price has been unchanged.
 
 ## CNC-Technik Obermaier & Huber GmbH (sup:70220)
@@ -249,10 +260,10 @@ Notes:
 Claims:
 - `otd:sup:70220` (1.00) Your on-time delivery was 56.0% in the four quarters to 2026Q3 (sc:70220@2026Q3).
 - `ppm:sup:70220` (0.73) Your quality was 731 ppm defective parts in the four quarters to 2026Q3 (sc:70220@2026Q3).
+- `index:PPI-C2431` (0.64) German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).
 - `po:sup:70220:part:320030` (0.50) Our orders of Flange DN 65 PN 16, machined with you were placed at EUR 16.02 on 2024-09-30 (po:4500011479-10), EUR 16.02 on 2025-05-28 (po:4500012517-10), EUR 16.02 on 2026-01-13 (po:4500013427-10) and EUR 16.02 on 2026-09-10 (po:4500014399-10): the price has been unchanged.
-- `index:LCI-C` (0.31) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-D351` (0.04) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
-- `index:PPI-C2431` (0.00) German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 
 ## Präzisionsteile Lindlbauer KG (sup:70230)
 
@@ -276,10 +287,10 @@ Claims:
 - `otd:sup:70230` (0.65) Your on-time delivery was 82.1% in the four quarters to 2026Q3 (sc:70230@2026Q3).
 - `ppm:sup:70230` (0.54) Your quality was 544 ppm defective parts in the four quarters to 2026Q3 (sc:70230@2026Q3).
 - `po:sup:70230:part:320020` (0.50) Our orders of Shaft sleeve with you were placed at EUR 12.06 on 2024-10-07 (po:4500011512-10), EUR 12.06 on 2025-06-04 (po:4500012549-10), EUR 12.06 on 2026-01-16 (po:4500013435-10) and EUR 12.06 on 2026-09-21 (po:4500014432-10): the price has been unchanged.
-- `index:LCI-C` (0.42) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C2431` (0.38) German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).
+- `index:AS-14404` (0.28) The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).
 - `index:PPI-D351` (0.08) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
-- `index:AS-14404` (0.04) The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).
-- `index:PPI-C2431` (0.00) German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `po:sup:70230:part:320031` (0.50) Our orders of Flange DN 100 PN 16, machined with you were placed at EUR 25.34 on 2024-10-02 (po:4500011491-10), EUR 25.34 on 2025-05-20 (po:4500012477-10), EUR 25.34 on 2026-01-20 (po:4500013460-10) and EUR 25.34 on 2026-09-21 (po:4500014432-20): the price has been unchanged.
 
 ## Strojírna Hrvelec s.r.o. (sup:70240)
@@ -297,9 +308,9 @@ Notes:
 Claims:
 - `otd:sup:70240` (1.00) Your on-time delivery was 62.5% in the four quarters to 2026Q3 (sc:70240@2026Q3).
 - `ppm:sup:70240` (0.98) Your quality was 980 ppm defective parts in the four quarters to 2026Q3 (sc:70240@2026Q3).
-- `index:LCI-C` (0.31) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C2431` (0.64) German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).
 - `index:PPI-D351` (0.04) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
-- `index:PPI-C2431` (0.00) German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `po:sup:70240:part:320031` (0.80) Our orders of Flange DN 100 PN 16, machined with you were placed at EUR 20.53 on 2024-10-07 (po:4500011513-10), EUR 20.53 on 2025-06-06 (po:4500012561-10), EUR 19.90 on 2026-01-19 (po:4500013447-10) and EUR 19.90 on 2026-09-22 (po:4500014442-10): the price has not risen.
 
 ## Drehteile Fuchsreiter GmbH (sup:70250)
@@ -321,13 +332,14 @@ Notes:
 - 2026-09-04 Payment of invoices: Could you pay our invoices within 10 days? In return we would grant a cash discount. (doc:20260904-70250-M4)
 
 Claims:
+- `index:PPI-C2431` (0.64) German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).
+- `news:sup:70250:news:20260309-03` (0.60) Drehteile Fuchsreiter GmbH looks for new customers (news:20260309-03).
 - `otd:sup:70250` (0.35) Your on-time delivery was 88.0% in the four quarters to 2026Q3 (sc:70250@2026Q3).
-- `index:LCI-C` (0.32) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `ppm:sup:70250` (0.32) Your quality was 318 ppm defective parts in the four quarters to 2026Q3 (sc:70250@2026Q3).
 - `index:PPI-D351` (0.10) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
-- `index:PPI-C2431` (0.00) German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `po:sup:70250:part:320090` (0.71) Our orders of Spacer sleeve with you were placed at EUR 4.74 on 2024-09-30 (po:4500011480-10), EUR 4.74 on 2025-05-20 (po:4500012478-10), EUR 4.64 on 2026-01-19 (po:4500013448-10) and EUR 4.64 on 2026-09-21 (po:4500014433-10): the price has not risen.
-- `index:AS-14404` (0.00) The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).
+- `index:AS-14404` (0.30) The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).
 
 ## Mechanik Tauvelt GmbH (sup:70260)
 
@@ -344,31 +356,34 @@ Notes:
 
 Claims:
 - `po:sup:70260:part:320012` (0.64) Our orders of Pump shaft HI duplex with you were placed at EUR 107.34 on 2024-10-14 (po:4500011543-10), EUR 106.98 on 2025-06-12 (po:4500012583-10), EUR 105.87 on 2026-01-28 (po:4500013495-10) and EUR 105.87 on 2026-09-30 (po:4500014472-10): the price has not risen.
-- `index:LCI-C` (0.30) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C2431` (0.40) German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).
+- `index:AS-14404` (0.32) The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).
 - `otd:sup:70260` (0.14) Your on-time delivery was 92.3% in the four quarters to 2026Q3 (sc:70260@2026Q3).
 - `index:PPI-D351` (0.02) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
-- `index:PPI-C2431` (0.00) German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).
-- `index:AS-14404` (0.00) The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `ppm:sup:70260` (0.00) Your quality was 0 ppm defective parts in the four quarters to 2026Q3 (sc:70260@2026Q3).
 
 ## Obrábění Kraslin s.r.o. (sup:70270)
 
-- CZ, founder; **family_foundry**, approval flat; cash pressure 0.0 (rate 8%)
+- CZ, founder; **family_foundry**, approval flat; cash pressure 0.3 (rate 13%)
+  - cash: Obrábění Kraslin s.r.o. puts its turning shop on short-time work (news:20261020-S16)
 - history: 4 renewals, asked 1.5 % on average, settled -0.9 %
 - quality 2026Q3: OTD 84.6 %, 1531 ppm, amber
 - part:320050: floor 15.73 (own_price, +-15%)
 
 Notes:
+- 2026-10-20 Obrábění Kraslin s.r.o. puts its turning shop on short-time work (news:20261020-S16)
 - 2026-02-23 Customer portfolio: The sales director of Obrábění Kraslin s.r.o. said they are reviewing small accounts and will focus on customers with volume. (doc:20260223-70270-M2)
 - 2026-03-18 Visit by the owner: Visit by the owner of Obrábění Kraslin s.r.o.. He reminded us that in 2022 they kept supplying at the old price for a quarter and said he expects partnership in return. (doc:20260318-70270-M3)
 - 2026-08-09 Price discussion: Call with the owner of Obrábění Kraslin s.r.o.: he asked where we get our index figures from - he works from his own spreadsheet, last updated two years ago. (doc:20260809-70270-M1)
 
 Claims:
 - `ppm:sup:70270` (1.00) Your quality was 1531 ppm defective parts in the four quarters to 2026Q3 (sc:70270@2026Q3).
+- `index:PPI-C2431` (0.62) German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).
+- `news:sup:70270:news:20261020-S16` (0.60) Obrábění Kraslin s.r.o. puts its turning shop on short-time work (news:20261020-S16).
 - `otd:sup:70270` (0.52) Your on-time delivery was 84.6% in the four quarters to 2026Q3 (sc:70270@2026Q3).
-- `index:LCI-C` (0.34) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-D351` (0.06) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
-- `index:PPI-C2431` (0.00) German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 
 ## Wälzhammer Präzision GmbH (sup:70280)
 
@@ -394,12 +409,13 @@ Notes:
 
 Claims:
 - `po:sup:70280:part:320011` (0.80) Our orders of Pump shaft HN 32 mm with you were placed at EUR 34.07 on 2024-10-04 (po:4500011500-10), EUR 33.06 on 2025-05-19 (po:4500012468-10), EUR 33.06 on 2026-02-02 (po:4500013510-10) and EUR 33.06 on 2026-09-03 (po:4500014364-10): the price has not risen.
+- `news:sup:70280:news:20260926-38` (0.60) Wälzhammer Präzision GmbH introduces short-time work (news:20260926-38).
 - `ppm:sup:70280` (0.42) Your quality was 425 ppm defective parts in the four quarters to 2026Q3 (sc:70280@2026Q3).
+- `index:PPI-C2431` (0.36) German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).
 - `otd:sup:70280` (0.30) Your on-time delivery was 88.9% in the four quarters to 2026Q3 (sc:70280@2026Q3).
-- `index:LCI-C` (0.29) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:AS-14404` (0.22) The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).
 - `index:PPI-D351` (0.10) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
-- `index:PPI-C2431` (0.00) German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).
-- `index:AS-14404` (0.00) The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 
 ## Feinmechanik Rottaler GmbH (sup:70290)
 
@@ -419,10 +435,10 @@ Claims:
 - `otd:sup:70290` (0.95) Your on-time delivery was 75.9% in the four quarters to 2026Q3 (sc:70290@2026Q3).
 - `ppm:sup:70290` (0.92) Your quality was 921 ppm defective parts in the four quarters to 2026Q3 (sc:70290@2026Q3).
 - `po:sup:70290:part:320010` (0.79) Our orders of Pump shaft HN 24 mm with you were placed at EUR 25.67 on 2024-09-30 (po:4500011481-10), EUR 25.67 on 2025-05-26 (po:4500012499-10), EUR 24.92 on 2026-01-26 (po:4500013474-10) and EUR 24.92 on 2026-09-28 (po:4500014461-10): the price has not risen.
-- `index:LCI-C` (0.31) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C2431` (0.38) German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).
+- `index:AS-14404` (0.24) The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).
 - `index:PPI-D351` (0.02) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
-- `index:PPI-C2431` (0.00) German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).
-- `index:AS-14404` (0.00) The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 
 ## Drehzentrum Ilzauer GmbH (sup:70295)
 
@@ -446,12 +462,13 @@ Notes:
 
 Claims:
 - `ppm:sup:70295` (1.00) Your quality was 1000 ppm defective parts in the four quarters to 2026Q3 (sc:70295@2026Q3).
+- `news:sup:70295:news:20260514-12` (0.60) Drehzentrum Ilzauer GmbH looks for new customers (news:20260514-12).
 - `otd:sup:70295` (0.53) Your on-time delivery was 84.4% in the four quarters to 2026Q3 (sc:70295@2026Q3).
 - `po:sup:70295:part:320020` (0.50) Our orders of Shaft sleeve with you were placed at EUR 11.66 on 2024-10-07 (po:4500011515-10), EUR 11.66 on 2025-06-05 (po:4500012558-10), EUR 11.66 on 2026-01-16 (po:4500013437-10) and EUR 11.66 on 2026-09-21 (po:4500014434-10): the price has been unchanged.
-- `index:LCI-C` (0.32) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C2431` (0.38) German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).
+- `index:AS-14404` (0.28) The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).
 - `index:PPI-D351` (0.08) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
-- `index:PPI-C2431` (0.00) German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).
-- `index:AS-14404` (0.00) The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:CU-NOTATION` (0.00) The copper notation changed +47.7% from 2025-09 to 2026-09 (idx:CU-NOTATION@2025-09, idx:CU-NOTATION@2026-09).
 - `po:sup:70295:part:320090` (0.67) Our orders of Spacer sleeve with you were placed at EUR 4.68 on 2024-10-04 (po:4500011501-10), EUR 4.60 on 2025-06-03 (po:4500012543-20), EUR 4.60 on 2026-01-20 (po:4500013461-10) and EUR 4.60 on 2026-09-21 (po:4500014434-30): the price has not risen.
 
@@ -469,9 +486,9 @@ Claims:
 - `otd:sup:70310` (1.00) Your on-time delivery was 63.0% in the four quarters to 2026Q3 (sc:70310@2026Q3).
 - `ppm:sup:70310` (1.00) Your quality was 4118 ppm defective parts in the four quarters to 2026Q3 (sc:70310@2026Q3).
 - `po:sup:70310:part:330010` (0.50) Our orders of Base frame HN 50/65, welded, painted with you were placed at EUR 100.14 on 2024-10-10 (po:4500011532-10), EUR 100.14 on 2025-06-10 (po:4500012566-10), EUR 100.14 on 2026-01-27 (po:4500013487-10) and EUR 100.14 on 2026-09-25 (po:4500014457-10): the price has been unchanged.
-- `index:LCI-C` (0.27) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-D351` (0.12) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 
 ## Stahlbau Ganghofer-Lenz GmbH (sup:70320)
 
@@ -487,9 +504,9 @@ Claims:
 - `ppm:sup:70320` (0.95) Your quality was 949 ppm defective parts in the four quarters to 2026Q3 (sc:70320@2026Q3).
 - `po:sup:70320:part:330011` (0.69) Our orders of Base frame HN 100, welded, painted with you were placed at EUR 184.72 on 2024-10-17 (po:4500011558-10), EUR 184.72 on 2025-06-04 (po:4500012550-10), EUR 181.29 on 2026-02-02 (po:4500013512-10) and EUR 181.29 on 2026-09-17 (po:4500014422-10): the price has not risen.
 - `otd:sup:70320` (0.35) Your on-time delivery was 88.0% in the four quarters to 2026Q3 (sc:70320@2026Q3).
-- `index:LCI-C` (0.25) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-D351` (0.06) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 
 ## Lasertechnik Varnoszeg Kft. (sup:70330)
 
@@ -507,8 +524,8 @@ Claims:
 - `otd:sup:70330` (1.00) Your on-time delivery was 70.8% in the four quarters to 2026Q3 (sc:70330@2026Q3).
 - `ppm:sup:70330` (1.00) Your quality was 1879 ppm defective parts in the four quarters to 2026Q3 (sc:70330@2026Q3).
 - `po:sup:70330:part:330040` (0.75) Our orders of Control cabinet housing HI with you were placed at EUR 122.14 on 2024-10-14 (po:4500011544-10), EUR 122.14 on 2025-06-10 (po:4500012567-10), EUR 119.11 on 2026-01-28 (po:4500013496-10) and EUR 119.11 on 2026-09-28 (po:4500014462-10): the price has not risen.
-- `index:LCI-C` (0.27) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
-- `index:AS-14301` (0.00) The alloy surcharge for stainless grade 304 changed +8.6% from 2025-09 to 2026-09 (idx:AS-14301@2025-09, idx:AS-14301@2026-09).
+- `index:AS-14301` (0.46) The alloy surcharge for stainless grade 304 changed -7.6% from 2026-06 to 2026-09 (idx:AS-14301@2026-06, idx:AS-14301@2026-09).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 
 ## Metallbau Steinfelder KG (sup:70340)
@@ -523,14 +540,15 @@ Notes:
 - 2026-04-18 Supplier day: At our supplier day Metallbau Steinfelder KG said Hollerau is an important reference customer for them. (doc:20260418-70340-M3)
 - 2026-07-21 Price discussion: Call with the owner of Metallbau Steinfelder KG: he offered to walk us through their calculation (hourly rates and material) if that helps to settle prices. (doc:20260721-70340-M2)
 - 2026-07-28 Price discussion: Call with the owner of Metallbau Steinfelder KG: he asked where we get our index figures from - he works from his own spreadsheet, last updated two years ago. (doc:20260728-70340-M1)
+- 2026-10-13 Steel for 2027: Dear Sir or Madam, for your planning: we have secured our steel sheet and coil for 2027, bought forward at fixed prices with our mill. Whatever the steel market does reaches our prices only from 2028. Yours faithfully, Metallbau Steinfelder KG (doc:20261013-70340-S15)
 
 Claims:
 - `po:sup:70340:part:330020` (0.73) Our orders of Coupling guard, galvanised with you were placed at EUR 18.59 on 2024-10-14 (po:4500011545-10), EUR 18.39 on 2025-06-10 (po:4500012568-10), EUR 18.16 on 2026-02-04 (po:4500013531-10) and EUR 18.16 on 2026-09-24 (po:4500014452-10): the price has not risen.
 - `ppm:sup:70340` (0.49) Your quality was 489 ppm defective parts in the four quarters to 2026Q3 (sc:70340@2026Q3).
 - `otd:sup:70340` (0.33) Your on-time delivery was 88.5% in the four quarters to 2026Q3 (sc:70340@2026Q3).
-- `index:LCI-C` (0.29) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-D351` (0.02) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `po:sup:70340:part:330030` (0.50) Our orders of Motor bracket HB with you were placed at EUR 15.63 on 2024-10-14 (po:4500011545-20), EUR 15.63 on 2025-06-10 (po:4500012568-20), EUR 15.63 on 2026-01-26 (po:4500013475-10) and EUR 15.63 on 2026-09-24 (po:4500014452-20): the price has been unchanged.
 
 ## Oberflächentechnik Weißacher GmbH (sup:70350)
@@ -555,8 +573,8 @@ Claims:
 - `otd:sup:70350` (1.00) Your on-time delivery was 53.8% in the four quarters to 2026Q3 (sc:70350@2026Q3).
 - `ppm:sup:70350` (1.00) Your quality was 5556 ppm defective parts in the four quarters to 2026Q3 (sc:70350@2026Q3).
 - `po:sup:70350:part:330060` (0.50) Our orders of Cover plate set, powder coated with you were placed at EUR 9.99 on 2024-09-30 (po:4500011482-10), EUR 9.99 on 2025-06-02 (po:4500012534-10), EUR 9.99 on 2026-01-19 (po:4500013450-10) and EUR 9.99 on 2026-09-18 (po:4500014424-10): the price has been unchanged.
-- `index:LCI-C` (0.32) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-D351` (0.14) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 
 ## Kantteile Strasser GmbH (sup:70360)
@@ -575,9 +593,9 @@ Notes:
 Claims:
 - `otd:sup:70360` (0.95) Your on-time delivery was 76.0% in the four quarters to 2026Q3 (sc:70360@2026Q3).
 - `ppm:sup:70360` (0.76) Your quality was 762 ppm defective parts in the four quarters to 2026Q3 (sc:70360@2026Q3).
-- `index:LCI-C` (0.29) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-D351` (0.02) German electricity producer prices changed -3.7% from 2025-08 to 2026-08 (idx:PPI-D351@2025-08, idx:PPI-D351@2026-08).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `po:sup:70360:part:330030` (0.50) Our orders of Motor bracket HB with you were placed at EUR 16.11 on 2024-10-07 (po:4500011516-10), EUR 16.11 on 2025-06-05 (po:4500012559-10), EUR 16.11 on 2026-01-20 (po:4500013462-10) and EUR 16.11 on 2026-09-21 (po:4500014435-20): the price has been unchanged.
 
 ## Dichtungswerk Ravensteiner GmbH (sup:70410)
@@ -585,9 +603,9 @@ Claims:
 - DE, group; **near_monopolist**, approval ladder; cash pressure 0.0 (rate 8%)
 - history: 12 renewals, asked 3.18 % on average, settled 1.01 %
 - quality 2026Q3: OTD 79.5 %, 270 ppm, green
-- part:340010: floor 28.09 (observed_best, +-3%)
-- part:340011: floor 39.95 (should_cost_country+observed_bias, +-10%)
-- part:340030: floor 2.20 (own_price+observed_bias, +-15%)
+- part:340010: floor 27.38 (observed_best, +-3%)
+- part:340011: floor 39.13 (should_cost_country+observed_bias, +-10%)
+- part:340030: floor 2.15 (own_price+observed_bias, +-15%)
 
 Notes:
 - 2026-08-22 Dichtungswerk Ravensteiner GmbH allocates volumes (news:20260822-23)
@@ -598,8 +616,8 @@ Claims:
 - `otd:sup:70410` (0.78) Your on-time delivery was 79.5% in the four quarters to 2026Q3 (sc:70410@2026Q3).
 - `po:sup:70410:part:340010` (0.50) Our orders of Mechanical seal 24 mm, SiC/carbon, EPDM with you were placed at EUR 29.89 on 2024-10-07 (po:4500011517-10), EUR 29.89 on 2025-05-19 (po:4500012472-10), EUR 29.89 on 2026-01-19 (po:4500013451-10) and EUR 29.89 on 2026-09-21 (po:4500014436-10): the price has been unchanged.
 - `ppm:sup:70410` (0.27) Your quality was 270 ppm defective parts in the four quarters to 2026Q3 (sc:70410@2026Q3).
-- `index:LCI-C` (0.26) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
-- `index:PPI-C2219` (0.06) German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C2219` (0.00) German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).
 
 ## Gleitring-Systeme Kaltenbrunn AG (sup:70420)
 
@@ -615,8 +633,8 @@ Notes:
 
 Claims:
 - `po:sup:70420:part:340012` (0.50) Our orders of Cartridge seal HI 45 mm, ATEX, drinking-water approved with you were placed at EUR 319.11 on 2024-10-08 (po:4500011526-10), EUR 319.11 on 2025-06-23 (po:4500012609-10), EUR 319.11 on 2026-01-20 (po:4500013463-10) and EUR 319.11 on 2026-09-23 (po:4500014451-10): the price has been unchanged.
-- `index:LCI-C` (0.29) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
-- `index:PPI-C2219` (0.05) German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C2219` (0.00) German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).
 - `otd:sup:70420` (0.00) Your on-time delivery was 95.8% in the four quarters to 2026Q3 (sc:70420@2026Q3).
 - `ppm:sup:70420` (0.00) Your quality was 0 ppm defective parts in the four quarters to 2026Q3 (sc:70420@2026Q3).
 
@@ -636,9 +654,9 @@ Notes:
 Claims:
 - `po:sup:70430:part:340020` (0.50) Our orders of O-ring set EPDM, drinking-water approved with you were placed at EUR 63.87 per 100 units on 2024-10-10 (po:4500011533-10), EUR 63.87 per 100 units on 2025-06-10 (po:4500012569-10), EUR 65.41 per 100 units on 2026-01-26 (po:4500013476-10) and EUR 63.87 per 100 units on 2026-09-24 (po:4500014453-10): the price has not risen.
 - `ppm:sup:70430` (0.29) Your quality was 291 ppm defective parts in the four quarters to 2026Q3 (sc:70430@2026Q3).
-- `index:PPI-C2219` (0.22) German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).
 - `otd:sup:70430` (0.16) Your on-time delivery was 91.8% in the four quarters to 2026Q3 (sc:70430@2026Q3).
-- `index:LCI-C` (0.13) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C2219` (0.00) German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 
 ## Kohlering-Technik Pirkheim GmbH (sup:70440)
 
@@ -656,8 +674,8 @@ Notes:
 Claims:
 - `otd:sup:70440` (0.97) Your on-time delivery was 75.5% in the four quarters to 2026Q3 (sc:70440@2026Q3).
 - `ppm:sup:70440` (0.39) Your quality was 387 ppm defective parts in the four quarters to 2026Q3 (sc:70440@2026Q3).
-- `index:LCI-C` (0.31) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
-- `index:PPI-C2219` (0.07) German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C2219` (0.00) German producer prices for rubber products changed +3.9% from 2025-08 to 2026-08 (idx:PPI-C2219@2025-08, idx:PPI-C2219@2026-08).
 
 ## Antriebstechnik Nordmark AG (sup:70510)
 
@@ -676,8 +694,8 @@ Notes:
 Claims:
 - `ppm:sup:70510` (0.27) Your quality was 273 ppm defective parts in the four quarters to 2026Q3 (sc:70510@2026Q3).
 - `otd:sup:70510` (0.23) Your on-time delivery was 90.4% in the four quarters to 2026Q3 (sc:70510@2026Q3).
-- `index:LCI-C` (0.22) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:CU-NOTATION` (0.00) The copper notation changed +47.7% from 2025-09 to 2026-09 (idx:CU-NOTATION@2025-09, idx:CU-NOTATION@2026-09).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 
 ## Vesmo Elektromotory a.s. (sup:70520)
@@ -698,8 +716,8 @@ Notes:
 Claims:
 - `ppm:sup:70520` (0.76) Your quality was 764 ppm defective parts in the four quarters to 2026Q3 (sc:70520@2026Q3).
 - `otd:sup:70520` (0.69) Your on-time delivery was 81.1% in the four quarters to 2026Q3 (sc:70520@2026Q3).
-- `index:LCI-C` (0.18) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:CU-NOTATION` (0.00) The copper notation changed +47.7% from 2025-09 to 2026-09 (idx:CU-NOTATION@2025-09, idx:CU-NOTATION@2026-09).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 
 ## Selvbrunn Drive Systems GmbH (sup:70530)
@@ -717,8 +735,8 @@ Notes:
 Claims:
 - `po:sup:70530:part:350020` (0.55) Our orders of Frequency converter 7.5 kW, IP55 with you were placed at EUR 414.61 on 2024-10-14 (po:4500011548-10), EUR 400.19 on 2025-06-30 (po:4500012634-10), EUR 412.74 on 2026-01-27 (po:4500013491-10) and EUR 412.74 on 2026-09-28 (po:4500014465-10): the price has not risen.
 - `otd:sup:70530` (0.52) Your on-time delivery was 84.6% in the four quarters to 2026Q3 (sc:70530@2026Q3).
-- `index:LCI-C` (0.13) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C2611` (0.00) German producer prices for electronic components changed +13.5% from 2025-08 to 2026-08 (idx:PPI-C2611@2025-08, idx:PPI-C2611@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:CU-NOTATION` (0.00) The copper notation changed +47.7% from 2025-09 to 2026-09 (idx:CU-NOTATION@2025-09, idx:CU-NOTATION@2026-09).
 - `ppm:sup:70530` (0.00) Your quality was 0 ppm defective parts in the four quarters to 2026Q3 (sc:70530@2026Q3).
 
@@ -738,8 +756,8 @@ Notes:
 
 Claims:
 - `otd:sup:70540` (0.68) Your on-time delivery was 81.5% in the four quarters to 2026Q3 (sc:70540@2026Q3).
-- `index:LCI-C` (0.13) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C2611` (0.00) German producer prices for electronic components changed +13.5% from 2025-08 to 2026-08 (idx:PPI-C2611@2025-08, idx:PPI-C2611@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:CU-NOTATION` (0.00) The copper notation changed +47.7% from 2025-09 to 2026-09 (idx:CU-NOTATION@2025-09, idx:CU-NOTATION@2026-09).
 - `ppm:sup:70540` (0.00) Your quality was 0 ppm defective parts in the four quarters to 2026Q3 (sc:70540@2026Q3).
 - `po:sup:70540:part:350021` (0.50) Our orders of Frequency converter 15 kW, IP55 with you were placed at EUR 684.92 on 2024-10-04 (po:4500011502-10), EUR 684.92 on 2025-05-26 (po:4500012504-20), EUR 684.92 on 2026-02-02 (po:4500013516-10) and EUR 684.92 on 2026-09-25 (po:4500014458-10): the price has been unchanged.
@@ -758,8 +776,8 @@ Claims:
 - `ppm:sup:70550` (0.70) Your quality was 701 ppm defective parts in the four quarters to 2026Q3 (sc:70550@2026Q3).
 - `po:sup:70550:part:350030` (0.66) Our orders of Control board HB smart pump (PCBA) with you were placed at EUR 34.90 on 2024-10-04 (po:4500011503-10), EUR 34.21 on 2025-05-22 (po:4500012492-10), EUR 34.35 on 2026-01-19 (po:4500013453-10) and EUR 34.35 on 2026-09-07 (po:4500014387-10): the price has not risen.
 - `otd:sup:70550` (0.47) Your on-time delivery was 85.7% in the four quarters to 2026Q3 (sc:70550@2026Q3).
-- `index:LCI-C` (0.27) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C2611` (0.00) German producer prices for electronic components changed +13.5% from 2025-08 to 2026-08 (idx:PPI-C2611@2025-08, idx:PPI-C2611@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 
 ## Kabelwerk Rhönsberg GmbH (sup:70560)
 
@@ -775,8 +793,8 @@ Notes:
 Claims:
 - `otd:sup:70560` (0.33) Your on-time delivery was 88.5% in the four quarters to 2026Q3 (sc:70560@2026Q3).
 - `ppm:sup:70560` (0.11) Your quality was 111 ppm defective parts in the four quarters to 2026Q3 (sc:70560@2026Q3).
-- `index:LCI-C` (0.10) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:CU-NOTATION` (0.00) The copper notation changed +47.7% from 2025-09 to 2026-09 (idx:CU-NOTATION@2025-09, idx:CU-NOTATION@2026-09).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 
 ## Sensorik Ammertal GmbH (sup:70570)
 
@@ -794,8 +812,8 @@ Notes:
 Claims:
 - `otd:sup:70570` (0.35) Your on-time delivery was 88.0% in the four quarters to 2026Q3 (sc:70570@2026Q3).
 - `ppm:sup:70570` (0.27) Your quality was 271 ppm defective parts in the four quarters to 2026Q3 (sc:70570@2026Q3).
-- `index:LCI-C` (0.26) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C2611` (0.00) German producer prices for electronic components changed +13.5% from 2025-08 to 2026-08 (idx:PPI-C2611@2025-08, idx:PPI-C2611@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 
 ## Motorenwerk Saalach GmbH (sup:70580)
 
@@ -814,7 +832,7 @@ Notes:
 - 2026-09-26 Account review: Their new sales director said Hollerau's volumes are 'not strategic' for Motorenwerk Saalach GmbH any more; replies have become slower since the summer. (doc:20260926-70580-M1)
 
 Claims:
-- `index:LCI-C` (0.20) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:CU-NOTATION` (0.00) The copper notation changed +47.7% from 2025-09 to 2026-09 (idx:CU-NOTATION@2025-09, idx:CU-NOTATION@2026-09).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 - `otd:sup:70580` (0.00) Your on-time delivery was 95.8% in the four quarters to 2026Q3 (sc:70580@2026Q3).
@@ -835,11 +853,11 @@ Notes:
 - 2026-05-14 Capacity: Call with sales at Schraubenhandel Leitner & Sohn GmbH: they could take additional parts at short notice; the second shift has been on hold since spring. (doc:20260514-70610-M3)
 
 Claims:
-- `index:PPI-C2594` (0.67) German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).
 - `po:sup:70610:part:360010` (0.50) Our orders of Hex bolt ISO 4017 M12x40 8.8, zinc with you were placed at EUR 12.46 per 100 units on 2024-09-30 (po:4500011486-10), EUR 12.46 per 100 units on 2025-05-26 (po:4500012506-10), EUR 12.46 per 100 units on 2026-01-26 (po:4500013479-10) and EUR 12.46 per 100 units on 2026-09-30 (po:4500014475-10): the price has been unchanged.
 - `otd:sup:70610` (0.32) Your on-time delivery was 88.6% in the four quarters to 2026Q3 (sc:70610@2026Q3).
-- `index:LCI-C` (0.07) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `ppm:sup:70610` (0.07) Your quality was 68 ppm defective parts in the four quarters to 2026Q3 (sc:70610@2026Q3).
+- `index:PPI-C2594` (0.00) German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `po:sup:70610:part:360012` (0.50) Our orders of Hex nut ISO 4032 M12 8, zinc with you were placed at EUR 4.91 per 100 units on 2024-09-30 (po:4500011486-20), EUR 4.91 per 100 units on 2025-06-02 (po:4500012538-10), EUR 4.91 per 100 units on 2026-01-30 (po:4500013504-10) and EUR 4.91 per 100 units on 2026-09-28 (po:4500014466-10): the price has been unchanged.
 - `po:sup:70610:part:360030` (0.50) Our orders of Washer ISO 7089 M12, zinc with you were placed at EUR 12.78 per 1,000 units on 2024-10-10 (po:4500011536-10), EUR 12.78 per 1,000 units on 2025-06-11 (po:4500012581-10), EUR 12.78 per 1,000 units on 2026-01-29 (po:4500013501-10) and EUR 12.78 per 1,000 units on 2026-09-28 (po:4500014466-20): the price has been unchanged.
 
@@ -862,10 +880,10 @@ Notes:
 - 2026-09-17 Account review: Their new sales director said Hollerau's volumes are 'not strategic' for Wälzlager-Zentrum Süd GmbH any more; replies have become slower since the summer. (doc:20260917-70620-M4)
 
 Claims:
-- `index:PPI-C2815` (0.83) German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).
 - `otd:sup:70620` (0.50) Your on-time delivery was 85.0% in the four quarters to 2026Q3 (sc:70620@2026Q3).
 - `ppm:sup:70620` (0.30) Your quality was 302 ppm defective parts in the four quarters to 2026Q3 (sc:70620@2026Q3).
-- `index:LCI-C` (0.08) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C2815` (0.00) German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 
 ## Normteile Brucker KG (sup:70630)
 
@@ -883,11 +901,11 @@ Notes:
 
 Claims:
 - `po:sup:70630:part:360013` (0.80) Our orders of Stud bolt M10 A2-70 with you were placed at EUR 31.24 per 100 units on 2024-10-14 (po:4500011551-10), EUR 30.38 per 100 units on 2025-06-10 (po:4500012575-10), EUR 29.23 per 100 units on 2026-01-28 (po:4500013497-10) and EUR 29.23 per 100 units on 2026-09-28 (po:4500014468-10): the price has not risen.
-- `index:PPI-C2594` (0.43) German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).
+- `index:AS-14301` (0.56) The alloy surcharge for stainless grade 304 changed -7.6% from 2026-06 to 2026-09 (idx:AS-14301@2026-06, idx:AS-14301@2026-09).
 - `otd:sup:70630` (0.35) Your on-time delivery was 88.0% in the four quarters to 2026Q3 (sc:70630@2026Q3).
 - `ppm:sup:70630` (0.26) Your quality was 257 ppm defective parts in the four quarters to 2026Q3 (sc:70630@2026Q3).
-- `index:LCI-C` (0.09) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
-- `index:AS-14301` (0.00) The alloy surcharge for stainless grade 304 changed +8.6% from 2025-09 to 2026-09 (idx:AS-14301@2025-09, idx:AS-14301@2026-09).
+- `index:PPI-C2594` (0.00) German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `po:sup:70630:part:360030` (0.50) Our orders of Washer ISO 7089 M12, zinc with you were placed at EUR 12.64 per 1,000 units on 2024-10-07 (po:4500011521-10), EUR 12.64 per 1,000 units on 2025-06-10 (po:4500012575-20), EUR 12.64 per 1,000 units on 2026-01-23 (po:4500013470-10) and EUR 12.64 per 1,000 units on 2026-09-28 (po:4500014468-20): the price has been unchanged.
 
 ## Kugellager-Vertrieb Inntal GmbH (sup:70640)
@@ -899,6 +917,7 @@ Claims:
 - part:360021: floor 7.14 (own_price, +-15%)
 
 Notes:
+- 2026-10-17 Kugellager-Vertrieb Inntal GmbH loses a large distribution contract (news:20261017-S19)
 - 2026-02-01 Capacity: Call with sales at Kugellager-Vertrieb Inntal GmbH: they could take additional parts at short notice; the second shift has been on hold since spring. (doc:20260201-70640-M5)
 - 2026-02-28 Annual review: Annual review with Kugellager-Vertrieb Inntal GmbH. Their key account manager explained that price changes above 2 % need the approval of their pricing committee, which meets every two weeks. (doc:20260228-70640-M3)
 - 2026-05-12 Annual review: Annual review with Kugellager-Vertrieb Inntal GmbH. Their key account manager explained that price changes above 2 % need the approval of their pricing committee, which meets every two weeks. (doc:20260512-70640-M2)
@@ -906,9 +925,10 @@ Notes:
 - 2026-08-19 Customer portfolio: The sales director of Kugellager-Vertrieb Inntal GmbH said they are reviewing small accounts and will focus on customers with volume. (doc:20260819-70640-M1)
 
 Claims:
-- `index:PPI-C2815` (0.83) German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).
+- `news:sup:70640:news:20261017-S19` (0.60) Kugellager-Vertrieb Inntal GmbH loses a large distribution contract (news:20261017-S19).
 - `otd:sup:70640` (0.42) Your on-time delivery was 86.5% in the four quarters to 2026Q3 (sc:70640@2026Q3).
-- `index:LCI-C` (0.08) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C2815` (0.00) German producer prices for bearings and gears changed +0.8% from 2025-08 to 2026-08 (idx:PPI-C2815@2025-08, idx:PPI-C2815@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `ppm:sup:70640` (0.00) Your quality was 0 ppm defective parts in the four quarters to 2026Q3 (sc:70640@2026Q3).
 
 ## Verbindungstechnik Mairhofer GmbH (sup:70650)
@@ -930,11 +950,11 @@ Notes:
 - 2026-08-17 Range changes: We are reorganising our range around our key accounts. Standard items will be supplied from stock at list conditions; individual agreements will not be extended. (doc:20260817-70650-M1)
 
 Claims:
-- `index:PPI-C2594` (0.67) German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).
 - `otd:sup:70650` (0.55) Your on-time delivery was 84.1% in the four quarters to 2026Q3 (sc:70650@2026Q3).
 - `po:sup:70650:part:360010` (0.50) Our orders of Hex bolt ISO 4017 M12x40 8.8, zinc with you were placed at EUR 14.52 per 100 units on 2024-10-09 (po:4500011530-10), EUR 14.52 per 100 units on 2025-06-10 (po:4500012577-10), EUR 14.52 per 100 units on 2026-01-23 (po:4500013471-10) and EUR 14.52 per 100 units on 2026-09-28 (po:4500014469-10): the price has been unchanged.
 - `ppm:sup:70650` (0.30) Your quality was 296 ppm defective parts in the four quarters to 2026Q3 (sc:70650@2026Q3).
-- `index:LCI-C` (0.07) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:PPI-C2594` (0.00) German producer prices for fasteners changed +1.7% from 2025-08 to 2026-08 (idx:PPI-C2594@2025-08, idx:PPI-C2594@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `po:sup:70650:part:360011` (0.54) Our orders of Hex bolt ISO 4017 M16x60 8.8, zinc with you were placed at EUR 37.81 per 100 units on 2024-10-08 (po:4500011529-10), EUR 37.81 per 100 units on 2025-06-10 (po:4500012577-20), EUR 37.64 per 100 units on 2026-01-28 (po:4500013498-10) and EUR 37.64 per 100 units on 2026-09-24 (po:4500014454-10): the price has not risen.
 - `po:sup:70650:part:360012` (0.80) Our orders of Hex nut ISO 4032 M12 8, zinc with you were placed at EUR 5.78 per 100 units on 2024-09-30 (po:4500011488-10), EUR 5.78 per 100 units on 2025-05-30 (po:4500012530-10), EUR 5.60 per 100 units on 2026-01-27 (po:4500013493-10) and EUR 5.60 per 100 units on 2026-09-24 (po:4500014454-20): the price has not risen.
 
@@ -951,13 +971,13 @@ Notes:
 - 2026-07-06 Material costs: Dear Sir or Madam, for your information: our nickel and alloys requirement is covered at fixed prices until March 2027. Market movements reach our costs only after that. Yours faithfully, Edelstahl-Service Donautal GmbH (doc:20260706-70710-M1)
 
 Claims:
+- `index:AS-14404` (0.86) The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).
+- `index:PPI-C2431` (0.72) German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).
 - `po:sup:70710:part:370010` (0.50) Our orders of Round bar 1.4404 dia 30 mm, peeled with you were placed at EUR 5.45 on 2024-10-07 (po:4500011523-10), EUR 5.33 on 2025-06-05 (po:4500012560-10), EUR 5.24 on 2026-01-26 (po:4500013482-10) and EUR 5.45 on 2026-09-24 (po:4500014455-10): the price has not risen.
 - `otd:sup:70710` (0.35) Your on-time delivery was 88.0% in the four quarters to 2026Q3 (sc:70710@2026Q3).
 - `ppm:sup:70710` (0.07) Your quality was 75 ppm defective parts in the four quarters to 2026Q3 (sc:70710@2026Q3).
-- `index:LCI-C` (0.03) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
-- `index:AS-14404` (0.00) The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).
-- `index:PPI-C2431` (0.00) German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).
-- `index:AS-14301` (0.00) The alloy surcharge for stainless grade 304 changed +8.6% from 2025-09 to 2026-09 (idx:AS-14301@2025-09, idx:AS-14301@2026-09).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
+- `index:AS-14301` (0.92) The alloy surcharge for stainless grade 304 changed -7.6% from 2026-06 to 2026-09 (idx:AS-14301@2026-06, idx:AS-14301@2026-09).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 
 ## Stahlhandel Rupprecht-Kessel GmbH (sup:70720)
@@ -975,11 +995,11 @@ Notes:
 - 2026-09-24 Supplier day: At our supplier day Stahlhandel Rupprecht-Kessel GmbH said Hollerau is an important reference customer for them. (doc:20260924-70720-M1)
 
 Claims:
+- `index:PPI-C2431` (1.00) German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).
 - `po:sup:70720:part:370012` (0.73) Our orders of Round bar C45 dia 50 mm, cold drawn with you were placed at EUR 129.00 per 100 units on 2024-10-10 (po:4500011538-10), EUR 129.00 per 100 units on 2025-06-10 (po:4500012578-10), EUR 126.05 per 100 units on 2026-01-23 (po:4500013472-10) and EUR 126.05 per 100 units on 2026-09-24 (po:4500014456-10): the price has not risen.
 - `otd:sup:70720` (0.14) Your on-time delivery was 92.2% in the four quarters to 2026Q3 (sc:70720@2026Q3).
-- `index:LCI-C` (0.06) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `ppm:sup:70720` (0.04) Your quality was 44 ppm defective parts in the four quarters to 2026Q3 (sc:70720@2026Q3).
-- `index:PPI-C2431` (0.00) German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `po:sup:70720:part:370020` (0.80) Our orders of Sheet S235JR 3 mm, hot rolled, cut to size with you were placed at EUR 92.33 per 100 units on 2024-10-07 (po:4500011524-10), EUR 86.35 per 100 units on 2025-06-04 (po:4500012553-10), EUR 84.34 per 100 units on 2026-01-23 (po:4500013472-20) and EUR 84.34 per 100 units on 2026-09-22 (po:4500014448-10): the price has not risen.
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
 
@@ -997,11 +1017,11 @@ Notes:
 - 2026-08-06 Price discussion: Call with the owner of Inox Center Ostalpen GmbH: he offered to walk us through their calculation (hourly rates and material) if that helps to settle prices. (doc:20260806-70730-M3)
 
 Claims:
+- `index:AS-14301` (0.92) The alloy surcharge for stainless grade 304 changed -7.6% from 2026-06 to 2026-09 (idx:AS-14301@2026-06, idx:AS-14301@2026-09).
 - `po:sup:70730:part:370021` (0.80) Our orders of Sheet 1.4301 2 mm, 2B, cut to size with you were placed at EUR 4.21 on 2024-10-04 (po:4500011505-10), EUR 4.11 on 2025-06-02 (po:4500012540-10), EUR 3.83 on 2026-01-19 (po:4500013455-10) and EUR 4.05 on 2026-09-21 (po:4500014440-10): the price has not risen.
 - `ppm:sup:70730` (0.09) Your quality was 89 ppm defective parts in the four quarters to 2026Q3 (sc:70730@2026Q3).
-- `index:LCI-C` (0.04) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
-- `index:AS-14301` (0.00) The alloy surcharge for stainless grade 304 changed +8.6% from 2025-09 to 2026-09 (idx:AS-14301@2025-09, idx:AS-14301@2026-09).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `otd:sup:70730` (0.00) Your on-time delivery was 96.0% in the four quarters to 2026Q3 (sc:70730@2026Q3).
 
 ## Blankstahl Werdenfels GmbH (sup:70740)
@@ -1023,9 +1043,9 @@ Notes:
 - 2026-09-16 Customer portfolio: The sales director of Blankstahl Werdenfels GmbH said they are reviewing small accounts and will focus on customers with volume. (doc:20260916-70740-M5)
 
 Claims:
+- `index:AS-14404` (0.86) The alloy surcharge for stainless grade 316L changed -5.5% from 2026-06 to 2026-09 (idx:AS-14404@2026-06, idx:AS-14404@2026-09).
+- `index:PPI-C2431` (0.72) German producer prices for cold-drawn bars changed -2.1% from 2026-05 to 2026-08 (idx:PPI-C2431@2026-05, idx:PPI-C2431@2026-08).
 - `otd:sup:70740` (0.70) Your on-time delivery was 81.0% in the four quarters to 2026Q3 (sc:70740@2026Q3).
 - `ppm:sup:70740` (0.03) Your quality was 32 ppm defective parts in the four quarters to 2026Q3 (sc:70740@2026Q3).
-- `index:LCI-C` (0.03) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
-- `index:AS-14404` (0.00) The alloy surcharge for stainless grade 316L changed +5.9% from 2025-09 to 2026-09 (idx:AS-14404@2025-09, idx:AS-14404@2026-09).
-- `index:PPI-C2431` (0.00) German producer prices for cold-drawn bars changed +12.3% from 2025-08 to 2026-08 (idx:PPI-C2431@2025-08, idx:PPI-C2431@2026-08).
+- `index:LCI-C` (0.00) German labour costs in manufacturing changed +2.7% from 2025-06 to 2026-06 (idx:LCI-C@2025-06, idx:LCI-C@2026-06).
 - `index:PPI-C241` (0.00) German producer prices for basic iron and steel changed +6.5% from 2025-08 to 2026-08 (idx:PPI-C241@2025-08, idx:PPI-C241@2026-08).
