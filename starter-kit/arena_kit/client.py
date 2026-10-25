@@ -15,6 +15,7 @@ CALLS_PER_SECOND = 9  # the arena allows 10 per key; stay just below, across all
 # A supplier's reply can take up to about a minute (its time does not count against your 60 s),
 # and a call may wait for another call on the same session first: wait long enough for both.
 TIMEOUT_S = 180.0
+CONNECT_TIMEOUT_S = 10.0
 # Practice has a daily quota per team: every practice session start carries what is left in this
 # header, and GET /v1/me tells where the team stands.
 REMAINING_HEADER = "X-Practice-Remaining"
@@ -48,6 +49,8 @@ class ArenaClient:
         headers = {"X-API-Key": key} if key else {}
         self.retries, self.rate, self._lock, self._next = retries, rate, threading.Lock(), 0.0
         self.practice_remaining = None  # from the last practice reply that said so
+        if not isinstance(timeout, httpx.Timeout):
+            timeout = httpx.Timeout(timeout, connect=CONNECT_TIMEOUT_S)
         self.http = httpx.Client(base_url=f"{base_url}/v1", headers=headers, timeout=timeout, transport=transport)
 
     def _pace(self):

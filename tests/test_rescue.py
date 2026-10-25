@@ -61,12 +61,20 @@ def test_with_an_eligible_rival_it_still_walks():
     assert policy().decide(case, p10_final(5), rival_best_c=1.0e6).kind == "walk"
 
 
-def test_dearer_than_the_alternative_with_must_haves_kept_still_walks():
+def test_dearer_than_the_alternative_gets_one_repair_below_the_alternative_not_a_rescue():
+    # must-haves kept, only dearer than the current contract: not the rescue's job. Thomas's repair (main,
+    # 1d155b0) counters once below the alternative - a walk-away by the supplier costs no more than ours
+    from buyer.policy.policy import alternative_cost
+
     case = practice("case:P07")  # current contract at 6.29
     t = ThreadState("sup:70610", "offer:70610-4", {"unit_price": 6.40, "payment_days": 30, "contract_months": 12},
                     "final_offer", {"payment_days": 30}, 6)
     t.our_prices = [5.3]
-    assert policy().decide(case, t, rival_best_c=math.inf).kind == "walk"
+    p = policy()
+    d = p.decide(case, t, rival_best_c=math.inf)
+    assert d.kind == "send" and p.c(case, d.term_sheets[0], t) < alternative_cost(case)
+    assert "only our must-have term differs" not in d.intent  # the repair, not the rescue
+    assert p.decide(case, t, rival_best_c=math.inf).kind == "walk"  # once only: then it walks as before
 
 
 def test_an_unread_quote_never_makes_a_left_out_must_have_field_eligible():

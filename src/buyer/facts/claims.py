@@ -385,7 +385,7 @@ def rival_claims(case: dict, threads: dict, supplier_id: str, data: CaseData | N
     return out
 
 
-HELPFUL_NEWS = ("free_capacity", "short_time_work", "supply_normalises")
+HELPFUL_NEWS = ("free_capacity", "short_time_work", "supply_normalises", "customer_loss")
 VOLUME_CASES = ("bundling", "renewal")
 
 
@@ -415,7 +415,7 @@ def news_claims(data: CaseData, sid: str) -> list[Claim]:
         f = data.lookup(ref)
         if f and f.get("supplier") == sid and f.get("topic") in HELPFUL_NEWS:
             out.append(Claim(f"news:{sid}:{ref}", f"{f['headline']} ({ref}).", [ref], "verified", 0.6))
-    return out[-1:]
+    return out[-2:]
 
 
 def forecast_claims(data: CaseData) -> list[Claim]:

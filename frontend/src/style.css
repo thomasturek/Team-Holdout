@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+@layer base {
+  body {
+    @apply text-slate-900;
+    background: #f5f6f8;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01';
+  }
+  .tabular-nums,
+  td,
+  kbd {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .ui-card {
+    @apply border border-slate-200/70 bg-white shadow-card;
+  }
+  .ui-card-hover {
+    @apply transition-shadow hover:shadow-card-hover;
+  }
+  .ui-section-title {
+    @apply text-[11px] font-semibold uppercase tracking-wider text-slate-500;
+  }
+  .ui-chip {
+    @apply inline-flex items-center gap-1 border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-600;
+  }
+  .ui-filter-chip {
+    @apply inline-flex cursor-pointer items-center gap-1 border px-2.5 py-1 text-xs font-medium transition select-none;
+  }
+  .ui-filter-chip-off {
+    @apply border-slate-200 bg-white text-slate-500 hover:border-slate-300 hover:text-slate-800;
+  }
+  .ui-filter-chip-on {
+    @apply border-brand-300 bg-brand-50 text-brand-700;
+  }
+  .ui-btn {
+    @apply inline-flex items-center justify-center gap-1.5 border px-3 py-1.5 text-xs font-semibold transition focus:outline-none focus:ring-2 focus:ring-brand-200;
+  }
+  .ui-btn-primary {
+    @apply ui-btn border-brand-600 bg-brand-600 text-white hover:bg-brand-700;
+  }
+  .ui-btn-ghost {
+    @apply ui-btn border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900;
+  }
+  .ui-btn-positive {
+    @apply ui-btn border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100;
+  }
+  .ui-btn-negative {
+    @apply ui-btn border-rose-300 bg-rose-50 text-rose-800 hover:bg-rose-100;
+  }
+  .ui-kpi-value {
+    @apply text-2xl font-bold tabular-nums tracking-tight text-slate-900;
+  }
+  .ui-kpi-label {
+    @apply text-[10px] font-semibold uppercase tracking-wider text-slate-400;
+  }
+}
+
+* {
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}

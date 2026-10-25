@@ -102,7 +102,7 @@ def test_a_final_case_whose_start_failed_is_started_again_and_picks_up_its_sessi
     client, state, _ = sim
     state.clock = time.time
     state.rehearse(wait=0.3, cap=4, brk=0.3)
-    monkeypatch.setattr(runner, "RESTART_S", 0.2)
+    monkeypatch.setattr(runner, "RESTART_MIN_S", 0.0)  # the rehearsal wave lasts 4 s
     client = safe(client)
     real, opened = client.open_session, []
 

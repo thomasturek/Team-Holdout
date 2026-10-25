@@ -236,7 +236,8 @@ def dossier(profile: dict | None, obs: dict | None = None) -> str:
         cares.append("filling free capacity")
     if "full_capacity" in said or re.search(r"fully booked|allocat", notes, re.I):
         cares.append("its tight capacity")
-    if "wants_volume" in said or "volume" in (o.get("asks") or []):
+    wants_calloffs = re.search(r"firm call-offs", notes, re.I)
+    if "wants_volume" in said or "volume" in (o.get("asks") or []) or wants_calloffs:
         cares.append("a binding volume")
     if re.search(r"partnership in return|kept supplying at the old price", notes, re.I):
         cares.append("being repaid for its loyalty (it held the old price for us in a hard year)")
@@ -249,6 +250,10 @@ def dossier(profile: dict | None, obs: dict | None = None) -> str:
     if drivers:
         lines.append(f"Its argument with us is {', '.join(drivers[:2])}" +
                      (" - and it wants an index clause for that" if "wants_clause" in said else "") + ".")
+    if re.search(r"bought forward", notes, re.I):
+        lines.append("It wrote to us itself that its material for next year is bought forward at fixed prices: "
+                     "a rising material index is no reason for a higher price or an index clause, and we may "
+                     "remind it of its letter.")
     if "asks_for_proof" in said:
         lines.append("It asks for the figures behind every statement: say nothing the claim lines do not show.")
     move = _movement(o)

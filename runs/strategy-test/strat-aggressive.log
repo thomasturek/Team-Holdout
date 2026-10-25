@@ -1,0 +1,26 @@
+10:29:44 practice: 10 sessions; 334 left before, keeping 20
+10:29:46 LLM reader disabled (provider anthropic, model claude-opus-5-5): templates / keyword rules only
+10:29:46 LLM writer disabled (provider anthropic, model claude-opus-5-5): templates / keyword rules only
+10:31:23 case:P02  ccc343b2b3383e3d  sent 1  errors 0 []  deal True  score 0.735  complete
+10:31:36 case:P10  d21a6febea6afbe2  sent 2  errors 0 []  deal True  score 0.671  complete
+10:31:39 case:P04  1d9a82e3ed38b4e5  sent 3  errors 0 []  deal True  score 0.86  complete
+10:31:46 case:P07  1de4db7ee2de3eb2  sent 4  errors 0 []  deal True  score 0.679  complete
+10:31:47 case:P08  9a99f60548033325  sent 4  errors 0 []  deal True  score 0.826  complete
+10:32:16 case:P01  ebc31edc7fbef3a1  sent 4  errors 0 []  deal True  score 0.816  complete
+10:33:14 case:P03  7956ce4e6cb3dca0  sent 6  errors 0 []  deal True  score 0.935  complete
+10:33:40 case:P05  f9b364b3fcc43a3b  sent 9  errors 1 [409]  deal True  score 0.769  complete
+10:33:46 case:P18  e0b1a748bbe38b33  sent 5  errors 0 []  deal True  score 0.696  complete
+10:34:36 case:P11  1e74bc5d7df88397  sent 7  errors 0 []  deal True  score 0.71  complete
+log: C:\Users\felix\Documents\Hackathon\alex-thomas\runs\runner-practice-20261025-102944.log
+case:P01  deal True  score 0.815966797252157
+case:P02  deal True  score 0.734527206471163
+case:P03  deal True  score 0.9351091105038049
+case:P04  deal True  score 0.8604451426623068
+case:P05  deal True  score 0.768785590104528
+case:P07  deal True  score 0.678825322971685
+case:P08  deal True  score 0.826157612615935
+case:P10  deal True  score 0.6707108356081908
+case:P11  deal True  score 0.7098962346486538
+case:P18  deal True  score 0.6956757649682936
+mean score 77.0 over 10 sessions
+practice sessions left: 324

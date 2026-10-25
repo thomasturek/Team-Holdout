@@ -15,7 +15,7 @@ Final: polls the case list every few seconds, plays each wave's cases in paralle
 closes each case before its wave's cap (from `seconds_left`, re-read every poll so an extension is
 followed). If the runner is restarted mid-wave, it picks up its running sessions (the arena's 409
 names them) and plays on. A case whose play failed (e.g. no network when its session was opened) is
-started again the same way while its wave is open (every RESTART_S, at most MAX_STARTS times). It
+started again the same way while its wave has more than RESTART_MIN_S left (at most RESTARTS times). It
 never reads the leaderboard, results, screen or events.
 
 Network: the client's connections use TCP keepalive, so a request on a connection the Wi-Fi dropped
@@ -50,7 +50,8 @@ log = logging.getLogger("buyer.runner")
 FORBIDDEN = ("/events", "/screen", "/leaderboard", "/results")  # for people, never for the agent (api.md)
 RESERVE = 20  # practice sessions kept for Sunday's pre-flight (AGENTS.md section 6)
 POLL_S = 3.0
-RESTART_S, MAX_STARTS = 5.0, 10  # a final case whose play failed: start it again after this, at most this often
+RESTARTS = 3  # a final case whose play failed is started again at most this often ...
+RESTART_MIN_S = 45.0  # ... and only with more than this left in its wave
 CONNECT_TIMEOUT_S = 10.0  # a connection not open by then is not coming; the kit's 180 s is for the supplier's reply
 KEEPALIVE_S = (15, 5, 3)  # TCP keepalive: idle, interval, probes - a dropped connection fails after about 30 s
 
@@ -163,16 +164,8 @@ def play_set(client, set_, cases, *, agent="policy", params=None, parallel=8, re
 def play_final(client, *, agent="policy", params=None, waves=5, parallel=10, poll=POLL_S, root=env.RUNS):
     """The Live Final: wait for each wave, play its cases in parallel within the wave's cap, until
     `waves` waves have closed and every case has finished. Returns {case_id: result or exception}."""
-    started, closed, caps = {}, set(), {}  # caps: wave -> its cap as time.time()
-    starts = {}  # case_id -> (how often started, monotonic time of the last start)
+    started, closed, caps, restarts = {}, set(), {}, {}  # caps: wave -> its cap as time.time()
     archive = root / "final_sessions"
-
-    def again(cid):
-        """Its play ended with an error, not a result (e.g. no network when its session was opened):
-        start it again - the restart picks its session up - at most MAX_STARTS times, RESTART_S apart."""
-        f, (n, last) = started[cid], starts[cid]
-        due = n < MAX_STARTS and time.monotonic() > last + RESTART_S
-        return due and f.done() and isinstance(f.result(), BaseException)
 
     def one(case, deadline):
         cid = case["case_id"]
@@ -191,15 +184,7 @@ def play_final(client, *, agent="policy", params=None, waves=5, parallel=10, pol
         finally:
             lg.close()
 
-    with ThreadPoolExecutor(max_workers=parallel, thread_name_prefix="final") as pool:
-
-        def start(case):
-            cid, n = case["case_id"], starts.get(case["case_id"], (0, 0.0))[0] + 1
-            if n > 1:
-                log.warning("%s: its play failed (%s) - starting it again (%d)", cid, started[cid].result(), n)
-            started[cid] = pool.submit(one, case, functools.partial(caps.get, case.get("wave")))
-            starts[cid] = (n, time.monotonic())
-
+    with ThreadPoolExecutor(max_workers=3 * parallel, thread_name_prefix="final") as pool:
         while len(closed) < waves or not all(f.done() for f in started.values()):
             try:
                 cases = client.cases("final")
@@ -219,12 +204,18 @@ def play_final(client, *, agent="policy", params=None, waves=5, parallel=10, pol
                     continue
                 if case.get("seconds_left") is not None:  # each wave has its own cap; follow an extension
                     caps[wave] = time.time() + case["seconds_left"]
+                f = started.get(cid)
+                if f is not None and f.done():
+                    err = f.exception() or f.result()
+                    if (isinstance(err, BaseException) and (case.get("seconds_left") or 0) > RESTART_MIN_S
+                            and restarts.get(cid, 0) < RESTARTS):
+                        restarts[cid] = restarts.get(cid, 0) + 1
+                        log.warning("%s failed (%s) - restart %d", cid, err, restarts[cid])
+                        del started[cid]
                 if cid not in started and case.get("seconds_left"):
                     if wave not in {c.get("wave") for c in cases if c["case_id"] in started}:
                         log.warning("wave %s started: %s (%s s)", wave, case.get("theme"), case["seconds_left"])
-                    start(case)
-                elif cid in started and case.get("seconds_left") and again(cid):
-                    start(case)
+                    started[cid] = pool.submit(one, case, functools.partial(caps.get, wave))
             time.sleep(poll)
     return {cid: f.result() for cid, f in started.items()}
 
