@@ -130,8 +130,7 @@ def test_closing_on_an_open_offer_counters_the_deadband_once_then_accepts():
     t = thread(case, P18_TERMS)
     t.offers = [("offer:x-1", dict(P18_TERMS))]
     d = policy.close(case, t, True, policy.cost(case, t), float("inf"))
-    assert d.kind == "send" and d.term_sheets[-1]["index_clause"]["deadband_pct"] == 0  # its own offer, last
-    assert d.term_sheets[0]["index_clause"]["deadband_pct"] == 5
+    assert d.kind == "send" and all(s["index_clause"]["deadband_pct"] == 5 for s in d.term_sheets)
     assert policy.close(case, t, True, policy.cost(case, t), float("inf")).kind == "accept"  # only once
 
 

@@ -265,14 +265,15 @@ PLAYBOOK = {
     "capacity": "The supplier is short of capacity or a sole source: it gives its best price to customers with "
     "firm, long-term commitments and planning security. Present Option A as exactly that commitment (the volume "
     "line under the options states it), take its own lead time where an option does, and stay calm and businesslike.",
-    "bundling": "This is a bundle: the options move more of our parts to this supplier. Its gain is volume and steady "
-    "load for its plant - say that the bundle is business on top of what it supplies today (the volume line under the "
-    "options states it) and that Option A secures it.",
+    "bundling": "This is a bundle: the options put the whole kit under one agreement with this supplier. Its gain is "
+    "one steady, planned load; the volume line under the options states it. Never call it additional or new business "
+    "and never estimate what it supplies today - it asks for figures.",
     "quality": "Payment terms and volume are fixed in this enquiry: never offer, mention or imply faster payment or a "
     "different volume. The trade is in the quality terms: a lower chargeback for a better price.",
     "raw_material": "It blames raw-material costs: answer with the falling cost lines in the claims and, if an option "
     "has an index clause, with the clause - never argue that its costs did not rise in general.",
-    "rfq": "Several bidders compete: state plainly that the award goes to the best package, without promising it.",
+    "rfq": "Several bidders compete. Mention competition only in the sentence that introduces a rival [[CLAIM_n]]; "
+    "with no such claim listed, say nothing about other bidders - it asks for proof and holds.",
 }
 
 
@@ -288,7 +289,9 @@ def volume_line(case, decision, signals=None, thread=()) -> str:
     last = next((str(m.get("body") or "") for m in reversed(list(thread or [])) if m.get("from") != "buyer"), "")
     asked = asked or bool(re.search(r"\bvolume|\bquantit|\bhow many\b", last, re.I))
     first = not any(m.get("from") == "buyer" for m in (thread or []))
-    if not (asked or (first and attr(case, "type") in VOLUME_TYPES)):
+    already = any("Binding volume in every option" in str(m.get("body") or "")
+                  for m in (thread or []) if m.get("from") == "buyer")
+    if already or not (asked or (first and attr(case, "type") in VOLUME_TYPES)):
         return ""
     term = f" over {months} months" if months else ""
     return f"Binding volume in every option: {volume:,} units a year{term}."

@@ -78,6 +78,7 @@ NEGOTIATES_DOWN = ("family_foundry",)
 CLAUSE_WORTH = 0.04
 FIRST_MESSAGE_CLAIMS = 3
 WEAK_CLAIM = 0.2
+FILLER_STRENGTH = 0.1
 CLAIM_WEIGHT = {"notice": 1.0, "ppm": 0.75, "rival": 0.7, "cost": 0.6, "news": 0.55, "index": 0.5, "fc": 0.45,
                 "po": 0.3, "otd": 0.15}
 OWN_PRICE_SLACK = 0.005
@@ -583,7 +584,7 @@ class Policy:
                 own = complete_offer(case, dict(t.standing_terms))
                 t.our_prices.append(own["unit_price"])
                 t.our_costs.append(self.c(case, own, t))
-                return Decision("send", t.supplier_id, term_sheets=[*variants, own][:3],
+                return Decision("send", t.supplier_id, term_sheets=variants[:3],
                                 intent="appreciative: we can agree to your offer; we would prefer it with a wider "
                                        "index deadband")
         return self.accept(t) if acceptable else Decision("walk", t.supplier_id)
@@ -681,21 +682,22 @@ class Policy:
                     log.warning("claim bank for %s %s failed (attempt %d)", *key, attempt + 1, exc_info=True)
         rejected = set((t.signals or {}).get("rejected_args") or [])
         bank = list(self.banks.get(key) or [])
-        if t.case_threads and len(case.get("suppliers") or []) > 1:
+        if t.case_threads:
             try:
                 from buyer.facts.claims import rival_claims
 
                 bank = sorted(bank + rival_claims(case, t.case_threads, t.supplier_id), key=lambda c: -c.strength)
             except Exception:
                 pass
-        pool = [
+        eligible = [
             c for c in bank
-            if c.strength >= self.p["claim_min_strength"]
+            if c.strength > 0
             and (t.supplier_id, c.key) not in self.used_keys
             and c.key not in rejected
             and (c.key.startswith("rival:") or self.used_refs.isdisjoint(c.refs))
         ]
-        pool.sort(key=lambda c: -c.strength * CLAIM_WEIGHT.get(c.key.split(":", 1)[0], 0.3))
+        eligible.sort(key=lambda c: -c.strength * CLAIM_WEIGHT.get(c.key.split(":", 1)[0], 0.3))
+        pool = [c for c in eligible if c.strength >= self.p["claim_min_strength"]]
         strong = [c for c in pool if CLAIM_WEIGHT.get(c.key.split(":", 1)[0], 0.3) >= WEAK_CLAIM]
         pool = strong or pool
         chosen, seen = [], set()
@@ -705,6 +707,13 @@ class Policy:
                 seen |= set(c.refs)
             if len(chosen) == limit:
                 break
+        if len(t.our_prices) <= 1:
+            for c in eligible:
+                if len(chosen) >= limit:
+                    break
+                if c.strength >= FILLER_STRENGTH and c not in chosen and seen.isdisjoint(c.refs):
+                    chosen.append(c)
+                    seen |= set(c.refs)
         for c in chosen:
             if not c.key.startswith("rival:"):  # a rival's offer may be cited to every other bidder (api.md)
                 self.used_refs |= set(c.refs)
