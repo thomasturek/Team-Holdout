@@ -26,3 +26,21 @@ Rule: a change is promoted only if it beats the baseline on the same cases; one 
 - 04:35 v2 committed: min step 0.75 %, hold jump 50 % (cash-short, 2 holds), monotone package prices, close vs cheapest sheet, writer: no unbacked reasons
 - 04:58 night-v2 practice: 74.2 (P01 0.616!, P18 0.630, P07 0.653 down; P11 0.71) -> pacing changes hurt; investigating
 - 05:10 P01 v2 drop = no claims in round 1 (claim bank silently empty: shared SQLite cursor across threads). Fixed: locked SQLite in kit data.py, claim bank retried and never cached empty. min_step off (P18/P07 worse, winners: slow walk better for distributors). Runtime fixes A/B/C/E from review applied.
+
+## 05:10-07:35 - lost
+Waited on a hung test run (new resend loop in threads.py never ends under a permanent fault). Nothing ran. Runtime resilience changes set aside in runs/night/runtime_resilience.patch; committed runtime restored.
+
+## 07:45 v3 (data lock fix, claim bank retry, min step off): 76.6
+P01 0.909 (v2 0.616: claims fix works). P11 0.626 (first counter 47.00 against 46.50 in v2). Eight cases identical to v2 to three decimals.
+
+## 07:49 v4 (open question at the end of the first e-mail + forecast claim in every case type): 75.7
+P11 0.710, P04 0.874, P07 0.659 up; P01 0.800, P10 0.617, P08 0.793 down. Both changes uncommitted.
+
+## 08:04-08:37 bets (patches: runs/night/bets_0830.patch)
+- v5 open question in the first e-mail only: 76.7 (v3 76.6). Kept.
+- Push past a final offer (P07 P10 P11 P18): all four walked. Final offers are hard.
+- Ride 2 % below the supplier's price after round 1: P02 P07 P10 P18 identical deals, P08 and P11 worse. The concession schedule ignores our prices.
+- Goodwill paragraph (reference customer, forecasts, fast approval): P18 0.696, P01 0.848, P08 0.737; 75.7.
+- v6 open cap 10 % + escalation never in the first e-mail: 68.8 (P08 walked at 5.05 after four 0.05 steps).
+- P02 without the clause beats 0.734 only below 369.5 at 90 days; Nordmark's full cost is about 371.7.
+- P02 P03 P04 P05 P10 identical to four decimals in every run tonight.

@@ -118,13 +118,10 @@ def test_mirroring_its_alternative_offers_the_wider_deadband_first():
     t.offers = [("offer:x-1", dict(t.standing_terms)), ("offer:x-1-a", alt)]
     policy.pick_offer(case, t)
     d = policy.close(case, t, True, policy.cost(case, t), float("inf"))
-    assert d.kind == "send" and len(d.term_sheets) == 3
-    first, second, own = d.term_sheets
-    assert first["index_clause"]["deadband_pct"] == 5 and first["unit_price"] == 5.5  # same price, our clause
-    assert second["index_clause"]["deadband_pct"] == 5 and second["unit_price"] > 5.5  # equal cost to us
-    assert own["index_clause"]["deadband_pct"] == 0 and own["unit_price"] == 5.5  # its own package stays
-    assert policy.c(case, first, t) < policy.c(case, own, t)
-    assert policy.c(case, second, t) == pytest.approx(policy.c(case, own, t), abs=0.01 * 23700 * 2 + 1)
+    assert d.kind == "send" and len(d.term_sheets) == 1
+    (first,) = d.term_sheets
+    assert first["index_clause"]["deadband_pct"] == 5 and first["unit_price"] == 5.5
+    assert policy.c(case, first, t) < policy.c(case, alt, t)
 
 
 def test_closing_on_an_open_offer_counters_the_deadband_once_then_accepts():

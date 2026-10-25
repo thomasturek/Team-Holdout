@@ -27,7 +27,8 @@ import anthropic  # noqa: E402
 
 MODEL = "claude-opus-5-5"
 CAP_USD = 90.0
-PRICE = {"input": 4.0, "output": 20.0, "cache_write": 5.0, "cache_read": 0.20}  # USD per million tokens
+PRICES = {"claude-opus-5-5": {"input": 4.0, "output": 20.0, "cache_write": 8.0, "cache_read": 0.20},
+          "claude-fable-5-1": {"input": 10.0, "output": 50.0, "cache_write": 20.0, "cache_read": 0.25}}
 OUT = ROOT / "runs" / "night" / "out"
 SPEND = ROOT / "runs" / "night" / "api_spend.jsonl"
 SYSTEM = (
@@ -46,7 +47,8 @@ def spent() -> float:
     return sum(json.loads(line)["usd"] for line in SPEND.read_text().splitlines() if line.strip())
 
 
-def cost(usage) -> float:
+def cost(usage, model=MODEL) -> float:
+    PRICE = PRICES[model]
     u = {k: getattr(usage, k, 0) or 0 for k in ("input_tokens", "output_tokens", "cache_creation_input_tokens",
                                                  "cache_read_input_tokens")}
     return (u["input_tokens"] * PRICE["input"] + u["output_tokens"] * PRICE["output"]
@@ -83,7 +85,7 @@ def run_task(client, task, contexts):
     for attempt in range(3):
         try:
             with client.messages.stream(
-                model=MODEL, max_tokens=task.get("max_tokens", 16000), system=system,
+                model=task.get("model", MODEL), max_tokens=task.get("max_tokens", 16000), system=system,
                 messages=[{"role": "user", "content": user}],
                 extra_body={"output_config": {"effort": task.get("effort", "high")}},
             ) as stream:
@@ -93,7 +95,7 @@ def run_task(client, task, contexts):
             if attempt == 2:
                 return task["id"], f"failed: {type(e).__name__}"
             time.sleep(20 * (attempt + 1))
-    usd = cost(msg.usage)
+    usd = cost(msg.usage, task.get("model", MODEL))
     with _lock:
         SPEND.parent.mkdir(parents=True, exist_ok=True)
         with SPEND.open("a") as f:

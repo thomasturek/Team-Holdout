@@ -22,7 +22,8 @@ HOW TO WIN THE REPLY
 4. A clear way to yes. Only if CONFIRM AT ONCE is yes: say that if it confirms Option A as it stands, we can confirm the order straight away (true there: our negotiator accepts at once). If it is no, never promise to confirm, accept or award at once.
 5. The person who decides. Follow the DOSSIER: if our contact needs approval or has little authority, add one short paragraph its decision-maker can approve as it stands - what Option A gives the supplier, in plain words - and ask our contact to take Option A to that person.
 6. The STRATEGY line sets how hard to press (aggressive, cooperative, patient, escalate, secure) - follow its tone. The right voice for this supplier (ANGLE in the DOSSIER, STYLE): owner to owner for a family firm, an approver-ready memo for a group, cash first for a cash-short shop, security and planning for a supplier we depend on.
-7. No form letter. Do not open with "Thank you for your offer/reply" and do not write "We value the partnership" - write sentences only this supplier could receive.
+7. One open question, first e-mail only (MESSAGE: first) and only if QUESTIONS is none: just before the sign-off, ask in one short sincere sentence what the supplier would need from us to confirm Option A. Never ask it in later e-mails.
+8. No form letter. Do not open with "Thank you for your offer/reply" and do not write "We value the partnership" - write sentences only this supplier could receive.
 
 LATER E-MAILS
 - Answer what the supplier last wrote. If it rejected an argument ("not our reality"), do not repeat it; move to the options.

@@ -70,6 +70,8 @@ ARCHETYPE_RATE = {"cash_short_jobshop": 0.18, "group_ladder": 0.07, "near_monopo
 MENU_SPREAD = 0.003
 MENU_COMBOS = 300
 HOLD_JUMP = 0.5
+MAX_JUMP = 0.5
+VISIBLE_STEP = 0.002
 MIN_STEP_GAP = 0.4
 LONG_CONTRACT_TYPES = ("bundling", "capacity")
 NEGOTIATES_DOWN = ("family_foundry",)
@@ -327,9 +329,14 @@ class Policy:
                 if slope > 0:
                     a = {**a, "unit_price": round(max(0.01, a["unit_price"] - (c_a - target) / slope), 2)}
         if t.standing_terms.get("unit_price") is not None:
-            c_theirs = self.c(case, t.standing_terms, t)
-            if self.c(case, a, t) > c_theirs:  # never ask for more than they already give us
+            c_theirs = self.c_track(case, t.standing_terms, t)
+            if self.c_track(case, a, t) > c_theirs:  # never ask for more than they already give us
                 a = self.same_cost(case, a, t.standing_terms, t.standard)
+        theirs = t.standing_terms.get("unit_price")
+        if t.our_prices and theirs is not None and a.get("unit_price") is not None:
+            cap = round(t.our_prices[-1] + MAX_JUMP * max(0.0, theirs - t.our_prices[-1]), 2)
+            if a["unit_price"] > cap:
+                a = {**a, "unit_price": cap}
         c_cap = self.c(case, t.standing_terms, t) if t.standing_terms.get("unit_price") is not None else math.inf
         sheets = self.menu(case, t, a, c_cap) or [a]
         if t.last_sheet is not None and sheets[0] == t.last_sheet:
@@ -354,8 +361,16 @@ class Policy:
             if not t.asked_breakdown:
                 questions, t.asked_breakdown = ["cost breakdown"], True
         sheets = [self.no_step_back(t, s) for s in sheets]
+        last_p = (t.last_sheet or {}).get("unit_price")
+        ours = a["unit_price"]
+        if VISIBLE_STEP and theirs and last_p is not None and sheets[0].get("unit_price") is not None:
+            visible = round(min(theirs, last_p + max(VISIBLE_STEP * theirs, 0.01)), 2)
+            if sheets[0]["unit_price"] < visible:
+                sheets[0] = {**sheets[0], "unit_price": visible}
+                t.holding = False
+                ours = max(ours, visible)
         t.last_sheet = sheets[0]
-        t.our_prices.append(a["unit_price"])
+        t.our_prices.append(ours)
         t.our_costs.append(min(self.c_track(case, s, t) for s in sheets))
         chosen = self.pick_claims(case, t)
         if any(c.key.startswith("rival:") for c in chosen):
@@ -560,7 +575,7 @@ class Policy:
                 intent = "appreciative: we accept your alternative proposal as offered"
                 if variants:
                     intent += "; we would prefer the same with a wider index deadband"
-                return Decision("send", t.supplier_id, term_sheets=[*variants, sheet][:3], intent=intent)
+                return Decision("send", t.supplier_id, term_sheets=(variants[:1] or [sheet]), intent=intent)
         if acceptable and t.status == "open" and t.rounds_left > 1 and not t.clause_countered:
             variants = self.clause_variants(case, t, complete_offer(case, dict(t.standing_terms)))
             if variants:  # one more message before closing: its own package stays on the table as the last sheet
