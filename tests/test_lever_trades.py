@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 import pytest
+from arena_kit.cost import complete_offer
 
 from buyer.facts.costing import asked, c, lever_values
 from buyer.policy.policy import MAX_TRADE_DROP, Policy, ThreadState
@@ -205,3 +206,15 @@ def test_a_final_missing_a_must_have_field_is_countered_with_the_field_filled():
     d = policy.decide(case, t)
     assert d.kind == "send" and len(d.term_sheets) == 1
     assert d.term_sheets[0]["ppm_commitment"] <= 1500 and d.term_sheets[0]["unit_price"] == 47.4
+
+
+def test_a_capacity_supplier_quoting_beyond_a_lead_time_must_have_keeps_our_lead_time():
+    case = CASES["case:P09"]
+    policy = Policy({})
+    t = thread(case, {"unit_price": 18.0, "lead_time_days": 49})
+    t.opening_lead = 49
+    a = complete_offer(case, {"unit_price": 17.0, "lead_time_days": 28})
+    out = policy.mirror_terms(case, a, t)
+    assert out["lead_time_days"] <= 42 and "lead_time_days" not in t.free_levers
+    d = policy.decide(case, t)
+    assert d.kind == "send" and all(s["lead_time_days"] <= 42 for s in d.term_sheets)

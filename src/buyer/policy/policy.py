@@ -438,8 +438,11 @@ class Policy:
         if capacity and "lead_time_days" in case.get("negotiable", ()) and t.opening_lead and lead is not None \
                 and lead < t.opening_lead:
             options = sorted(opts.get("lead_time_days") or [t.opening_lead])
-            slower = [o for o in options if o >= t.opening_lead]
-            out["lead_time_days"] = slower[0] if slower else options[-1]
+            slower = [o for o in options if o >= t.opening_lead
+                      and must_haves_ok(case, {**out, "lead_time_days": o}, t.standard)]
+            if not slower:
+                return out
+            out["lead_time_days"] = slower[0]
             t.free_levers["lead_time_days"] = out["lead_time_days"]
         return out
 
