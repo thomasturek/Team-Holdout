@@ -60,12 +60,15 @@ DEFAULTS = {
     # Practice 2026-10-25: every losing deal closed at the supplier's holding price; our sheets only ever
     # varied the payment days, while suppliers asked for volume, longer contracts, index clauses.
     "lever_trades": 1.0,  # > 0.5 = on
+    "min_step_pct": 0.75,
 }
 DEEP_OPEN_TYPES = ("raw_material", "rfq")
 ARCHETYPE_LEAD_EFFORT = {"near_monopolist": 0.005}
 ARCHETYPE_RATE = {"cash_short_jobshop": 0.18, "group_ladder": 0.07, "near_monopolist": 0.07}
 MENU_SPREAD = 0.003
 MENU_COMBOS = 300
+HOLD_JUMP = 0.5
+MIN_STEP_GAP = 0.4
 LONG_CONTRACT_TYPES = ("bundling", "capacity")
 NEGOTIATES_DOWN = ("family_foundry",)
 CLAUSE_WORTH = 0.04
@@ -113,6 +116,8 @@ class ThreadState:
     struct_seen: dict = field(default_factory=dict)
     last_sheet: dict | None = None
     case_type: str | None = None
+    jumped: bool = False
+    sent_prices: dict = field(default_factory=dict)
     dropped: bool = False  # we walked away from this bidder while others played on (no longer a rival)
     their_costs: list = field(default_factory=list)  # C of each standing offer, in order (reciprocity)
     seen_ids: list = field(default_factory=list)
@@ -280,7 +285,20 @@ class Policy:
                     step = p["token_frac"] * default  # first hold, or a hold past the stall limit
             if t.rounds_left <= round(p["endgame_moves"]) + 1:
                 step, t.holding = max(step, p["endgame_frac"] * gap), False
+        if case is not None and not t.jumped and self.cash(t)[1] >= 0.5 and self.flat_replies(t) >= 2:
+            step, t.holding, t.jumped = max(step, HOLD_JUMP * gap), False, True
+        if not t.holding and gap > 0 and p["reciprocity"] <= 0:
+            step = max(step, min(p["min_step_pct"] / 100 * theirs, MIN_STEP_GAP * gap))
         return step
+
+    @staticmethod
+    def flat_replies(t, tol=1.0):
+        n = 0
+        for prev, cur in zip(reversed(t.their_costs[:-1]), reversed(t.their_costs[1:]), strict=True):
+            if cur < prev - tol:
+                break
+            n += 1
+        return n
 
     def at_target(self, case, t, c_theirs):
         """Accept without haggling on when the offer is at or below a sure floor (observed, or a
@@ -333,9 +351,10 @@ class Policy:
             intent = "firm on price, open on the other terms"
             if not t.asked_breakdown:
                 questions, t.asked_breakdown = ["cost breakdown"], True
+        sheets = [self.no_step_back(t, s) for s in sheets]
         t.last_sheet = sheets[0]
         t.our_prices.append(a["unit_price"])
-        t.our_costs.append(max(self.c_track(case, s, t) for s in sheets))
+        t.our_costs.append(min(self.c_track(case, s, t) for s in sheets))
         chosen = self.pick_claims(case, t)
         if any(c.key.startswith("rival:") for c in chosen):
             intent = f"{intent}, competition: another offer is on the table"
@@ -445,6 +464,18 @@ class Policy:
             if len(picked) == 3:
                 break
         return [terms for terms, _, _ in picked]
+
+    @staticmethod
+    def no_step_back(t, sheet):
+        key = tuple(sorted((k, str(v)) for k, v in sheet.items() if k != "unit_price"))
+        last = t.sent_prices.get(key)
+        theirs = t.standing_terms.get("unit_price")
+        if (last is not None and sheet.get("unit_price") is not None and sheet["unit_price"] < last
+                and (theirs is None or last < theirs)):
+            sheet = {**sheet, "unit_price": last}
+        if sheet.get("unit_price") is not None:
+            t.sent_prices[key] = sheet["unit_price"]
+        return sheet
 
     def c_track(self, case, terms, t):
         return self.c(case, terms, t) if floor_binds(t) else total_cost(case, terms, t.standard)

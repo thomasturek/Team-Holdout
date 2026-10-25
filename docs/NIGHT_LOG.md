@@ -16,3 +16,10 @@ Rule: a change is promoted only if it beats the baseline on the same cases; one 
 - 03:30 targets set from the winners' per-case records: P07 +0.12, P11 +0.10-0.18, P01 +0.10, P10 +0.04 (36 m)
 - 03:45 budget raised: at most 150 practice sessions (262 left, >=110 reserve); API: Opus 5.5 only, hard stop USD 130; caffeinate until 09:15
 - 03:47 budget: up to 250 practice sessions (keep >=12 for Sunday pre-flight; pass --reserve 12 when low)
+- 03:55 wave 1 launched: 8 case analyses + 6 reviews (Opus 5.5)
+- 04:00 night-v1 practice: 77.6 (P07 0.692 up from 0.653-0.659 with 36 m; P01 0.909; others in band); 252 left
+- 04:02 wave 1 aborted: Opus thinking used the whole 20k cap, empty answers (USD 5.5 lost); rerun with max_tokens 64k
+- 04:03 effective logged cap lowered to USD 120 (aborted in-flight calls are unlogged)
+- 04:10 ANTHROPIC KEY BLOCKED: 'reached your specified API usage limits, access again 2026-11-01'. Workers dead; agent reader/writer fall back to rules/templates. MORNING ACTION: new key or raise limit before the final.
+- 04:15 key unblocked by Thomas (spend limit raised); worker cap USD 90 logged (practice runs also draw on the key; keep >=25 for the final)
+- 04:07 wave 1: 8 case analyses done (USD 12.7); 6 reviews relaunched

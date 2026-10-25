@@ -115,7 +115,8 @@ def test_a_push_probe_answers_a_final_offer_with_another_offer(sim, tmp_path, mo
     monkeypatch.setattr("buyer.runtime.agent.scout_profiles", lambda case: {})  # the probe, not the floor
     client, _, _ = sim
     case = next(c for c in client.cases("sandbox") if c["case_id"] == "case:S01")
-    agent = probe_agent("policy", {"concede": 0.02, "accept_gap_pct": 0.0, "reciprocity": 0}, {"push_final": True})
+    params = {"concede": 0.02, "accept_gap_pct": 0.0, "reciprocity": 0, "min_step_pct": 0}
+    agent = probe_agent("policy", params, {"push_final": True})
     play_case(client, "case:S01", agent, case=case, archive=tmp_path)
     (doc,) = archived(tmp_path)
     messages = next(iter(doc["threads"].values()))["messages"]
