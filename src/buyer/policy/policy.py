@@ -66,6 +66,8 @@ ARCHETYPE_LEAD_EFFORT = {"near_monopolist": 0.005}
 ARCHETYPE_RATE = {"cash_short_jobshop": 0.18, "group_ladder": 0.07, "near_monopolist": 0.07}
 MENU_SPREAD = 0.003
 MENU_COMBOS = 300
+LONG_CONTRACT_TYPES = ("bundling", "capacity")
+NEGOTIATES_DOWN = ("family_foundry",)
 CLAUSE_WORTH = 0.04
 FIRST_MESSAGE_CLAIMS = 3
 WEAK_CLAIM = 0.2
@@ -120,6 +122,10 @@ class ThreadState:
     clause_countered: bool = False  # we offered its package with a wider index deadband once before closing
 
 
+def floor_binds(t):
+    return (t.profile or {}).get("archetype") not in NEGOTIATES_DOWN
+
+
 def load_params(path=PARAMS_FILE):
     p = dict(DEFAULTS)
     if Path(path).is_file():
@@ -170,7 +176,8 @@ class Policy:
             return self.close(case, t, acceptable, c_theirs, rival_best_c)
         if t.rounds_left <= 1:
             return self.accept(t) if acceptable else Decision("walk", sid)
-        close = t.our_costs and c_theirs <= t.our_costs[-1] * (1 + p["accept_gap_pct"] / 100)
+        gap = 1 + p["accept_gap_pct"] / 100
+        close = t.our_costs and self.c_track(case, t.standing_terms, t) <= t.our_costs[-1] * gap
         if close and acceptable and c_theirs < t.opening_cost:
             return self.close(case, t, acceptable, c_theirs, rival_best_c)
         if acceptable and self.at_target(case, t, c_theirs):
@@ -237,7 +244,7 @@ class Policy:
         if t.case_type in DEEP_OPEN_TYPES:
             discount = max(discount, self.p["deep_open_pct"])
         low = min(self.floor_ask(t, theirs), theirs * (1 - discount / 100))
-        if case is not None:  # stabilise / secure_supply: below this price the relationship charge costs more
+        if case is not None and floor_binds(t):  # stabilise / secure_supply: below it the charge costs more
             rel = relationship_floor(case, t.standing_terms, t.standard, t.profile)
             if rel is not None:
                 low = min(max(low, rel), theirs)
@@ -328,7 +335,7 @@ class Policy:
                 questions, t.asked_breakdown = ["cost breakdown"], True
         t.last_sheet = sheets[0]
         t.our_prices.append(a["unit_price"])
-        t.our_costs.append(max(self.c(case, s, t) for s in sheets))
+        t.our_costs.append(max(self.c_track(case, s, t) for s in sheets))
         chosen = self.pick_claims(case, t)
         if any(c.key.startswith("rival:") for c in chosen):
             intent = f"{intent}, competition: another offer is on the table"
@@ -391,7 +398,7 @@ class Policy:
                 break
         theirs = t.standing_terms.get("unit_price")
         at_theirs = self.c(case, {**a, "unit_price": theirs}, t) if theirs else math.inf
-        rel_case, rel_floors = relationship_case(case), {}
+        rel_case, rel_floors = relationship_case(case) and floor_binds(t), {}
         cash_hungry = model["interest_rate"] >= CASH_HUNGRY_RATE
         found = []
         for combo in itertools.product(*domains.values()):
@@ -439,9 +446,12 @@ class Policy:
                 break
         return [terms for terms, _, _ in picked]
 
+    def c_track(self, case, terms, t):
+        return self.c(case, terms, t) if floor_binds(t) else total_cost(case, terms, t.standard)
+
     @staticmethod
     def above_floor(case, t, terms):
-        if not relationship_case(case):
+        if not relationship_case(case) or not floor_binds(t):
             return terms
         floor = relationship_floor(case, terms, t.standard, t.profile)
         return {**terms, "unit_price": floor} if floor and terms["unit_price"] < floor else terms
@@ -670,7 +680,9 @@ class Policy:
                 low = min(costs.values())
                 ties = [options[i] for i, c in costs.items() if c <= low + 1.0]
                 theirs = terms.get(f)
-                if theirs in ties:
+                if f == "contract_months" and case.get("type") in LONG_CONTRACT_TYPES:
+                    out[f] = max(ties)
+                elif theirs in ties:
                     out[f] = theirs
                 elif isinstance(theirs, int | float) and all(isinstance(o, int | float) for o in ties):
                     out[f] = min(ties, key=lambda o: abs(o - theirs))
