@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'node:path';
+import { runsApi } from './server/runs';
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue(), runsApi(process.env.RUNS_DIR || path.resolve(__dirname, '../runs'))],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
@@ -11,11 +12,5 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:8000',
-        changeOrigin: true,
-      },
-    },
   },
 });

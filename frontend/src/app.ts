@@ -1,2 +1,3 @@
-export const APP_NAME = 'App';
-export const APP_ICON = 'dashboard';
+export const APP_NAME = 'Counterpart';
+export const APP_ICON = 'handshake';
+export const POLL_MS = 4000;
