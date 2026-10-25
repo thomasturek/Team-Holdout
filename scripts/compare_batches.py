@@ -76,7 +76,8 @@ def main(a, b):
     for arch, t in sorted(by_type.items()):
         ma, mb = mean(t["a"]), mean(t["b"])
         keep = "-" if ma is None or mb is None else "B" if mb >= ma + 0.05 else "A"
-        print(f"{arch:22} {fmt(ma):>7} {fmt(mb):>7}   {fmt(mean(t['fa']), True)} / {fmt(mean(t['fb']), True)}   -> {keep}")
+        firsts = f"{fmt(mean(t['fa']), True)} / {fmt(mean(t['fb']), True)}"
+        print(f"{arch:22} {fmt(ma):>7} {fmt(mb):>7}   {firsts}   -> {keep}")
     all_a = [x["score"] for v in ra.values() for x in v]
     all_b = [x["score"] for v in rb.values() for x in v]
     print(f"\noverall: A {mean(all_a):.3f} (n={len(all_a)})   B {mean(all_b):.3f} (n={len(all_b)})")
