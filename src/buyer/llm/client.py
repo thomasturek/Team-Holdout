@@ -37,6 +37,13 @@ TOTAL_S = 25.0  # never block a move past 25 s (DIPLOMAT.md)
 MIN_RETRY_S = 2.0  # a retry with less time than this left is not worth starting
 READER_TIMEOUT_S = 10.0  # the reader: < 10 s (DIPLOMAT.md)
 DEFAULT_EFFORT = "low"
+# Circuit breaker: a broken LLM (wrong model name, invalid or blocked key - 25 Oct practice: every move then
+# waited 20-23 s for the template) must not cost every move its time. After BREAK_AFTER failed calls in a row
+# (or one auth / not-found error) calls fail at once for BREAK_S; then one call tries the provider again.
+BREAK_AFTER = 3
+BREAK_S = 60.0
+FATAL_MARKERS = ("401", "403", "404", "authentication_error", "permission_error", "not_found_error",
+                 "invalid x-api-key", "usage limits")
 
 
 class LLMUnavailable(Exception):
@@ -96,6 +103,8 @@ class LLMClient:
         self._sdk_lock = threading.Lock()
         self._effort_ok = True  # switched off once if the API rejects the effort parameter
         self.stats = deque(maxlen=20_000)  # one dict per call: tag, ok, latency_s, attempts, error
+        self._break_lock = threading.Lock()
+        self._fails, self._open_until = 0, 0.0  # circuit breaker: failed calls in a row, open until (monotonic)
 
     @property
     def enabled(self) -> bool:
@@ -120,6 +129,11 @@ class LLMClient:
         if not self.enabled:
             self._record(tag, False, 0.0, 0, "disabled")
             raise LLMUnavailable("LLM disabled (LLM_DISABLED, no LLM_MODEL or no API key)")
+        with self._break_lock:
+            wait = self._open_until - t0
+        if wait > 0:  # broken a moment ago: fall back at once instead of waiting out the timeouts again
+            self._record(tag, False, 0.0, 0, "circuit open")
+            raise LLMUnavailable(f"circuit open after {self._fails} failed calls in a row ({wait:.0f}s left)")
         errors = []
         attempt = 0
         while attempt <= retries:
@@ -141,11 +155,25 @@ class LLMClient:
                 errors.append("empty answer")
                 continue
             self._record(tag, True, time.monotonic() - t0, attempt, None)
+            with self._break_lock:
+                self._fails = 0
             return text
         took = time.monotonic() - t0
         self._record(tag, False, took, attempt, "; ".join(errors) or "no time left")
         log.warning("%s %s: no answer after %.1fs (%s)", self.name, tag, took, "; ".join(errors))
+        self._failed(errors)
         raise LLMUnavailable("; ".join(errors) or "no time left")
+
+    def _failed(self, errors):
+        """Count a failed call; open the breaker after BREAK_AFTER in a row, or at once on an error no retry
+        can fix (auth, unknown model, blocked key)."""
+        fatal = any(m in e for e in errors for m in FATAL_MARKERS)
+        with self._break_lock:
+            self._fails += 1
+            if fatal or self._fails >= BREAK_AFTER:
+                self._open_until = time.monotonic() + BREAK_S
+                log.warning("%s: %s - LLM off for %.0fs, templates / keyword rules meanwhile", self.name,
+                            "auth or model error" if fatal else f"{self._fails} failed calls in a row", BREAK_S)
 
     def _record(self, tag, ok, latency, attempts, error):
         self.stats.append({"tag": tag, "ok": ok, "latency_s": round(latency, 3), "attempts": attempts,

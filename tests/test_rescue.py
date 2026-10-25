@@ -96,3 +96,21 @@ def test_a_lone_supplier_with_an_unread_quote_gets_the_must_have_stated_not_a_wa
     t.our_prices = [30.0]
     d = policy().decide(case, t)
     assert d.kind == "send" and d.term_sheets[0]["lead_time_days"] <= 42 and d.term_sheets[0]["unit_price"] == 31.5
+
+
+def test_after_a_final_offer_its_alternative_package_goes_back_exactly_as_offered():
+    # P18 16157957 (25 Oct): after its final offer we sent its cheaper alternative with a wider index deadband
+    # - a changed term after a final is a push, and it walked (score 0). Now: its package, unchanged.
+    case = practice("case:P18")
+    clause0 = {"series": "AS-14404", "material_share": 0.45, "deadband_pct": 0.0, "base_month": "2026-08"}
+    standing = {"unit_price": 5.3, "payment_days": 90, "index_clause": clause0, "contract_months": 24}
+    alt = {"unit_price": 5.2, "payment_days": 45, "index_clause": clause0, "contract_months": 24}
+    t = ThreadState("sup:70740", "offer:70740-5", dict(standing), "final_offer", {"payment_days": 45}, 5)
+    t.offers = [("offer:70740-5", dict(standing)), ("offer:70740-5-a", dict(alt))]
+    t.our_prices = [4.78, 4.87, 4.93, 5.02]
+    d = policy().decide(case, t)
+    if d.kind == "send":  # it counters with its own alternative - untouched
+        assert len(d.term_sheets) == 1 and d.term_sheets[0]["index_clause"]["deadband_pct"] == 0.0
+        assert d.term_sheets[0]["unit_price"] == 5.2 and d.term_sheets[0]["payment_days"] == 45
+    else:
+        assert d.kind == "accept"  # or takes its standing offer - never a modified package

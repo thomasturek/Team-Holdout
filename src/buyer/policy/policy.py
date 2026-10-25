@@ -637,7 +637,9 @@ class Policy:
             if alt[0] < alternative_cost(case) and alt[0] <= rival_best_c:
                 t.mirrored = True
                 sheet = complete_offer(case, dict(alt[2]))
-                variants = self.clause_variants(case, t, sheet)  # its package, but our cheapest deadband first
+                # its package, but our cheapest deadband first - never after its final offer: a changed term
+                # then is a push, and it walks (P18 16157957, 25 Oct: wider deadband on its final -> walked, 0)
+                variants = [] if t.status == "final_offer" else self.clause_variants(case, t, sheet)
                 t.clause_countered = t.clause_countered or bool(variants)
                 t.our_prices.append(sheet["unit_price"])
                 t.our_costs.append(self.c(case, sheet, t))
