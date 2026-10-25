@@ -78,6 +78,7 @@ MENU_COMBOS = 300
 HOLD_JUMP = 0.5
 MAX_JUMP = 0.5
 VISIBLE_STEP = 0.002
+RECIPROCAL_STEP = 0.25  # our lead price answers its last price drop with at least this share of it (0 = off)
 MIN_STEP_GAP = 0.4
 LONG_CONTRACT_TYPES = ("bundling", "capacity")
 NEGOTIATES_DOWN = ("family_foundry",)
@@ -417,6 +418,16 @@ class Policy:
                 sheets[0] = {**sheets[0], "unit_price": visible}
                 t.holding = False
                 ours = max(ours, visible)
+        drop = t.their_prices[-2] - t.their_prices[-1] if len(t.their_prices) >= 2 else 0.0
+        if RECIPROCAL_STEP and drop > 0 and theirs and last_p is not None and sheets[0].get("unit_price") is not None:
+            # it conceded `drop` on the price it reads: answer with a visible share of it. A step that keeps
+            # our C equal by mirroring its terms can leave the price almost still - P05 25 Oct 12:20: it
+            # dropped 2.00, our lead price rose 0.08 (its 14-day payment mirrored), it walked (score 0)
+            answer = round(min(theirs, last_p + min(RECIPROCAL_STEP * drop, 0.5 * max(0.0, theirs - last_p))), 2)
+            if sheets[0]["unit_price"] < answer:
+                sheets[0] = {**sheets[0], "unit_price": answer}
+                t.holding = False
+                ours = max(ours, answer)
         t.last_sheet = sheets[0]
         t.our_prices.append(ours)
         t.our_costs.append(min(self.c_track(case, s, t) for s in sheets))
