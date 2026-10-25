@@ -1,4 +1,4 @@
-"""Per-thread play against arena-sim: concurrency, one close, holds, the cap, 409s, failures.
+"""Per-thread play against arena-sim: concurrency, one close, holds, the cap, 409s, failures, network outages.
 
 case:S01 and case:S03 have one supplier; case:S02 is an RFQ with sup:70340 and sup:70360.
 """
@@ -373,3 +373,157 @@ def test_without_a_cap_a_close_that_keeps_failing_is_given_up_in_bounded_time(si
     assert time.monotonic() - t0 < 30
     (unresolved,) = kinds(lg, "close_unresolved")
     assert unresolved["attempts"] == runtime.MAX_CLOSE_ATTEMPTS
+
+
+# -- the network drops: a thread waits for the arena (bounded), reads back what landed, never sends twice ----
+class Network:
+    """The network as the runtime sees it once the client's own retries are spent. `cut_next_send` cuts
+    the next e-mail (not an accept / walk-away): after it reached the arena (the reply is lost) or before
+    (it never left). Then every call fails for `down_s` seconds (None: for good) while the arena's clock
+    moves on `arena_s` seconds (the 60-second rule)."""
+
+    def __init__(self, monkeypatch, client, clock=None):
+        self.real, self.clock, self.lock = client._call, clock, threading.Lock()
+        self.until, self.cut, self.failed = 0.0, None, 0
+        monkeypatch.setattr(client, "_call", self._call)
+
+    def cut_next_send(self, *, landed, down_s, arena_s=0.0):
+        self.cut = (landed, down_s, arena_s)
+
+    def _call(self, method, path, body=None, params=None, raw=False):
+        import httpx
+
+        with self.lock:
+            if time.monotonic() < self.until:
+                self.failed += 1
+                raise httpx.ConnectError("[Errno 8] nodename nor servname provided, or not known")
+            email = method == "POST" and path.endswith("/messages") and not body["message"].get("action")
+            cut, self.cut = (self.cut, None) if email else (None, self.cut)
+        if not cut:
+            return self.real(method, path, body, params, raw)
+        landed, down_s, arena_s = cut
+        if landed:
+            self.real(method, path, body, params, raw)
+        if self.clock:
+            self.clock.now += arena_s
+        with self.lock:
+            self.until = float("inf") if down_s is None else time.monotonic() + down_s
+        if landed:
+            raise httpx.ReadTimeout("the response was lost")
+        raise httpx.ConnectError("the request never left")
+
+
+def finishes(fn, within=20):
+    """fn() in a thread; the test fails (instead of hanging the suite) if it is still running after `within` s."""
+    out = {}
+
+    def run():
+        try:
+            out["value"] = fn()
+        except BaseException as e:  # noqa: BLE001 - reported to the test
+            out["error"] = e
+
+    worker = threading.Thread(target=run, daemon=True)
+    worker.start()
+    worker.join(within)
+    assert not worker.is_alive(), f"still running after {within} s"
+    return out
+
+
+def arena_emails(state, lg, sid):
+    """Our e-mails to `sid` as the arena has them (every one of them, duplicates included)."""
+    session = state.sessions[lg.path.stem]
+    return [m for m in session["threads"][sid]["messages"] if m.get("from") == "buyer"]
+
+
+def outage(monkeypatch, client, clock=None):
+    from buyer.runtime import threads as runtime
+
+    monkeypatch.setattr(runtime, "RECOVER_PAUSE_S", (0.05, 0.2))
+    monkeypatch.setattr(runtime, "CLOSE_RETRY_S", 0.05)
+    return Network(monkeypatch, client, clock)
+
+
+def test_a_reply_lost_in_an_outage_is_read_back_and_not_sent_again(sim, tmp_path, monkeypatch):
+    client, state, _ = sim
+    net = outage(monkeypatch, client)
+    net.cut_next_send(landed=True, down_s=1.0)
+    lg = logged(tmp_path, "case:S01")
+    result = finishes(lambda: play_case(client, "case:S01", new_agent("naive"), log=lg))["value"]
+    assert result["deal"] and net.failed > 0 and not kinds(lg, "drop") and not kinds(lg, "resend")
+    assert kinds(lg, "error")[0]["where"] == "send" and kinds(lg, "refresh")  # read back from the arena
+    assert len(arena_emails(state, lg, "sup:70270")) == len(kinds(lg, "sent"))  # each e-mail once
+
+
+def test_an_email_that_never_left_is_sent_again_once_the_arena_answers(sim, tmp_path, monkeypatch):
+    client, state, _ = sim
+    net = outage(monkeypatch, client)
+    net.cut_next_send(landed=False, down_s=1.0)
+    lg = logged(tmp_path, "case:S01")
+    result = finishes(lambda: play_case(client, "case:S01", new_agent("naive"), log=lg))["value"]
+    assert result["deal"] and net.failed > 0 and not kinds(lg, "drop")
+    assert len(kinds(lg, "resend")) == 1
+    assert len(arena_emails(state, lg, "sup:70270")) == len(kinds(lg, "sent"))
+
+
+def test_every_thread_of_an_rfq_plays_on_after_an_outage(sim, tmp_path, monkeypatch):
+    client, state, _ = sim
+    net = outage(monkeypatch, client)
+    net.cut_next_send(landed=True, down_s=1.0)
+    lg = logged(tmp_path, RFQ)
+    result = finishes(lambda: play_case(client, RFQ, new_agent("naive"), log=lg))["value"]
+    assert result["deal"] and net.failed > 0
+    assert not [e for e in kinds(lg, "drop") if "reach" in str(e.get("reason"))]
+    for sid in (A, B):
+        sent = [e for e in kinds(lg, "sent") if e["supplier_id"] == sid]
+        assert len(arena_emails(state, lg, sid)) == len(sent)
+
+
+def test_an_outage_longer_than_60_s_costs_one_timeout_not_the_case(sim, tmp_path, monkeypatch):
+    client, state, clock = sim
+    net = outage(monkeypatch, client, clock)
+    net.cut_next_send(landed=True, down_s=0.5, arena_s=75)  # the supplier's reply waited 75 s for us
+    lg = logged(tmp_path, "case:S01")
+    result = finishes(lambda: play_case(client, "case:S01", new_agent("naive"), log=lg))["value"]
+    assert result["deal"] and not kinds(lg, "drop")
+    assert len(state.sessions[lg.path.stem]["threads"]["sup:70270"]["late"]) == 1
+
+
+def test_an_outage_longer_than_three_timeouts_ends_the_case_and_play_returns(sim, tmp_path, monkeypatch):
+    client, _, clock = sim
+    net = outage(monkeypatch, client, clock)
+    net.cut_next_send(landed=True, down_s=0.5, arena_s=185)  # 3 x 60 s: the arena ends the thread
+    lg = logged(tmp_path, "case:S01")
+    result = finishes(lambda: play_case(client, "case:S01", new_agent("naive"), log=lg))["value"]
+    assert result["deal"] is False and result["ended"]
+
+
+def test_a_network_that_never_comes_back_ends_play_in_bounded_time(sim, tmp_path, monkeypatch):
+    from buyer.runtime import threads as runtime
+
+    client, _, _ = sim
+    net = outage(monkeypatch, client)
+    monkeypatch.setattr(runtime, "RECOVER_MAX_S", 0.5)
+    net.cut_next_send(landed=False, down_s=None)
+    lg = logged(tmp_path, "case:S01")
+    t0 = time.monotonic()
+    out = finishes(lambda: play_case(client, "case:S01", new_agent("naive"), log=lg))
+    assert time.monotonic() - t0 < 10 and "error" in out  # the result itself cannot be read
+    (drop,) = kinds(lg, "drop")
+    assert "reach" in drop["reason"] and kinds(lg, "close_unresolved")
+
+
+def test_a_network_that_never_comes_back_is_given_up_after_the_wave_cap(sim, tmp_path, monkeypatch):
+    from buyer.runtime import threads as runtime
+
+    client, _, _ = sim
+    net = outage(monkeypatch, client)
+    monkeypatch.setattr(runtime, "CLOSE_BEFORE_CAP_S", 1.0)
+    monkeypatch.setattr(runtime, "ROUND_MARGIN_S", 0.5)
+    monkeypatch.setattr(runtime, "AFTER_CAP_S", 0.5)
+    net.cut_next_send(landed=False, down_s=None)
+    lg = logged(tmp_path, RFQ)
+    t0 = time.monotonic()
+    out = finishes(lambda: play_case(client, RFQ, new_agent("naive"), deadline=time.time() + 2.0, log=lg))
+    assert time.monotonic() - t0 < 10 and "error" in out
+    assert kinds(lg, "closing")  # the cap's close was tried while the arena could not be reached

@@ -14,7 +14,13 @@ reserve reached or the quota used up.
 Final: polls the case list every few seconds, plays each wave's cases in parallel as they appear,
 closes each case before its wave's cap (from `seconds_left`, re-read every poll so an extension is
 followed). If the runner is restarted mid-wave, it picks up its running sessions (the arena's 409
-names them) and plays on. It never reads the leaderboard, results, screen or events.
+names them) and plays on. A case whose play failed (e.g. no network when its session was opened) is
+started again the same way while its wave has more than RESTART_MIN_S left (at most RESTARTS times). It
+never reads the leaderboard, results, screen or events.
+
+Network: the client's connections use TCP keepalive, so a request on a connection the Wi-Fi dropped
+fails after about half a minute (and is retried with the same move id) instead of hanging for the
+180 s reply timeout; a connection that cannot be opened fails after CONNECT_TIMEOUT_S.
 
 Every session is logged (runs/<set>/<case>/<session>.jsonl) and saved as one JSON file
 (runs/<set>_sessions/); the runner's own log goes to runs/runner-<mode>-<time>.log as well.
@@ -23,12 +29,15 @@ Every session is logged (runs/<set>/<case>/<session>.jsonl) and saved as one JSO
 import argparse
 import functools
 import logging
+import socket
 import statistics
 import threading
 import time
+import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
-from arena_kit.client import ArenaClient, ArenaError
+import httpx
+from arena_kit.client import TIMEOUT_S, ArenaClient, ArenaError
 from arena_kit.play import hosted, quota_used_up
 
 from . import env
@@ -41,12 +50,42 @@ log = logging.getLogger("buyer.runner")
 FORBIDDEN = ("/events", "/screen", "/leaderboard", "/results")  # for people, never for the agent (api.md)
 RESERVE = 20  # practice sessions kept for Sunday's pre-flight (AGENTS.md section 6)
 POLL_S = 3.0
-RESTARTS = 3
-RESTART_MIN_S = 45.0
+RESTARTS = 3  # a final case whose play failed is started again at most this often ...
+RESTART_MIN_S = 45.0  # ... and only with more than this left in its wave
+CONNECT_TIMEOUT_S = 10.0  # a connection not open by then is not coming; the kit's 180 s is for the supplier's reply
+KEEPALIVE_S = (15, 5, 3)  # TCP keepalive: idle, interval, probes - a dropped connection fails after about 30 s
+
+
+def keepalive_options(idle=KEEPALIVE_S[0], interval=KEEPALIVE_S[1], probes=KEEPALIVE_S[2]):
+    """Socket options for TCP keepalive, only those this OS accepts (macOS names the idle time
+    TCP_KEEPALIVE): an option the OS refused would make every connection fail."""
+    wanted = [(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)]
+    for names, value in ((("TCP_KEEPIDLE", "TCP_KEEPALIVE"), idle), (("TCP_KEEPINTVL",), interval),
+                         (("TCP_KEEPCNT",), probes)):  # fmt: skip
+        option = next((getattr(socket, n) for n in names if hasattr(socket, n)), None)
+        if option is not None:
+            wanted.append((socket.IPPROTO_TCP, option, value))
+    accepted = []
+    with socket.socket() as probe:
+        for option in wanted:
+            try:
+                probe.setsockopt(*option)
+            except OSError:
+                continue
+            accepted.append(option)
+    return accepted
 
 
 class SafeClient(ArenaClient):
-    """The arena client, minus the endpoints the agent must never read during the Live Final."""
+    """The arena client, minus the endpoints the agent must never read during the Live Final; its
+    connections use TCP keepalive and a short connect timeout (unless a system proxy is set: then
+    httpx's own transport, which honours it)."""
+
+    def __init__(self, *args, timeout=None, transport=None, **kwargs):
+        timeout = timeout or httpx.Timeout(TIMEOUT_S, connect=CONNECT_TIMEOUT_S)
+        if transport is None and not urllib.request.getproxies():
+            transport = httpx.HTTPTransport(socket_options=keepalive_options())
+        super().__init__(*args, timeout=timeout, transport=transport, **kwargs)
 
     def _call(self, method, path, *args, **kwargs):
         if path.startswith(FORBIDDEN):
