@@ -136,3 +136,70 @@ def test_abandoned_calls_run_in_daemon_threads():
     with pytest.raises(LLMUnavailable):
         client(slow).complete("s", "u", timeout_s=0.1, retries=0, total_s=0.1)
     assert seen["daemon"] is True  # never blocks the process from exiting
+
+
+# --- circuit breaker --------------------------------------------------------------------------------------
+def test_three_failed_calls_open_the_breaker_and_calls_then_fail_at_once(monkeypatch):
+    calls = []
+
+    def broken(s, u, mt, t):
+        calls.append(1)
+        raise RuntimeError("overloaded")
+
+    c = client(broken)
+    for _ in range(3):
+        with pytest.raises(LLMUnavailable):
+            c.complete("s", "u", retries=0)
+    n = len(calls)
+    t0 = time.monotonic()
+    with pytest.raises(LLMUnavailable, match="circuit open"):
+        c.complete("s", "u")
+    assert len(calls) == n and time.monotonic() - t0 < 0.05  # the provider is not asked while open
+
+
+def test_an_auth_error_opens_the_breaker_at_once():
+    def unauthorised(s, u, mt, t):
+        raise RuntimeError("Error code: 401 - authentication_error: invalid x-api-key")
+
+    c = client(unauthorised)
+    with pytest.raises(LLMUnavailable):
+        c.complete("s", "u", retries=0)
+    with pytest.raises(LLMUnavailable, match="circuit open"):
+        c.complete("s", "u")
+
+
+def test_after_the_pause_one_call_tries_again_and_a_success_closes_it(monkeypatch):
+    import buyer.llm.client as mod
+
+    monkeypatch.setattr(mod, "BREAK_S", 0.1)
+    state = {"broken": True}
+
+    def flaky(s, u, mt, t):
+        if state["broken"]:
+            raise RuntimeError("401 invalid x-api-key")
+        return "back"
+
+    c = client(flaky)
+    with pytest.raises(LLMUnavailable):
+        c.complete("s", "u", retries=0)
+    time.sleep(0.15)
+    state["broken"] = False
+    assert c.complete("s", "u") == "back" and c._fails == 0
+
+
+def test_a_success_between_failures_resets_the_count():
+    seq = iter(["fail", "fail", "ok", "fail", "fail"])
+
+    def fn(s, u, mt, t):
+        if next(seq) == "fail":
+            raise RuntimeError("overloaded")
+        return "fine"
+
+    c = client(fn)
+    for _ in range(2):
+        with pytest.raises(LLMUnavailable):
+            c.complete("s", "u", retries=0)
+    assert c.complete("s", "u", retries=0) == "fine"
+    for _ in range(2):
+        with pytest.raises(LLMUnavailable, match="overloaded"):  # 2 in a row again: still closed
+            c.complete("s", "u", retries=0)
